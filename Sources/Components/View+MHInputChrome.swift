@@ -56,10 +56,10 @@ private extension MHInputChromeModifier {
                 .opacity(theme.divider.opacity)
         case .focused:
             theme.resolvedColor(for: .accent, in: colorScheme)
-                .opacity(0.40)
+                .opacity(0.24)
         case .invalid:
             theme.resolvedColor(for: .destructive, in: colorScheme)
-                .opacity(0.22)
+                .opacity(0.18)
         }
     }
 }

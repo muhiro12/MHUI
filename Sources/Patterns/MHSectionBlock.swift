@@ -5,7 +5,7 @@ import SwiftUI
 public struct MHSectionBlock<Accessory: View, Content: View, Footer: View>: View {
     private enum Layout {
         static var headingCueWidth: CGFloat {
-            CGFloat(Int("14") ?? .zero)
+            CGFloat(Int("12") ?? .zero)
         }
     }
 

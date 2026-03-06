@@ -6,13 +6,13 @@ extension MHTheme {
         switch role {
         case .primary:
             .init(
-                fillRole: .surface,
+                fillRole: .surfaceMuted,
                 fillOpacity: 1,
                 borderRole: .border,
                 borderOpacity: divider.opacity,
                 foregroundRole: .primaryText,
-                accentRuleRole: .accent,
-                accentRuleOpacity: 0.75,
+                accentRuleRole: nil,
+                accentRuleOpacity: 0,
                 horizontalPadding: spacing.group,
                 verticalPadding: spacing.control
             )
@@ -34,7 +34,7 @@ extension MHTheme {
                 fillOpacity: 0,
                 borderRole: nil,
                 borderOpacity: 0,
-                foregroundRole: .primaryText,
+                foregroundRole: .accent,
                 accentRuleRole: nil,
                 accentRuleOpacity: 0,
                 horizontalPadding: spacing.control,
@@ -45,10 +45,10 @@ extension MHTheme {
                 fillRole: .surface,
                 fillOpacity: 1,
                 borderRole: .destructive,
-                borderOpacity: 0.22,
+                borderOpacity: 0.18,
                 foregroundRole: .destructive,
-                accentRuleRole: .destructive,
-                accentRuleOpacity: 0.55,
+                accentRuleRole: nil,
+                accentRuleOpacity: 0,
                 horizontalPadding: spacing.group,
                 verticalPadding: spacing.control
             )

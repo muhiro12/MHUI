@@ -172,7 +172,7 @@ private extension MHListRow {
             leading: {
                 Image(systemName: "square.stack.3d.up")
                     .font(.title3)
-                    .foregroundStyle(MHPreviewStyle.lightAccent)
+                    .foregroundStyle(MHPreviewStyle.lightAccent())
             },
             trailing: {
                 Text("v1")

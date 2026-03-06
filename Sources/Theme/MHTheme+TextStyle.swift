@@ -1,16 +1,8 @@
 import SwiftUI
 
 private enum MHTextStyleDefaults {
-    static let screenTitleSize: CGFloat = 28
-    static let screenTitleTracking: CGFloat = -0.3
-    static let sectionTitleSize: CGFloat = 20
-    static let sectionTitleTracking: CGFloat = -0.15
-    static let bodySize: CGFloat = 17
-    static let bodyStrongTracking: CGFloat = 0
-    static let supportingSize: CGFloat = 14
-    static let supportingTracking: CGFloat = 0.15
-    static let captionSize: CGFloat = 12
-    static let captionTracking: CGFloat = 0.45
+    static let supportingTracking: CGFloat = 0.1
+    static let captionTracking: CGFloat = 0.2
 }
 
 extension MHTheme {
@@ -20,89 +12,38 @@ extension MHTheme {
     ) -> MHResolvedTextStyle {
         switch role {
         case .screenTitle:
-            resolvedScreenTitleStyle(colorRole: colorRole)
+            resolvedStyle(for: .screenTitle, colorRole: colorRole)
         case .sectionTitle:
-            resolvedSectionTitleStyle(colorRole: colorRole)
+            resolvedStyle(for: .sectionTitle, colorRole: colorRole)
         case .body:
-            resolvedBodyStyle(colorRole: colorRole)
+            resolvedStyle(for: .body, colorRole: colorRole)
         case .bodyStrong:
-            resolvedBodyStrongStyle(colorRole: colorRole)
+            resolvedStyle(for: .bodyStrong, colorRole: colorRole)
         case .supporting:
-            resolvedSupportingStyle(colorRole: colorRole)
+            resolvedStyle(
+                for: .supporting,
+                colorRole: colorRole,
+                tracking: MHTextStyleDefaults.supportingTracking
+            )
         case .caption:
-            resolvedCaptionStyle(colorRole: colorRole)
+            resolvedStyle(
+                for: .caption,
+                colorRole: colorRole,
+                tracking: MHTextStyleDefaults.captionTracking
+            )
         }
     }
 
-    private func resolvedScreenTitleStyle(
-        colorRole: MHColorRole
+    private func resolvedStyle(
+        for role: MHTextRole,
+        colorRole: MHColorRole,
+        tracking: CGFloat = 0
     ) -> MHResolvedTextStyle {
         MHResolvedTextStyle(
-            metrics: textMetrics(for: .screenTitle),
-            colorRole: colorRole,
-            design: .serif,
-            size: MHTextStyleDefaults.screenTitleSize,
-            tracking: MHTextStyleDefaults.screenTitleTracking
-        )
-    }
-
-    private func resolvedSectionTitleStyle(
-        colorRole: MHColorRole
-    ) -> MHResolvedTextStyle {
-        MHResolvedTextStyle(
-            metrics: textMetrics(for: .sectionTitle),
+            metrics: textMetrics(for: role),
             colorRole: colorRole,
             design: .default,
-            size: MHTextStyleDefaults.sectionTitleSize,
-            tracking: MHTextStyleDefaults.sectionTitleTracking
-        )
-    }
-
-    private func resolvedBodyStyle(
-        colorRole: MHColorRole
-    ) -> MHResolvedTextStyle {
-        MHResolvedTextStyle(
-            metrics: textMetrics(for: .body),
-            colorRole: colorRole,
-            design: .default,
-            size: MHTextStyleDefaults.bodySize,
-            tracking: 0
-        )
-    }
-
-    private func resolvedBodyStrongStyle(
-        colorRole: MHColorRole
-    ) -> MHResolvedTextStyle {
-        MHResolvedTextStyle(
-            metrics: textMetrics(for: .bodyStrong),
-            colorRole: colorRole,
-            design: .default,
-            size: MHTextStyleDefaults.bodySize,
-            tracking: MHTextStyleDefaults.bodyStrongTracking
-        )
-    }
-
-    private func resolvedSupportingStyle(
-        colorRole: MHColorRole
-    ) -> MHResolvedTextStyle {
-        MHResolvedTextStyle(
-            metrics: textMetrics(for: .supporting),
-            colorRole: colorRole,
-            design: .default,
-            size: MHTextStyleDefaults.supportingSize,
-            tracking: MHTextStyleDefaults.supportingTracking
-        )
-    }
-
-    private func resolvedCaptionStyle(
-        colorRole: MHColorRole
-    ) -> MHResolvedTextStyle {
-        MHResolvedTextStyle(
-            metrics: textMetrics(for: .caption),
-            colorRole: colorRole,
-            design: .default,
-            size: MHTextStyleDefaults.captionSize,
-            tracking: MHTextStyleDefaults.captionTracking
+            tracking: tracking
         )
     }
 }

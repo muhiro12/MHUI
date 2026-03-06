@@ -5,11 +5,11 @@ import SwiftUI
 public struct MHScreen<Header: View, Content: View>: View {
     private enum Layout {
         static var maxContentWidth: CGFloat {
-            CGFloat(Int("620") ?? .zero)
+            CGFloat(Int("640") ?? .zero)
         }
 
         static var titleCueWidth: CGFloat {
-            CGFloat(Int("24") ?? .zero)
+            CGFloat(Int("20") ?? .zero)
         }
     }
 

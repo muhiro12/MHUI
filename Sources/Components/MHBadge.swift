@@ -66,7 +66,7 @@ private extension MHBadge {
             for: foregroundRole,
             in: colorScheme
         )
-        .opacity(style == .neutral ? 0.04 : 0.07)
+        .opacity(style == .neutral ? 0.03 : 0.05)
     }
 
     var borderColor: Color {
@@ -74,7 +74,7 @@ private extension MHBadge {
             for: foregroundRole,
             in: colorScheme
         )
-        .opacity(style == .neutral ? 0.10 : 0.14)
+        .opacity(style == .neutral ? 0.08 : 0.10)
     }
 }
 
