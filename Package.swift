@@ -17,11 +17,13 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "MHUI"
+            name: "MHUI",
+            path: "Sources"
         ),
         .testTarget(
             name: "MHUITests",
-            dependencies: ["MHUI"]
+            dependencies: ["MHUI"],
+            path: "Tests"
         )
     ]
 )
