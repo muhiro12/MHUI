@@ -12,6 +12,10 @@ public struct MHActionButtonStyle: ButtonStyle {
 
     private let role: MHButtonRole
 
+    var buttonRole: MHButtonRole {
+        role
+    }
+
     public init(role: MHButtonRole = .primary) {
         self.role = role
     }
@@ -43,6 +47,33 @@ public struct MHActionButtonStyle: ButtonStyle {
     }
 }
 
+public extension ButtonStyle where Self == MHActionButtonStyle {
+    /// Returns the restrained primary MHUI action button style.
+    static var mhPrimary: Self {
+        Self(role: .primary)
+    }
+
+    /// Returns the restrained secondary MHUI action button style.
+    static var mhSecondary: Self {
+        Self(role: .secondary)
+    }
+
+    /// Returns the text-first quiet MHUI action button style.
+    static var mhQuiet: Self {
+        Self(role: .quiet)
+    }
+
+    /// Returns the restrained destructive MHUI action button style.
+    static var mhDestructive: Self {
+        Self(role: .destructive)
+    }
+
+    /// Returns an MHUI action button style for the requested semantic role.
+    static func mhAction(_ role: MHButtonRole) -> Self {
+        Self(role: role)
+    }
+}
+
 private extension MHActionButtonStyle {
     func fillColor(for style: MHResolvedActionButtonStyle) -> Color {
         guard let fillRole = style.fillRole else {
@@ -71,12 +102,22 @@ private extension MHActionButtonStyle {
 
 #Preview("Action Buttons", traits: .sizeThatFitsLayout) {
     VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
-        ForEach(MHButtonRole.allCases, id: \.rawValue) { role in
-            Button(role.rawValue.capitalized) {
-                // no-op
-            }
-            .buttonStyle(MHActionButtonStyle(role: role))
+        Button("Primary") {
+            // no-op
         }
+        .buttonStyle(.mhPrimary)
+        Button("Secondary") {
+            // no-op
+        }
+        .buttonStyle(.mhSecondary)
+        Button("Quiet") {
+            // no-op
+        }
+        .buttonStyle(.mhQuiet)
+        Button("Destructive") {
+            // no-op
+        }
+        .buttonStyle(.mhDestructive)
     }
     .mhPreviewSurface()
 }

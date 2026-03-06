@@ -8,15 +8,16 @@ private struct MHAccentStylePreview: View {
             Text(accentStyle.rawValue.capitalized)
                 .mhTextStyle(.caption, colorRole: .secondaryText)
 
-            MHSectionBlock(
+            VStack(spacing: 0) {
+                reviewRow
+                LabeledContent("Focus", value: "Calm")
+                    .labeledContentStyle(.mhKeyValue)
+            }
+            .mhGroupedRows()
+            .mhSection(
                 "Accent Review",
                 supporting: "The same section framing shown with each built-in accent."
-            ) {
-                MHRowGroup {
-                    reviewRow
-                    MHKeyValueRow("Focus", value: "Calm")
-                }
-            }
+            )
         }
         .mhTheme(MHTheme.standard(accentStyle: accentStyle))
     }
@@ -24,19 +25,20 @@ private struct MHAccentStylePreview: View {
 
 private extension MHAccentStylePreview {
     var reviewRow: some View {
-        MHListRow(
-            title: Text("Quiet action"),
-            subtitle: Text("Accent should read as a precise signal."),
-            leading: {
-                EmptyView()
-            },
-            trailing: {
-                Button("Review") {
-                    // no-op
-                }
-                .buttonStyle(MHActionButtonStyle(role: .quiet))
+        HStack(alignment: .top, spacing: MHTheme.standard.spacing.control) {
+            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+                Text("Quiet action")
+                    .mhRowTitle()
+                Text("Accent should read as a precise signal.")
+                    .mhRowSupporting()
             }
-        )
+            Spacer()
+            Button("Review") {
+                // no-op
+            }
+            .buttonStyle(.mhQuiet)
+        }
+        .mhRow()
     }
 }
 

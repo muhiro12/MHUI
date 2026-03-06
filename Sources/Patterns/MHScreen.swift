@@ -1,8 +1,9 @@
-// swiftlint:disable type_contents_order
+// swiftlint:disable one_declaration_per_file file_types_order type_contents_order
 import SwiftUI
 
-/// A centered, scrollable screen container for calm non-list layouts.
-public struct MHScreen<Header: View, Content: View>: View {
+private enum MHScreen {}
+
+private struct MHScreenModifier: ViewModifier {
     private enum Layout {
         static var maxContentWidth: CGFloat {
             CGFloat(Int("640") ?? .zero)
@@ -18,26 +19,13 @@ public struct MHScreen<Header: View, Content: View>: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    private let title: Text?
-    private let subtitle: Text?
-    private let header: Header
-    private let content: Content
+    let title: Text?
+    let subtitle: Text?
+    let header: AnyView?
 
-    public init(
-        title: Text? = nil,
-        subtitle: Text? = nil,
-        @ViewBuilder header: () -> Header,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.title = title
-        self.subtitle = subtitle
-        self.header = header()
-        self.content = content()
-    }
-
-    public var body: some View {
+    func body(content: Content) -> some View {
         ScrollView {
-            screenContent
+            screenContent(content: content)
         }
         .background(
             theme.resolvedColor(for: .background, in: colorScheme)
@@ -45,38 +33,70 @@ public struct MHScreen<Header: View, Content: View>: View {
         )
     }
 }
-// swiftlint:enable type_contents_order
 
-public extension MHScreen where Header == EmptyView {
-    /// Creates a screen without a separate header slot.
-    init(
+public extension View {
+    /// Wraps content in the MHUI centered screen layout.
+    func mhScreen(
+        title: Text? = nil,
+        subtitle: Text? = nil
+    ) -> some View {
+        modifier(
+            MHScreenModifier(
+                title: title,
+                subtitle: subtitle,
+                header: nil
+            )
+        )
+    }
+
+    /// Wraps content in the MHUI centered screen layout with a header block.
+    func mhScreen<Header: View>(
+        title: Text? = nil,
+        subtitle: Text? = nil,
+        @ViewBuilder header: () -> Header
+    ) -> some View {
+        modifier(
+            MHScreenModifier(
+                title: title,
+                subtitle: subtitle,
+                header: AnyView(header())
+            )
+        )
+    }
+
+    /// Wraps content in the MHUI centered screen layout using localized string keys.
+    func mhScreen(
+        title: LocalizedStringKey? = nil,
+        subtitle: LocalizedStringKey? = nil
+    ) -> some View {
+        mhScreen(
+            title: title.map { Text($0) },
+            subtitle: subtitle.map { Text($0) }
+        )
+    }
+
+    /// Wraps content in the MHUI centered screen layout using localized string keys and a header block.
+    func mhScreen<Header: View>(
         title: LocalizedStringKey? = nil,
         subtitle: LocalizedStringKey? = nil,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.init(
-            title: title.map { key in
-                Text(key)
-            },
-            subtitle: subtitle.map { key in
-                Text(key)
-            },
-            header: {
-                EmptyView()
-            },
-            content: content
+        @ViewBuilder header: () -> Header
+    ) -> some View {
+        mhScreen(
+            title: title.map { Text($0) },
+            subtitle: subtitle.map { Text($0) },
+            header: header
         )
     }
 }
 
-private extension MHScreen {
-    var screenContent: some View {
+private extension MHScreenModifier {
+    func screenContent(content: Content) -> some View {
         VStack(alignment: .leading, spacing: theme.spacing.section + theme.spacing.control) {
             if showsTitleBlock {
                 titleBlock
             }
 
-            if hasHeader {
+            if let header {
                 header
             }
 
@@ -121,31 +141,35 @@ private extension MHScreen {
     var titleCueSpacing: CGFloat {
         theme.spacing.control - titleCueHeight
     }
-
-    var hasHeader: Bool {
-        Header.self != EmptyView.self
-    }
 }
 
 #Preview("Screen", traits: .fixedLayout(width: 760, height: 900)) {
-    MHScreen(
+    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
+        VStack(spacing: 0) {
+            LabeledContent("Atmosphere", value: "Calm")
+                .labeledContentStyle(.mhKeyValue)
+            LabeledContent("Approach", value: "Opinionated")
+                .labeledContentStyle(.mhKeyValue)
+        }
+        .mhGroupedRows()
+        .mhSection(
+            "Foundation",
+            supporting: "Tokens, styles, and composition helpers."
+        )
+
+        ContentUnavailableView(
+            "No examples yet",
+            systemImage: "square.grid.2x2",
+            description: Text("Use native SwiftUI views and apply MHUI styling.")
+        )
+        .mhEmptyStateLayout()
+        .mhSurfaceInset()
+        .mhSurface()
+    }
+    .mhScreen(
         title: "MHUI",
         subtitle: "A quiet UI foundation for sibling apps."
-    ) {
-        MHSectionBlock(
-            "Foundation",
-            supporting: "Tokens, primitives, and composition patterns."
-        ) {
-            MHRowGroup {
-                MHKeyValueRow("Atmosphere", value: "Calm")
-                MHKeyValueRow("Approach", value: "Opinionated")
-            }
-        }
-        MHEmptyState(
-            "No examples yet",
-            message: "Use the primitives below to assemble your own screens.",
-            symbolSystemName: "square.grid.2x2"
-        )
-    }
+    )
     .mhPreviewTint()
 }
+// swiftlint:enable one_declaration_per_file file_types_order type_contents_order

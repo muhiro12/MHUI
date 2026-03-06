@@ -1,118 +1,43 @@
-// swiftlint:disable type_contents_order
+// swiftlint:disable one_declaration_per_file file_types_order
 import SwiftUI
 
-/// A calm empty state with optional icon, message, and action.
-public struct MHEmptyState<Action: View>: View {
+private enum MHEmptyState {}
+
+private struct MHEmptyStateLayoutModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.colorScheme)
-    private var colorScheme
 
-    private let symbolSystemName: String?
-    private let title: Text
-    private let message: Text?
-    private let action: Action
-
-    public init(
-        _ title: LocalizedStringKey,
-        message: LocalizedStringKey? = nil,
-        symbolSystemName: String? = nil,
-        @ViewBuilder action: () -> Action
-    ) {
-        self.symbolSystemName = symbolSystemName
-        self.title = Text(title)
-        self.message = message.map { key in
-            Text(key)
-        }
-        self.action = action()
-    }
-
-    public var body: some View {
-        MHSurface {
-            contentStack
-        }
+    func body(content: Content) -> some View {
+        content
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, theme.spacing.group)
+            .padding(.vertical, theme.spacing.section)
     }
 }
 
-public extension MHEmptyState where Action == EmptyView {
-    /// Creates an empty state without a follow-up action.
-    init(
-        _ title: LocalizedStringKey,
-        message: LocalizedStringKey? = nil,
-        symbolSystemName: String? = nil
-    ) {
-        self.init(
-            title,
-            message: message,
-            symbolSystemName: symbolSystemName,
-            action: EmptyView.init
-        )
-    }
-}
-
-private extension MHEmptyState {
-    private enum Layout {
-        static var symbolSize: CGFloat {
-            CGFloat(Int("22") ?? .zero)
-        }
-
-        static var messageWidth: CGFloat {
-            CGFloat(Int("320") ?? .zero)
-        }
-    }
-
-    var hasAction: Bool {
-        Action.self != EmptyView.self
-    }
-
-    var contentStack: some View {
-        VStack(
-            alignment: .leading,
-            spacing: theme.spacing.group
-        ) {
-            if let symbolSystemName {
-                Image(systemName: symbolSystemName)
-                    .font(.system(size: Layout.symbolSize, weight: .medium))
-                    .foregroundStyle(
-                        theme.resolvedColor(
-                            for: .secondaryText,
-                            in: colorScheme
-                        )
-                    )
-                    .accessibilityHidden(true)
-            }
-            VStack(
-                alignment: .leading,
-                spacing: theme.spacing.control
-            ) {
-                title
-                    .mhTextStyle(.sectionTitle)
-                if let message {
-                    message
-                        .frame(maxWidth: Layout.messageWidth)
-                        .multilineTextAlignment(.leading)
-                        .mhTextStyle(.supporting, colorRole: .secondaryText)
-                }
-            }
-            if hasAction {
-                action
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
+public extension View {
+    /// Applies calm spacing around a native `ContentUnavailableView`.
+    func mhEmptyStateLayout() -> some View {
+        modifier(MHEmptyStateLayoutModifier())
     }
 }
 
 #Preview("Empty State", traits: .sizeThatFitsLayout) {
-    MHEmptyState(
+    ContentUnavailableView(
         "Nothing here yet",
-        message: "Start by creating a first surface or screen block.",
-        symbolSystemName: "square.grid.2x2"
-    ) {
+        systemImage: "square.grid.2x2",
+        description: Text("Start by creating a first surface or screen block.")
+    )
+    .mhEmptyStateLayout()
+    .mhSurfaceInset()
+    .mhSurface()
+    .overlay(alignment: .bottomLeading) {
         Button("Create Sample") {
             // no-op
         }
-        .buttonStyle(MHActionButtonStyle(role: .secondary))
+        .buttonStyle(.mhSecondary)
+        .padding(MHTheme.standard.spacing.group)
     }
     .mhPreviewSurface()
 }
-// swiftlint:enable type_contents_order
+// swiftlint:enable one_declaration_per_file file_types_order

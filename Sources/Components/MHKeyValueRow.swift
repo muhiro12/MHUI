@@ -1,92 +1,92 @@
-// swiftlint:disable type_contents_order
+// swiftlint:disable one_declaration_per_file file_types_order
 import SwiftUI
 
-/// A simple label/value row for details and settings.
-public struct MHKeyValueRow<Value: View>: View {
+private enum MHKeyValueRow {}
+
+struct MHResolvedKeyValueStyle: Sendable, Equatable {
+    var labelColorRole: MHColorRole
+    var valueColorRole: MHColorRole
+    var verticalPadding: CGFloat
+}
+
+/// A calm `LabeledContentStyle` for settings and detail rows.
+public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
     @Environment(\.mhTheme)
     private var theme
     @Environment(\.colorScheme)
     private var colorScheme
 
-    private let label: Text
-    private let supporting: Text?
-    private let valueRole: MHColorRole
-    private let value: Value
-
-    public init(
-        label: Text,
-        supporting: Text? = nil,
-        valueRole: MHColorRole = .secondaryText,
-        @ViewBuilder value: () -> Value
-    ) {
-        self.label = label
-        self.supporting = supporting
-        self.valueRole = valueRole
-        self.value = value()
+    public init() {
+        // no-op
     }
 
-    public var body: some View {
-        HStack(alignment: .top, spacing: theme.spacing.control) {
-            VStack(alignment: .leading, spacing: theme.spacing.inline) {
-                label
-                    .mhTextStyle(.body)
-                if let supporting {
-                    supporting
-                        .mhTextStyle(.caption, colorRole: .secondaryText)
-                }
-            }
-            Spacer(minLength: theme.spacing.control)
-            value
+    public func makeBody(configuration: Configuration) -> some View {
+        let style = theme.resolvedKeyValueStyle()
+
+        return HStack(alignment: .top, spacing: theme.spacing.control) {
+            configuration.label
                 .foregroundStyle(
                     theme.resolvedColor(
-                        for: valueRole,
+                        for: style.labelColorRole,
                         in: colorScheme
                     )
                 )
-                .frame(alignment: .trailing)
+            Spacer(minLength: theme.spacing.control)
+            configuration.content
+                .foregroundStyle(
+                    theme.resolvedColor(
+                        for: style.valueColorRole,
+                        in: colorScheme
+                    )
+                )
+                .multilineTextAlignment(.trailing)
+                .frame(maxWidth: .infinity, alignment: .trailing)
         }
-        .padding(.vertical, theme.spacing.control + theme.spacing.inline)
+        .padding(.vertical, style.verticalPadding)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(.rect)
     }
 }
 
-public extension MHKeyValueRow where Value == AnyView {
-    /// Creates a key/value row from localized text values.
-    init(
-        _ label: LocalizedStringKey,
-        value: LocalizedStringKey,
-        supporting: LocalizedStringKey? = nil,
-        valueRole: MHColorRole = .secondaryText
-    ) {
-        self.init(
-            label: Text(label),
-            supporting: supporting.map { key in
-                Text(key)
-            },
-            valueRole: valueRole
-        ) {
-            AnyView(
-                Text(value)
-                    .mhTextStyle(.bodyStrong, colorRole: valueRole)
-            )
-        }
-    }
-}
-
-#Preview("Key Value Row", traits: .sizeThatFitsLayout) {
-    MHSurface {
-        MHKeyValueRow(
-            "Visual language",
-            value: "Calm"
+extension MHTheme {
+    func resolvedKeyValueStyle() -> MHResolvedKeyValueStyle {
+        MHResolvedKeyValueStyle(
+            labelColorRole: .primaryText,
+            valueColorRole: .secondaryText,
+            verticalPadding: spacing.control + spacing.inline
         )
-        MHKeyValueRow(
-            label: Text("Spacing"),
-            supporting: Text("Screen rhythm shared across sibling apps."),
-            valueRole: .primaryText
-        ) {
-            Text("Section / Group / Inline")
-                .mhTextStyle(.supporting, colorRole: .primaryText)
-        }
     }
+}
+
+public extension LabeledContentStyle where Self == MHKeyValueLabeledContentStyle {
+    /// Returns the quiet MHUI style for key-value `LabeledContent`.
+    static var mhKeyValue: Self {
+        MHKeyValueLabeledContentStyle()
+    }
+}
+
+#Preview("Key Value Styling", traits: .sizeThatFitsLayout) {
+    VStack(spacing: 0) {
+        LabeledContent("Visual language", value: "Calm")
+            .labeledContentStyle(.mhKeyValue)
+        LabeledContent {
+            VStack(alignment: .trailing, spacing: MHTheme.standard.spacing.inline) {
+                Text("Section / Group / Inline")
+                Text("Shared rhythm")
+                    .mhTextStyle(.caption, colorRole: .secondaryText)
+            }
+        } label: {
+            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+                Text("Spacing")
+                Text("Screen rhythm shared across sibling apps.")
+                    .mhTextStyle(.caption, colorRole: .secondaryText)
+            }
+        }
+        .labeledContentStyle(.mhKeyValue)
+    }
+    .mhGroupedRows()
+    .mhSurfaceInset()
+    .mhSurface()
     .mhPreviewSurface()
 }
-// swiftlint:enable type_contents_order
+// swiftlint:enable one_declaration_per_file file_types_order

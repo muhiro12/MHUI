@@ -1,8 +1,9 @@
-// swiftlint:disable type_contents_order
+// swiftlint:disable one_declaration_per_file file_types_order
 import SwiftUI
 
-/// A titled content block that wraps grouped content in a calm surface.
-public struct MHSectionBlock<Accessory: View, Content: View, Footer: View>: View {
+private enum MHSectionBlock {}
+
+private struct MHSectionModifier: ViewModifier {
     private enum Layout {
         static var headingCueWidth: CGFloat {
             CGFloat(Int("12") ?? .zero)
@@ -14,35 +15,20 @@ public struct MHSectionBlock<Accessory: View, Content: View, Footer: View>: View
     @Environment(\.colorScheme)
     private var colorScheme
 
-    private let title: Text
-    private let supporting: Text?
-    private let accessory: Accessory
-    private let content: Content
-    private let footer: Footer
+    let title: Text
+    let supporting: Text?
+    let accessory: AnyView?
+    let footer: AnyView?
 
-    public init(
-        title: Text,
-        supporting: Text? = nil,
-        @ViewBuilder accessory: () -> Accessory,
-        @ViewBuilder content: () -> Content,
-        @ViewBuilder footer: () -> Footer
-    ) {
-        self.title = title
-        self.supporting = supporting
-        self.accessory = accessory()
-        self.content = content()
-        self.footer = footer()
-    }
-
-    public var body: some View {
+    func body(content: Content) -> some View {
         VStack(alignment: .leading, spacing: theme.spacing.group + theme.spacing.control) {
             headerBlock
 
-            MHSurface {
-                content
-            }
+            content
+                .mhSurfaceInset()
+                .mhSurface()
 
-            if hasFooter {
+            if let footer {
                 footer
                     .foregroundStyle(
                         theme.resolvedColor(
@@ -55,42 +41,125 @@ public struct MHSectionBlock<Accessory: View, Content: View, Footer: View>: View
     }
 }
 
-public extension MHSectionBlock where Accessory == EmptyView, Footer == EmptyView {
-    /// Creates a section block without accessory or footer content.
-    init(
-        _ title: LocalizedStringKey,
-        supporting: LocalizedStringKey? = nil,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.init(
-            title: Text(title),
-            supporting: supporting.map { Text($0) },
-            accessory: EmptyView.init,
-            content: content,
-            footer: EmptyView.init
+public extension View {
+    /// Wraps content in an MHUI section with heading cue and calm surface treatment.
+    func mhSection(
+        title: Text,
+        supporting: Text? = nil
+    ) -> some View {
+        modifier(
+            MHSectionModifier(
+                title: title,
+                supporting: supporting,
+                accessory: nil,
+                footer: nil
+            )
         )
     }
-}
 
-public extension MHSectionBlock where Footer == EmptyView {
-    /// Creates a section block with accessory content and no footer.
-    init(
+    /// Wraps content in an MHUI section with heading cue and accessory content.
+    func mhSection<Accessory: View>(
+        title: Text,
+        supporting: Text? = nil,
+        @ViewBuilder accessory: () -> Accessory
+    ) -> some View {
+        modifier(
+            MHSectionModifier(
+                title: title,
+                supporting: supporting,
+                accessory: AnyView(accessory()),
+                footer: nil
+            )
+        )
+    }
+
+    /// Wraps content in an MHUI section with heading cue and footer content.
+    func mhSection<Footer: View>(
+        title: Text,
+        supporting: Text? = nil,
+        @ViewBuilder footer: () -> Footer
+    ) -> some View {
+        modifier(
+            MHSectionModifier(
+                title: title,
+                supporting: supporting,
+                accessory: nil,
+                footer: AnyView(footer())
+            )
+        )
+    }
+
+    /// Wraps content in an MHUI section with heading cue, accessory, and footer content.
+    func mhSection<Accessory: View, Footer: View>(
+        title: Text,
+        supporting: Text? = nil,
+        @ViewBuilder accessory: () -> Accessory,
+        @ViewBuilder footer: () -> Footer
+    ) -> some View {
+        modifier(
+            MHSectionModifier(
+                title: title,
+                supporting: supporting,
+                accessory: AnyView(accessory()),
+                footer: AnyView(footer())
+            )
+        )
+    }
+
+    /// Wraps content in an MHUI section using localized string keys.
+    func mhSection(
+        _ title: LocalizedStringKey,
+        supporting: LocalizedStringKey? = nil
+    ) -> some View {
+        mhSection(
+            title: Text(title),
+            supporting: supporting.map { Text($0) }
+        )
+    }
+
+    /// Wraps content in an MHUI section using localized string keys and accessory content.
+    func mhSection<Accessory: View>(
+        _ title: LocalizedStringKey,
+        supporting: LocalizedStringKey? = nil,
+        @ViewBuilder accessory: () -> Accessory
+    ) -> some View {
+        mhSection(
+            title: Text(title),
+            supporting: supporting.map { Text($0) },
+            accessory: accessory
+        )
+    }
+
+    /// Wraps content in an MHUI section using localized string keys and footer content.
+    func mhSection<Footer: View>(
+        _ title: LocalizedStringKey,
+        supporting: LocalizedStringKey? = nil,
+        @ViewBuilder footer: () -> Footer
+    ) -> some View {
+        mhSection(
+            title: Text(title),
+            supporting: supporting.map { Text($0) },
+            footer: footer
+        )
+    }
+
+    /// Wraps content in an MHUI section using localized string keys, accessory, and footer content.
+    func mhSection<Accessory: View, Footer: View>(
         _ title: LocalizedStringKey,
         supporting: LocalizedStringKey? = nil,
         @ViewBuilder accessory: () -> Accessory,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.init(
+        @ViewBuilder footer: () -> Footer
+    ) -> some View {
+        mhSection(
             title: Text(title),
             supporting: supporting.map { Text($0) },
             accessory: accessory,
-            content: content,
-            footer: EmptyView.init
+            footer: footer
         )
     }
 }
 
-private extension MHSectionBlock {
+private extension MHSectionModifier {
     var headerBlock: some View {
         VStack(alignment: .leading, spacing: headerCueSpacing) {
             Rectangle()
@@ -105,7 +174,7 @@ private extension MHSectionBlock {
                     title
                         .mhTextStyle(.sectionTitle)
                     Spacer(minLength: theme.spacing.control)
-                    if hasAccessory {
+                    if let accessory {
                         accessory
                     }
                 }
@@ -125,14 +194,5 @@ private extension MHSectionBlock {
     var headerCueSpacing: CGFloat {
         theme.spacing.inline + headerCueHeight
     }
-
-    var hasAccessory: Bool {
-        Accessory.self != EmptyView.self
-    }
-
-    var hasFooter: Bool {
-        Footer.self != EmptyView.self
-    }
 }
-
-// swiftlint:enable type_contents_order
+// swiftlint:enable one_declaration_per_file file_types_order

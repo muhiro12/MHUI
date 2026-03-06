@@ -1,185 +1,72 @@
-// swiftlint:disable type_contents_order
+// swiftlint:disable one_declaration_per_file file_types_order
 import SwiftUI
 
-/// A quiet, domain-independent row for lists, links, and buttons.
-public struct MHListRow<Leading: View, Trailing: View>: View {
+private enum MHListRow {}
+
+private struct MHRowModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
 
-    private let title: Text
-    private let subtitle: Text?
-    private let overline: Text?
-    private let leading: Leading
-    private let trailing: Trailing
-
-    public init(
-        title: Text,
-        subtitle: Text? = nil,
-        overline: Text? = nil,
-        @ViewBuilder leading: () -> Leading,
-        @ViewBuilder trailing: () -> Trailing
-    ) {
-        self.title = title
-        self.subtitle = subtitle
-        self.overline = overline
-        self.leading = leading()
-        self.trailing = trailing()
-    }
-
-    public var body: some View {
-        HStack(alignment: .top, spacing: theme.spacing.control) {
-            if hasLeading {
-                leading
-            }
-
-            VStack(alignment: .leading, spacing: theme.spacing.inline) {
-                if let overline {
-                    overline
-                        .mhTextStyle(.caption, colorRole: .secondaryText)
-                        .textCase(.uppercase)
-                }
-                title
-                    .mhTextStyle(.bodyStrong)
-                if let subtitle {
-                    subtitle
-                        .mhTextStyle(.supporting, colorRole: .secondaryText)
-                }
-            }
+    func body(content: Content) -> some View {
+        content
+            .padding(.vertical, theme.spacing.control + theme.spacing.inline)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect)
+    }
+}
 
-            if hasTrailing {
-                trailing
-            }
+public extension View {
+    /// Applies the shared MHUI row container rhythm.
+    func mhRow() -> some View {
+        modifier(MHRowModifier())
+    }
+
+    /// Styles restrained row metadata shown above a row title.
+    func mhRowOverline() -> some View {
+        mhTextStyle(.caption, colorRole: .secondaryText)
+            .textCase(.uppercase)
+    }
+
+    /// Styles a row title with quiet emphasis.
+    func mhRowTitle() -> some View {
+        mhTextStyle(.bodyStrong)
+    }
+
+    /// Styles secondary row copy.
+    func mhRowSupporting() -> some View {
+        mhTextStyle(.supporting, colorRole: .secondaryText)
+    }
+
+    /// Styles trailing row values with subdued emphasis by default.
+    func mhRowValue(
+        colorRole: MHColorRole = .secondaryText
+    ) -> some View {
+        mhTextStyle(.body, colorRole: colorRole)
+    }
+}
+
+#Preview("Row Styling", traits: .sizeThatFitsLayout) {
+    HStack(alignment: .top, spacing: MHTheme.standard.spacing.control) {
+        Image(systemName: "square.stack.3d.up")
+            .font(.title3)
+            .foregroundStyle(MHPreviewStyle.lightAccent())
+
+        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+            Text("Foundation")
+                .mhRowOverline()
+            Text("Workflows")
+                .mhRowTitle()
+            Text("Reusable screen composition and quiet styling.")
+                .mhRowSupporting()
         }
-        .padding(.vertical, theme.spacing.control + theme.spacing.inline)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(.rect)
-    }
-}
 
-public extension MHListRow where Leading == EmptyView, Trailing == EmptyView {
-    /// Creates a simple row with text-only content.
-    init(
-        _ title: LocalizedStringKey,
-        subtitle: LocalizedStringKey? = nil,
-        overline: LocalizedStringKey? = nil
-    ) {
-        self.init(
-            title: Text(title),
-            subtitle: subtitle.map { key in
-                Text(key)
-            },
-            overline: overline.map { key in
-                Text(key)
-            },
-            leading: {
-                EmptyView()
-            },
-            trailing: {
-                EmptyView()
-            }
-        )
+        Text("v1")
+            .mhRowValue()
     }
-}
-
-public extension MHListRow where Leading == EmptyView {
-    /// Creates a row with trailing content and no leading view.
-    init(
-        _ title: LocalizedStringKey,
-        subtitle: LocalizedStringKey? = nil,
-        overline: LocalizedStringKey? = nil,
-        @ViewBuilder trailing: () -> Trailing
-    ) {
-        self.init(
-            title: Text(title),
-            subtitle: subtitle.map { key in
-                Text(key)
-            },
-            overline: overline.map { key in
-                Text(key)
-            },
-            leading: {
-                EmptyView()
-            },
-            trailing: trailing
-        )
-    }
-}
-
-public extension MHListRow where Trailing == EmptyView {
-    /// Creates a row with leading content and no trailing view.
-    init(
-        _ title: LocalizedStringKey,
-        subtitle: LocalizedStringKey? = nil,
-        overline: LocalizedStringKey? = nil,
-        @ViewBuilder leading: () -> Leading
-    ) {
-        self.init(
-            title: Text(title),
-            subtitle: subtitle.map { key in
-                Text(key)
-            },
-            overline: overline.map { key in
-                Text(key)
-            },
-            leading: leading
-        ) {
-            EmptyView()
-        }
-    }
-}
-
-public extension MHListRow {
-    /// Creates a row with both leading and trailing content.
-    init(
-        _ title: LocalizedStringKey,
-        subtitle: LocalizedStringKey? = nil,
-        overline: LocalizedStringKey? = nil,
-        @ViewBuilder leading: () -> Leading,
-        @ViewBuilder trailing: () -> Trailing
-    ) {
-        self.init(
-            title: Text(title),
-            subtitle: subtitle.map { key in
-                Text(key)
-            },
-            overline: overline.map { key in
-                Text(key)
-            },
-            leading: leading
-        ) {
-            trailing()
-        }
-    }
-}
-
-private extension MHListRow {
-    var hasLeading: Bool {
-        Leading.self != EmptyView.self
-    }
-
-    var hasTrailing: Bool {
-        Trailing.self != EmptyView.self
-    }
-}
-
-#Preview("List Row", traits: .sizeThatFitsLayout) {
-    MHSurface {
-        MHListRow(
-            "Workflows",
-            subtitle: "Reusable screen composition and quiet styling.",
-            overline: "Foundation",
-            leading: {
-                Image(systemName: "square.stack.3d.up")
-                    .font(.title3)
-                    .foregroundStyle(MHPreviewStyle.lightAccent())
-            },
-            trailing: {
-                Text("v1")
-                    .mhTextStyle(.supporting, colorRole: .secondaryText)
-            }
-        )
-    }
+    .mhRow()
+    .mhSurfaceInset()
+    .mhSurface()
     .mhPreviewSurface()
 }
-// swiftlint:enable type_contents_order
+// swiftlint:enable one_declaration_per_file file_types_order

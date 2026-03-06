@@ -1,18 +1,19 @@
+// swiftlint:disable one_declaration_per_file file_types_order
 import SwiftUI
 
+private enum MHBadge {}
+
 // swiftlint:disable no_magic_numbers
-/// A restrained badge for small semantic emphasis.
-public struct MHBadge: View {
+private struct MHBadgeModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
     @Environment(\.colorScheme)
     private var colorScheme
 
-    private let title: Text
-    private let style: MHBadgeStyle
+    let style: MHBadgeStyle
 
-    public var body: some View {
-        title
+    func body(content: Content) -> some View {
+        content
             .mhTextStyle(.caption, colorRole: foregroundRole)
             .textCase(.uppercase)
             .padding(.horizontal, theme.spacing.control)
@@ -29,23 +30,15 @@ public struct MHBadge: View {
                     cornerRadius: theme.radius.control,
                     style: .continuous
                 )
-                    .stroke(
-                        borderColor,
-                        lineWidth: theme.divider.thickness
-                    )
+                .stroke(
+                    borderColor,
+                    lineWidth: theme.divider.thickness
+                )
             }
-    }
-
-    public init(
-        _ title: LocalizedStringKey,
-        style: MHBadgeStyle = .neutral
-    ) {
-        self.title = Text(title)
-        self.style = style
     }
 }
 
-private extension MHBadge {
+private extension MHBadgeModifier {
     var foregroundRole: MHColorRole {
         switch style {
         case .neutral:
@@ -78,12 +71,21 @@ private extension MHBadge {
     }
 }
 
+public extension View {
+    /// Applies restrained badge chrome for compact metadata.
+    func mhBadge(style: MHBadgeStyle = .neutral) -> some View {
+        modifier(MHBadgeModifier(style: style))
+    }
+}
+
 #Preview("Badges", traits: .sizeThatFitsLayout) {
     HStack(spacing: MHTheme.standard.spacing.control) {
         ForEach(MHBadgeStyle.allCases, id: \.rawValue) { style in
-            MHBadge(LocalizedStringKey(style.rawValue.capitalized), style: style)
+            Text(LocalizedStringKey(style.rawValue.capitalized))
+                .mhBadge(style: style)
         }
     }
     .mhPreviewSurface()
 }
 // swiftlint:enable no_magic_numbers
+// swiftlint:enable one_declaration_per_file file_types_order

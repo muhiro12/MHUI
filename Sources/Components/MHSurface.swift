@@ -1,57 +1,91 @@
-// swiftlint:disable type_contents_order
+// swiftlint:disable one_declaration_per_file file_types_order
 import SwiftUI
 
-/// Calm rounded surface for grouped content.
-public struct MHSurface<Content: View>: View {
+private enum MHSurface {}
+
+/// Surface prominence used by `mhSurface(role:)`.
+public enum MHSurfaceRole: String, Sendable, CaseIterable {
+    case standard
+    case muted
+}
+
+private struct MHSurfaceModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
     @Environment(\.colorScheme)
     private var colorScheme
 
-    private let content: Content
+    let role: MHSurfaceRole
 
-    public init(@ViewBuilder content: () -> Content) {
-        self.content = content()
+    func body(content: Content) -> some View {
+        let shape = RoundedRectangle(
+            cornerRadius: theme.radius.surface,
+            style: .continuous
+        )
+
+        return content
+            .background(
+                theme.resolvedColor(
+                    for: theme.surfaceColorRole(for: role),
+                    in: colorScheme
+                ),
+                in: shape
+            )
+            .overlay {
+                shape
+                    .stroke(
+                        theme.resolvedColor(for: .border, in: colorScheme)
+                            .opacity(theme.divider.opacity),
+                        lineWidth: theme.divider.thickness
+                    )
+            }
+    }
+}
+
+private struct MHSurfaceInsetModifier: ViewModifier {
+    @Environment(\.mhTheme)
+    private var theme
+
+    func body(content: Content) -> some View {
+        content
+            .padding(.horizontal, theme.spacing.group)
+            .padding(.vertical, theme.spacing.group + theme.spacing.inline)
+    }
+}
+
+extension MHTheme {
+    func surfaceColorRole(for role: MHSurfaceRole) -> MHColorRole {
+        switch role {
+        case .standard:
+            .surface
+        case .muted:
+            .surfaceMuted
+        }
+    }
+}
+
+public extension View {
+    /// Applies calm surface chrome without changing the wrapped layout.
+    func mhSurface(role: MHSurfaceRole = .standard) -> some View {
+        modifier(MHSurfaceModifier(role: role))
     }
 
-    public var body: some View {
-        VStack(alignment: .leading, spacing: theme.spacing.group) {
-            content
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, theme.spacing.group)
-        .padding(.vertical, theme.spacing.group + theme.spacing.inline)
-        .background(
-            theme.resolvedColor(for: .surface, in: colorScheme),
-            in: RoundedRectangle(
-                cornerRadius: theme.radius.surface,
-                style: .continuous
-            )
-        )
-        .overlay {
-            RoundedRectangle(
-                cornerRadius: theme.radius.surface,
-                style: .continuous
-            )
-            .stroke(
-                theme.resolvedColor(for: .border, in: colorScheme)
-                    .opacity(theme.divider.opacity),
-                lineWidth: theme.divider.thickness
-            )
-        }
+    /// Applies the standard interior inset used for grouped surfaces.
+    func mhSurfaceInset() -> some View {
+        modifier(MHSurfaceInsetModifier())
     }
 }
 
 #Preview("Surface", traits: .sizeThatFitsLayout) {
-    ScrollView {
-        MHSurface {
-            Text("Calm Surface")
-                .mhTextStyle(.sectionTitle)
-            Text("Used for grouped settings, cards, and empty states.")
-                .mhTextStyle(.supporting, colorRole: .secondaryText)
-        }
-        .padding()
+    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
+        Text("Calm Surface")
+            .mhTextStyle(.sectionTitle)
+        Text("Used for grouped settings, cards, and empty states.")
+            .mhTextStyle(.supporting, colorRole: .secondaryText)
     }
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .mhSurfaceInset()
+    .mhSurface()
     .mhPreviewSurface(padding: 0)
 }
-// swiftlint:enable type_contents_order
+// swiftlint:enable one_declaration_per_file file_types_order

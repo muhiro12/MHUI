@@ -6,8 +6,8 @@ It is intentionally opinionated and intentionally narrow.
 MHUI focuses on three layers:
 
 - semantic visual tokens
-- domain-independent primitive components
-- light screen-composition patterns
+- styling primitives and modifiers
+- light screen-composition support
 
 It does not own app business logic, app models, logging, configuration, or infrastructure concerns.
 Those responsibilities stay outside the package.
@@ -35,17 +35,17 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 
 ## Public Building Blocks
 
-- `MHTheme`, `MHTextRole`, `MHColorRole`
-- `MHSurface`
-- `MHActionButtonStyle`
-- `MHListRow`
-- `MHKeyValueRow`
-- `MHBadge`
-- `MHEmptyState`
+- `MHTheme`, `MHAccentStyle`, `MHTextRole`, `MHColorRole`
+- `MHActionButtonStyle` and `ButtonStyle` sugar like `.mhPrimary`
+- `mhSurface(role:)` and `mhSurfaceInset()`
 - `mhInputChrome(state:)`
-- `MHScreen`
-- `MHSectionBlock`
-- `MHRowGroup`
+- `mhBadge(style:)`
+- `mhRow()`, `mhRowOverline()`, `mhRowTitle()`, `mhRowSupporting()`, `mhRowValue()`
+- `LabeledContentStyle.mhKeyValue`
+- `mhGroupedRows()`
+- `mhSection(...)`
+- `mhScreen(...)`
+- `mhEmptyStateLayout()`
 
 ## Example
 
@@ -55,36 +55,50 @@ import SwiftUI
 
 struct SettingsScreen: View {
     var body: some View {
-        MHScreen(
-            title: "Workspace",
-            subtitle: "Shared rhythm and low-noise hierarchy."
-        ) {
-            MHSectionBlock(
+        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
+            VStack(spacing: 0) {
+                LabeledContent("Theme", value: "Standard")
+                    .labeledContentStyle(.mhKeyValue)
+
+                HStack(alignment: .top, spacing: MHTheme.standard.spacing.control) {
+                    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+                        Text("Foundation")
+                            .mhRowOverline()
+                        Text("Surfaces")
+                            .mhRowTitle()
+                        Text("Neutral containers that stay in the background.")
+                            .mhRowSupporting()
+                    }
+                    Spacer()
+                    Text("quiet")
+                        .mhBadge(style: .neutral)
+                }
+                .mhRow()
+            }
+            .mhGroupedRows()
+            .mhSection(
                 "Appearance",
                 supporting: "Keep options grouped, calm, and practical."
-            ) {
-                MHRowGroup {
-                    MHKeyValueRow("Theme", value: "Standard")
-                    MHListRow(
-                        "Surfaces",
-                        subtitle: "Neutral containers that stay in the background."
-                    ) {
-                        MHBadge("quiet", style: .neutral)
-                    }
-                }
-            }
+            )
 
-            MHEmptyState(
+            ContentUnavailableView(
                 "No more groups",
-                message: "Add the next section only when it improves clarity.",
-                symbolSystemName: "square.grid.2x2"
-            ) {
-                Button("Review") {
-                    // no-op
-                }
-                .buttonStyle(.init(role: .secondary))
+                systemImage: "square.grid.2x2",
+                description: Text("Add the next section only when it improves clarity.")
+            )
+            .mhEmptyStateLayout()
+            .mhSurfaceInset()
+            .mhSurface()
+
+            Button("Review") {
+                // no-op
             }
+            .buttonStyle(.mhSecondary)
         }
+        .mhScreen(
+            title: "Workspace",
+            subtitle: "Shared rhythm and low-noise hierarchy."
+        )
         .mhTheme(MHTheme.standard(accentStyle: .blue))
     }
 }
@@ -94,7 +108,7 @@ struct SettingsScreen: View {
 
 MHUI does not currently provide:
 
-- `List` or `Form` wrappers
+- wrapper controls that replace `Button`, `TextField`, `Toggle`, or `List`
 - navigation shells
 - validation engines
 - search components

@@ -1,26 +1,28 @@
-// swiftlint:disable type_contents_order
+// swiftlint:disable one_declaration_per_file file_types_order
 import SwiftUI
 
-/// A grouped row container with optional dividers.
-public struct MHRowGroup<Content: View>: View {
+private enum MHRowGroup {}
+
+struct MHResolvedGroupedRowsStyle: Sendable, Equatable {
+    var showsDividers: Bool
+    var dividerLeadingInset: CGFloat
+    var dividerThickness: CGFloat
+    var dividerOpacity: Double
+    var spacerHeight: CGFloat
+}
+
+private struct MHGroupedRowsModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
     @Environment(\.colorScheme)
     private var colorScheme
 
-    private let showsDividers: Bool
-    private let content: Content
+    let showsDividers: Bool
 
-    public init(
-        showsDividers: Bool = true,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.showsDividers = showsDividers
-        self.content = content()
-    }
+    func body(content: Content) -> some View {
+        let style = theme.resolvedGroupedRowsStyle(showsDividers: showsDividers)
 
-    public var body: some View {
-        Group(subviews: content) { subviews in
+        return Group(subviews: content) { subviews in
             VStack(alignment: .leading, spacing: 0) {
                 if let lastIndex = subviews.indices.last {
                     ForEach(subviews.indices, id: \.self) { index in
@@ -28,20 +30,20 @@ public struct MHRowGroup<Content: View>: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
 
                         if index != lastIndex {
-                            if showsDividers {
+                            if style.showsDividers {
                                 Rectangle()
                                     .fill(
                                         theme.resolvedColor(
                                             for: .border,
                                             in: colorScheme
                                         )
-                                        .opacity(theme.divider.opacity)
+                                        .opacity(style.dividerOpacity)
                                     )
-                                    .frame(height: theme.divider.thickness)
-                                    .padding(.leading, theme.spacing.group + theme.spacing.inline)
+                                    .frame(height: style.dividerThickness)
+                                    .padding(.leading, style.dividerLeadingInset)
                             } else {
                                 Color.clear
-                                    .frame(height: theme.spacing.control)
+                                    .frame(height: style.spacerHeight)
                             }
                         }
                     }
@@ -51,14 +53,57 @@ public struct MHRowGroup<Content: View>: View {
     }
 }
 
-#Preview("Row Group", traits: .sizeThatFitsLayout) {
-    MHSurface {
-        MHRowGroup {
-            MHListRow("Tokens", subtitle: "Neutral color roles and typography.")
-            MHListRow("Patterns", subtitle: "Screen and section composition.")
-            MHKeyValueRow("Readability", value: "Centered")
-        }
+extension MHTheme {
+    func resolvedGroupedRowsStyle(
+        showsDividers: Bool
+    ) -> MHResolvedGroupedRowsStyle {
+        MHResolvedGroupedRowsStyle(
+            showsDividers: showsDividers,
+            dividerLeadingInset: spacing.group + spacing.inline,
+            dividerThickness: divider.thickness,
+            dividerOpacity: divider.opacity,
+            spacerHeight: spacing.control
+        )
     }
+}
+
+public extension View {
+    /// Applies grouped row dividers and spacing to stacked row content.
+    func mhGroupedRows(
+        showsDividers: Bool = true
+    ) -> some View {
+        modifier(MHGroupedRowsModifier(showsDividers: showsDividers))
+    }
+}
+
+#Preview("Grouped Rows", traits: .sizeThatFitsLayout) {
+    VStack(spacing: 0) {
+        HStack {
+            Text("Tokens")
+                .mhRowTitle()
+            Spacer()
+            Text("Quiet")
+                .mhRowValue()
+        }
+        .mhRow()
+
+        LabeledContent("Readability", value: "Centered")
+            .labeledContentStyle(.mhKeyValue)
+
+        HStack {
+            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+                Text("Patterns")
+                    .mhRowTitle()
+                Text("Screen and section composition.")
+                    .mhRowSupporting()
+            }
+            Spacer()
+        }
+        .mhRow()
+    }
+    .mhGroupedRows()
+    .mhSurfaceInset()
+    .mhSurface()
     .mhPreviewSurface()
 }
-// swiftlint:enable type_contents_order
+// swiftlint:enable one_declaration_per_file file_types_order
