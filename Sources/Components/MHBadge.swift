@@ -14,14 +14,21 @@ public struct MHBadge: View {
     public var body: some View {
         title
             .mhTextStyle(.caption, colorRole: foregroundRole)
+            .textCase(.uppercase)
             .padding(.horizontal, theme.spacing.control)
-            .padding(.vertical, theme.spacing.inline + 2)
+            .padding(.vertical, theme.spacing.inline)
             .background(
                 backgroundColor,
-                in: Capsule(style: .continuous)
+                in: RoundedRectangle(
+                    cornerRadius: theme.radius.control,
+                    style: .continuous
+                )
             )
             .overlay {
-                Capsule(style: .continuous)
+                RoundedRectangle(
+                    cornerRadius: theme.radius.control,
+                    style: .continuous
+                )
                     .stroke(
                         borderColor,
                         lineWidth: theme.divider.thickness
@@ -59,7 +66,7 @@ private extension MHBadge {
             for: foregroundRole,
             in: colorScheme
         )
-        .opacity(style == .neutral ? 0.08 : 0.12)
+        .opacity(style == .neutral ? 0.04 : 0.07)
     }
 
     var borderColor: Color {
@@ -67,16 +74,17 @@ private extension MHBadge {
             for: foregroundRole,
             in: colorScheme
         )
-        .opacity(style == .neutral ? 0.16 : 0.22)
+        .opacity(style == .neutral ? 0.10 : 0.14)
     }
 }
 
-#Preview("Badges") {
+#Preview("Badges", traits: .sizeThatFitsLayout) {
     HStack(spacing: MHTheme.standard.spacing.control) {
         ForEach(MHBadgeStyle.allCases, id: \.rawValue) { style in
             MHBadge(LocalizedStringKey(style.rawValue.capitalized), style: style)
         }
     }
     .padding()
+    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
 }
 // swiftlint:enable no_magic_numbers

@@ -22,8 +22,12 @@ MHUI aims for a quiet interface:
 - clear text hierarchy
 - stable composition rules
 
-The default theme uses system typography, neutral surfaces, and tint-driven emphasis.
+The default theme uses system typography, but its distinctiveness comes from hierarchy, spacing, geometry, and surface language rather than from stock SwiftUI control styling.
 Apps can override the theme via `mhTheme(_:)`, but the customization surface is intentionally small.
+
+Its design attitude is informed by calm, functional retail and editorial environments.
+That influence is about atmosphere only: whitespace, flatter work surfaces, quieter but more authored typography, and practical composition.
+MHUI must not copy their layouts, information architecture, or visual motifs directly.
 
 ## Public Building Blocks
 
@@ -48,34 +52,33 @@ import SwiftUI
 struct SettingsScreen: View {
     var body: some View {
         MHScreen(
-            title: "Settings",
-            subtitle: "Shared rhythm and quiet hierarchy."
+            title: "Workspace",
+            subtitle: "Shared rhythm and low-noise hierarchy."
         ) {
             MHSectionBlock(
-                "Interface",
-                supporting: "Keep options grouped and readable."
+                "Appearance",
+                supporting: "Keep options grouped, calm, and practical."
             ) {
                 MHRowGroup {
                     MHKeyValueRow("Theme", value: "Standard")
                     MHListRow(
-                        "Appearance",
-                        subtitle: "Open a deeper customization screen."
+                        "Surfaces",
+                        subtitle: "Neutral containers that stay in the background."
                     ) {
-                        Image(systemName: "paintpalette")
-                            .foregroundStyle(.accent)
+                        MHBadge("quiet", style: .neutral)
                     }
                 }
             }
 
             MHEmptyState(
-                "No more sections",
-                message: "Add more grouped content as the screen grows.",
-                symbolSystemName: "square.stack.3d.up"
+                "No more groups",
+                message: "Add the next section only when it improves clarity.",
+                symbolSystemName: "square.grid.2x2"
             ) {
-                Button("Done") {
+                Button("Review") {
                     // no-op
                 }
-                .buttonStyle(.init(role: .primary))
+                .buttonStyle(.init(role: .secondary))
             }
         }
     }

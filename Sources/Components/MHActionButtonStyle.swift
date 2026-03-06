@@ -38,9 +38,16 @@ public struct MHActionButtonStyle: ButtonStyle {
                         lineWidth: style.borderRole == nil ? 0 : theme.divider.thickness
                     )
             }
-            .opacity(isEnabled ? 1 : 0.45)
-            .opacity(configuration.isPressed ? 0.72 : 1)
-            .scaleEffect(configuration.isPressed ? 0.99 : 1)
+            .overlay(alignment: .leading) {
+                if let accentRuleColor = accentRuleColor(for: style) {
+                    Rectangle()
+                        .fill(accentRuleColor)
+                        .frame(width: theme.divider.thickness * 2)
+                        .padding(.vertical, theme.spacing.inline)
+                }
+            }
+            .opacity(isEnabled ? 1 : 0.55)
+            .opacity(configuration.isPressed ? 0.90 : 1)
             .animation(
                 .easeOut(duration: theme.motion.quick),
                 value: configuration.isPressed
@@ -72,9 +79,21 @@ private extension MHActionButtonStyle {
         )
         .opacity(style.borderOpacity)
     }
+
+    func accentRuleColor(for style: MHResolvedActionButtonStyle) -> Color? {
+        guard let accentRuleRole = style.accentRuleRole else {
+            return nil
+        }
+
+        return theme.resolvedColor(
+            for: accentRuleRole,
+            in: colorScheme
+        )
+        .opacity(style.accentRuleOpacity)
+    }
 }
 
-#Preview("Action Buttons") {
+#Preview("Action Buttons", traits: .sizeThatFitsLayout) {
     VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
         ForEach(MHButtonRole.allCases, id: \.rawValue) { role in
             Button(role.rawValue.capitalized) {
@@ -84,5 +103,6 @@ private extension MHActionButtonStyle {
         }
     }
     .padding()
+    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
 }
 // swiftlint:enable no_magic_numbers

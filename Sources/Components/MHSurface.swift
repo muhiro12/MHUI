@@ -19,7 +19,8 @@ public struct MHSurface<Content: View>: View {
             content
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(theme.spacing.group)
+        .padding(.horizontal, theme.spacing.group)
+        .padding(.vertical, theme.spacing.group + theme.spacing.inline)
         .background(
             theme.resolvedColor(for: .surface, in: colorScheme),
             in: RoundedRectangle(
@@ -41,7 +42,7 @@ public struct MHSurface<Content: View>: View {
     }
 }
 
-#Preview("Surface") {
+#Preview("Surface", traits: .sizeThatFitsLayout) {
     ScrollView {
         MHSurface {
             Text("Calm Surface")

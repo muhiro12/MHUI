@@ -38,9 +38,10 @@ public struct MHRowGroup<Content: View>: View {
                                         .opacity(theme.divider.opacity)
                                     )
                                     .frame(height: theme.divider.thickness)
+                                    .padding(.leading, theme.spacing.group + theme.spacing.inline)
                             } else {
                                 Color.clear
-                                    .frame(height: theme.spacing.group)
+                                    .frame(height: theme.spacing.control)
                             }
                         }
                     }
@@ -50,7 +51,7 @@ public struct MHRowGroup<Content: View>: View {
     }
 }
 
-#Preview("Row Group") {
+#Preview("Row Group", traits: .sizeThatFitsLayout) {
     MHSurface {
         MHRowGroup {
             MHListRow("Tokens", subtitle: "Neutral color roles and typography.")
@@ -59,5 +60,6 @@ public struct MHRowGroup<Content: View>: View {
         }
     }
     .padding()
+    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
 }
 // swiftlint:enable type_contents_order

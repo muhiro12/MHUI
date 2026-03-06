@@ -23,11 +23,13 @@ struct MHStyleResolutionTests {
         let quiet = theme.resolvedActionButtonStyle(for: .quiet)
         let destructive = theme.resolvedActionButtonStyle(for: .destructive)
 
-        #expect(primary.fillRole == .accent)
-        #expect(primary.foregroundRole == .accent)
+        #expect(primary.fillRole == .surface)
+        #expect(primary.foregroundRole == .primaryText)
+        #expect(primary.accentRuleRole == .accent)
         #expect(quiet.fillRole == nil)
         #expect(quiet.borderRole == nil)
         #expect(destructive.foregroundRole == .destructive)
+        #expect(destructive.accentRuleRole == .destructive)
         #expect(primary.horizontalPadding == theme.spacing.group)
         #expect(quiet.verticalPadding < primary.verticalPadding)
     }

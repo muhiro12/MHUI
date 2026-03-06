@@ -16,8 +16,15 @@ private struct MHTextStyleModifier: ViewModifier {
         )
 
         content
-            .font(style.metrics.style.font)
+            .font(
+                .system(
+                    size: style.size,
+                    weight: style.metrics.weight.fontWeight,
+                    design: style.design
+                )
+            )
             .fontWeight(style.metrics.weight.fontWeight)
+            .tracking(style.tracking)
             .foregroundStyle(
                 theme.resolvedColor(
                     for: style.colorRole,

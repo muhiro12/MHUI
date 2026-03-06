@@ -5,87 +5,87 @@ public extension MHTheme {
         colors: .init(
             background: .adaptive(
                 .init(
-                    light: .init(red: 0.97, green: 0.97, blue: 0.96),
-                    dark: .init(red: 0.10, green: 0.11, blue: 0.12)
+                    light: .init(red: 0.96, green: 0.95, blue: 0.93),
+                    dark: .init(red: 0.12, green: 0.11, blue: 0.10)
                 )
             ),
             surface: .adaptive(
                 .init(
-                    light: .init(red: 0.99, green: 0.99, blue: 0.98),
-                    dark: .init(red: 0.15, green: 0.16, blue: 0.17)
+                    light: .init(red: 0.98, green: 0.97, blue: 0.95),
+                    dark: .init(red: 0.17, green: 0.16, blue: 0.15)
                 )
             ),
             surfaceMuted: .adaptive(
                 .init(
-                    light: .init(red: 0.95, green: 0.95, blue: 0.94),
-                    dark: .init(red: 0.18, green: 0.19, blue: 0.20)
+                    light: .init(red: 0.94, green: 0.93, blue: 0.91),
+                    dark: .init(red: 0.20, green: 0.19, blue: 0.18)
                 )
             ),
             border: .adaptive(
                 .init(
-                    light: .init(red: 0.80, green: 0.81, blue: 0.78, opacity: 0.9),
-                    dark: .init(red: 0.33, green: 0.35, blue: 0.37, opacity: 0.95)
+                    light: .init(red: 0.72, green: 0.71, blue: 0.68, opacity: 0.72),
+                    dark: .init(red: 0.42, green: 0.40, blue: 0.37, opacity: 0.80)
                 )
             ),
             primaryText: .adaptive(
                 .init(
-                    light: .init(red: 0.13, green: 0.14, blue: 0.15),
-                    dark: .init(red: 0.94, green: 0.95, blue: 0.96)
+                    light: .init(red: 0.18, green: 0.17, blue: 0.16),
+                    dark: .init(red: 0.90, green: 0.88, blue: 0.85)
                 )
             ),
             secondaryText: .adaptive(
                 .init(
-                    light: .init(red: 0.38, green: 0.40, blue: 0.42),
-                    dark: .init(red: 0.68, green: 0.70, blue: 0.72)
+                    light: .init(red: 0.44, green: 0.42, blue: 0.39),
+                    dark: .init(red: 0.68, green: 0.65, blue: 0.61)
                 )
             ),
             accent: .tint,
             positive: .adaptive(
                 .init(
-                    light: .init(red: 0.23, green: 0.47, blue: 0.31),
-                    dark: .init(red: 0.45, green: 0.74, blue: 0.54)
+                    light: .init(red: 0.35, green: 0.45, blue: 0.33),
+                    dark: .init(red: 0.56, green: 0.67, blue: 0.53)
                 )
             ),
             warning: .adaptive(
                 .init(
-                    light: .init(red: 0.69, green: 0.46, blue: 0.14),
-                    dark: .init(red: 0.90, green: 0.72, blue: 0.41)
+                    light: .init(red: 0.60, green: 0.48, blue: 0.25),
+                    dark: .init(red: 0.76, green: 0.65, blue: 0.41)
                 )
             ),
             destructive: .adaptive(
                 .init(
-                    light: .init(red: 0.71, green: 0.24, blue: 0.25),
-                    dark: .init(red: 0.92, green: 0.51, blue: 0.52)
+                    light: .init(red: 0.60, green: 0.31, blue: 0.30),
+                    dark: .init(red: 0.78, green: 0.50, blue: 0.48)
                 )
             )
         ),
         typography: .init(
-            screenTitle: .init(style: .title2, weight: .semibold),
-            sectionTitle: .init(style: .title3, weight: .semibold),
+            screenTitle: .init(style: .title2, weight: .medium),
+            sectionTitle: .init(style: .title3, weight: .medium),
             body: .init(style: .body, weight: .regular),
-            bodyStrong: .init(style: .body, weight: .semibold),
+            bodyStrong: .init(style: .body, weight: .medium),
             supporting: .init(style: .subheadline, weight: .regular),
             caption: .init(style: .footnote, weight: .medium)
         ),
         spacing: .init(
             inline: 4,
-            control: 10,
-            group: 16,
-            section: 24,
-            screen: 28
+            control: 12,
+            group: 18,
+            section: 32,
+            screen: 36
         ),
         radius: .init(
-            control: 12,
-            surface: 20,
+            control: 6,
+            surface: 8,
             pill: 999
         ),
         divider: .init(
             thickness: 1,
-            opacity: 0.75
+            opacity: 0.55
         ),
         motion: .init(
-            quick: 0.18,
-            regular: 0.28
+            quick: 0.14,
+            regular: 0.22
         )
     )
     // swiftlint:enable no_magic_numbers

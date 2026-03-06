@@ -53,7 +53,11 @@ public extension MHEmptyState where Action == EmptyView {
 private extension MHEmptyState {
     private enum Layout {
         static var symbolSize: CGFloat {
-            CGFloat(Int("28") ?? .zero)
+            CGFloat(Int("22") ?? .zero)
+        }
+
+        static var messageWidth: CGFloat {
+            CGFloat(Int("320") ?? .zero)
         }
     }
 
@@ -63,7 +67,7 @@ private extension MHEmptyState {
 
     var contentStack: some View {
         VStack(
-            alignment: .center,
+            alignment: .leading,
             spacing: theme.spacing.group
         ) {
             if let symbolSystemName {
@@ -78,14 +82,15 @@ private extension MHEmptyState {
                     .accessibilityHidden(true)
             }
             VStack(
-                alignment: .center,
-                spacing: theme.spacing.inline
+                alignment: .leading,
+                spacing: theme.spacing.control
             ) {
                 title
                     .mhTextStyle(.sectionTitle)
                 if let message {
                     message
-                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: Layout.messageWidth)
+                        .multilineTextAlignment(.leading)
                         .mhTextStyle(.supporting, colorRole: .secondaryText)
                 }
             }
@@ -93,11 +98,11 @@ private extension MHEmptyState {
                 action
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
-#Preview("Empty State") {
+#Preview("Empty State", traits: .sizeThatFitsLayout) {
     MHEmptyState(
         "Nothing here yet",
         message: "Start by creating a first surface or screen block.",
@@ -106,8 +111,9 @@ private extension MHEmptyState {
         Button("Create Sample") {
             // no-op
         }
-        .buttonStyle(MHActionButtonStyle(role: .primary))
+        .buttonStyle(MHActionButtonStyle(role: .secondary))
     }
     .padding()
+    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
 }
 // swiftlint:enable type_contents_order

@@ -5,7 +5,7 @@ import SwiftUI
 public struct MHScreen<Header: View, Content: View>: View {
     private enum Layout {
         static var maxContentWidth: CGFloat {
-            CGFloat(Int("720") ?? .zero)
+            CGFloat(Int("620") ?? .zero)
         }
     }
 
@@ -33,9 +33,9 @@ public struct MHScreen<Header: View, Content: View>: View {
 
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: theme.spacing.section) {
+            VStack(alignment: .leading, spacing: theme.spacing.section + theme.spacing.control) {
                 if title != nil || subtitle != nil {
-                    VStack(alignment: .leading, spacing: theme.spacing.inline) {
+                    VStack(alignment: .leading, spacing: theme.spacing.group) {
                         if let title {
                             title
                                 .mhTextStyle(.screenTitle)
@@ -55,7 +55,8 @@ public struct MHScreen<Header: View, Content: View>: View {
             }
             .frame(maxWidth: Layout.maxContentWidth, alignment: .leading)
             .frame(maxWidth: .infinity, alignment: .center)
-            .padding(theme.spacing.screen)
+            .padding(.horizontal, theme.spacing.screen)
+            .padding(.vertical, theme.spacing.screen + theme.spacing.section)
         }
         .background(
             theme.resolvedColor(for: .background, in: colorScheme)
@@ -93,7 +94,7 @@ private extension MHScreen {
     }
 }
 
-#Preview("Screen") {
+#Preview("Screen", traits: .fixedLayout(width: 760, height: 900)) {
     MHScreen(
         title: "MHUI",
         subtitle: "A quiet UI foundation for sibling apps."
@@ -113,4 +114,5 @@ private extension MHScreen {
             symbolSystemName: "square.grid.2x2"
         )
     }
+    .preferredColorScheme(.light)
 }

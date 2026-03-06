@@ -17,9 +17,9 @@ public struct MHSectionBlock<Accessory: View, Content: View, Footer: View>: View
     public init(
         title: Text,
         supporting: Text? = nil,
-        @ViewBuilder accessory: () -> Accessory,
-        @ViewBuilder content: () -> Content,
-        @ViewBuilder footer: () -> Footer
+        @ViewBuilder accessory: @escaping () -> Accessory,
+        @ViewBuilder content: @escaping () -> Content,
+        @ViewBuilder footer: @escaping () -> Footer
     ) {
         self.title = title
         self.supporting = supporting
@@ -29,8 +29,8 @@ public struct MHSectionBlock<Accessory: View, Content: View, Footer: View>: View
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: theme.spacing.group) {
-            VStack(alignment: .leading, spacing: theme.spacing.inline) {
+        VStack(alignment: .leading, spacing: theme.spacing.group + theme.spacing.control) {
+            VStack(alignment: .leading, spacing: theme.spacing.control) {
                 HStack(alignment: .firstTextBaseline, spacing: theme.spacing.control) {
                     title
                         .mhTextStyle(.sectionTitle)
@@ -44,6 +44,7 @@ public struct MHSectionBlock<Accessory: View, Content: View, Footer: View>: View
                         .mhTextStyle(.supporting, colorRole: .secondaryText)
                 }
             }
+            .padding(.leading, theme.spacing.inline)
 
             MHSurface {
                 content
@@ -67,16 +68,20 @@ public extension MHSectionBlock where Accessory == EmptyView, Footer == EmptyVie
     init(
         _ title: LocalizedStringKey,
         supporting: LocalizedStringKey? = nil,
-        @ViewBuilder content: () -> Content
+        @ViewBuilder content: @escaping () -> Content
     ) {
         self.init(
             title: Text(title),
             supporting: supporting.map { value in
                 Text(value)
             },
-            accessory: EmptyView.init,
+            accessory: {
+                EmptyView()
+            },
             content: content,
-            footer: EmptyView.init
+            footer: {
+                EmptyView()
+            }
         )
     }
 }
@@ -86,8 +91,8 @@ public extension MHSectionBlock where Footer == EmptyView {
     init(
         _ title: LocalizedStringKey,
         supporting: LocalizedStringKey? = nil,
-        @ViewBuilder accessory: () -> Accessory,
-        @ViewBuilder content: () -> Content
+        @ViewBuilder accessory: @escaping () -> Accessory,
+        @ViewBuilder content: @escaping () -> Content
     ) {
         self.init(
             title: Text(title),
@@ -96,7 +101,9 @@ public extension MHSectionBlock where Footer == EmptyView {
             },
             accessory: accessory,
             content: content,
-            footer: EmptyView.init
+            footer: {
+                EmptyView()
+            }
         )
     }
 }
@@ -111,24 +118,4 @@ private extension MHSectionBlock {
     }
 }
 
-#Preview("Section Block") {
-    MHSectionBlock(
-        "Rhythm",
-        supporting: "Shared section framing without owning app workflow.",
-        accessory: {
-            MHBadge("v1", style: .accent)
-        },
-        content: {
-            MHRowGroup {
-                MHListRow(
-                    "Section title",
-                    subtitle: "Secondary text stays quiet.",
-                    overline: "Pattern"
-                )
-                MHKeyValueRow("Surface", value: "Wrapped")
-            }
-        }
-    )
-    .padding()
-}
 // swiftlint:enable type_contents_order

@@ -6,21 +6,25 @@ extension MHTheme {
         switch role {
         case .primary:
             .init(
-                fillRole: .accent,
-                fillOpacity: 0.14,
-                borderRole: .accent,
-                borderOpacity: 0.26,
-                foregroundRole: .accent,
+                fillRole: .surface,
+                fillOpacity: 1,
+                borderRole: .border,
+                borderOpacity: divider.opacity,
+                foregroundRole: .primaryText,
+                accentRuleRole: .accent,
+                accentRuleOpacity: 0.55,
                 horizontalPadding: spacing.group,
                 verticalPadding: spacing.control
             )
         case .secondary:
             .init(
-                fillRole: .surfaceMuted,
+                fillRole: .surface,
                 fillOpacity: 1,
                 borderRole: .border,
                 borderOpacity: divider.opacity,
                 foregroundRole: .primaryText,
+                accentRuleRole: nil,
+                accentRuleOpacity: 0,
                 horizontalPadding: spacing.group,
                 verticalPadding: spacing.control
             )
@@ -31,16 +35,20 @@ extension MHTheme {
                 borderRole: nil,
                 borderOpacity: 0,
                 foregroundRole: .primaryText,
+                accentRuleRole: nil,
+                accentRuleOpacity: 0,
                 horizontalPadding: spacing.control,
                 verticalPadding: spacing.inline + 2
             )
         case .destructive:
             .init(
-                fillRole: .destructive,
-                fillOpacity: 0.12,
+                fillRole: .surface,
+                fillOpacity: 1,
                 borderRole: .destructive,
-                borderOpacity: 0.24,
+                borderOpacity: 0.22,
                 foregroundRole: .destructive,
+                accentRuleRole: .destructive,
+                accentRuleOpacity: 0.40,
                 horizontalPadding: spacing.group,
                 verticalPadding: spacing.control
             )

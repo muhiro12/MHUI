@@ -36,6 +36,7 @@ public struct MHListRow<Leading: View, Trailing: View>: View {
                 if let overline {
                     overline
                         .mhTextStyle(.caption, colorRole: .secondaryText)
+                        .textCase(.uppercase)
                 }
                 title
                     .mhTextStyle(.bodyStrong)
@@ -50,7 +51,7 @@ public struct MHListRow<Leading: View, Trailing: View>: View {
                 trailing
             }
         }
-        .padding(.vertical, theme.spacing.control)
+        .padding(.vertical, theme.spacing.control + theme.spacing.inline)
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(.rect)
     }
@@ -162,7 +163,7 @@ private extension MHListRow {
     }
 }
 
-#Preview("List Row") {
+#Preview("List Row", traits: .sizeThatFitsLayout) {
     MHSurface {
         MHListRow(
             "Workflows",
@@ -180,5 +181,6 @@ private extension MHListRow {
         )
     }
     .padding()
+    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
 }
 // swiftlint:enable type_contents_order

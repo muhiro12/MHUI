@@ -40,12 +40,12 @@ private extension MHInputChromeModifier {
     var backgroundColor: Color {
         switch state {
         case .normal:
-            theme.resolvedColor(for: .surfaceMuted, in: colorScheme)
+            theme.resolvedColor(for: .surface, in: colorScheme)
         case .focused:
             theme.resolvedColor(for: .surface, in: colorScheme)
         case .invalid:
             theme.resolvedColor(for: .destructive, in: colorScheme)
-                .opacity(0.08)
+                .opacity(0.04)
         }
     }
 
@@ -56,10 +56,10 @@ private extension MHInputChromeModifier {
                 .opacity(theme.divider.opacity)
         case .focused:
             theme.resolvedColor(for: .accent, in: colorScheme)
-                .opacity(0.35)
+                .opacity(0.28)
         case .invalid:
             theme.resolvedColor(for: .destructive, in: colorScheme)
-                .opacity(0.4)
+                .opacity(0.22)
         }
     }
 }
@@ -73,7 +73,7 @@ public extension View {
     }
 }
 
-#Preview("Input Chrome") {
+#Preview("Input Chrome", traits: .sizeThatFitsLayout) {
     VStack(spacing: MHTheme.standard.spacing.group) {
         TextField("Name", text: .constant(""))
             .mhInputChrome()
@@ -84,5 +84,6 @@ public extension View {
             .mhInputChrome(state: .invalid)
     }
     .padding()
+    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
 }
 // swiftlint:enable no_magic_numbers

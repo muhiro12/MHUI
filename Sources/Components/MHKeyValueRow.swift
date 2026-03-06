@@ -43,8 +43,9 @@ public struct MHKeyValueRow<Value: View>: View {
                         in: colorScheme
                     )
                 )
+                .frame(alignment: .trailing)
         }
-        .padding(.vertical, theme.spacing.control)
+        .padding(.vertical, theme.spacing.control + theme.spacing.inline)
     }
 }
 
@@ -71,7 +72,7 @@ public extension MHKeyValueRow where Value == AnyView {
     }
 }
 
-#Preview("Key Value Row") {
+#Preview("Key Value Row", traits: .sizeThatFitsLayout) {
     MHSurface {
         MHKeyValueRow(
             "Visual language",
@@ -87,5 +88,6 @@ public extension MHKeyValueRow where Value == AnyView {
         }
     }
     .padding()
+    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
 }
 // swiftlint:enable type_contents_order
