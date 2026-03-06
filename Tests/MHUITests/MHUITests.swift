@@ -1,6 +1,9 @@
-import Testing
 @testable import MHUI
+import Testing
 
-@Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+struct MHUITests {
+    @Test
+    func package_smoke_test() {
+        #expect(Bool(true))
+    }
 }
