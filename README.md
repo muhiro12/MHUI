@@ -24,9 +24,11 @@ MHUI aims for a quiet interface:
 
 The default theme uses system typography, but its distinctiveness comes from hierarchy, spacing, geometry, and surface language rather than from stock SwiftUI control styling.
 Apps can override the theme via `mhTheme(_:)`, but the customization surface is intentionally small.
+The standard theme ships with a restrained warm orange accent so the package reads as MHUI even before an app applies its own styling.
+Apps can keep that default, swap the accent back to `.tint`, or provide another semantic color through the existing `MHTheme` API.
 
 Its design attitude is informed by calm, functional retail and editorial environments.
-That influence is about atmosphere only: whitespace, flatter work surfaces, quieter but more authored typography, and practical composition.
+That influence is about atmosphere only: whitespace, flatter work surfaces, subtle accent placement, quieter but more authored typography, and practical composition.
 MHUI must not copy their layouts, information architecture, or visual motifs directly.
 
 ## Public Building Blocks

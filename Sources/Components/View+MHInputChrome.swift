@@ -56,7 +56,7 @@ private extension MHInputChromeModifier {
                 .opacity(theme.divider.opacity)
         case .focused:
             theme.resolvedColor(for: .accent, in: colorScheme)
-                .opacity(0.28)
+                .opacity(0.40)
         case .invalid:
             theme.resolvedColor(for: .destructive, in: colorScheme)
                 .opacity(0.22)
@@ -83,7 +83,6 @@ public extension View {
             .frame(height: 120)
             .mhInputChrome(state: .invalid)
     }
-    .padding()
-    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
+    .mhPreviewSurface()
 }
 // swiftlint:enable no_magic_numbers

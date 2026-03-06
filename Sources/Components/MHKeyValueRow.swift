@@ -87,7 +87,6 @@ public extension MHKeyValueRow where Value == AnyView {
                 .mhTextStyle(.supporting, colorRole: .primaryText)
         }
     }
-    .padding()
-    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
+    .mhPreviewSurface()
 }
 // swiftlint:enable type_contents_order

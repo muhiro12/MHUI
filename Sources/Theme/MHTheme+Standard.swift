@@ -29,17 +29,22 @@ public extension MHTheme {
             ),
             primaryText: .adaptive(
                 .init(
-                    light: .init(red: 0.18, green: 0.17, blue: 0.16),
+                    light: .init(red: 0.15, green: 0.14, blue: 0.13),
                     dark: .init(red: 0.90, green: 0.88, blue: 0.85)
                 )
             ),
             secondaryText: .adaptive(
                 .init(
-                    light: .init(red: 0.44, green: 0.42, blue: 0.39),
+                    light: .init(red: 0.40, green: 0.38, blue: 0.36),
                     dark: .init(red: 0.68, green: 0.65, blue: 0.61)
                 )
             ),
-            accent: .tint,
+            accent: .adaptive(
+                .init(
+                    light: .init(red: 0.94, green: 0.40, blue: 0.05),
+                    dark: .init(red: 1.00, green: 0.72, blue: 0.28)
+                )
+            ),
             positive: .adaptive(
                 .init(
                     light: .init(red: 0.35, green: 0.45, blue: 0.33),
@@ -60,12 +65,12 @@ public extension MHTheme {
             )
         ),
         typography: .init(
-            screenTitle: .init(style: .title2, weight: .medium),
-            sectionTitle: .init(style: .title3, weight: .medium),
+            screenTitle: .init(style: .title2, weight: .semibold),
+            sectionTitle: .init(style: .title3, weight: .semibold),
             body: .init(style: .body, weight: .regular),
-            bodyStrong: .init(style: .body, weight: .medium),
-            supporting: .init(style: .subheadline, weight: .regular),
-            caption: .init(style: .footnote, weight: .medium)
+            bodyStrong: .init(style: .body, weight: .semibold),
+            supporting: .init(style: .subheadline, weight: .medium),
+            caption: .init(style: .footnote, weight: .semibold)
         ),
         spacing: .init(
             inline: 4,
@@ -81,7 +86,7 @@ public extension MHTheme {
         ),
         divider: .init(
             thickness: 1,
-            opacity: 0.55
+            opacity: 0.62
         ),
         motion: .init(
             quick: 0.14,

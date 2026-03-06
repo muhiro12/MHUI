@@ -102,7 +102,6 @@ private extension MHActionButtonStyle {
             .buttonStyle(MHActionButtonStyle(role: role))
         }
     }
-    .padding()
-    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
+    .mhPreviewSurface()
 }
 // swiftlint:enable no_magic_numbers

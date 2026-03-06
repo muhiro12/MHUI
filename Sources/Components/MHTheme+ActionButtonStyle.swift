@@ -12,7 +12,7 @@ extension MHTheme {
                 borderOpacity: divider.opacity,
                 foregroundRole: .primaryText,
                 accentRuleRole: .accent,
-                accentRuleOpacity: 0.55,
+                accentRuleOpacity: 0.75,
                 horizontalPadding: spacing.group,
                 verticalPadding: spacing.control
             )
@@ -48,7 +48,7 @@ extension MHTheme {
                 borderOpacity: 0.22,
                 foregroundRole: .destructive,
                 accentRuleRole: .destructive,
-                accentRuleOpacity: 0.40,
+                accentRuleOpacity: 0.55,
                 horizontalPadding: spacing.group,
                 verticalPadding: spacing.control
             )

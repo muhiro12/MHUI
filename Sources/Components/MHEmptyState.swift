@@ -113,7 +113,6 @@ private extension MHEmptyState {
         }
         .buttonStyle(MHActionButtonStyle(role: .secondary))
     }
-    .padding()
-    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
+    .mhPreviewSurface()
 }
 // swiftlint:enable type_contents_order

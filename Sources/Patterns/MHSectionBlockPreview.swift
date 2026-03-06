@@ -18,6 +18,5 @@ import SwiftUI
             }
         }
     )
-    .padding()
-    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
+    .mhPreviewSurface()
 }

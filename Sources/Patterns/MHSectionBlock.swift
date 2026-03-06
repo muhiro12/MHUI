@@ -3,6 +3,12 @@ import SwiftUI
 
 /// A titled content block that wraps grouped content in a calm surface.
 public struct MHSectionBlock<Accessory: View, Content: View, Footer: View>: View {
+    private enum Layout {
+        static var headingCueWidth: CGFloat {
+            CGFloat(Int("14") ?? .zero)
+        }
+    }
+
     @Environment(\.mhTheme)
     private var theme
     @Environment(\.colorScheme)
@@ -17,9 +23,9 @@ public struct MHSectionBlock<Accessory: View, Content: View, Footer: View>: View
     public init(
         title: Text,
         supporting: Text? = nil,
-        @ViewBuilder accessory: @escaping () -> Accessory,
-        @ViewBuilder content: @escaping () -> Content,
-        @ViewBuilder footer: @escaping () -> Footer
+        @ViewBuilder accessory: () -> Accessory,
+        @ViewBuilder content: () -> Content,
+        @ViewBuilder footer: () -> Footer
     ) {
         self.title = title
         self.supporting = supporting
@@ -30,21 +36,7 @@ public struct MHSectionBlock<Accessory: View, Content: View, Footer: View>: View
 
     public var body: some View {
         VStack(alignment: .leading, spacing: theme.spacing.group + theme.spacing.control) {
-            VStack(alignment: .leading, spacing: theme.spacing.control) {
-                HStack(alignment: .firstTextBaseline, spacing: theme.spacing.control) {
-                    title
-                        .mhTextStyle(.sectionTitle)
-                    Spacer(minLength: theme.spacing.control)
-                    if hasAccessory {
-                        accessory
-                    }
-                }
-                if let supporting {
-                    supporting
-                        .mhTextStyle(.supporting, colorRole: .secondaryText)
-                }
-            }
-            .padding(.leading, theme.spacing.inline)
+            headerBlock
 
             MHSurface {
                 content
@@ -68,20 +60,14 @@ public extension MHSectionBlock where Accessory == EmptyView, Footer == EmptyVie
     init(
         _ title: LocalizedStringKey,
         supporting: LocalizedStringKey? = nil,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder content: () -> Content
     ) {
         self.init(
             title: Text(title),
-            supporting: supporting.map { value in
-                Text(value)
-            },
-            accessory: {
-                EmptyView()
-            },
+            supporting: supporting.map { Text($0) },
+            accessory: EmptyView.init,
             content: content,
-            footer: {
-                EmptyView()
-            }
+            footer: EmptyView.init
         )
     }
 }
@@ -91,24 +77,55 @@ public extension MHSectionBlock where Footer == EmptyView {
     init(
         _ title: LocalizedStringKey,
         supporting: LocalizedStringKey? = nil,
-        @ViewBuilder accessory: @escaping () -> Accessory,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder accessory: () -> Accessory,
+        @ViewBuilder content: () -> Content
     ) {
         self.init(
             title: Text(title),
-            supporting: supporting.map { value in
-                Text(value)
-            },
+            supporting: supporting.map { Text($0) },
             accessory: accessory,
             content: content,
-            footer: {
-                EmptyView()
-            }
+            footer: EmptyView.init
         )
     }
 }
 
 private extension MHSectionBlock {
+    var headerBlock: some View {
+        VStack(alignment: .leading, spacing: headerCueSpacing) {
+            Rectangle()
+                .fill(theme.resolvedColor(for: .accent, in: colorScheme))
+                .frame(
+                    width: Layout.headingCueWidth,
+                    height: headerCueHeight
+                )
+
+            VStack(alignment: .leading, spacing: theme.spacing.control) {
+                HStack(alignment: .firstTextBaseline, spacing: theme.spacing.control) {
+                    title
+                        .mhTextStyle(.sectionTitle)
+                    Spacer(minLength: theme.spacing.control)
+                    if hasAccessory {
+                        accessory
+                    }
+                }
+                if let supporting {
+                    supporting
+                        .mhTextStyle(.supporting, colorRole: .secondaryText)
+                }
+            }
+        }
+        .padding(.leading, theme.spacing.inline)
+    }
+
+    var headerCueHeight: CGFloat {
+        theme.divider.thickness + theme.divider.thickness
+    }
+
+    var headerCueSpacing: CGFloat {
+        theme.spacing.inline + headerCueHeight
+    }
+
     var hasAccessory: Bool {
         Accessory.self != EmptyView.self
     }

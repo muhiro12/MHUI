@@ -172,7 +172,7 @@ private extension MHListRow {
             leading: {
                 Image(systemName: "square.stack.3d.up")
                     .font(.title3)
-                    .foregroundStyle(Color.accentColor)
+                    .foregroundStyle(MHPreviewStyle.lightAccent)
             },
             trailing: {
                 Text("v1")
@@ -180,7 +180,6 @@ private extension MHListRow {
             }
         )
     }
-    .padding()
-    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
+    .mhPreviewSurface()
 }
 // swiftlint:enable type_contents_order

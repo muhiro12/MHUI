@@ -2,15 +2,15 @@ import SwiftUI
 
 private enum MHTextStyleDefaults {
     static let screenTitleSize: CGFloat = 28
-    static let screenTitleTracking: CGFloat = -0.4
+    static let screenTitleTracking: CGFloat = -0.3
     static let sectionTitleSize: CGFloat = 20
-    static let sectionTitleTracking: CGFloat = -0.2
+    static let sectionTitleTracking: CGFloat = -0.15
     static let bodySize: CGFloat = 17
-    static let bodyStrongTracking: CGFloat = 0.1
+    static let bodyStrongTracking: CGFloat = 0
     static let supportingSize: CGFloat = 14
-    static let supportingTracking: CGFloat = 0.3
+    static let supportingTracking: CGFloat = 0.15
     static let captionSize: CGFloat = 12
-    static let captionTracking: CGFloat = 0.8
+    static let captionTracking: CGFloat = 0.45
 }
 
 extension MHTheme {

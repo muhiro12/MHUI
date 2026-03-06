@@ -59,7 +59,6 @@ public struct MHRowGroup<Content: View>: View {
             MHKeyValueRow("Readability", value: "Centered")
         }
     }
-    .padding()
-    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
+    .mhPreviewSurface()
 }
 // swiftlint:enable type_contents_order

@@ -7,7 +7,14 @@ struct MHThemeTests {
     func standard_theme_uses_semantic_defaults() {
         let theme = MHTheme.standard
 
-        #expect(theme.colors.accent == .tint)
+        #expect(
+            theme.colors.accent == .adaptive(
+                .init(
+                    light: .init(red: 0.94, green: 0.40, blue: 0.05),
+                    dark: .init(red: 1.00, green: 0.72, blue: 0.28)
+                )
+            )
+        )
         #expect(theme.spacing.inline == 4)
         #expect(theme.spacing.control == 12)
         #expect(theme.spacing.group == 18)
@@ -20,14 +27,17 @@ struct MHThemeTests {
         #expect(theme.radius.control == 6)
         #expect(theme.radius.surface == 8)
         #expect(theme.radius.pill > theme.radius.surface)
-        #expect(theme.divider.opacity == 0.55)
+        #expect(theme.divider.opacity == 0.62)
         #expect(theme.motion.quick == 0.14)
         #expect(theme.motion.regular == 0.22)
-        #expect(theme.typography.screenTitle.weight == .medium)
-        #expect(theme.typography.sectionTitle.weight == .medium)
-        #expect(theme.typography.bodyStrong.weight == .medium)
+        #expect(theme.typography.screenTitle.weight == .semibold)
+        #expect(theme.typography.sectionTitle.weight == .semibold)
+        #expect(theme.typography.bodyStrong.weight == .semibold)
+        #expect(theme.typography.supporting.weight == .medium)
+        #expect(theme.typography.caption.weight == .semibold)
 
         let primary = theme.resolvedActionButtonStyle(for: .primary)
+        #expect(primary.fillRole == .surface)
         #expect(primary.foregroundRole == .primaryText)
         #expect(primary.accentRuleRole == .accent)
     }
@@ -37,10 +47,12 @@ struct MHThemeTests {
         var values = EnvironmentValues()
         var custom = MHTheme.standard
         custom.spacing.screen = 40
+        custom.colors.accent = .tint
 
         values.mhTheme = custom
 
         #expect(values.mhTheme == custom)
         #expect(values.mhTheme.spacing.screen == 40)
+        #expect(values.mhTheme.colors.accent == .tint)
     }
 }

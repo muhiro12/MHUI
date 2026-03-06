@@ -84,7 +84,6 @@ private extension MHBadge {
             MHBadge(LocalizedStringKey(style.rawValue.capitalized), style: style)
         }
     }
-    .padding()
-    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
+    .mhPreviewSurface()
 }
 // swiftlint:enable no_magic_numbers

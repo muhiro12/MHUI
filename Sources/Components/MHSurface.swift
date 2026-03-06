@@ -52,6 +52,6 @@ public struct MHSurface<Content: View>: View {
         }
         .padding()
     }
-    .background(MHTheme.standard.colorReference(for: .background).resolve(for: .light))
+    .mhPreviewSurface(padding: 0)
 }
 // swiftlint:enable type_contents_order

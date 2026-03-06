@@ -7,6 +7,10 @@ public struct MHScreen<Header: View, Content: View>: View {
         static var maxContentWidth: CGFloat {
             CGFloat(Int("620") ?? .zero)
         }
+
+        static var titleCueWidth: CGFloat {
+            CGFloat(Int("24") ?? .zero)
+        }
     }
 
     @Environment(\.mhTheme)
@@ -33,30 +37,7 @@ public struct MHScreen<Header: View, Content: View>: View {
 
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: theme.spacing.section + theme.spacing.control) {
-                if title != nil || subtitle != nil {
-                    VStack(alignment: .leading, spacing: theme.spacing.group) {
-                        if let title {
-                            title
-                                .mhTextStyle(.screenTitle)
-                        }
-                        if let subtitle {
-                            subtitle
-                                .mhTextStyle(.supporting, colorRole: .secondaryText)
-                        }
-                    }
-                }
-
-                if hasHeader {
-                    header
-                }
-
-                content
-            }
-            .frame(maxWidth: Layout.maxContentWidth, alignment: .leading)
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.horizontal, theme.spacing.screen)
-            .padding(.vertical, theme.spacing.screen + theme.spacing.section)
+            screenContent
         }
         .background(
             theme.resolvedColor(for: .background, in: colorScheme)
@@ -89,6 +70,58 @@ public extension MHScreen where Header == EmptyView {
 }
 
 private extension MHScreen {
+    var screenContent: some View {
+        VStack(alignment: .leading, spacing: theme.spacing.section + theme.spacing.control) {
+            if showsTitleBlock {
+                titleBlock
+            }
+
+            if hasHeader {
+                header
+            }
+
+            content
+        }
+        .frame(maxWidth: Layout.maxContentWidth, alignment: .leading)
+        .frame(maxWidth: .infinity, alignment: .center)
+        .padding(.horizontal, theme.spacing.screen)
+        .padding(.vertical, theme.spacing.screen + theme.spacing.section)
+    }
+
+    @ViewBuilder var titleBlock: some View {
+        VStack(alignment: .leading, spacing: titleCueSpacing) {
+            Rectangle()
+                .fill(theme.resolvedColor(for: .accent, in: colorScheme))
+                .frame(
+                    width: Layout.titleCueWidth,
+                    height: titleCueHeight
+                )
+
+            VStack(alignment: .leading, spacing: theme.spacing.group) {
+                if let title {
+                    title
+                        .mhTextStyle(.screenTitle)
+                }
+                if let subtitle {
+                    subtitle
+                        .mhTextStyle(.supporting, colorRole: .secondaryText)
+                }
+            }
+        }
+    }
+
+    var showsTitleBlock: Bool {
+        title != nil || subtitle != nil
+    }
+
+    var titleCueHeight: CGFloat {
+        theme.divider.thickness + theme.divider.thickness
+    }
+
+    var titleCueSpacing: CGFloat {
+        theme.spacing.control - titleCueHeight
+    }
+
     var hasHeader: Bool {
         Header.self != EmptyView.self
     }
@@ -114,5 +147,5 @@ private extension MHScreen {
             symbolSystemName: "square.grid.2x2"
         )
     }
-    .preferredColorScheme(.light)
+    .mhPreviewTint()
 }
