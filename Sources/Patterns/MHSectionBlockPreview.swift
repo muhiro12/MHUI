@@ -1,7 +1,7 @@
 // swiftlint:disable trailing_closure
 import SwiftUI
 
-#Preview("Section Styling", traits: .sizeThatFitsLayout) {
+#Preview("Section Block", traits: .sizeThatFitsLayout) {
     VStack(spacing: 0) {
         HStack(alignment: .top, spacing: MHTheme.standard.spacing.control) {
             VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {

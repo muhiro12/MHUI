@@ -179,18 +179,73 @@ private struct MHAccentCatalogContent: View {
     }
 }
 
+private struct MHNativeContainerCatalogContent: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
+            List {
+                Section {
+                    Toggle("Use iCloud Sync", isOn: .constant(true))
+                        .mhRow()
+
+                    LabeledContent("Theme", value: "System")
+                        .labeledContentStyle(.mhKeyValue)
+                } header: {
+                    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
+                        Text("Preferences")
+                            .mhSectionHeaderTitle()
+                        Text("Native list behavior stays intact.")
+                            .mhSectionHeaderSupporting()
+                    }
+                    .mhSectionHeader()
+                } footer: {
+                    Text("MHUI only adds layout rhythm and section framing.")
+                        .mhSectionFooterText()
+                }
+            }
+            .frame(height: 280)
+            .mhListChrome(
+                title: "List",
+                subtitle: "Thin container chrome over native rows."
+            )
+
+            Form {
+                Section {
+                    TextField("Workspace name", text: .constant("MHUI"))
+                        .mhRow()
+
+                    Picker("Appearance", selection: .constant("System")) {
+                        Text("System")
+                            .tag("System")
+                        Text("Light")
+                            .tag("Light")
+                    }
+                    .mhRow()
+                } header: {
+                    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
+                        Text("Workspace")
+                            .mhSectionHeaderTitle()
+                        Text("Form controls stay native while the container stays quiet.")
+                            .mhSectionHeaderSupporting()
+                    }
+                    .mhSectionHeader()
+                } footer: {
+                    Text("Tint continues to come from the host app.")
+                        .mhSectionFooterText()
+                }
+            }
+            .frame(height: 300)
+            .mhFormChrome(
+                title: "Form",
+                subtitle: "Shared framing without wrapped controls."
+            )
+        }
+    }
+}
+
 #Preview("Foundation Catalog", traits: .fixedLayout(width: 900, height: 1_700)) {
     MHPreviewCatalog(
         title: "Foundation tuning catalog",
-        contexts: [
-            MHPreviewStyle.context(),
-            MHPreviewStyle.context(isEnabled: false),
-            MHPreviewStyle.context(colorMode: .dark),
-            MHPreviewStyle.context(
-                density: .compact,
-                typeScale: .accessibility
-            )
-        ]
+        contexts: MHPreviewStyle.foundationContexts()
     ) { _ in
         MHFoundationCatalogContent()
     }
@@ -199,31 +254,30 @@ private struct MHAccentCatalogContent: View {
 #Preview("Material Review", traits: .fixedLayout(width: 900, height: 1_300)) {
     MHPreviewCatalog(
         title: "Material comparison",
-        contexts: [
-            MHPreviewStyle.context(materialPolicy: .disabled),
-            MHPreviewStyle.context(materialPolicy: .enabled),
-            MHPreviewStyle.context(
-                colorMode: .dark,
-                materialPolicy: .disabled
-            ),
-            MHPreviewStyle.context(
-                colorMode: .dark,
-                materialPolicy: .enabled
-            )
-        ]
+        contexts: MHPreviewStyle.materialReviewContexts()
     ) { _ in
         MHMaterialCatalogContent()
     }
 }
 
-#Preview("Accent Catalog", traits: .fixedLayout(width: 900, height: 1_700)) {
+#Preview("Accent Review", traits: .fixedLayout(width: 900, height: 1_700)) {
     MHPreviewCatalog(
         title: "Accent comparison",
-        contexts: MHAccentStyle.allCases.map { accentStyle in
-            MHPreviewStyle.context(accentStyle: accentStyle)
-        }
+        contexts: MHPreviewStyle.accentReviewContexts()
     ) { context in
-        MHAccentCatalogContent(accentStyle: context.accentStyle)
+        if let accentStyle = context.accentStyle {
+            MHAccentCatalogContent(accentStyle: accentStyle)
+        }
+    }
+}
+
+#Preview("Native Container Review", traits: .fixedLayout(width: 900, height: 1_700)) {
+    MHPreviewCatalog(
+        title: "Native container comparison",
+        contexts: MHPreviewStyle.nativeContainerContexts(),
+        casePadding: 0
+    ) { _ in
+        MHNativeContainerCatalogContent()
     }
 }
 // swiftlint:enable closure_body_length file_types_order no_magic_numbers one_declaration_per_file

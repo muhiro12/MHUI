@@ -131,13 +131,15 @@ struct MHStyleResolutionTests {
     @Test
     func key_value_style_defaults_stay_primary_to_secondary() {
         let theme = MHTheme.standard
+        let rowChrome = theme.resolvedRowChromeStyle()
         let style = theme.resolvedKeyValueStyle()
 
         #expect(style.labelColorRole == .primaryText)
         #expect(style.valueColorRole == .secondaryText)
-        #expect(style.verticalPadding == theme.layout.rowVerticalPadding)
-        #expect(style.horizontalInset == theme.layout.rowHorizontalInset)
-        #expect(style.accessorySpacing == theme.layout.rowAccessorySpacing)
+        #expect(rowChrome.verticalPadding == theme.layout.rowVerticalPadding)
+        #expect(rowChrome.horizontalInset == theme.layout.rowHorizontalInset)
+        #expect(rowChrome.accessorySpacing == theme.layout.rowAccessorySpacing)
+        #expect(style.rowChrome == rowChrome)
     }
 
     @Test
@@ -166,18 +168,22 @@ struct MHStyleResolutionTests {
     @Test
     func screen_and_section_chrome_share_theme_tokens() {
         let theme = MHTheme.standard
+        let screenCue = theme.resolvedCueStyle(for: .screen)
+        let sectionCue = theme.resolvedCueStyle(for: .section)
         let screen = theme.resolvedScreenChromeStyle()
         let section = theme.resolvedSectionChromeStyle()
 
         #expect(screen.readableContentWidth == theme.layout.readableContentWidth)
         #expect(screen.horizontalMargin == theme.layout.screenHorizontalMargin)
         #expect(screen.verticalPadding == theme.layout.screenVerticalPadding)
-        #expect(screen.cueColorRole == .accent)
-        #expect(screen.cueWidth == theme.layout.screenCueWidth)
-        #expect(screen.cueHeight == theme.layout.screenCueHeight)
-        #expect(section.cueColorRole == .accent)
-        #expect(section.cueWidth == theme.layout.sectionCueWidth)
-        #expect(section.cueHeight == theme.layout.sectionCueHeight)
+        #expect(screenCue.colorRole == .accent)
+        #expect(screenCue.width == theme.layout.screenCueWidth)
+        #expect(screenCue.height == theme.layout.screenCueHeight)
+        #expect(sectionCue.colorRole == .accent)
+        #expect(sectionCue.width == theme.layout.sectionCueWidth)
+        #expect(sectionCue.height == theme.layout.sectionCueHeight)
+        #expect(screen.cueStyle == screenCue)
+        #expect(section.cueStyle == sectionCue)
         #expect(section.contentSpacing == theme.spacing.control)
         #expect(section.leadingInset == theme.spacing.inline)
     }

@@ -29,6 +29,7 @@ The standard theme is built from achromatic neutrals plus the host app's tint co
 Apps can still choose a preset accent through `MHTheme.standard(accentStyle:)` or override `colors.accent` directly.
 Grouped surfaces stay solid by default.
 Material recipes are available through `mhMaterialPolicy(.enabled)` and still fall back to solid theme colors when transparency should be reduced.
+Preview baselines follow the same host-tint default as runtime usage, while built-in accent comparisons live in explicit review scenarios.
 
 Its design attitude is informed by calm, functional retail and editorial environments.
 That influence is about atmosphere only: whitespace, calmer typography, subtle structural accent placement, and practical composition.
@@ -98,10 +99,10 @@ Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from s
 Start in this order when adjusting appearance:
 
 1. `MHTheme.standard()` for default color, spacing, radius, layout, and surface recipes.
-2. `MHPreviewStyle` and the shared preview catalog for light/dark, density, accent, material, and dynamic type comparisons.
-3. Internal component resolvers only when a shared token is not enough.
+2. `MHPreviewStyle` and the shared preview catalogs for host tint, accent, material, native container, density, and dynamic type comparisons.
+3. Internal shared resolvers for row chrome, surface fill, and cue chrome only when a shared token is not enough.
 
-The most useful previews to review first are `Foundation Catalog`, `Material Review`, and the native container previews.
+The most useful previews to review first are `Foundation Catalog`, `Material Review`, `Accent Review`, and `Native Container Review`.
 
 ## Intentional Boundaries
 

@@ -3,6 +3,17 @@ import Testing
 
 struct MHPreviewStyleTests {
     @Test
+    func preview_default_context_matches_runtime_tint_baseline() {
+        let context = MHPreviewStyle.context()
+        let theme = MHPreviewStyle.theme(for: context)
+
+        #expect(context.accentStyle == nil)
+        #expect(context.tintReference == .tint)
+        #expect(context.title.contains("Host Tint"))
+        #expect(theme.colors.accent == .tint)
+    }
+
+    @Test
     func preview_context_tracks_accent_material_and_enabled_state() {
         let context = MHPreviewStyle.context(
             accentStyle: .blue,
@@ -38,5 +49,13 @@ struct MHPreviewStyleTests {
         #expect(theme.layout.surfaceInsetHorizontal == 16)
         #expect(theme.layout.rowVerticalPadding == 12)
         #expect(theme.layout.rowAccessorySpacing == 10)
+    }
+
+    @Test
+    func preview_context_groups_stay_explicit_and_canonical() {
+        #expect(MHPreviewStyle.foundationContexts().count == 4)
+        #expect(MHPreviewStyle.materialReviewContexts().count == 4)
+        #expect(MHPreviewStyle.accentReviewContexts().map(\.accentStyle) == MHAccentStyle.allCases.map(Optional.some))
+        #expect(MHPreviewStyle.nativeContainerContexts().map(\.colorMode) == [.light, .dark])
     }
 }

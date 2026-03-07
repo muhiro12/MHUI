@@ -16,25 +16,11 @@ struct MHResolvedSectionChromeStyle: Sendable, Equatable {
 private struct MHSectionHeaderModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.colorScheme)
-    private var colorScheme
 
     func body(content: Content) -> some View {
         let style = theme.resolvedSectionChromeStyle()
 
-        return VStack(alignment: .leading, spacing: style.cueSpacing) {
-            Rectangle()
-                .fill(
-                    theme.resolvedColor(
-                        for: style.cueColorRole,
-                        in: colorScheme
-                    )
-                )
-                .frame(
-                    width: style.cueWidth,
-                    height: style.cueHeight
-                )
-
+        return MHCueBlock(style: style.cueStyle) {
             content
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -68,11 +54,13 @@ public extension View {
 
 extension MHTheme {
     func resolvedSectionChromeStyle() -> MHResolvedSectionChromeStyle {
-        MHResolvedSectionChromeStyle(
-            cueColorRole: .accent,
-            cueWidth: layout.sectionCueWidth,
-            cueHeight: layout.sectionCueHeight,
-            cueSpacing: spacing.inline + layout.sectionCueHeight,
+        let cue = resolvedCueStyle(for: .section)
+
+        return MHResolvedSectionChromeStyle(
+            cueColorRole: cue.colorRole,
+            cueWidth: cue.width,
+            cueHeight: cue.height,
+            cueSpacing: cue.spacing,
             contentSpacing: spacing.control,
             leadingInset: spacing.inline,
             footerTopSpacing: spacing.inline

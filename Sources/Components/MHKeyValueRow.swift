@@ -6,9 +6,7 @@ private enum MHKeyValueRow {}
 struct MHResolvedKeyValueStyle: Sendable, Equatable {
     var labelColorRole: MHColorRole
     var valueColorRole: MHColorRole
-    var verticalPadding: CGFloat
-    var horizontalInset: CGFloat
-    var accessorySpacing: CGFloat
+    var rowChrome: MHResolvedRowChromeStyle
 }
 
 /// A calm `LabeledContentStyle` for settings and detail rows.
@@ -25,7 +23,7 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
     public func makeBody(configuration: Configuration) -> some View {
         let style = theme.resolvedKeyValueStyle()
 
-        return HStack(alignment: .top, spacing: style.accessorySpacing) {
+        return HStack(alignment: .top, spacing: style.rowChrome.accessorySpacing) {
             configuration.label
                 .foregroundStyle(
                     theme.resolvedColor(
@@ -33,7 +31,7 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
                         in: colorScheme
                     )
                 )
-            Spacer(minLength: theme.spacing.control)
+            Spacer(minLength: style.rowChrome.accessorySpacing)
             configuration.content
                 .foregroundStyle(
                     theme.resolvedColor(
@@ -44,19 +42,7 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
-        .padding(.vertical, style.verticalPadding)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(.rect)
-        .listRowInsets(
-            .init(
-                top: 0,
-                leading: style.horizontalInset,
-                bottom: 0,
-                trailing: style.horizontalInset
-            )
-        )
-        .listRowSeparator(.hidden)
-        .listRowBackground(Color.clear)
+        .mhRowChrome(style.rowChrome)
     }
 }
 
@@ -65,9 +51,7 @@ extension MHTheme {
         MHResolvedKeyValueStyle(
             labelColorRole: .primaryText,
             valueColorRole: .secondaryText,
-            verticalPadding: layout.rowVerticalPadding,
-            horizontalInset: layout.rowHorizontalInset,
-            accessorySpacing: layout.rowAccessorySpacing
+            rowChrome: resolvedRowChromeStyle()
         )
     }
 }
@@ -79,7 +63,7 @@ public extension LabeledContentStyle where Self == MHKeyValueLabeledContentStyle
     }
 }
 
-#Preview("Key Value Styling", traits: .sizeThatFitsLayout) {
+#Preview("Key Value Rows", traits: .sizeThatFitsLayout) {
     VStack(spacing: 0) {
         LabeledContent("Visual language", value: "Calm")
             .labeledContentStyle(.mhKeyValue)

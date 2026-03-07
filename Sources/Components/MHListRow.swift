@@ -9,19 +9,7 @@ private struct MHRowModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .padding(.vertical, theme.layout.rowVerticalPadding)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(.rect)
-            .listRowInsets(
-                .init(
-                    top: 0,
-                    leading: theme.layout.rowHorizontalInset,
-                    bottom: 0,
-                    trailing: theme.layout.rowHorizontalInset
-                )
-            )
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
+            .mhRowChrome(theme.resolvedRowChromeStyle())
     }
 }
 
@@ -55,11 +43,10 @@ public extension View {
     }
 }
 
-#Preview("Row Styling", traits: .sizeThatFitsLayout) {
+#Preview("Row Primitives", traits: .sizeThatFitsLayout) {
     HStack(alignment: .top, spacing: MHTheme.standard.spacing.control) {
         Image(systemName: "square.stack.3d.up")
-            .font(.title3)
-            .foregroundStyle(MHPreviewStyle.lightAccent())
+            .mhTextStyle(.sectionTitle, colorRole: .accent)
 
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
             Text("Foundation")

@@ -44,12 +44,12 @@ private struct MHSurfaceModifier: ViewModifier {
 
         return content
             .background {
-                ZStack {
-                    surfaceFill(
-                        in: shape,
-                        style: style
-                    )
-                }
+                MHSurfaceFill(
+                    shape: shape,
+                    style: style,
+                    theme: theme,
+                    colorScheme: colorScheme
+                )
             }
             .overlay {
                 shape
@@ -62,46 +62,6 @@ private struct MHSurfaceModifier: ViewModifier {
                         lineWidth: theme.divider.thickness
                     )
             }
-    }
-
-    @ViewBuilder
-    func surfaceFill(
-        in shape: RoundedRectangle,
-        style: MHResolvedSurfaceStyle
-    ) -> some View {
-        if let materialStyle = style.materialStyle, style.usesMaterial {
-            materialFill(
-                in: shape,
-                materialStyle: materialStyle
-            )
-
-            if let overlayColorRole = style.overlayColorRole {
-                shape
-                    .fill(
-                        theme.resolvedColor(
-                            for: overlayColorRole,
-                            in: colorScheme
-                        )
-                        .opacity(style.overlayOpacity)
-                    )
-            }
-        } else {
-            shape
-                .fill(
-                    theme.resolvedColor(
-                        for: style.fillColorRole,
-                        in: colorScheme
-                    )
-                )
-        }
-    }
-
-    @ViewBuilder
-    func materialFill(
-        in shape: RoundedRectangle,
-        materialStyle: MHMaterialStyle
-    ) -> some View {
-        materialStyle.fill(shape)
     }
 }
 

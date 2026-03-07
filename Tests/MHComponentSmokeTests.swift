@@ -133,5 +133,42 @@ struct MHComponentSmokeTests {
 
         #expect(!String(reflecting: type(of: smokeView)).isEmpty)
     }
+
+    @Test
+    @MainActor
+    func shared_runtime_helpers_instantiate() {
+        let theme = MHTheme.standard
+        let rowStyle = theme.resolvedRowChromeStyle()
+        let surfaceStyle = theme.resolvedSurfaceStyle(
+            for: .standard,
+            materialPolicy: .enabled,
+            reduceTransparency: false
+        )
+        let cueStyle = theme.resolvedCueStyle(for: .section)
+
+        let smokeView = AnyView(
+            VStack(spacing: theme.spacing.group) {
+                Text("Row helper")
+                    .mhRowChrome(rowStyle)
+
+                MHSurfaceFill(
+                    shape: RoundedRectangle(
+                        cornerRadius: theme.radius.surface,
+                        style: .continuous
+                    ),
+                    style: surfaceStyle,
+                    theme: theme,
+                    colorScheme: .light
+                )
+                .frame(height: 44)
+
+                MHCueBlock(style: cueStyle) {
+                    Text("Cue helper")
+                }
+            }
+        )
+
+        #expect(!String(reflecting: type(of: smokeView)).isEmpty)
+    }
 }
 // swiftlint:enable closure_body_length function_body_length

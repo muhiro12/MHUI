@@ -35,30 +35,12 @@ struct MHCanvasBackground: View {
             reduceTransparency: accessibilityReduceTransparency
         )
 
-        return ZStack {
-            if let materialStyle = style.materialStyle, style.usesMaterial {
-                materialStyle.rectangleFill
-
-                if let overlayColorRole = style.overlayColorRole {
-                    Rectangle()
-                        .fill(
-                            theme.resolvedColor(
-                                for: overlayColorRole,
-                                in: colorScheme
-                            )
-                            .opacity(style.overlayOpacity)
-                        )
-                }
-            } else {
-                Rectangle()
-                    .fill(
-                        theme.resolvedColor(
-                            for: style.fillColorRole,
-                            in: colorScheme
-                        )
-                    )
-            }
-        }
+        return MHSurfaceFill(
+            shape: Rectangle(),
+            style: style,
+            theme: theme,
+            colorScheme: colorScheme
+        )
         .ignoresSafeArea()
     }
 }
@@ -66,8 +48,6 @@ struct MHCanvasBackground: View {
 struct MHScreenTitleBlock: View {
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.colorScheme)
-    private var colorScheme
 
     let title: Text?
     let subtitle: Text?
@@ -75,19 +55,7 @@ struct MHScreenTitleBlock: View {
     var body: some View {
         let style = theme.resolvedScreenChromeStyle()
 
-        return VStack(alignment: .leading, spacing: style.cueSpacing) {
-            Rectangle()
-                .fill(
-                    theme.resolvedColor(
-                        for: style.cueColorRole,
-                        in: colorScheme
-                    )
-                )
-                .frame(
-                    width: style.cueWidth,
-                    height: style.cueHeight
-                )
-
+        return MHCueBlock(style: style.cueStyle) {
             VStack(alignment: .leading, spacing: theme.spacing.group) {
                 if let title {
                     title
@@ -272,77 +240,18 @@ public extension View {
 
 extension MHTheme {
     func resolvedScreenChromeStyle() -> MHResolvedScreenChromeStyle {
-        MHResolvedScreenChromeStyle(
+        let cue = resolvedCueStyle(for: .screen)
+
+        return MHResolvedScreenChromeStyle(
             readableContentWidth: layout.readableContentWidth,
             horizontalMargin: layout.screenHorizontalMargin,
             verticalPadding: layout.screenVerticalPadding,
             contentSpacing: layout.screenContentSpacing,
-            cueColorRole: .accent,
-            cueWidth: layout.screenCueWidth,
-            cueHeight: layout.screenCueHeight,
-            cueSpacing: spacing.control
+            cueColorRole: cue.colorRole,
+            cueWidth: cue.width,
+            cueHeight: cue.height,
+            cueSpacing: cue.spacing
         )
     }
-}
-
-#Preview("List Chrome", traits: .fixedLayout(width: 760, height: 720)) {
-    List {
-        Section {
-            Toggle("Use iCloud Sync", isOn: .constant(true))
-                .mhRow()
-
-            LabeledContent("Theme", value: "System")
-                .labeledContentStyle(.mhKeyValue)
-        } header: {
-            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-                Text("Preferences")
-                    .mhSectionHeaderTitle()
-                Text("Native list rows, calmer rhythm and section framing.")
-                    .mhSectionHeaderSupporting()
-            }
-            .mhSectionHeader()
-        } footer: {
-            Text("Tint comes from the host app, not MHUI.")
-                .mhSectionFooterText()
-        }
-    }
-    .mhListChrome(
-        title: "Settings",
-        subtitle: "Native List with restrained chrome."
-    )
-    .mhPreviewTint(accentStyle: .blue)
-}
-
-#Preview("Form Chrome", traits: .fixedLayout(width: 760, height: 760)) {
-    Form {
-        Section {
-            TextField("Workspace name", text: .constant("MHUI"))
-                .mhRow()
-
-            Picker("Appearance", selection: .constant("System")) {
-                Text("System")
-                    .tag("System")
-                Text("Light")
-                    .tag("Light")
-            }
-            .mhRow()
-        } header: {
-            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-                Text("Workspace")
-                    .mhSectionHeaderTitle()
-                Text("Form structure stays native while surfaces and spacing calm it down.")
-                    .mhSectionHeaderSupporting()
-            }
-            .mhSectionHeader()
-        } footer: {
-            Text("Standard SwiftUI controls remain unchanged.")
-                .mhSectionFooterText()
-        }
-    }
-    .mhFormChrome(
-        title: "Profile",
-        subtitle: "Shared layout over a native Form."
-    )
-    .mhPreviewTint(accentStyle: .green)
 }
 // swiftlint:enable one_declaration_per_file file_types_order
