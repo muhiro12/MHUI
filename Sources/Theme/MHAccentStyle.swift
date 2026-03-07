@@ -24,30 +24,30 @@ internal extension MHAccentStyle {
     private var lightComponents: MHColorComponents {
         switch self {
         case .orange:
-            .init(red: 0.93, green: 0.43, blue: 0.10)
+            .init(hex: 0xED6E1A)
         case .blue:
-            .init(red: 0.14, green: 0.45, blue: 0.90)
+            .init(hex: 0x2473E6)
         case .green:
-            .init(red: 0.10, green: 0.58, blue: 0.36)
+            .init(hex: 0x1A945C)
         case .red:
-            .init(red: 0.82, green: 0.22, blue: 0.24)
+            .init(hex: 0xD1383D)
         case .purple:
-            .init(red: 0.45, green: 0.30, blue: 0.86)
+            .init(hex: 0x734DDB)
         }
     }
 
     private var darkComponents: MHColorComponents {
         switch self {
         case .orange:
-            .init(red: 1.00, green: 0.70, blue: 0.28)
+            .init(hex: 0xFFB347)
         case .blue:
-            .init(red: 0.45, green: 0.68, blue: 1.00)
+            .init(hex: 0x73ADFF)
         case .green:
-            .init(red: 0.39, green: 0.82, blue: 0.55)
+            .init(hex: 0x63D18C)
         case .red:
-            .init(red: 1.00, green: 0.45, blue: 0.46)
+            .init(hex: 0xFF7375)
         case .purple:
-            .init(red: 0.72, green: 0.57, blue: 1.00)
+            .init(hex: 0xB891FF)
         }
     }
 }

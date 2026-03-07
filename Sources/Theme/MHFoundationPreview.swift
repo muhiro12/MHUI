@@ -21,7 +21,7 @@ private struct MHMaterialBackdrop: View {
         }
         .overlay(alignment: .bottomLeading) {
             Circle()
-                .fill(Color.primary.opacity(shadowOpacity))
+                .fill(shadowColor)
                 .frame(width: 200, height: 200)
                 .offset(x: -60, y: 96)
         }
@@ -32,11 +32,11 @@ private extension MHMaterialBackdrop {
     var baseColor: Color {
         switch colorScheme {
         case .light:
-            Color.white.opacity(0.35)
+            MHColorComponents(hex: 0xFFFFFF, opacity: 0.35).color
         case .dark:
-            Color.white.opacity(0.05)
+            MHColorComponents(hex: 0xFFFFFF, opacity: 0.05).color
         @unknown default:
-            Color.white.opacity(0.12)
+            MHColorComponents(hex: 0xFFFFFF, opacity: 0.12).color
         }
     }
 
@@ -60,6 +60,10 @@ private extension MHMaterialBackdrop {
         @unknown default:
             0.08
         }
+    }
+
+    var shadowColor: Color {
+        MHColorComponents(hex: 0x000000, opacity: shadowOpacity).color
     }
 }
 

@@ -14,57 +14,57 @@ public extension MHTheme {
             colors: .init(
                 background: .adaptive(
                     .init(
-                        light: .init(red: 0.95, green: 0.95, blue: 0.95),
-                        dark: .init(red: 0.12, green: 0.12, blue: 0.13)
+                        light: .init(hex: 0xF2F2F2),
+                        dark: .init(hex: 0x1F1F21)
                     )
                 ),
                 surface: .adaptive(
                     .init(
-                        light: .init(red: 0.985, green: 0.985, blue: 0.985),
-                        dark: .init(red: 0.16, green: 0.16, blue: 0.17)
+                        light: .init(hex: 0xFBFBFB),
+                        dark: .init(hex: 0x29292B)
                     )
                 ),
                 surfaceMuted: .adaptive(
                     .init(
-                        light: .init(red: 0.93, green: 0.93, blue: 0.94),
-                        dark: .init(red: 0.21, green: 0.21, blue: 0.22)
+                        light: .init(hex: 0xEDEDF0),
+                        dark: .init(hex: 0x363638)
                     )
                 ),
                 border: .adaptive(
                     .init(
-                        light: .init(red: 0.73, green: 0.73, blue: 0.76, opacity: 0.60),
-                        dark: .init(red: 0.40, green: 0.40, blue: 0.44, opacity: 0.72)
+                        light: .init(hex: 0xBABAC2, opacity: 0.60),
+                        dark: .init(hex: 0x666670, opacity: 0.72)
                     )
                 ),
                 primaryText: .adaptive(
                     .init(
-                        light: .init(red: 0.13, green: 0.13, blue: 0.14),
-                        dark: .init(red: 0.92, green: 0.92, blue: 0.93)
+                        light: .init(hex: 0x212124),
+                        dark: .init(hex: 0xEBEBED)
                     )
                 ),
                 secondaryText: .adaptive(
                     .init(
-                        light: .init(red: 0.43, green: 0.43, blue: 0.45),
-                        dark: .init(red: 0.68, green: 0.68, blue: 0.71)
+                        light: .init(hex: 0x6D6D73),
+                        dark: .init(hex: 0xADADB5)
                     )
                 ),
                 accent: accent,
                 positive: .adaptive(
                     .init(
-                        light: .init(red: 0.35, green: 0.45, blue: 0.33),
-                        dark: .init(red: 0.56, green: 0.67, blue: 0.53)
+                        light: .init(hex: 0x597354),
+                        dark: .init(hex: 0x8FAB87)
                     )
                 ),
                 warning: .adaptive(
                     .init(
-                        light: .init(red: 0.60, green: 0.48, blue: 0.25),
-                        dark: .init(red: 0.76, green: 0.65, blue: 0.41)
+                        light: .init(hex: 0x997A40),
+                        dark: .init(hex: 0xC2A669)
                     )
                 ),
                 destructive: .adaptive(
                     .init(
-                        light: .init(red: 0.60, green: 0.31, blue: 0.30),
-                        dark: .init(red: 0.78, green: 0.50, blue: 0.48)
+                        light: .init(hex: 0x994F4D),
+                        dark: .init(hex: 0xC7807A)
                     )
                 )
             ),

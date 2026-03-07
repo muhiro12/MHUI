@@ -7,10 +7,21 @@ struct MHPreviewCatalog<Content: View>: View {
         0.68
     }
 
+    @Environment(\.colorScheme)
+    private var colorScheme
+
     let title: String?
     let contexts: [MHPreviewContext]
     let casePadding: CGFloat
     let content: (MHPreviewContext) -> Content
+
+    private var labelColor: Color {
+        MHColorToken(
+            light: .init(hex: 0x212124, opacity: Self.labelOpacity),
+            dark: .init(hex: 0xEBEBED, opacity: Self.labelOpacity)
+        )
+        .resolve(for: colorScheme)
+    }
 
     var body: some View {
         ScrollView {
@@ -24,9 +35,7 @@ struct MHPreviewCatalog<Content: View>: View {
                     VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
                         Text(context.title)
                             .font(.footnote.weight(.medium))
-                            .foregroundStyle(
-                                Color.primary.opacity(Self.labelOpacity)
-                            )
+                            .foregroundStyle(labelColor)
 
                         content(context)
                             .mhPreviewSurface(

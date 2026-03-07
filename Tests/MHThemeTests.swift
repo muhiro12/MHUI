@@ -5,6 +5,19 @@ import Testing
 
 struct MHThemeTests {
     @Test
+    func color_components_support_hex_color_codes() {
+        let components = MHColorComponents(
+            hex: 0xF2F2F2,
+            opacity: 0.60
+        )
+
+        #expect(abs(components.red - (242.0 / 255.0)) < 0.0001)
+        #expect(abs(components.green - (242.0 / 255.0)) < 0.0001)
+        #expect(abs(components.blue - (242.0 / 255.0)) < 0.0001)
+        #expect(components.opacity == 0.60)
+    }
+
+    @Test
     func standard_theme_uses_semantic_defaults() {
         let theme = MHTheme.standard
         let tintTheme = MHTheme.standard(accent: .tint)
@@ -14,50 +27,50 @@ struct MHThemeTests {
 
         #expect(theme == tintTheme)
         #expect(theme.colors.background == .adaptive(.init(
-            light: .init(red: 0.95, green: 0.95, blue: 0.95),
-            dark: .init(red: 0.12, green: 0.12, blue: 0.13)
+            light: .init(hex: 0xF2F2F2),
+            dark: .init(hex: 0x1F1F21)
         )))
         #expect(theme.colors.surface == .adaptive(.init(
-            light: .init(red: 0.985, green: 0.985, blue: 0.985),
-            dark: .init(red: 0.16, green: 0.16, blue: 0.17)
+            light: .init(hex: 0xFBFBFB),
+            dark: .init(hex: 0x29292B)
         )))
         #expect(theme.colors.surfaceMuted == .adaptive(.init(
-            light: .init(red: 0.93, green: 0.93, blue: 0.94),
-            dark: .init(red: 0.21, green: 0.21, blue: 0.22)
+            light: .init(hex: 0xEDEDF0),
+            dark: .init(hex: 0x363638)
         )))
         #expect(theme.colors.border == .adaptive(.init(
-            light: .init(red: 0.73, green: 0.73, blue: 0.76, opacity: 0.60),
-            dark: .init(red: 0.40, green: 0.40, blue: 0.44, opacity: 0.72)
+            light: .init(hex: 0xBABAC2, opacity: 0.60),
+            dark: .init(hex: 0x666670, opacity: 0.72)
         )))
         #expect(theme.colors.primaryText == .adaptive(.init(
-            light: .init(red: 0.13, green: 0.13, blue: 0.14),
-            dark: .init(red: 0.92, green: 0.92, blue: 0.93)
+            light: .init(hex: 0x212124),
+            dark: .init(hex: 0xEBEBED)
         )))
         #expect(theme.colors.secondaryText == .adaptive(.init(
-            light: .init(red: 0.43, green: 0.43, blue: 0.45),
-            dark: .init(red: 0.68, green: 0.68, blue: 0.71)
+            light: .init(hex: 0x6D6D73),
+            dark: .init(hex: 0xADADB5)
         )))
         #expect(theme.colors.accent == .tint)
         #expect(accentReferences == [
             .adaptive(.init(
-                light: .init(red: 0.93, green: 0.43, blue: 0.10),
-                dark: .init(red: 1.00, green: 0.70, blue: 0.28)
+                light: .init(hex: 0xED6E1A),
+                dark: .init(hex: 0xFFB347)
             )),
             .adaptive(.init(
-                light: .init(red: 0.14, green: 0.45, blue: 0.90),
-                dark: .init(red: 0.45, green: 0.68, blue: 1.00)
+                light: .init(hex: 0x2473E6),
+                dark: .init(hex: 0x73ADFF)
             )),
             .adaptive(.init(
-                light: .init(red: 0.10, green: 0.58, blue: 0.36),
-                dark: .init(red: 0.39, green: 0.82, blue: 0.55)
+                light: .init(hex: 0x1A945C),
+                dark: .init(hex: 0x63D18C)
             )),
             .adaptive(.init(
-                light: .init(red: 0.82, green: 0.22, blue: 0.24),
-                dark: .init(red: 1.00, green: 0.45, blue: 0.46)
+                light: .init(hex: 0xD1383D),
+                dark: .init(hex: 0xFF7375)
             )),
             .adaptive(.init(
-                light: .init(red: 0.45, green: 0.30, blue: 0.86),
-                dark: .init(red: 0.72, green: 0.57, blue: 1.00)
+                light: .init(hex: 0x734DDB),
+                dark: .init(hex: 0xB891FF)
             ))
         ])
         #expect(theme.spacing.inline == 4)
