@@ -1,7 +1,67 @@
-// swiftlint:disable closure_body_length file_types_order one_declaration_per_file
+// swiftlint:disable closure_body_length file_types_order no_magic_numbers one_declaration_per_file
 import SwiftUI
 
 private enum MHFoundationPreview {}
+
+private struct MHMaterialBackdrop: View {
+    @Environment(\.colorScheme)
+    private var colorScheme
+
+    var body: some View {
+        RoundedRectangle(
+            cornerRadius: MHTheme.standard.radius.surface,
+            style: .continuous
+        )
+        .fill(baseColor)
+        .overlay(alignment: .topTrailing) {
+            Circle()
+                .fill(Color.accentColor.opacity(accentOpacity))
+                .frame(width: 180, height: 180)
+                .offset(x: 52, y: -72)
+        }
+        .overlay(alignment: .bottomLeading) {
+            Circle()
+                .fill(Color.primary.opacity(shadowOpacity))
+                .frame(width: 200, height: 200)
+                .offset(x: -60, y: 96)
+        }
+    }
+}
+
+private extension MHMaterialBackdrop {
+    var baseColor: Color {
+        switch colorScheme {
+        case .light:
+            Color.white.opacity(0.35)
+        case .dark:
+            Color.white.opacity(0.05)
+        @unknown default:
+            Color.white.opacity(0.12)
+        }
+    }
+
+    var accentOpacity: Double {
+        switch colorScheme {
+        case .light:
+            0.12
+        case .dark:
+            0.18
+        @unknown default:
+            0.14
+        }
+    }
+
+    var shadowOpacity: Double {
+        switch colorScheme {
+        case .light:
+            0.05
+        case .dark:
+            0.12
+        @unknown default:
+            0.08
+        }
+    }
+}
 
 private struct MHFoundationCatalogContent: View {
     var body: some View {
@@ -63,30 +123,35 @@ private struct MHFoundationCatalogContent: View {
 
 private struct MHMaterialCatalogContent: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
-            Text("Material is optional and scoped to surfaces.")
-                .mhTextStyle(.supporting, colorRole: .secondaryText)
+        ZStack {
+            MHMaterialBackdrop()
 
-            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-                Text("Standard Surface")
-                    .mhTextStyle(.sectionTitle)
-                Text("Compare the same tokens with material off and on.")
+            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
+                Text("Material is optional and scoped to surfaces.")
                     .mhTextStyle(.supporting, colorRole: .secondaryText)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .mhSurfaceInset()
-            .mhSurface()
 
-            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-                Text("Muted Surface")
-                    .mhTextStyle(.sectionTitle)
-                Text("This should remain restrained even when material is enabled.")
-                    .mhTextStyle(.supporting, colorRole: .secondaryText)
+                VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
+                    Text("Standard Surface")
+                        .mhTextStyle(.sectionTitle)
+                    Text("Compare the same tokens with material off and on.")
+                        .mhTextStyle(.supporting, colorRole: .secondaryText)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .mhSurfaceInset()
+                .mhSurface()
+
+                VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
+                    Text("Muted Surface")
+                        .mhTextStyle(.sectionTitle)
+                    Text("This should remain restrained even when material is enabled.")
+                        .mhTextStyle(.supporting, colorRole: .secondaryText)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .mhSurfaceInset()
+                .mhSurface(role: .muted)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .mhSurfaceInset()
-            .mhSurface(role: .muted)
         }
+        .padding(MHTheme.standard.spacing.group)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
@@ -161,4 +226,4 @@ private struct MHAccentCatalogContent: View {
         MHAccentCatalogContent(accentStyle: context.accentStyle)
     }
 }
-// swiftlint:enable closure_body_length file_types_order one_declaration_per_file
+// swiftlint:enable closure_body_length file_types_order no_magic_numbers one_declaration_per_file

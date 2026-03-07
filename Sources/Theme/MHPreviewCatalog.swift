@@ -1,8 +1,12 @@
-// swiftlint:disable function_default_parameter_at_end
+// swiftlint:disable function_default_parameter_at_end no_magic_numbers
 import SwiftUI
 
 /// Tune preview scenarios here before adjusting individual components.
 struct MHPreviewCatalog<Content: View>: View {
+    private static var labelOpacity: Double {
+        0.68
+    }
+
     let title: String?
     let contexts: [MHPreviewContext]
     let casePadding: CGFloat
@@ -20,7 +24,9 @@ struct MHPreviewCatalog<Content: View>: View {
                     VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
                         Text(context.title)
                             .font(.footnote.weight(.medium))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(
+                                Color.primary.opacity(Self.labelOpacity)
+                            )
 
                         content(context)
                             .mhPreviewSurface(
@@ -52,4 +58,4 @@ struct MHPreviewCatalog<Content: View>: View {
         self.content = content
     }
 }
-// swiftlint:enable function_default_parameter_at_end
+// swiftlint:enable function_default_parameter_at_end no_magic_numbers
