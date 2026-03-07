@@ -10,4 +10,6 @@ struct MHResolvedActionButtonStyle: Sendable, Equatable {
     var accentRuleOpacity: Double
     var horizontalPadding: CGFloat
     var verticalPadding: CGFloat
+    var pressedOpacity: Double
+    var disabledOpacity: Double
 }

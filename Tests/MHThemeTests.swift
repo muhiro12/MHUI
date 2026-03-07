@@ -121,5 +121,16 @@ struct MHThemeTests {
         #expect(values.mhTheme.layout.screenVerticalPadding == 80)
         #expect(values.mhTheme.colors.accent == .tint)
     }
+
+    @Test
+    func environment_values_store_material_policy_overrides() {
+        var values = EnvironmentValues()
+
+        #expect(values.mhMaterialPolicy == .disabled)
+
+        values.mhMaterialPolicy = .enabled
+
+        #expect(values.mhMaterialPolicy == .enabled)
+    }
 }
 // swiftlint:enable function_body_length

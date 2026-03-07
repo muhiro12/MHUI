@@ -1,4 +1,4 @@
-// swiftlint:disable no_magic_numbers
+// swiftlint:disable function_body_length no_magic_numbers
 extension MHTheme {
     func resolvedActionButtonStyle(
         for role: MHButtonRole
@@ -14,7 +14,9 @@ extension MHTheme {
                 accentRuleRole: nil,
                 accentRuleOpacity: 0,
                 horizontalPadding: spacing.group,
-                verticalPadding: spacing.control
+                verticalPadding: spacing.control,
+                pressedOpacity: 0.88,
+                disabledOpacity: 0.55
             )
         case .secondary:
             .init(
@@ -26,7 +28,9 @@ extension MHTheme {
                 accentRuleRole: nil,
                 accentRuleOpacity: 0,
                 horizontalPadding: spacing.group,
-                verticalPadding: spacing.control
+                verticalPadding: spacing.control,
+                pressedOpacity: 0.88,
+                disabledOpacity: 0.55
             )
         case .quiet:
             .init(
@@ -38,7 +42,9 @@ extension MHTheme {
                 accentRuleRole: nil,
                 accentRuleOpacity: 0,
                 horizontalPadding: spacing.control,
-                verticalPadding: spacing.inline + 2
+                verticalPadding: spacing.inline + 2,
+                pressedOpacity: 0.72,
+                disabledOpacity: 0.50
             )
         case .destructive:
             .init(
@@ -50,9 +56,11 @@ extension MHTheme {
                 accentRuleRole: nil,
                 accentRuleOpacity: 0,
                 horizontalPadding: spacing.group,
-                verticalPadding: spacing.control
+                verticalPadding: spacing.control,
+                pressedOpacity: 0.88,
+                disabledOpacity: 0.55
             )
         }
     }
 }
-// swiftlint:enable no_magic_numbers
+// swiftlint:enable function_body_length no_magic_numbers

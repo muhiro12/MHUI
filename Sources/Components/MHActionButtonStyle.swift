@@ -1,6 +1,4 @@
 import SwiftUI
-
-// swiftlint:disable no_magic_numbers
 /// A restrained button style for primary, secondary, quiet, and destructive actions.
 public struct MHActionButtonStyle: ButtonStyle {
     @Environment(\.mhTheme)
@@ -42,8 +40,8 @@ public struct MHActionButtonStyle: ButtonStyle {
                         lineWidth: style.borderRole == nil ? 0 : theme.divider.thickness
                     )
             }
-            .opacity(isEnabled ? 1 : 0.55)
-            .opacity(configuration.isPressed ? 0.88 : 1)
+            .opacity(isEnabled ? 1 : style.disabledOpacity)
+            .opacity(configuration.isPressed ? style.pressedOpacity : 1)
     }
 }
 
@@ -121,4 +119,3 @@ private extension MHActionButtonStyle {
     }
     .mhPreviewSurface()
 }
-// swiftlint:enable no_magic_numbers

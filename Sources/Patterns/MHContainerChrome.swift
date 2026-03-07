@@ -13,6 +13,7 @@ struct MHResolvedScreenChromeStyle: Sendable, Equatable {
     var horizontalMargin: CGFloat
     var verticalPadding: CGFloat
     var contentSpacing: CGFloat
+    var cueColorRole: MHColorRole
     var cueWidth: CGFloat
     var cueHeight: CGFloat
     var cueSpacing: CGFloat
@@ -21,6 +22,8 @@ struct MHResolvedScreenChromeStyle: Sendable, Equatable {
 struct MHCanvasBackground: View {
     @Environment(\.mhTheme)
     private var theme
+    @Environment(\.mhMaterialPolicy)
+    private var materialPolicy
     @Environment(\.colorScheme)
     private var colorScheme
     @Environment(\.accessibilityReduceTransparency)
@@ -28,6 +31,7 @@ struct MHCanvasBackground: View {
 
     var body: some View {
         let style = theme.resolvedCanvasSurfaceStyle(
+            materialPolicy: materialPolicy,
             reduceTransparency: accessibilityReduceTransparency
         )
 
@@ -73,7 +77,12 @@ struct MHScreenTitleBlock: View {
 
         return VStack(alignment: .leading, spacing: style.cueSpacing) {
             Rectangle()
-                .fill(theme.resolvedColor(for: .accent, in: colorScheme))
+                .fill(
+                    theme.resolvedColor(
+                        for: style.cueColorRole,
+                        in: colorScheme
+                    )
+                )
                 .frame(
                     width: style.cueWidth,
                     height: style.cueHeight
@@ -268,6 +277,7 @@ extension MHTheme {
             horizontalMargin: layout.screenHorizontalMargin,
             verticalPadding: layout.screenVerticalPadding,
             contentSpacing: layout.screenContentSpacing,
+            cueColorRole: .accent,
             cueWidth: layout.screenCueWidth,
             cueHeight: layout.screenCueHeight,
             cueSpacing: spacing.control

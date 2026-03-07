@@ -57,11 +57,15 @@ struct MHStyleResolutionTests {
         #expect(quiet.fillRole == nil)
         #expect(quiet.borderRole == nil)
         #expect(quiet.foregroundRole == .accent)
+        #expect(quiet.pressedOpacity == 0.72)
+        #expect(quiet.disabledOpacity == 0.50)
         #expect(destructive.foregroundRole == .destructive)
         #expect(destructive.accentRuleRole == nil)
         #expect(destructive.accentRuleOpacity == 0)
         #expect(primary.horizontalPadding == theme.spacing.group)
         #expect(quiet.verticalPadding < primary.verticalPadding)
+        #expect(primary.pressedOpacity == 0.88)
+        #expect(primary.disabledOpacity == 0.55)
     }
 
     @Test
@@ -84,15 +88,23 @@ struct MHStyleResolutionTests {
     func surface_and_group_styles_resolve_from_theme_tokens() {
         let theme = MHTheme.standard
         let grouped = theme.resolvedGroupedRowsStyle(showsDividers: true)
+        let disabledSurface = theme.resolvedSurfaceStyle(
+            for: .standard,
+            materialPolicy: .disabled,
+            reduceTransparency: false
+        )
         let materialSurface = theme.resolvedSurfaceStyle(
             for: .standard,
+            materialPolicy: .enabled,
             reduceTransparency: false
         )
         let solidSurface = theme.resolvedSurfaceStyle(
             for: .standard,
+            materialPolicy: .enabled,
             reduceTransparency: true
         )
         let canvas = theme.resolvedCanvasSurfaceStyle(
+            materialPolicy: .enabled,
             reduceTransparency: false
         )
 
@@ -103,6 +115,9 @@ struct MHStyleResolutionTests {
         #expect(grouped.dividerThickness == theme.divider.thickness)
         #expect(grouped.dividerOpacity == theme.divider.opacity)
         #expect(grouped.spacerHeight == theme.layout.rowVerticalPadding)
+        #expect(!disabledSurface.usesMaterial)
+        #expect(disabledSurface.materialStyle == nil)
+        #expect(disabledSurface.fillColorRole == .surface)
         #expect(materialSurface.usesMaterial)
         #expect(materialSurface.materialStyle == .regular)
         #expect(materialSurface.fillColorRole == .surface)
@@ -126,6 +141,29 @@ struct MHStyleResolutionTests {
     }
 
     @Test
+    func input_and_badge_styles_resolve_from_theme_tokens() {
+        let theme = MHTheme.standard
+        let focusedInput = theme.resolvedInputChromeStyle(for: .focused)
+        let invalidInput = theme.resolvedInputChromeStyle(for: .invalid)
+        let neutralBadge = theme.resolvedBadgeChromeStyle(for: .neutral)
+        let accentBadge = theme.resolvedBadgeChromeStyle(for: .accent)
+
+        #expect(focusedInput.fillRole == .surface)
+        #expect(focusedInput.borderRole == .accent)
+        #expect(focusedInput.borderOpacity == 0.24)
+        #expect(focusedInput.horizontalPadding == theme.spacing.group)
+        #expect(invalidInput.fillRole == .destructive)
+        #expect(invalidInput.fillOpacity == 0.04)
+        #expect(invalidInput.borderOpacity == 0.18)
+        #expect(neutralBadge.textRole == .caption)
+        #expect(neutralBadge.foregroundRole == .secondaryText)
+        #expect(neutralBadge.fillOpacity == 0.03)
+        #expect(accentBadge.foregroundRole == .accent)
+        #expect(accentBadge.borderOpacity == 0.10)
+        #expect(accentBadge.horizontalPadding == theme.spacing.control)
+    }
+
+    @Test
     func screen_and_section_chrome_share_theme_tokens() {
         let theme = MHTheme.standard
         let screen = theme.resolvedScreenChromeStyle()
@@ -134,8 +172,10 @@ struct MHStyleResolutionTests {
         #expect(screen.readableContentWidth == theme.layout.readableContentWidth)
         #expect(screen.horizontalMargin == theme.layout.screenHorizontalMargin)
         #expect(screen.verticalPadding == theme.layout.screenVerticalPadding)
+        #expect(screen.cueColorRole == .accent)
         #expect(screen.cueWidth == theme.layout.screenCueWidth)
         #expect(screen.cueHeight == theme.layout.screenCueHeight)
+        #expect(section.cueColorRole == .accent)
         #expect(section.cueWidth == theme.layout.sectionCueWidth)
         #expect(section.cueHeight == theme.layout.sectionCueHeight)
         #expect(section.contentSpacing == theme.spacing.control)

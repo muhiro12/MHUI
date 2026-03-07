@@ -22,6 +22,8 @@ public enum MHSurfaceRole: String, Sendable, CaseIterable {
 private struct MHSurfaceModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
+    @Environment(\.mhMaterialPolicy)
+    private var materialPolicy
     @Environment(\.colorScheme)
     private var colorScheme
     @Environment(\.accessibilityReduceTransparency)
@@ -36,6 +38,7 @@ private struct MHSurfaceModifier: ViewModifier {
         )
         let style = theme.resolvedSurfaceStyle(
             for: role,
+            materialPolicy: materialPolicy,
             reduceTransparency: accessibilityReduceTransparency
         )
 
@@ -125,19 +128,23 @@ extension MHTheme {
 
     func resolvedSurfaceStyle(
         for role: MHSurfaceRole,
+        materialPolicy: MHMaterialPolicy,
         reduceTransparency: Bool
     ) -> MHResolvedSurfaceStyle {
         resolvedSurfaceStyle(
             treatment: treatment(for: role),
+            materialPolicy: materialPolicy,
             reduceTransparency: reduceTransparency
         )
     }
 
     func resolvedCanvasSurfaceStyle(
+        materialPolicy: MHMaterialPolicy,
         reduceTransparency: Bool
     ) -> MHResolvedSurfaceStyle {
         resolvedSurfaceStyle(
             treatment: surfaces.canvas,
+            materialPolicy: materialPolicy,
             reduceTransparency: reduceTransparency
         )
     }
@@ -155,14 +162,17 @@ extension MHTheme {
 
     private func resolvedSurfaceStyle(
         treatment: SurfaceTreatment,
+        materialPolicy: MHMaterialPolicy,
         reduceTransparency: Bool
     ) -> MHResolvedSurfaceStyle {
-        MHResolvedSurfaceStyle(
-            usesMaterial: !reduceTransparency,
-            materialStyle: reduceTransparency ? nil : treatment.material,
+        let usesMaterial = materialPolicy == .enabled && !reduceTransparency
+
+        return MHResolvedSurfaceStyle(
+            usesMaterial: usesMaterial,
+            materialStyle: usesMaterial ? treatment.material : nil,
             fillColorRole: treatment.fallbackColorRole,
-            overlayColorRole: reduceTransparency ? nil : treatment.overlayColorRole,
-            overlayOpacity: reduceTransparency ? 0 : treatment.overlayOpacity,
+            overlayColorRole: usesMaterial ? treatment.overlayColorRole : nil,
+            overlayOpacity: usesMaterial ? treatment.overlayOpacity : 0,
             borderColorRole: treatment.borderColorRole,
             borderOpacity: treatment.borderOpacity
         )

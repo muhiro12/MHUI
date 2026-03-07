@@ -1,10 +1,12 @@
 public extension MHTheme {
     // swiftlint:disable no_magic_numbers
     /// The default calm theme used by MHUI components.
+    /// Tune default spacing, typography, and surface recipes here first.
     static let standard = standard()
 
     // swiftlint:disable function_body_length
     /// Creates the standard neutral MHUI theme using the selected accent source.
+    /// Material recipes remain opt-in through `mhMaterialPolicy(_:)`.
     static func standard(
         accent: MHColorReference = .tint
     ) -> Self {

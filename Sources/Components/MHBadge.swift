@@ -3,7 +3,6 @@ import SwiftUI
 
 private enum MHBadge {}
 
-// swiftlint:disable no_magic_numbers
 private struct MHBadgeModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
@@ -13,13 +12,15 @@ private struct MHBadgeModifier: ViewModifier {
     let style: MHBadgeStyle
 
     func body(content: Content) -> some View {
+        let chromeStyle = theme.resolvedBadgeChromeStyle(for: style)
+
         content
-            .mhTextStyle(.caption, colorRole: foregroundRole)
+            .mhTextStyle(chromeStyle.textRole, colorRole: chromeStyle.foregroundRole)
             .textCase(.uppercase)
-            .padding(.horizontal, theme.spacing.control)
-            .padding(.vertical, theme.spacing.inline)
+            .padding(.horizontal, chromeStyle.horizontalPadding)
+            .padding(.vertical, chromeStyle.verticalPadding)
             .background(
-                backgroundColor,
+                backgroundColor(for: chromeStyle),
                 in: RoundedRectangle(
                     cornerRadius: theme.radius.control,
                     style: .continuous
@@ -31,7 +32,7 @@ private struct MHBadgeModifier: ViewModifier {
                     style: .continuous
                 )
                 .stroke(
-                    borderColor,
+                    borderColor(for: chromeStyle),
                     lineWidth: theme.divider.thickness
                 )
             }
@@ -39,35 +40,24 @@ private struct MHBadgeModifier: ViewModifier {
 }
 
 private extension MHBadgeModifier {
-    var foregroundRole: MHColorRole {
-        switch style {
-        case .neutral:
-            .secondaryText
-        case .accent:
-            .accent
-        case .positive:
-            .positive
-        case .warning:
-            .warning
-        case .destructive:
-            .destructive
-        }
-    }
-
-    var backgroundColor: Color {
+    func backgroundColor(
+        for style: MHResolvedBadgeChromeStyle
+    ) -> Color {
         theme.resolvedColor(
-            for: foregroundRole,
+            for: style.foregroundRole,
             in: colorScheme
         )
-        .opacity(style == .neutral ? 0.03 : 0.05)
+        .opacity(style.fillOpacity)
     }
 
-    var borderColor: Color {
+    func borderColor(
+        for style: MHResolvedBadgeChromeStyle
+    ) -> Color {
         theme.resolvedColor(
-            for: foregroundRole,
+            for: style.foregroundRole,
             in: colorScheme
         )
-        .opacity(style == .neutral ? 0.08 : 0.10)
+        .opacity(style.borderOpacity)
     }
 }
 
@@ -87,5 +77,4 @@ public extension View {
     }
     .mhPreviewSurface()
 }
-// swiftlint:enable no_magic_numbers
 // swiftlint:enable one_declaration_per_file file_types_order

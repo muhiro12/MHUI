@@ -61,6 +61,7 @@ struct MHComponentSmokeTests {
                 title: "Foundation",
                 subtitle: "Quiet composition"
             )
+            .mhMaterialPolicy(.enabled)
         )
 
         #expect(!String(reflecting: type(of: smokeView)).isEmpty)

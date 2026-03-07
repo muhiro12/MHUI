@@ -1,6 +1,4 @@
 import SwiftUI
-
-// swiftlint:disable no_magic_numbers
 private struct MHInputChromeModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
@@ -10,22 +8,23 @@ private struct MHInputChromeModifier: ViewModifier {
     let state: MHFieldState
 
     func body(content: Content) -> some View {
+        let style = theme.resolvedInputChromeStyle(for: state)
         let shape = RoundedRectangle(
             cornerRadius: theme.radius.control,
             style: .continuous
         )
 
         content
-            .padding(.horizontal, theme.spacing.group)
-            .padding(.vertical, theme.spacing.control)
+            .padding(.horizontal, style.horizontalPadding)
+            .padding(.vertical, style.verticalPadding)
             .background {
                 shape
-                    .fill(backgroundColor)
+                    .fill(backgroundColor(for: style))
             }
             .overlay {
                 shape
                     .stroke(
-                        borderColor,
+                        borderColor(for: style),
                         lineWidth: theme.divider.thickness
                     )
             }
@@ -37,30 +36,24 @@ private struct MHInputChromeModifier: ViewModifier {
 }
 
 private extension MHInputChromeModifier {
-    var backgroundColor: Color {
-        switch state {
-        case .normal:
-            theme.resolvedColor(for: .surface, in: colorScheme)
-        case .focused:
-            theme.resolvedColor(for: .surface, in: colorScheme)
-        case .invalid:
-            theme.resolvedColor(for: .destructive, in: colorScheme)
-                .opacity(0.04)
-        }
+    func backgroundColor(
+        for style: MHResolvedInputChromeStyle
+    ) -> Color {
+        theme.resolvedColor(
+            for: style.fillRole,
+            in: colorScheme
+        )
+        .opacity(style.fillOpacity)
     }
 
-    var borderColor: Color {
-        switch state {
-        case .normal:
-            theme.resolvedColor(for: .border, in: colorScheme)
-                .opacity(theme.divider.opacity)
-        case .focused:
-            theme.resolvedColor(for: .accent, in: colorScheme)
-                .opacity(0.24)
-        case .invalid:
-            theme.resolvedColor(for: .destructive, in: colorScheme)
-                .opacity(0.18)
-        }
+    func borderColor(
+        for style: MHResolvedInputChromeStyle
+    ) -> Color {
+        theme.resolvedColor(
+            for: style.borderRole,
+            in: colorScheme
+        )
+        .opacity(style.borderOpacity)
     }
 }
 
@@ -85,4 +78,3 @@ public extension View {
     }
     .mhPreviewSurface()
 }
-// swiftlint:enable no_magic_numbers

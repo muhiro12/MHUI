@@ -27,7 +27,8 @@ Apps can override the theme via `mhTheme(_:)`, but the customization surface is 
 MHUI should feel native first and refined second: interaction patterns stay close to SwiftUI defaults, while spacing, proportion, and surface treatment provide the package's personality.
 The standard theme is built from achromatic neutrals plus the host app's tint color.
 Apps can still choose a preset accent through `MHTheme.standard(accentStyle:)` or override `colors.accent` directly.
-Grouped surfaces use restrained material treatment by default and fall back to solid theme colors when transparency should be reduced.
+Grouped surfaces stay solid by default.
+Material recipes are available through `mhMaterialPolicy(.enabled)` and still fall back to solid theme colors when transparency should be reduced.
 
 Its design attitude is informed by calm, functional retail and editorial environments.
 That influence is about atmosphere only: whitespace, calmer typography, subtle structural accent placement, and practical composition.
@@ -36,6 +37,7 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 ## Public Building Blocks
 
 - `MHTheme`, `MHAccentStyle`, `MHTextRole`, `MHColorRole`
+- `MHMaterialPolicy`, `mhMaterialPolicy(_:)`
 - `MHActionButtonStyle` and `ButtonStyle` sugar like `.mhPrimary`
 - `mhSurface(role:)` and `mhSurfaceInset()`
 - `mhInputChrome(state:)`
@@ -90,6 +92,16 @@ struct SettingsScreen: View {
 ```
 
 Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from stacks and calm card-like surfaces instead of a native `List` or `Form`.
+
+## Where To Tune First
+
+Start in this order when adjusting appearance:
+
+1. `MHTheme.standard()` for default color, spacing, radius, layout, and surface recipes.
+2. `MHPreviewStyle` and the shared preview catalog for light/dark, density, accent, material, and dynamic type comparisons.
+3. Internal component resolvers only when a shared token is not enough.
+
+The most useful previews to review first are `Foundation Catalog`, `Material Review`, and the native container previews.
 
 ## Intentional Boundaries
 

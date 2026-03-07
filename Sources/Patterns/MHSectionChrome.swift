@@ -4,6 +4,7 @@ import SwiftUI
 private enum MHSectionChrome {}
 
 struct MHResolvedSectionChromeStyle: Sendable, Equatable {
+    var cueColorRole: MHColorRole
     var cueWidth: CGFloat
     var cueHeight: CGFloat
     var cueSpacing: CGFloat
@@ -23,7 +24,12 @@ private struct MHSectionHeaderModifier: ViewModifier {
 
         return VStack(alignment: .leading, spacing: style.cueSpacing) {
             Rectangle()
-                .fill(theme.resolvedColor(for: .accent, in: colorScheme))
+                .fill(
+                    theme.resolvedColor(
+                        for: style.cueColorRole,
+                        in: colorScheme
+                    )
+                )
                 .frame(
                     width: style.cueWidth,
                     height: style.cueHeight
@@ -63,6 +69,7 @@ public extension View {
 extension MHTheme {
     func resolvedSectionChromeStyle() -> MHResolvedSectionChromeStyle {
         MHResolvedSectionChromeStyle(
+            cueColorRole: .accent,
             cueWidth: layout.sectionCueWidth,
             cueHeight: layout.sectionCueHeight,
             cueSpacing: spacing.inline + layout.sectionCueHeight,
