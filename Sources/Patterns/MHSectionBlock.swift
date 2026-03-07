@@ -4,16 +4,8 @@ import SwiftUI
 private enum MHSectionBlock {}
 
 private struct MHSectionModifier: ViewModifier {
-    private enum Layout {
-        static var headingCueWidth: CGFloat {
-            CGFloat(Int("12") ?? .zero)
-        }
-    }
-
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.colorScheme)
-    private var colorScheme
 
     let title: Text
     let supporting: Text?
@@ -21,7 +13,7 @@ private struct MHSectionModifier: ViewModifier {
     let footer: AnyView?
 
     func body(content: Content) -> some View {
-        VStack(alignment: .leading, spacing: theme.spacing.group + theme.spacing.control) {
+        VStack(alignment: .leading, spacing: theme.spacing.group) {
             headerBlock
 
             content
@@ -30,12 +22,7 @@ private struct MHSectionModifier: ViewModifier {
 
             if let footer {
                 footer
-                    .foregroundStyle(
-                        theme.resolvedColor(
-                            for: .secondaryText,
-                            in: colorScheme
-                        )
-                    )
+                    .mhSectionFooterText()
             }
         }
     }
@@ -161,38 +148,21 @@ public extension View {
 
 private extension MHSectionModifier {
     var headerBlock: some View {
-        VStack(alignment: .leading, spacing: headerCueSpacing) {
-            Rectangle()
-                .fill(theme.resolvedColor(for: .accent, in: colorScheme))
-                .frame(
-                    width: Layout.headingCueWidth,
-                    height: headerCueHeight
-                )
-
-            VStack(alignment: .leading, spacing: theme.spacing.control) {
-                HStack(alignment: .firstTextBaseline, spacing: theme.spacing.control) {
-                    title
-                        .mhTextStyle(.sectionTitle)
-                    Spacer(minLength: theme.spacing.control)
-                    if let accessory {
-                        accessory
-                    }
-                }
-                if let supporting {
-                    supporting
-                        .mhTextStyle(.supporting, colorRole: .secondaryText)
+        VStack(alignment: .leading, spacing: theme.resolvedSectionChromeStyle().contentSpacing) {
+            HStack(alignment: .firstTextBaseline, spacing: theme.layout.rowAccessorySpacing) {
+                title
+                    .mhSectionHeaderTitle()
+                Spacer(minLength: theme.layout.rowAccessorySpacing)
+                if let accessory {
+                    accessory
                 }
             }
+            if let supporting {
+                supporting
+                    .mhSectionHeaderSupporting()
+            }
         }
-        .padding(.leading, theme.spacing.inline)
-    }
-
-    var headerCueHeight: CGFloat {
-        theme.divider.thickness + theme.divider.thickness
-    }
-
-    var headerCueSpacing: CGFloat {
-        theme.spacing.inline + headerCueHeight
+        .mhSectionHeader()
     }
 }
 // swiftlint:enable one_declaration_per_file file_types_order

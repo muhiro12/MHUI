@@ -7,6 +7,8 @@ struct MHResolvedKeyValueStyle: Sendable, Equatable {
     var labelColorRole: MHColorRole
     var valueColorRole: MHColorRole
     var verticalPadding: CGFloat
+    var horizontalInset: CGFloat
+    var accessorySpacing: CGFloat
 }
 
 /// A calm `LabeledContentStyle` for settings and detail rows.
@@ -23,7 +25,7 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
     public func makeBody(configuration: Configuration) -> some View {
         let style = theme.resolvedKeyValueStyle()
 
-        return HStack(alignment: .top, spacing: theme.spacing.control) {
+        return HStack(alignment: .top, spacing: style.accessorySpacing) {
             configuration.label
                 .foregroundStyle(
                     theme.resolvedColor(
@@ -45,6 +47,16 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
         .padding(.vertical, style.verticalPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(.rect)
+        .listRowInsets(
+            .init(
+                top: 0,
+                leading: style.horizontalInset,
+                bottom: 0,
+                trailing: style.horizontalInset
+            )
+        )
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
     }
 }
 
@@ -53,7 +65,9 @@ extension MHTheme {
         MHResolvedKeyValueStyle(
             labelColorRole: .primaryText,
             valueColorRole: .secondaryText,
-            verticalPadding: spacing.control + spacing.inline
+            verticalPadding: layout.rowVerticalPadding,
+            horizontalInset: layout.rowHorizontalInset,
+            accessorySpacing: layout.rowAccessorySpacing
         )
     }
 }

@@ -1,4 +1,4 @@
-// swiftlint:disable closure_body_length
+// swiftlint:disable closure_body_length function_body_length
 @testable import MHUI
 import SwiftUI
 import Testing
@@ -65,5 +65,72 @@ struct MHComponentSmokeTests {
 
         #expect(!String(reflecting: type(of: smokeView)).isEmpty)
     }
+
+    @Test
+    @MainActor
+    func native_container_chrome_and_section_primitives_instantiate() {
+        let smokeView = AnyView(
+            VStack(spacing: MHTheme.standard.spacing.section) {
+                List {
+                    Section {
+                        Toggle("Use iCloud Sync", isOn: .constant(true))
+                            .mhRow()
+
+                        LabeledContent("Theme", value: "System")
+                            .labeledContentStyle(.mhKeyValue)
+                    } header: {
+                        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
+                            Text("Preferences")
+                                .mhSectionHeaderTitle()
+                            Text("Native list controls keep SwiftUI behavior.")
+                                .mhSectionHeaderSupporting()
+                        }
+                        .mhSectionHeader()
+                    } footer: {
+                        Text("Rows use spacing and separator rules from MHUI.")
+                            .mhSectionFooterText()
+                    }
+                }
+                .frame(height: 260)
+                .mhListChrome(
+                    title: "List Chrome",
+                    subtitle: "Calmer spacing over native List."
+                )
+
+                Form {
+                    Section {
+                        TextField("Workspace name", text: .constant("MHUI"))
+                            .mhRow()
+
+                        Picker("Appearance", selection: .constant("System")) {
+                            Text("System")
+                                .tag("System")
+                            Text("Light")
+                                .tag("Light")
+                        }
+                        .mhRow()
+                    } header: {
+                        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
+                            Text("Workspace")
+                                .mhSectionHeaderTitle()
+                            Text("Form chrome should stay native, not custom.")
+                                .mhSectionHeaderSupporting()
+                        }
+                        .mhSectionHeader()
+                    } footer: {
+                        Text("Host apps supply tint, MHUI supplies rhythm.")
+                            .mhSectionFooterText()
+                    }
+                }
+                .frame(height: 280)
+                .mhFormChrome(
+                    title: "Form Chrome",
+                    subtitle: "Shared layout without wrapped controls."
+                )
+            }
+        )
+
+        #expect(!String(reflecting: type(of: smokeView)).isEmpty)
+    }
 }
-// swiftlint:enable closure_body_length
+// swiftlint:enable closure_body_length function_body_length

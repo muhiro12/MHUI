@@ -4,20 +4,8 @@ import SwiftUI
 private enum MHScreen {}
 
 private struct MHScreenModifier: ViewModifier {
-    private enum Layout {
-        static var maxContentWidth: CGFloat {
-            CGFloat(Int("640") ?? .zero)
-        }
-
-        static var titleCueWidth: CGFloat {
-            CGFloat(Int("20") ?? .zero)
-        }
-    }
-
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.colorScheme)
-    private var colorScheme
 
     let title: Text?
     let subtitle: Text?
@@ -27,10 +15,7 @@ private struct MHScreenModifier: ViewModifier {
         ScrollView {
             screenContent(content: content)
         }
-        .background(
-            theme.resolvedColor(for: .background, in: colorScheme)
-                .ignoresSafeArea()
-        )
+        .background(MHCanvasBackground())
     }
 }
 
@@ -91,9 +76,14 @@ public extension View {
 
 private extension MHScreenModifier {
     func screenContent(content: Content) -> some View {
-        VStack(alignment: .leading, spacing: theme.spacing.section + theme.spacing.control) {
+        let style = theme.resolvedScreenChromeStyle()
+
+        return VStack(alignment: .leading, spacing: style.contentSpacing) {
             if showsTitleBlock {
-                titleBlock
+                MHScreenTitleBlock(
+                    title: title,
+                    subtitle: subtitle
+                )
             }
 
             if let header {
@@ -102,44 +92,14 @@ private extension MHScreenModifier {
 
             content
         }
-        .frame(maxWidth: Layout.maxContentWidth, alignment: .leading)
+        .frame(maxWidth: style.readableContentWidth, alignment: .leading)
         .frame(maxWidth: .infinity, alignment: .center)
-        .padding(.horizontal, theme.spacing.screen)
-        .padding(.vertical, theme.spacing.screen + theme.spacing.section)
-    }
-
-    @ViewBuilder var titleBlock: some View {
-        VStack(alignment: .leading, spacing: titleCueSpacing) {
-            Rectangle()
-                .fill(theme.resolvedColor(for: .accent, in: colorScheme))
-                .frame(
-                    width: Layout.titleCueWidth,
-                    height: titleCueHeight
-                )
-
-            VStack(alignment: .leading, spacing: theme.spacing.group) {
-                if let title {
-                    title
-                        .mhTextStyle(.screenTitle)
-                }
-                if let subtitle {
-                    subtitle
-                        .mhTextStyle(.supporting, colorRole: .secondaryText)
-                }
-            }
-        }
+        .padding(.horizontal, style.horizontalMargin)
+        .padding(.vertical, style.verticalPadding)
     }
 
     var showsTitleBlock: Bool {
         title != nil || subtitle != nil
-    }
-
-    var titleCueHeight: CGFloat {
-        theme.divider.thickness + theme.divider.thickness
-    }
-
-    var titleCueSpacing: CGFloat {
-        theme.spacing.control - titleCueHeight
     }
 }
 

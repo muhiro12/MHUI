@@ -4,15 +4,15 @@ enum MHPreviewStyle {
     static let defaultAccentStyle: MHAccentStyle = .orange
 
     static func theme(
-        accentStyle: MHAccentStyle = defaultAccentStyle
+        accentStyle _: MHAccentStyle = defaultAccentStyle
     ) -> MHTheme {
-        MHTheme.standard(accentStyle: accentStyle)
+        MHTheme.standard()
     }
 
     static func lightAccent(
         accentStyle: MHAccentStyle = defaultAccentStyle
     ) -> Color {
-        theme(accentStyle: accentStyle)
+        MHTheme.standard(accentStyle: accentStyle)
             .colorReference(for: .accent)
             .resolve(for: .light)
     }

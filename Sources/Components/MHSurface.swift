@@ -3,6 +3,16 @@ import SwiftUI
 
 private enum MHSurface {}
 
+struct MHResolvedSurfaceStyle: Sendable, Equatable {
+    var usesMaterial: Bool
+    var materialStyle: MHMaterialStyle?
+    var fillColorRole: MHColorRole
+    var overlayColorRole: MHColorRole?
+    var overlayOpacity: Double
+    var borderColorRole: MHColorRole
+    var borderOpacity: Double
+}
+
 /// Surface prominence used by `mhSurface(role:)`.
 public enum MHSurfaceRole: String, Sendable, CaseIterable {
     case standard
@@ -14,6 +24,8 @@ private struct MHSurfaceModifier: ViewModifier {
     private var theme
     @Environment(\.colorScheme)
     private var colorScheme
+    @Environment(\.accessibilityReduceTransparency)
+    private var accessibilityReduceTransparency
 
     let role: MHSurfaceRole
 
@@ -22,23 +34,71 @@ private struct MHSurfaceModifier: ViewModifier {
             cornerRadius: theme.radius.surface,
             style: .continuous
         )
+        let style = theme.resolvedSurfaceStyle(
+            for: role,
+            reduceTransparency: accessibilityReduceTransparency
+        )
 
         return content
-            .background(
-                theme.resolvedColor(
-                    for: theme.surfaceColorRole(for: role),
-                    in: colorScheme
-                ),
-                in: shape
-            )
+            .background {
+                ZStack {
+                    surfaceFill(
+                        in: shape,
+                        style: style
+                    )
+                }
+            }
             .overlay {
                 shape
                     .stroke(
-                        theme.resolvedColor(for: .border, in: colorScheme)
-                            .opacity(theme.divider.opacity),
+                        theme.resolvedColor(
+                            for: style.borderColorRole,
+                            in: colorScheme
+                        )
+                        .opacity(style.borderOpacity),
                         lineWidth: theme.divider.thickness
                     )
             }
+    }
+
+    @ViewBuilder
+    func surfaceFill(
+        in shape: RoundedRectangle,
+        style: MHResolvedSurfaceStyle
+    ) -> some View {
+        if let materialStyle = style.materialStyle, style.usesMaterial {
+            materialFill(
+                in: shape,
+                materialStyle: materialStyle
+            )
+
+            if let overlayColorRole = style.overlayColorRole {
+                shape
+                    .fill(
+                        theme.resolvedColor(
+                            for: overlayColorRole,
+                            in: colorScheme
+                        )
+                        .opacity(style.overlayOpacity)
+                    )
+            }
+        } else {
+            shape
+                .fill(
+                    theme.resolvedColor(
+                        for: style.fillColorRole,
+                        in: colorScheme
+                    )
+                )
+        }
+    }
+
+    @ViewBuilder
+    func materialFill(
+        in shape: RoundedRectangle,
+        materialStyle: MHMaterialStyle
+    ) -> some View {
+        materialStyle.fill(shape)
     }
 }
 
@@ -48,8 +108,8 @@ private struct MHSurfaceInsetModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .padding(.horizontal, theme.spacing.group)
-            .padding(.vertical, theme.spacing.group + theme.spacing.inline)
+            .padding(.horizontal, theme.layout.surfaceInsetHorizontal)
+            .padding(.vertical, theme.layout.surfaceInsetVertical)
     }
 }
 
@@ -61,6 +121,51 @@ extension MHTheme {
         case .muted:
             .surfaceMuted
         }
+    }
+
+    func resolvedSurfaceStyle(
+        for role: MHSurfaceRole,
+        reduceTransparency: Bool
+    ) -> MHResolvedSurfaceStyle {
+        resolvedSurfaceStyle(
+            treatment: treatment(for: role),
+            reduceTransparency: reduceTransparency
+        )
+    }
+
+    func resolvedCanvasSurfaceStyle(
+        reduceTransparency: Bool
+    ) -> MHResolvedSurfaceStyle {
+        resolvedSurfaceStyle(
+            treatment: surfaces.canvas,
+            reduceTransparency: reduceTransparency
+        )
+    }
+
+    private func treatment(
+        for role: MHSurfaceRole
+    ) -> SurfaceTreatment {
+        switch role {
+        case .standard:
+            surfaces.standard
+        case .muted:
+            surfaces.muted
+        }
+    }
+
+    private func resolvedSurfaceStyle(
+        treatment: SurfaceTreatment,
+        reduceTransparency: Bool
+    ) -> MHResolvedSurfaceStyle {
+        MHResolvedSurfaceStyle(
+            usesMaterial: !reduceTransparency,
+            materialStyle: reduceTransparency ? nil : treatment.material,
+            fillColorRole: treatment.fallbackColorRole,
+            overlayColorRole: reduceTransparency ? nil : treatment.overlayColorRole,
+            overlayOpacity: reduceTransparency ? 0 : treatment.overlayOpacity,
+            borderColorRole: treatment.borderColorRole,
+            borderOpacity: treatment.borderOpacity
+        )
     }
 }
 

@@ -2,6 +2,7 @@ import SwiftUI
 
 private enum MHTextStyleDefaults {
     static let supportingTracking: CGFloat = 0.1
+    static let metadataTracking: CGFloat = 0.18
     static let captionTracking: CGFloat = 0.2
 }
 
@@ -24,6 +25,12 @@ extension MHTheme {
                 for: .supporting,
                 colorRole: colorRole,
                 tracking: MHTextStyleDefaults.supportingTracking
+            )
+        case .metadata:
+            resolvedStyle(
+                for: .metadata,
+                colorRole: colorRole,
+                tracking: MHTextStyleDefaults.metadataTracking
             )
         case .caption:
             resolvedStyle(

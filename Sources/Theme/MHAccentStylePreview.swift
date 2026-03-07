@@ -6,7 +6,7 @@ private struct MHAccentStylePreview: View {
     var body: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
             Text(accentStyle.rawValue.capitalized)
-                .mhTextStyle(.caption, colorRole: .secondaryText)
+                .mhTextStyle(.metadata, colorRole: .secondaryText)
 
             VStack(spacing: 0) {
                 reviewRow
@@ -19,7 +19,8 @@ private struct MHAccentStylePreview: View {
                 supporting: "The same section framing shown with each built-in accent."
             )
         }
-        .mhTheme(MHTheme.standard(accentStyle: accentStyle))
+        .mhTheme(MHTheme.standard())
+        .tint(MHPreviewStyle.lightAccent(accentStyle: accentStyle))
     }
 }
 

@@ -1,3 +1,4 @@
+// swiftlint:disable type_body_length
 import SwiftUI
 
 /// Shared visual rules for calm, tool-like sibling apps.
@@ -47,6 +48,7 @@ public struct MHTheme: Sendable, Equatable {
         public var body: MHTextMetrics
         public var bodyStrong: MHTextMetrics
         public var supporting: MHTextMetrics
+        public var metadata: MHTextMetrics
         public var caption: MHTextMetrics
 
         public init(
@@ -55,6 +57,7 @@ public struct MHTheme: Sendable, Equatable {
             body: MHTextMetrics,
             bodyStrong: MHTextMetrics,
             supporting: MHTextMetrics,
+            metadata: MHTextMetrics,
             caption: MHTextMetrics
         ) {
             self.screenTitle = screenTitle
@@ -62,6 +65,7 @@ public struct MHTheme: Sendable, Equatable {
             self.body = body
             self.bodyStrong = bodyStrong
             self.supporting = supporting
+            self.metadata = metadata
             self.caption = caption
         }
     }
@@ -134,12 +138,104 @@ public struct MHTheme: Sendable, Equatable {
         }
     }
 
+    /// Shared layout tokens for screen composition and row rhythm.
+    public struct Layout: Sendable, Equatable {
+        public var readableContentWidth: CGFloat
+        public var screenHorizontalMargin: CGFloat
+        public var screenVerticalPadding: CGFloat
+        public var screenContentSpacing: CGFloat
+        public var surfaceInsetHorizontal: CGFloat
+        public var surfaceInsetVertical: CGFloat
+        public var rowHorizontalInset: CGFloat
+        public var rowVerticalPadding: CGFloat
+        public var rowAccessorySpacing: CGFloat
+        public var screenCueWidth: CGFloat
+        public var screenCueHeight: CGFloat
+        public var sectionCueWidth: CGFloat
+        public var sectionCueHeight: CGFloat
+
+        public init(
+            readableContentWidth: CGFloat,
+            screenHorizontalMargin: CGFloat,
+            screenVerticalPadding: CGFloat,
+            screenContentSpacing: CGFloat,
+            surfaceInsetHorizontal: CGFloat,
+            surfaceInsetVertical: CGFloat,
+            rowHorizontalInset: CGFloat,
+            rowVerticalPadding: CGFloat,
+            rowAccessorySpacing: CGFloat,
+            screenCueWidth: CGFloat,
+            screenCueHeight: CGFloat,
+            sectionCueWidth: CGFloat,
+            sectionCueHeight: CGFloat
+        ) {
+            self.readableContentWidth = readableContentWidth
+            self.screenHorizontalMargin = screenHorizontalMargin
+            self.screenVerticalPadding = screenVerticalPadding
+            self.screenContentSpacing = screenContentSpacing
+            self.surfaceInsetHorizontal = surfaceInsetHorizontal
+            self.surfaceInsetVertical = surfaceInsetVertical
+            self.rowHorizontalInset = rowHorizontalInset
+            self.rowVerticalPadding = rowVerticalPadding
+            self.rowAccessorySpacing = rowAccessorySpacing
+            self.screenCueWidth = screenCueWidth
+            self.screenCueHeight = screenCueHeight
+            self.sectionCueWidth = sectionCueWidth
+            self.sectionCueHeight = sectionCueHeight
+        }
+    }
+
+    /// Surface recipes used by calm containers and screen chrome.
+    public struct SurfaceTreatment: Sendable, Equatable {
+        public var material: MHMaterialStyle
+        public var fallbackColorRole: MHColorRole
+        public var overlayColorRole: MHColorRole
+        public var overlayOpacity: Double
+        public var borderColorRole: MHColorRole
+        public var borderOpacity: Double
+
+        public init(
+            material: MHMaterialStyle,
+            fallbackColorRole: MHColorRole,
+            overlayColorRole: MHColorRole,
+            overlayOpacity: Double,
+            borderColorRole: MHColorRole,
+            borderOpacity: Double
+        ) {
+            self.material = material
+            self.fallbackColorRole = fallbackColorRole
+            self.overlayColorRole = overlayColorRole
+            self.overlayOpacity = overlayOpacity
+            self.borderColorRole = borderColorRole
+            self.borderOpacity = borderOpacity
+        }
+    }
+
+    /// Shared surface tokens for the screen canvas and grouped content.
+    public struct Surfaces: Sendable, Equatable {
+        public var canvas: SurfaceTreatment
+        public var standard: SurfaceTreatment
+        public var muted: SurfaceTreatment
+
+        public init(
+            canvas: SurfaceTreatment,
+            standard: SurfaceTreatment,
+            muted: SurfaceTreatment
+        ) {
+            self.canvas = canvas
+            self.standard = standard
+            self.muted = muted
+        }
+    }
+
     public var colors: Colors
     public var typography: Typography
     public var spacing: Spacing
     public var radius: Radius
     public var divider: Divider
     public var motion: Motion
+    public var layout: Layout
+    public var surfaces: Surfaces
 
     public init(
         colors: Colors,
@@ -147,7 +243,9 @@ public struct MHTheme: Sendable, Equatable {
         spacing: Spacing,
         radius: Radius,
         divider: Divider,
-        motion: Motion
+        motion: Motion,
+        layout: Layout,
+        surfaces: Surfaces
     ) {
         self.colors = colors
         self.typography = typography
@@ -155,6 +253,8 @@ public struct MHTheme: Sendable, Equatable {
         self.radius = radius
         self.divider = divider
         self.motion = motion
+        self.layout = layout
+        self.surfaces = surfaces
     }
 
     internal func colorReference(for role: MHColorRole) -> MHColorReference {
@@ -201,8 +301,11 @@ public struct MHTheme: Sendable, Equatable {
             typography.bodyStrong
         case .supporting:
             typography.supporting
+        case .metadata:
+            typography.metadata
         case .caption:
             typography.caption
         }
     }
 }
+// swiftlint:enable type_body_length

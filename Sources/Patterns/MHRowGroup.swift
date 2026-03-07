@@ -59,10 +59,10 @@ extension MHTheme {
     ) -> MHResolvedGroupedRowsStyle {
         MHResolvedGroupedRowsStyle(
             showsDividers: showsDividers,
-            dividerLeadingInset: spacing.group + spacing.inline,
+            dividerLeadingInset: layout.surfaceInsetHorizontal + spacing.inline,
             dividerThickness: divider.thickness,
             dividerOpacity: divider.opacity,
-            spacerHeight: spacing.control
+            spacerHeight: layout.rowVerticalPadding
         )
     }
 }

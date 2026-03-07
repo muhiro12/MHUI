@@ -7,12 +7,12 @@ struct MHThemeTests {
     @Test
     func standard_theme_uses_semantic_defaults() {
         let theme = MHTheme.standard
-        let orangeTheme = MHTheme.standard(accentStyle: .orange)
+        let tintTheme = MHTheme.standard(accent: .tint)
         let accentReferences = MHAccentStyle.allCases.map { accentStyle in
             MHTheme.standard(accentStyle: accentStyle).colors.accent
         }
 
-        #expect(theme == orangeTheme)
+        #expect(theme == tintTheme)
         #expect(theme.colors.background == .adaptive(.init(
             light: .init(red: 0.95, green: 0.95, blue: 0.95),
             dark: .init(red: 0.12, green: 0.12, blue: 0.13)
@@ -37,10 +37,7 @@ struct MHThemeTests {
             light: .init(red: 0.43, green: 0.43, blue: 0.45),
             dark: .init(red: 0.68, green: 0.68, blue: 0.71)
         )))
-        #expect(theme.colors.accent == .adaptive(.init(
-            light: .init(red: 0.93, green: 0.43, blue: 0.10),
-            dark: .init(red: 1.00, green: 0.70, blue: 0.28)
-        )))
+        #expect(theme.colors.accent == .tint)
         #expect(accentReferences == [
             .adaptive(.init(
                 light: .init(red: 0.93, green: 0.43, blue: 0.10),
@@ -78,10 +75,29 @@ struct MHThemeTests {
         #expect(theme.divider.opacity == 0.50)
         #expect(theme.motion.quick == 0.14)
         #expect(theme.motion.regular == 0.22)
+        #expect(theme.layout.readableContentWidth == 640)
+        #expect(theme.layout.screenHorizontalMargin == 40)
+        #expect(theme.layout.screenVerticalPadding == 72)
+        #expect(theme.layout.screenContentSpacing == 44)
+        #expect(theme.layout.surfaceInsetHorizontal == 20)
+        #expect(theme.layout.surfaceInsetVertical == 24)
+        #expect(theme.layout.rowHorizontalInset == 20)
+        #expect(theme.layout.rowVerticalPadding == 16)
+        #expect(theme.layout.rowAccessorySpacing == 12)
+        #expect(theme.layout.screenCueWidth == 20)
+        #expect(theme.layout.screenCueHeight == 2)
+        #expect(theme.layout.sectionCueWidth == 12)
+        #expect(theme.layout.sectionCueHeight == 2)
+        #expect(theme.surfaces.canvas.material == .ultraThin)
+        #expect(theme.surfaces.standard.material == .regular)
+        #expect(theme.surfaces.muted.material == .thin)
+        #expect(theme.surfaces.standard.fallbackColorRole == .surface)
+        #expect(theme.surfaces.muted.fallbackColorRole == .surfaceMuted)
         #expect(theme.typography.screenTitle.weight == .semibold)
         #expect(theme.typography.sectionTitle.weight == .semibold)
         #expect(theme.typography.bodyStrong.weight == .medium)
         #expect(theme.typography.supporting.weight == .regular)
+        #expect(theme.typography.metadata.weight == .medium)
         #expect(theme.typography.caption.weight == .medium)
 
         let primary = theme.resolvedActionButtonStyle(for: .primary)
@@ -95,12 +111,14 @@ struct MHThemeTests {
         var values = EnvironmentValues()
         var custom = MHTheme.standard
         custom.spacing.screen = 44
+        custom.layout.screenVerticalPadding = 80
         custom.colors.accent = .tint
 
         values.mhTheme = custom
 
         #expect(values.mhTheme == custom)
         #expect(values.mhTheme.spacing.screen == 44)
+        #expect(values.mhTheme.layout.screenVerticalPadding == 80)
         #expect(values.mhTheme.colors.accent == .tint)
     }
 }

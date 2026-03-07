@@ -4,9 +4,9 @@ public extension MHTheme {
     static let standard = standard()
 
     // swiftlint:disable function_body_length
-    /// Creates the standard neutral MHUI theme with a selectable accent style.
+    /// Creates the standard neutral MHUI theme using the selected accent source.
     static func standard(
-        accentStyle: MHAccentStyle = .orange
+        accent: MHColorReference = .tint
     ) -> Self {
         Self(
             colors: .init(
@@ -46,7 +46,7 @@ public extension MHTheme {
                         dark: .init(red: 0.68, green: 0.68, blue: 0.71)
                     )
                 ),
-                accent: accentStyle.colorReference,
+                accent: accent,
                 positive: .adaptive(
                     .init(
                         light: .init(red: 0.35, green: 0.45, blue: 0.33),
@@ -72,6 +72,7 @@ public extension MHTheme {
                 body: .init(style: .body, weight: .regular),
                 bodyStrong: .init(style: .body, weight: .medium),
                 supporting: .init(style: .subheadline, weight: .regular),
+                metadata: .init(style: .footnote, weight: .medium),
                 caption: .init(style: .footnote, weight: .medium)
             ),
             spacing: .init(
@@ -93,8 +94,56 @@ public extension MHTheme {
             motion: .init(
                 quick: 0.14,
                 regular: 0.22
+            ),
+            layout: .init(
+                readableContentWidth: 640,
+                screenHorizontalMargin: 40,
+                screenVerticalPadding: 72,
+                screenContentSpacing: 44,
+                surfaceInsetHorizontal: 20,
+                surfaceInsetVertical: 24,
+                rowHorizontalInset: 20,
+                rowVerticalPadding: 16,
+                rowAccessorySpacing: 12,
+                screenCueWidth: 20,
+                screenCueHeight: 2,
+                sectionCueWidth: 12,
+                sectionCueHeight: 2
+            ),
+            surfaces: .init(
+                canvas: .init(
+                    material: .ultraThin,
+                    fallbackColorRole: .background,
+                    overlayColorRole: .background,
+                    overlayOpacity: 0.72,
+                    borderColorRole: .border,
+                    borderOpacity: 0
+                ),
+                standard: .init(
+                    material: .regular,
+                    fallbackColorRole: .surface,
+                    overlayColorRole: .surface,
+                    overlayOpacity: 0.78,
+                    borderColorRole: .border,
+                    borderOpacity: 0.42
+                ),
+                muted: .init(
+                    material: .thin,
+                    fallbackColorRole: .surfaceMuted,
+                    overlayColorRole: .surfaceMuted,
+                    overlayOpacity: 0.84,
+                    borderColorRole: .border,
+                    borderOpacity: 0.30
+                )
             )
         )
+    }
+
+    /// Creates the standard neutral MHUI theme with a selectable preset accent.
+    static func standard(
+        accentStyle: MHAccentStyle
+    ) -> Self {
+        standard(accent: accentStyle.colorReference)
     }
     // swiftlint:enable function_body_length
     // swiftlint:enable no_magic_numbers

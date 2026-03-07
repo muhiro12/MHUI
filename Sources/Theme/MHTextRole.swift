@@ -5,5 +5,6 @@ public enum MHTextRole: String, Sendable, CaseIterable {
     case body
     case bodyStrong
     case supporting
+    case metadata
     case caption
 }

@@ -18,6 +18,10 @@ struct MHStyleResolutionTests {
             for: .supporting,
             colorRole: .secondaryText
         )
+        let metadata = theme.resolvedTextStyle(
+            for: .metadata,
+            colorRole: .secondaryText
+        )
         let caption = theme.resolvedTextStyle(
             for: .caption,
             colorRole: .secondaryText
@@ -31,6 +35,8 @@ struct MHStyleResolutionTests {
         #expect(screenTitle.tracking == 0)
         #expect(supporting.metrics.weight == .regular)
         #expect(supporting.tracking == 0.1)
+        #expect(metadata.metrics == theme.typography.metadata)
+        #expect(metadata.tracking == 0.18)
         #expect(caption.metrics.weight == .medium)
         #expect(caption.tracking == 0.2)
     }
@@ -78,13 +84,33 @@ struct MHStyleResolutionTests {
     func surface_and_group_styles_resolve_from_theme_tokens() {
         let theme = MHTheme.standard
         let grouped = theme.resolvedGroupedRowsStyle(showsDividers: true)
+        let materialSurface = theme.resolvedSurfaceStyle(
+            for: .standard,
+            reduceTransparency: false
+        )
+        let solidSurface = theme.resolvedSurfaceStyle(
+            for: .standard,
+            reduceTransparency: true
+        )
+        let canvas = theme.resolvedCanvasSurfaceStyle(
+            reduceTransparency: false
+        )
 
         #expect(theme.surfaceColorRole(for: .standard) == .surface)
         #expect(theme.surfaceColorRole(for: .muted) == .surfaceMuted)
         #expect(grouped.showsDividers)
-        #expect(grouped.dividerLeadingInset == theme.spacing.group + theme.spacing.inline)
+        #expect(grouped.dividerLeadingInset == theme.layout.surfaceInsetHorizontal + theme.spacing.inline)
         #expect(grouped.dividerThickness == theme.divider.thickness)
         #expect(grouped.dividerOpacity == theme.divider.opacity)
+        #expect(grouped.spacerHeight == theme.layout.rowVerticalPadding)
+        #expect(materialSurface.usesMaterial)
+        #expect(materialSurface.materialStyle == .regular)
+        #expect(materialSurface.fillColorRole == .surface)
+        #expect(materialSurface.overlayColorRole == .surface)
+        #expect(!solidSurface.usesMaterial)
+        #expect(solidSurface.materialStyle == nil)
+        #expect(solidSurface.fillColorRole == .surface)
+        #expect(canvas.materialStyle == .ultraThin)
     }
 
     @Test
@@ -94,6 +120,25 @@ struct MHStyleResolutionTests {
 
         #expect(style.labelColorRole == .primaryText)
         #expect(style.valueColorRole == .secondaryText)
-        #expect(style.verticalPadding == theme.spacing.control + theme.spacing.inline)
+        #expect(style.verticalPadding == theme.layout.rowVerticalPadding)
+        #expect(style.horizontalInset == theme.layout.rowHorizontalInset)
+        #expect(style.accessorySpacing == theme.layout.rowAccessorySpacing)
+    }
+
+    @Test
+    func screen_and_section_chrome_share_theme_tokens() {
+        let theme = MHTheme.standard
+        let screen = theme.resolvedScreenChromeStyle()
+        let section = theme.resolvedSectionChromeStyle()
+
+        #expect(screen.readableContentWidth == theme.layout.readableContentWidth)
+        #expect(screen.horizontalMargin == theme.layout.screenHorizontalMargin)
+        #expect(screen.verticalPadding == theme.layout.screenVerticalPadding)
+        #expect(screen.cueWidth == theme.layout.screenCueWidth)
+        #expect(screen.cueHeight == theme.layout.screenCueHeight)
+        #expect(section.cueWidth == theme.layout.sectionCueWidth)
+        #expect(section.cueHeight == theme.layout.sectionCueHeight)
+        #expect(section.contentSpacing == theme.spacing.control)
+        #expect(section.leadingInset == theme.spacing.inline)
     }
 }

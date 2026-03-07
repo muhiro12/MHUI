@@ -9,9 +9,19 @@ private struct MHRowModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .padding(.vertical, theme.spacing.control + theme.spacing.inline)
+            .padding(.vertical, theme.layout.rowVerticalPadding)
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
+            .listRowInsets(
+                .init(
+                    top: 0,
+                    leading: theme.layout.rowHorizontalInset,
+                    bottom: 0,
+                    trailing: theme.layout.rowHorizontalInset
+                )
+            )
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
     }
 }
 
@@ -23,7 +33,7 @@ public extension View {
 
     /// Styles restrained row metadata shown above a row title.
     func mhRowOverline() -> some View {
-        mhTextStyle(.caption, colorRole: .secondaryText)
+        mhTextStyle(.metadata, colorRole: .secondaryText)
             .textCase(.uppercase)
     }
 
