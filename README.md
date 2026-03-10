@@ -1,5 +1,7 @@
 # MHUI
 
+## Overview
+
 MHUI is a small SwiftUI foundation for calm, tool-like sibling apps.
 It is intentionally opinionated and intentionally narrow.
 
@@ -11,6 +13,14 @@ MHUI focuses on three layers:
 
 It does not own app business logic, app models, logging, configuration, or infrastructure concerns.
 Those responsibilities stay outside the package.
+
+## Repository Layout
+
+- `Sources/MHUI` - shared package source of truth for reusable presentation APIs
+- `Tests/MHUITests` - package verification surface
+- `ci_scripts/` - stable build, test, and verify entrypoints
+- `Designs/` - architecture notes, current overview, and ADRs
+- `Example/` - optional consumer app used only when present for integration review
 
 ## Design Direction
 
@@ -119,3 +129,59 @@ MHUI does not currently provide:
 - app-specific feature views
 
 Those can be added later only if they strengthen the shared visual language without turning MHUI into a generic mega framework.
+
+## Requirements
+
+- Xcode 16 or later with the iOS 18 and macOS 15 SDKs installed
+- Swift 6.2 toolchain
+- `swiftlint` installed if you want to run the standardized verify pipeline
+- `pre-commit` installed if you want `verify.sh` to execute repository hooks
+
+## Build and Test
+
+Use the helper scripts in `ci_scripts/` as needed.
+For full local verification:
+
+```sh
+bash ci_scripts/tasks/verify.sh
+```
+
+If you only need required checks based on local changes:
+
+```sh
+bash ci_scripts/tasks/run_required_builds.sh
+```
+
+If you only need the repository hooks:
+
+```sh
+bash ci_scripts/tasks/pre_commit.sh
+```
+
+If you only need the package and optional example app build:
+
+```sh
+bash ci_scripts/tasks/build_app.sh
+```
+
+If you only need Swift package tests:
+
+```sh
+bash ci_scripts/tasks/test_shared_library.sh
+```
+
+### CI Artifact Layout
+
+CI helper scripts write generated artifacts under `.build/ci/`.
+Run-scoped outputs are stored in `.build/ci/runs/<RUN_ID>/` and include `summary.md`, `commands.txt`, `meta.json`, `logs/`, `results/`, and `work/`.
+Shared caches and build state live in `.build/ci/shared/` under `cache/`, `DerivedData/`, `tmp/`, and `home/`.
+
+## Architecture Docs
+
+- [Current repository overview](Designs/Overviews/mhui-current-overview.md)
+- [Architecture guide](Designs/Architecture/ARCHITECTURE_GUIDE.md)
+- [Shared presentation design](Designs/Architecture/shared-presentation-design.md)
+- [ADR 0001: Shared package source of truth](Designs/Decisions/0001-shared-package-source-of-truth.md)
+- [ADR 0002: Host apps own product behavior](Designs/Decisions/0002-host-apps-own-product-behavior.md)
+- [ADR 0003: Example integrations stay outside package](Designs/Decisions/0003-example-integrations-stay-outside-package.md)
+- [ADR 0004: Host screens own product meaning](Designs/Decisions/0004-host-screens-own-product-meaning.md)

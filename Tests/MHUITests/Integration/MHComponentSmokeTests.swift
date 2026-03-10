@@ -55,8 +55,8 @@ struct MHComponentSmokeTests {
                 Button("Create") {
                     // no-op
                 }
-                    .buttonStyle(.mhSecondary)
-                    .mhActionPresentation(.fullWidthLeading)
+                .buttonStyle(.mhSecondary)
+                .mhActionPresentation(.fullWidthLeading)
 
                 MHActionGroup {
                     Button("Create Something New") {

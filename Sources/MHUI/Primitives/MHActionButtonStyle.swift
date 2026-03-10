@@ -46,22 +46,22 @@ public struct MHActionButtonStyle: ButtonStyle {
             for: configuration,
             presentation: presentation
         )
-            .mhTextStyle(.bodyStrong, colorRole: style.foregroundRole)
-            .padding(.horizontal, style.horizontalPadding)
-            .padding(.vertical, style.verticalPadding)
-            .background {
-                shape
-                    .fill(fillColor(for: style))
-            }
-            .overlay {
-                shape
-                    .stroke(
-                        borderColor(for: style),
-                        lineWidth: style.borderRole == nil ? 0 : theme.divider.thickness
-                    )
-            }
-            .opacity(isEnabled ? 1 : style.disabledOpacity)
-            .opacity(configuration.isPressed ? style.pressedOpacity : 1)
+        .mhTextStyle(.bodyStrong, colorRole: style.foregroundRole)
+        .padding(.horizontal, style.horizontalPadding)
+        .padding(.vertical, style.verticalPadding)
+        .background {
+            shape
+                .fill(fillColor(for: style))
+        }
+        .overlay {
+            shape
+                .stroke(
+                    borderColor(for: style),
+                    lineWidth: style.borderRole == nil ? 0 : theme.divider.thickness
+                )
+        }
+        .opacity(isEnabled ? 1 : style.disabledOpacity)
+        .opacity(configuration.isPressed ? style.pressedOpacity : 1)
     }
 }
 

@@ -18,15 +18,39 @@ if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   exit 1
 fi
 
-start_run "$repository_root"
-echo "CI run artifacts: $RUN_ROOT"
+ci_root="$repository_root/.build/ci"
+runs_root="$ci_root/runs"
+shared_directory="$ci_root/shared"
+cache_directory="$shared_directory/cache"
+derived_data_directory="$shared_directory/DerivedData"
+shared_tmp_directory="$shared_directory/tmp"
+shared_home_directory="$shared_directory/home"
+
+ci_run_migrate_legacy_directories "$repository_root" "$runs_root" "$shared_directory"
+
+run_directory=$(ci_run_create_dir "$runs_root")
+run_identifier=$(basename "$run_directory")
+
+commands_file="$run_directory/commands.txt"
+summary_path="$run_directory/summary.md"
+meta_path="$run_directory/meta.json"
+logs_directory="$run_directory/logs"
+results_directory="$run_directory/results"
+run_work_directory="$run_directory/work"
+
+mkdir -p \
+  "$run_work_directory" \
+  "$cache_directory" \
+  "$derived_data_directory" \
+  "$shared_tmp_directory" \
+  "$shared_home_directory"
 
 start_epoch=$(date +%s)
 start_time_display=$(date +"%Y-%m-%d %H:%M:%S %z")
 start_time_iso=$(date +"%Y-%m-%dT%H:%M:%S%z")
 
 overall_result="success"
-run_note="Executed required build and test steps for MHUI."
+run_note="Evaluating local changes to determine required MHUI verification steps."
 failed_step=""
 failed_log=""
 executed_steps=()
@@ -48,7 +72,7 @@ finalize_run_artifacts() {
 
   if [[ $exit_code -ne 0 ]]; then
     overall_result="failure"
-    if [[ "$run_note" == "Executed required build and test steps for MHUI." ]]; then
+    if [[ -z "$run_note" || "$run_note" == "Executed required MHUI CI steps based on local changes." ]]; then
       run_note="A required step failed. Review failure details and logs."
     fi
   fi
@@ -64,79 +88,188 @@ finalize_run_artifacts() {
     executed_steps_markdown=${executed_steps_markdown%$'\n'}
   fi
 
-  write_summary \
+  ci_run_write_summary \
+    "$summary_path" \
+    "$run_identifier" \
     "$start_time_display" \
     "$end_time_display" \
     "$overall_result" \
     "$run_note" \
     "$executed_steps_markdown" \
     "$failed_step" \
-    "$failed_log" || true
+    "$failed_log" \
+    "$logs_directory" \
+    "$results_directory" \
+    "$commands_file" \
+    "$run_work_directory" \
+    "$shared_directory" || true
 
-  write_meta \
+  ci_run_write_meta \
+    "$meta_path" \
+    "$run_identifier" \
     "$start_time_iso" \
     "$end_time_iso" \
     "$duration_seconds" \
     "$overall_result" \
     "$run_note" \
     "$failed_step" \
-    "$failed_log" || true
+    "$failed_log" \
+    "$commands_file" \
+    "$logs_directory" \
+    "$results_directory" \
+    "$run_work_directory" \
+    "$shared_directory" || true
 
-  prune_old_runs 5 || true
+  ci_run_prune_old_runs "$runs_root" 5 || true
 }
 
 trap 'finalize_run_artifacts "$?"' EXIT
 
-log_command "$0" "$@"
+ci_run_capture_command "$commands_file" "$0" "$@"
+echo "CI run artifacts: $run_directory"
 
-run_step() {
+run_logged_step() {
   local step_identifier=$1
   local step_description=$2
   shift 2
 
+  local log_path="$logs_directory/${step_identifier}.log"
   executed_steps+=("$step_description")
-  echo "Running ${step_description}."
 
-  if ! run_and_capture "$step_identifier" "$@"; then
+  ci_run_capture_command \
+    "$commands_file" \
+    "CI_RUN_DIR=$run_directory" \
+    "CI_RUN_WORK_DIR=$run_work_directory" \
+    "CI_SHARED_DIR=$shared_directory" \
+    "CI_CACHE_DIR=$cache_directory" \
+    "CI_DERIVED_DATA_DIR=$derived_data_directory" \
+    "CI_RUN_RESULTS_DIR=$results_directory" \
+    "AI_RUN_RESULTS_DIR=$results_directory" \
+    "AI_RUN_WORK_DIR=$run_work_directory" \
+    "AI_RUN_CACHE_ROOT=$cache_directory" \
+    "$@"
+
+  echo "Running ${step_description}."
+  set +e
+  CI_RUN_DIR="$run_directory" \
+    CI_RUN_WORK_DIR="$run_work_directory" \
+    CI_SHARED_DIR="$shared_directory" \
+    CI_CACHE_DIR="$cache_directory" \
+    CI_DERIVED_DATA_DIR="$derived_data_directory" \
+    CI_RUN_RESULTS_DIR="$results_directory" \
+    AI_RUN_RESULTS_DIR="$results_directory" \
+    AI_RUN_WORK_DIR="$run_work_directory" \
+    AI_RUN_CACHE_ROOT="$cache_directory" \
+    "$@" 2>&1 | tee "$log_path"
+  local command_status=${PIPESTATUS[0]}
+  set -e
+
+  if [[ $command_status -ne 0 ]]; then
     failed_step="$step_description"
-    failed_log="$LAST_LOG_PATH"
+    failed_log="$log_path"
     overall_result="failure"
     run_note="A required step failed. Review failure details and logs."
-    return 1
+    return "$command_status"
   fi
 
   return 0
 }
 
-run_step \
-  "check_models_directory_consistency" \
-  "Check models directory consistency" \
-  bash "$repository_root/ci_scripts/tasks/check_models_directory_consistency.sh"
-
-if ! command -v swiftlint >/dev/null 2>&1; then
-  log_command swiftlint lint --strict --no-cache
-  failed_step="Run SwiftLint strict no-cache"
-  failed_log="$LOG_DIR/swiftlint_strict.log"
-  {
-    echo "swiftlint is not installed. Install it and retry."
-    echo "Install with: brew install swiftlint"
-  } | tee "$failed_log" >&2
-  overall_result="failure"
-  run_note="A required step failed. Review failure details and logs."
-  exit 1
+should_run_pre_commit=false
+if [[ "${CI_RUN_ENABLE_PRE_COMMIT:-0}" == "1" || "${CI_RUN_ENABLE_PRE_COMMIT:-}" == "true" ]]; then
+  should_run_pre_commit=true
 fi
 
-run_step \
-  "swiftlint_strict" \
-  "Run SwiftLint strict no-cache" \
-  swiftlint lint --strict --no-cache
+if $should_run_pre_commit; then
+  run_logged_step \
+    "pre_commit" \
+    "Run pre-commit hooks" \
+    bash "$repository_root/ci_scripts/tasks/pre_commit.sh"
+fi
 
-run_step \
-  "build_app" \
-  "Build MHUI package and example app" \
-  bash "$repository_root/ci_scripts/tasks/build_app.sh"
+changed_files=$(
+  {
+    git diff --name-only --cached
+    git diff --name-only
+    git ls-files --others --exclude-standard
+  } | sed '/^$/d' | sort -u
+)
 
-run_step \
-  "test_shared_library" \
-  "Run Swift package tests" \
-  bash "$repository_root/ci_scripts/tasks/test_shared_library.sh"
+if [[ -z "$changed_files" ]]; then
+  echo "No local changes detected."
+  if $should_run_pre_commit; then
+    run_note="pre-commit completed. No local changes detected. Build/test steps were skipped."
+  else
+    run_note="No local changes detected. Build/test steps were skipped."
+  fi
+  exit 0
+fi
+
+needs_swiftlint=false
+needs_build=false
+needs_tests=false
+
+if grep -Eq '^Sources/|^Tests/|^Example/|^Package\.swift$|^\.swiftlint\.yml$|^\.pre-commit-config\.yaml$|^ci_scripts/' <<<"$changed_files"; then
+  needs_swiftlint=true
+fi
+
+if grep -Eq '^Sources/|^Example/|^Package\.swift$|^ci_scripts/' <<<"$changed_files"; then
+  needs_build=true
+fi
+
+if grep -Eq '^Sources/|^Tests/|^Package\.swift$|^ci_scripts/' <<<"$changed_files"; then
+  needs_tests=true
+fi
+
+if ! $needs_swiftlint && ! $needs_build && ! $needs_tests; then
+  echo "No changes under Sources/, Tests/, Example/, Package.swift, ci_scripts/, .swiftlint.yml, or .pre-commit-config.yaml."
+  if $should_run_pre_commit; then
+    run_note="pre-commit completed. No package-related changes were detected. Build/test steps were skipped."
+  else
+    run_note="No package-related changes were detected. Build/test steps were skipped."
+  fi
+  exit 0
+fi
+
+run_note="Executed required MHUI CI steps based on local changes."
+
+if $needs_build || $needs_tests; then
+  run_logged_step \
+    "check_models_directory_consistency" \
+    "Check models directory consistency" \
+    bash "$repository_root/ci_scripts/tasks/check_models_directory_consistency.sh"
+fi
+
+if $needs_swiftlint; then
+  if ! command -v swiftlint >/dev/null 2>&1; then
+    ci_run_capture_command "$commands_file" swiftlint lint --strict --no-cache
+    failed_step="Run SwiftLint strict no-cache"
+    failed_log="$logs_directory/swiftlint_strict.log"
+    {
+      echo "swiftlint is not installed. Install it and retry."
+      echo "Install with: brew install swiftlint"
+    } | tee "$failed_log" >&2
+    overall_result="failure"
+    run_note="A required step failed. Review failure details and logs."
+    exit 1
+  fi
+
+  run_logged_step \
+    "swiftlint_strict" \
+    "Run SwiftLint strict no-cache" \
+    swiftlint lint --strict --no-cache
+fi
+
+if $needs_build; then
+  run_logged_step \
+    "build_app" \
+    "Build MHUI package and example app" \
+    bash "$repository_root/ci_scripts/tasks/build_app.sh"
+fi
+
+if $needs_tests; then
+  run_logged_step \
+    "test_shared_library" \
+    "Run Swift package tests" \
+    bash "$repository_root/ci_scripts/tasks/test_shared_library.sh"
+fi
