@@ -3,15 +3,7 @@ import SwiftUI
 
 private enum MHSurface {}
 
-struct MHResolvedSurfaceStyle: Sendable, Equatable {
-    var usesMaterial: Bool
-    var materialStyle: MHMaterialStyle?
-    var fillColorRole: MHColorRole
-    var overlayColorRole: MHColorRole?
-    var overlayOpacity: Double
-    var borderColorRole: MHColorRole
-    var borderOpacity: Double
-}
+typealias MHResolvedSurfaceStyle = MHResolvedGlassBackgroundStyle
 
 struct MHResolvedSurfaceInsetStyle: Sendable, Equatable {
     var horizontal: CGFloat
@@ -27,8 +19,8 @@ public enum MHSurfaceRole: String, Sendable, CaseIterable {
 private struct MHSurfaceModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.mhMaterialPolicy)
-    private var materialPolicy
+    @Environment(\.mhGlassPolicy)
+    private var glassPolicy
     @Environment(\.colorScheme)
     private var colorScheme
     @Environment(\.accessibilityReduceTransparency)
@@ -43,7 +35,7 @@ private struct MHSurfaceModifier: ViewModifier {
         )
         let style = theme.resolvedSurfaceStyle(
             for: role,
-            materialPolicy: materialPolicy,
+            glassPolicy: glassPolicy,
             reduceTransparency: accessibilityReduceTransparency
         )
 
@@ -60,7 +52,7 @@ private struct MHSurfaceModifier: ViewModifier {
                 shape
                     .stroke(
                         theme.resolvedColor(
-                            for: style.borderColorRole,
+                            for: style.borderRole ?? .border,
                             in: colorScheme
                         )
                         .opacity(style.borderOpacity),
@@ -120,24 +112,28 @@ extension MHTheme {
 
     func resolvedSurfaceStyle(
         for role: MHSurfaceRole,
-        materialPolicy: MHMaterialPolicy,
-        reduceTransparency: Bool
+        glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool,
+        supportsGlass: Bool = MHGlassRuntimeSupport.isAvailable
     ) -> MHResolvedSurfaceStyle {
         resolvedSurfaceStyle(
             treatment: treatment(for: role),
-            materialPolicy: materialPolicy,
-            reduceTransparency: reduceTransparency
+            glassPolicy: glassPolicy,
+            reduceTransparency: reduceTransparency,
+            supportsGlass: supportsGlass
         )
     }
 
     func resolvedCanvasSurfaceStyle(
-        materialPolicy: MHMaterialPolicy,
-        reduceTransparency: Bool
+        glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool,
+        supportsGlass: Bool = MHGlassRuntimeSupport.isAvailable
     ) -> MHResolvedSurfaceStyle {
         resolvedSurfaceStyle(
             treatment: surfaces.canvas,
-            materialPolicy: materialPolicy,
-            reduceTransparency: reduceTransparency
+            glassPolicy: glassPolicy,
+            reduceTransparency: reduceTransparency,
+            supportsGlass: supportsGlass
         )
     }
 
@@ -154,18 +150,23 @@ extension MHTheme {
 
     private func resolvedSurfaceStyle(
         treatment: SurfaceTreatment,
-        materialPolicy: MHMaterialPolicy,
-        reduceTransparency: Bool
+        glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool,
+        supportsGlass: Bool
     ) -> MHResolvedSurfaceStyle {
-        let usesMaterial = materialPolicy == .enabled && !reduceTransparency
+        let usesGlass = glassPolicy.resolvesUsesGlass(
+            prefersGlass: treatment.prefersGlass,
+            supportsGlass: supportsGlass,
+            reduceTransparency: reduceTransparency
+        )
 
         return MHResolvedSurfaceStyle(
-            usesMaterial: usesMaterial,
-            materialStyle: usesMaterial ? treatment.material : nil,
-            fillColorRole: treatment.fallbackColorRole,
-            overlayColorRole: usesMaterial ? treatment.overlayColorRole : nil,
-            overlayOpacity: usesMaterial ? treatment.overlayOpacity : 0,
-            borderColorRole: treatment.borderColorRole,
+            usesGlass: usesGlass,
+            fallbackFillRole: treatment.fallbackColorRole,
+            fallbackFillOpacity: treatment.fallbackOpacity,
+            glassTintRole: usesGlass ? treatment.glassTintColorRole : nil,
+            glassTintOpacity: usesGlass ? treatment.glassTintOpacity : 0,
+            borderRole: treatment.borderColorRole,
             borderOpacity: treatment.borderOpacity
         )
     }

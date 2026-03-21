@@ -7,6 +7,26 @@ struct MHComponentSmokeTests {
     @Test
     @MainActor
     func public_styles_and_modifiers_instantiate() {
+        struct GlassClusterSmokeView: View {
+            @Namespace private var namespace
+
+            var body: some View {
+                MHGlassContainer(spacing: MHTheme.standard.spacing.control) {
+                    HStack(spacing: MHTheme.standard.spacing.control) {
+                        Text("Accent")
+                            .mhBadge(style: .accent)
+                            .mhGlassEffectID("accent", in: namespace)
+
+                        Button("Review") {
+                            // no-op
+                        }
+                        .buttonStyle(.mhSecondary)
+                        .mhGlassEffectID("review", in: namespace)
+                    }
+                }
+            }
+        }
+
         let smokeView = AnyView(
             VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
                 VStack(spacing: 0) {
@@ -70,6 +90,8 @@ struct MHComponentSmokeTests {
                     .buttonStyle(.mhSecondary)
                 }
 
+                GlassClusterSmokeView()
+
                 LabeledContent(
                     "Fallback policy",
                     value: "Stack vertically when width gets tight."
@@ -81,7 +103,7 @@ struct MHComponentSmokeTests {
                 title: "Foundation",
                 subtitle: "Quiet composition"
             )
-            .mhMaterialPolicy(.enabled)
+            .mhGlassPolicy(.enabled)
         )
 
         #expect(!String(reflecting: type(of: smokeView)).isEmpty)
@@ -161,8 +183,9 @@ struct MHComponentSmokeTests {
         let rowStyle = theme.resolvedRowChromeStyle()
         let surfaceStyle = theme.resolvedSurfaceStyle(
             for: .standard,
-            materialPolicy: .enabled,
-            reduceTransparency: false
+            glassPolicy: .enabled,
+            reduceTransparency: false,
+            supportsGlass: true
         )
         let cueStyle = theme.resolvedCueStyle(for: .section)
 

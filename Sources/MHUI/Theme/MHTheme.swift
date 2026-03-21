@@ -226,25 +226,28 @@ public struct MHTheme: Sendable, Equatable {
 
     /// Surface recipes used by calm containers and screen chrome.
     public struct SurfaceTreatment: Sendable, Equatable {
-        public var material: MHMaterialStyle
+        public var prefersGlass: Bool
         public var fallbackColorRole: MHColorRole
-        public var overlayColorRole: MHColorRole
-        public var overlayOpacity: Double
+        public var fallbackOpacity: Double
+        public var glassTintColorRole: MHColorRole?
+        public var glassTintOpacity: Double
         public var borderColorRole: MHColorRole
         public var borderOpacity: Double
 
         public init(
-            material: MHMaterialStyle,
+            prefersGlass: Bool,
             fallbackColorRole: MHColorRole,
-            overlayColorRole: MHColorRole,
-            overlayOpacity: Double,
             borderColorRole: MHColorRole,
-            borderOpacity: Double
+            borderOpacity: Double,
+            fallbackOpacity: Double,
+            glassTintColorRole: MHColorRole?,
+            glassTintOpacity: Double
         ) {
-            self.material = material
+            self.prefersGlass = prefersGlass
             self.fallbackColorRole = fallbackColorRole
-            self.overlayColorRole = overlayColorRole
-            self.overlayOpacity = overlayOpacity
+            self.fallbackOpacity = fallbackOpacity
+            self.glassTintColorRole = glassTintColorRole
+            self.glassTintOpacity = glassTintOpacity
             self.borderColorRole = borderColorRole
             self.borderOpacity = borderOpacity
         }

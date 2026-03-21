@@ -1,13 +1,8 @@
 import SwiftUI
 
 struct MHResolvedActionButtonStyle: Sendable, Equatable {
-    var fillRole: MHColorRole?
-    var fillOpacity: Double
-    var borderRole: MHColorRole?
-    var borderOpacity: Double
+    var backgroundStyle: MHResolvedGlassBackgroundStyle?
     var foregroundRole: MHColorRole
-    var accentRuleRole: MHColorRole?
-    var accentRuleOpacity: Double
     var horizontalPadding: CGFloat
     var verticalPadding: CGFloat
     var pressedOpacity: Double

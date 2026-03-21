@@ -37,8 +37,8 @@ Apps can override the theme via `mhTheme(_:)`, but the customization surface is 
 MHUI should feel native first and refined second: interaction patterns stay close to SwiftUI defaults, while spacing, proportion, and surface treatment provide the package's personality.
 The standard theme is built from achromatic neutrals plus the host app's tint color.
 Apps can still choose a preset accent through `MHTheme.standard(accentStyle:)` or override `colors.accent` directly.
-Grouped surfaces stay solid by default.
-Material recipes are available through `mhMaterialPolicy(.enabled)` and still fall back to solid theme colors when transparency should be reduced.
+Detached surfaces prefer Liquid Glass by default through `mhGlassPolicy(.automatic)`.
+They still fall back to solid theme colors when transparency should be reduced or the runtime does not support Liquid Glass.
 Preview baselines follow the same host-tint default as runtime usage, while built-in accent comparisons live in explicit review scenarios.
 
 Its design attitude is informed by calm, functional retail and editorial environments.
@@ -49,9 +49,11 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 
 - `MHTheme`, `MHAccentStyle`, `MHTextRole`, `MHColorRole`
 - `MHFontStyle`, `MHFontWeight`, `MHTextMetrics`, `mhTextStyle(_:colorRole:)`
-- `MHMaterialPolicy`, `mhMaterialPolicy(_:)`
+- `MHGlassPolicy`, `mhGlassPolicy(_:)`
 - `MHActionButtonStyle` and `ButtonStyle` sugar like `.mhPrimary`
 - `MHActionPresentation`, `mhActionPresentation(_:)`
+- `MHGlassContainer`
+- `mhGlassEffectID(_:in:)`
 - `mhSurface(role:)` and `mhSurfaceInset()`
 - `mhInputChrome(state:)`
 - `mhBadge(style:)`
@@ -112,10 +114,10 @@ Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from s
 Start in this order when adjusting appearance:
 
 1. `MHTheme.standard()` for default color, spacing, radius, layout, and surface recipes.
-2. `MHPreviewStyle` and the shared preview catalogs for host tint, accent, material, native container, density, and dynamic type comparisons.
+2. `MHPreviewStyle` and the shared preview catalogs for host tint, accent, glass policy, native container, density, and dynamic type comparisons.
 3. Internal shared resolvers for row chrome, surface fill, and cue chrome only when a shared token is not enough.
 
-The most useful previews to review first are `Foundation Catalog`, `Material Review`, `Accent Review`, and `Native Container Review`.
+The most useful previews to review first are `Foundation Catalog`, `Glass Review`, `Accent Review`, and `Native Container Review`.
 
 ## Intentional Boundaries
 

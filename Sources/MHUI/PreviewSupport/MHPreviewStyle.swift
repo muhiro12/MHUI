@@ -45,7 +45,7 @@ enum MHPreviewTypeScale: String, Sendable, CaseIterable {
 struct MHPreviewContext: Sendable, Equatable, Identifiable {
     var accentStyle: MHAccentStyle?
     var colorMode: MHPreviewColorMode
-    var materialPolicy: MHMaterialPolicy
+    var glassPolicy: MHGlassPolicy
     var typeScale: MHPreviewTypeScale
     var isEnabled: Bool
 
@@ -53,7 +53,7 @@ struct MHPreviewContext: Sendable, Equatable, Identifiable {
         [
             accentIdentifier,
             colorMode.rawValue,
-            materialPolicy.rawValue,
+            glassPolicy.rawValue,
             typeScale.rawValue,
             isEnabled ? "enabled" : "disabled"
         ]
@@ -64,7 +64,7 @@ struct MHPreviewContext: Sendable, Equatable, Identifiable {
         [
             colorMode.title,
             accentTitle,
-            materialPolicy == .enabled ? "Material On" : "Material Off",
+            glassPolicyTitle,
             typeScale.title,
             isEnabled ? "Enabled" : "Disabled"
         ]
@@ -81,6 +81,17 @@ struct MHPreviewContext: Sendable, Equatable, Identifiable {
 
     private var accentTitle: String {
         accentStyle?.rawValue.capitalized ?? "Host Tint"
+    }
+
+    private var glassPolicyTitle: String {
+        switch glassPolicy {
+        case .automatic:
+            "Glass Auto"
+        case .enabled:
+            "Glass On"
+        case .disabled:
+            "Glass Fallback"
+        }
     }
 }
 
@@ -110,14 +121,14 @@ enum MHPreviewStyle {
     static func context(
         accentStyle: MHAccentStyle? = nil,
         colorMode: MHPreviewColorMode = .light,
-        materialPolicy: MHMaterialPolicy = .disabled,
+        glassPolicy: MHGlassPolicy = .automatic,
         typeScale: MHPreviewTypeScale = .regular,
         isEnabled: Bool = true
     ) -> MHPreviewContext {
         .init(
             accentStyle: accentStyle,
             colorMode: colorMode,
-            materialPolicy: materialPolicy,
+            glassPolicy: glassPolicy,
             typeScale: typeScale,
             isEnabled: isEnabled
         )
@@ -188,32 +199,33 @@ enum MHPreviewStyle {
         ]
     }
 
-    static func materialReviewScenarios() -> [MHPreviewScenario] {
+    static func glassReviewScenarios() -> [MHPreviewScenario] {
         [
             .init(
-                name: "Phone",
+                name: "Phone Auto",
                 width: Widths.phone,
-                context: context(materialPolicy: .disabled)
+                context: context(glassPolicy: .automatic)
             ),
             .init(
-                name: "Phone Material",
+                name: "Phone Fallback",
                 width: Widths.phone,
-                context: context(materialPolicy: .enabled)
+                context: context(glassPolicy: .disabled)
             ),
             .init(
-                name: "Dark Phone",
+                name: "Dark Phone Auto",
                 width: Widths.phone,
                 context: context(
                     colorMode: .dark,
-                    materialPolicy: .disabled
+                    glassPolicy: .automatic
                 )
             ),
             .init(
-                name: "Dark Stress Phone",
+                name: "Dark Stress Fallback",
                 width: Widths.stressPhone,
                 context: context(
                     colorMode: .dark,
-                    materialPolicy: .enabled
+                    glassPolicy: .disabled,
+                    typeScale: .accessibility
                 )
             )
         ]
@@ -257,7 +269,7 @@ private struct MHPreviewContextModifier: ViewModifier {
         return content
             .disabled(!context.isEnabled)
             .mhTheme(theme)
-            .mhMaterialPolicy(context.materialPolicy)
+            .mhGlassPolicy(context.glassPolicy)
             .tint(MHPreviewStyle.tintColor(for: context))
             .preferredColorScheme(context.colorMode.colorScheme)
             .dynamicTypeSize(context.typeScale.dynamicTypeSize)

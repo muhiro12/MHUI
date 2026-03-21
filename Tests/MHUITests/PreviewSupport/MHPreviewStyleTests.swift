@@ -14,18 +14,18 @@ struct MHPreviewStyleTests {
     }
 
     @Test
-    func preview_context_tracks_accent_material_and_enabled_state() {
+    func preview_context_tracks_accent_glass_and_enabled_state() {
         let context = MHPreviewStyle.context(
             accentStyle: .blue,
             colorMode: .dark,
-            materialPolicy: .enabled,
+            glassPolicy: .enabled,
             typeScale: .accessibility,
             isEnabled: false
         )
 
         #expect(context.accentStyle == .blue)
         #expect(context.colorMode == .dark)
-        #expect(context.materialPolicy == .enabled)
+        #expect(context.glassPolicy == .enabled)
         #expect(context.typeScale == .accessibility)
         #expect(!context.isEnabled)
         #expect(context.tintReference == MHTheme.standard(accentStyle: .blue).colors.accent)
@@ -47,7 +47,7 @@ struct MHPreviewStyleTests {
             .map(\.context.accentStyle)
 
         #expect(MHPreviewStyle.foundationScenarios().count == 4)
-        #expect(MHPreviewStyle.materialReviewScenarios().count == 4)
+        #expect(MHPreviewStyle.glassReviewScenarios().count == 4)
         #expect(accentStyles == MHAccentStyle.allCases.map(Optional.some))
         #expect(MHPreviewStyle.nativeContainerScenarios().map(\.context.colorMode) == [.light, .dark])
         #expect(MHPreviewStyle.foundationScenarios().map { Int($0.width.rounded()) } == [760, 375, 375, 320])

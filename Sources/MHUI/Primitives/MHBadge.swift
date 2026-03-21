@@ -6,58 +6,52 @@ private enum MHBadge {}
 private struct MHBadgeModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
+    @Environment(\.mhGlassPolicy)
+    private var glassPolicy
     @Environment(\.colorScheme)
     private var colorScheme
+    @Environment(\.accessibilityReduceTransparency)
+    private var accessibilityReduceTransparency
 
     let style: MHBadgeStyle
 
     func body(content: Content) -> some View {
-        let chromeStyle = theme.resolvedBadgeChromeStyle(for: style)
+        let chromeStyle = theme.resolvedBadgeChromeStyle(
+            for: style,
+            glassPolicy: glassPolicy,
+            reduceTransparency: accessibilityReduceTransparency
+        )
+        let shape = RoundedRectangle(
+            cornerRadius: theme.radius.control,
+            style: .continuous
+        )
 
         content
             .mhTextStyle(chromeStyle.textRole, colorRole: chromeStyle.foregroundRole)
             .textCase(.uppercase)
             .padding(.horizontal, chromeStyle.horizontalPadding)
             .padding(.vertical, chromeStyle.verticalPadding)
-            .background(
-                backgroundColor(for: chromeStyle),
-                in: RoundedRectangle(
-                    cornerRadius: theme.radius.control,
-                    style: .continuous
-                )
-            )
-            .overlay {
-                RoundedRectangle(
-                    cornerRadius: theme.radius.control,
-                    style: .continuous
-                )
-                .stroke(
-                    borderColor(for: chromeStyle),
-                    lineWidth: theme.divider.thickness
+            .background {
+                MHSurfaceFill(
+                    shape: shape,
+                    style: chromeStyle.backgroundStyle,
+                    theme: theme,
+                    colorScheme: colorScheme
                 )
             }
-    }
-}
-
-private extension MHBadgeModifier {
-    func backgroundColor(
-        for style: MHResolvedBadgeChromeStyle
-    ) -> Color {
-        theme.resolvedColor(
-            for: style.foregroundRole,
-            in: colorScheme
-        )
-        .opacity(style.fillOpacity)
-    }
-
-    func borderColor(
-        for style: MHResolvedBadgeChromeStyle
-    ) -> Color {
-        theme.resolvedColor(
-            for: style.foregroundRole,
-            in: colorScheme
-        )
-        .opacity(style.borderOpacity)
+            .overlay {
+                if let borderRole = chromeStyle.backgroundStyle.borderRole {
+                    shape
+                        .stroke(
+                            theme.resolvedColor(
+                                for: borderRole,
+                                in: colorScheme
+                            )
+                            .opacity(chromeStyle.backgroundStyle.borderOpacity),
+                            lineWidth: theme.divider.thickness
+                        )
+                }
+            }
     }
 }
 

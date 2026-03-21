@@ -6,7 +6,7 @@ public extension MHTheme {
 
     // swiftlint:disable function_body_length
     /// Creates the standard neutral MHUI theme using the selected accent source.
-    /// Material recipes remain opt-in through `mhMaterialPolicy(_:)`.
+    /// Detached surfaces prefer Liquid Glass when the runtime and policy allow it.
     static func standard(
         accent: MHColorReference = .tint
     ) -> Self {
@@ -127,28 +127,31 @@ public extension MHTheme {
             ),
             surfaces: .init(
                 canvas: .init(
-                    material: .ultraThin,
+                    prefersGlass: false,
                     fallbackColorRole: .background,
-                    overlayColorRole: .background,
-                    overlayOpacity: 0.72,
                     borderColorRole: .border,
-                    borderOpacity: 0
+                    borderOpacity: 0,
+                    fallbackOpacity: 1,
+                    glassTintColorRole: nil,
+                    glassTintOpacity: 0
                 ),
                 standard: .init(
-                    material: .regular,
+                    prefersGlass: true,
                     fallbackColorRole: .surface,
-                    overlayColorRole: .surface,
-                    overlayOpacity: 0.78,
                     borderColorRole: .border,
-                    borderOpacity: 0.42
+                    borderOpacity: 0.24,
+                    fallbackOpacity: 1,
+                    glassTintColorRole: .surface,
+                    glassTintOpacity: 0.12
                 ),
                 muted: .init(
-                    material: .thin,
+                    prefersGlass: true,
                     fallbackColorRole: .surfaceMuted,
-                    overlayColorRole: .surfaceMuted,
-                    overlayOpacity: 0.84,
                     borderColorRole: .border,
-                    borderOpacity: 0.30
+                    borderOpacity: 0.18,
+                    fallbackOpacity: 1,
+                    glassTintColorRole: .surfaceMuted,
+                    glassTintOpacity: 0.08
                 )
             )
         )

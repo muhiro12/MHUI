@@ -22,8 +22,8 @@ struct MHResolvedScreenChromeStyle: Sendable, Equatable {
 struct MHCanvasBackground: View {
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.mhMaterialPolicy)
-    private var materialPolicy
+    @Environment(\.mhGlassPolicy)
+    private var glassPolicy
     @Environment(\.colorScheme)
     private var colorScheme
     @Environment(\.accessibilityReduceTransparency)
@@ -31,7 +31,7 @@ struct MHCanvasBackground: View {
 
     var body: some View {
         let style = theme.resolvedCanvasSurfaceStyle(
-            materialPolicy: materialPolicy,
+            glassPolicy: glassPolicy,
             reduceTransparency: accessibilityReduceTransparency
         )
 

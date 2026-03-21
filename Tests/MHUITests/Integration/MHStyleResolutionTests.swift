@@ -1,3 +1,4 @@
+// swiftlint:disable function_body_length type_body_length
 @testable import MHUI
 import SwiftUI
 import Testing
@@ -46,23 +47,38 @@ struct MHStyleResolutionTests {
     func action_button_resolution_stays_quiet_and_semantic() {
         let theme = MHTheme.standard
 
-        let primary = theme.resolvedActionButtonStyle(for: .primary)
-        let quiet = theme.resolvedActionButtonStyle(for: .quiet)
-        let destructive = theme.resolvedActionButtonStyle(for: .destructive)
+        let primary = theme.resolvedActionButtonStyle(
+            for: .primary,
+            context: .init(),
+            glassPolicy: .enabled,
+            reduceTransparency: false,
+            supportsGlass: true
+        )
+        let quiet = theme.resolvedActionButtonStyle(
+            for: .quiet,
+            context: .init(),
+            glassPolicy: .enabled,
+            reduceTransparency: false,
+            supportsGlass: true
+        )
+        let destructive = theme.resolvedActionButtonStyle(
+            for: .destructive,
+            context: .init(),
+            glassPolicy: .enabled,
+            reduceTransparency: false,
+            supportsGlass: true
+        )
 
-        #expect(primary.fillRole == .surfaceMuted)
-        #expect(primary.borderRole == .border)
+        #expect(primary.backgroundStyle?.usesGlass == true)
+        #expect(primary.backgroundStyle?.fallbackFillRole == .surfaceMuted)
+        #expect(primary.backgroundStyle?.borderRole == .accent)
         #expect(primary.foregroundRole == .primaryText)
-        #expect(primary.accentRuleRole == nil)
-        #expect(primary.accentRuleOpacity == 0)
-        #expect(quiet.fillRole == nil)
-        #expect(quiet.borderRole == nil)
+        #expect(quiet.backgroundStyle == nil)
         #expect(quiet.foregroundRole == .accent)
         #expect(quiet.pressedOpacity == 0.72)
         #expect(quiet.disabledOpacity == 0.50)
         #expect(destructive.foregroundRole == .destructive)
-        #expect(destructive.accentRuleRole == nil)
-        #expect(destructive.accentRuleOpacity == 0)
+        #expect(destructive.backgroundStyle?.borderRole == .destructive)
         #expect(primary.horizontalPadding == theme.spacing.group)
         #expect(quiet.verticalPadding < primary.verticalPadding)
         #expect(primary.pressedOpacity == 0.88)
@@ -81,7 +97,10 @@ struct MHStyleResolutionTests {
         let row = theme.resolvedRowChromeStyle(for: compactContext)
         let action = theme.resolvedActionButtonStyle(
             for: .primary,
-            context: compactContext
+            context: compactContext,
+            glassPolicy: .disabled,
+            reduceTransparency: false,
+            supportsGlass: false
         )
         let grouped = theme.resolvedGroupedRowsStyle(
             showsDividers: true,
@@ -125,24 +144,39 @@ struct MHStyleResolutionTests {
     func surface_and_group_styles_resolve_from_theme_tokens() {
         let theme = MHTheme.standard
         let grouped = theme.resolvedGroupedRowsStyle(showsDividers: true)
+        let automaticSurface = theme.resolvedSurfaceStyle(
+            for: .standard,
+            glassPolicy: .automatic,
+            reduceTransparency: false,
+            supportsGlass: true
+        )
+        let enabledSurface = theme.resolvedSurfaceStyle(
+            for: .standard,
+            glassPolicy: .enabled,
+            reduceTransparency: false,
+            supportsGlass: true
+        )
         let disabledSurface = theme.resolvedSurfaceStyle(
             for: .standard,
-            materialPolicy: .disabled,
-            reduceTransparency: false
+            glassPolicy: .disabled,
+            reduceTransparency: false,
+            supportsGlass: true
         )
-        let materialSurface = theme.resolvedSurfaceStyle(
+        let unsupportedSurface = theme.resolvedSurfaceStyle(
             for: .standard,
-            materialPolicy: .enabled,
-            reduceTransparency: false
+            glassPolicy: .enabled,
+            reduceTransparency: false,
+            supportsGlass: false
         )
-        let solidSurface = theme.resolvedSurfaceStyle(
+        let reducedTransparencySurface = theme.resolvedSurfaceStyle(
             for: .standard,
-            materialPolicy: .enabled,
+            glassPolicy: .enabled,
             reduceTransparency: true
         )
         let canvas = theme.resolvedCanvasSurfaceStyle(
-            materialPolicy: .enabled,
-            reduceTransparency: false
+            glassPolicy: .enabled,
+            reduceTransparency: false,
+            supportsGlass: true
         )
 
         #expect(theme.surfaceColorRole(for: .standard) == .surface)
@@ -152,17 +186,15 @@ struct MHStyleResolutionTests {
         #expect(grouped.dividerThickness == theme.divider.thickness)
         #expect(grouped.dividerOpacity == theme.divider.opacity)
         #expect(grouped.spacerHeight == theme.layout.rowVerticalPadding)
-        #expect(!disabledSurface.usesMaterial)
-        #expect(disabledSurface.materialStyle == nil)
-        #expect(disabledSurface.fillColorRole == .surface)
-        #expect(materialSurface.usesMaterial)
-        #expect(materialSurface.materialStyle == .regular)
-        #expect(materialSurface.fillColorRole == .surface)
-        #expect(materialSurface.overlayColorRole == .surface)
-        #expect(!solidSurface.usesMaterial)
-        #expect(solidSurface.materialStyle == nil)
-        #expect(solidSurface.fillColorRole == .surface)
-        #expect(canvas.materialStyle == .ultraThin)
+        #expect(automaticSurface.usesGlass)
+        #expect(enabledSurface.usesGlass)
+        #expect(!disabledSurface.usesGlass)
+        #expect(!unsupportedSurface.usesGlass)
+        #expect(!reducedTransparencySurface.usesGlass)
+        #expect(disabledSurface.fallbackFillRole == .surface)
+        #expect(enabledSurface.glassTintRole == .surface)
+        #expect(canvas.fallbackFillRole == .background)
+        #expect(!canvas.usesGlass)
     }
 
     @Test
@@ -220,23 +252,45 @@ struct MHStyleResolutionTests {
     @Test
     func input_and_badge_styles_resolve_from_theme_tokens() {
         let theme = MHTheme.standard
-        let focusedInput = theme.resolvedInputChromeStyle(for: .focused)
-        let invalidInput = theme.resolvedInputChromeStyle(for: .invalid)
-        let neutralBadge = theme.resolvedBadgeChromeStyle(for: .neutral)
-        let accentBadge = theme.resolvedBadgeChromeStyle(for: .accent)
+        let focusedInput = theme.resolvedInputChromeStyle(
+            for: .focused,
+            glassPolicy: .enabled,
+            reduceTransparency: false,
+            supportsGlass: true
+        )
+        let invalidInput = theme.resolvedInputChromeStyle(
+            for: .invalid,
+            glassPolicy: .enabled,
+            reduceTransparency: true,
+            supportsGlass: true
+        )
+        let neutralBadge = theme.resolvedBadgeChromeStyle(
+            for: .neutral,
+            glassPolicy: .enabled,
+            reduceTransparency: false,
+            supportsGlass: true
+        )
+        let accentBadge = theme.resolvedBadgeChromeStyle(
+            for: .accent,
+            glassPolicy: .disabled,
+            reduceTransparency: false,
+            supportsGlass: true
+        )
 
-        #expect(focusedInput.fillRole == .surface)
-        #expect(focusedInput.borderRole == .accent)
-        #expect(focusedInput.borderOpacity == 0.24)
+        #expect(focusedInput.backgroundStyle.usesGlass)
+        #expect(focusedInput.backgroundStyle.borderRole == .accent)
+        #expect(focusedInput.backgroundStyle.borderOpacity == 0.24)
         #expect(focusedInput.horizontalPadding == theme.spacing.group)
-        #expect(invalidInput.fillRole == .destructive)
-        #expect(invalidInput.fillOpacity == 0.04)
-        #expect(invalidInput.borderOpacity == 0.18)
+        #expect(invalidInput.backgroundStyle.fallbackFillRole == .destructive)
+        #expect(!invalidInput.backgroundStyle.usesGlass)
+        #expect(invalidInput.backgroundStyle.borderOpacity == 0.20)
         #expect(neutralBadge.textRole == .caption)
         #expect(neutralBadge.foregroundRole == .secondaryText)
-        #expect(neutralBadge.fillOpacity == 0.03)
+        #expect(neutralBadge.backgroundStyle.usesGlass)
+        #expect(neutralBadge.backgroundStyle.fallbackFillOpacity == 0.06)
         #expect(accentBadge.foregroundRole == .accent)
-        #expect(accentBadge.borderOpacity == 0.10)
+        #expect(accentBadge.backgroundStyle.borderOpacity == 0.14)
+        #expect(!accentBadge.backgroundStyle.usesGlass)
         #expect(accentBadge.horizontalPadding == theme.spacing.control)
     }
 
@@ -263,3 +317,4 @@ struct MHStyleResolutionTests {
         #expect(section.leadingInset == theme.spacing.inline)
     }
 }
+// swiftlint:enable function_body_length type_body_length

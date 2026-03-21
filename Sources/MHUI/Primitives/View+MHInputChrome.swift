@@ -2,13 +2,21 @@ import SwiftUI
 private struct MHInputChromeModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
+    @Environment(\.mhGlassPolicy)
+    private var glassPolicy
     @Environment(\.colorScheme)
     private var colorScheme
+    @Environment(\.accessibilityReduceTransparency)
+    private var accessibilityReduceTransparency
 
     let state: MHFieldState
 
     func body(content: Content) -> some View {
-        let style = theme.resolvedInputChromeStyle(for: state)
+        let style = theme.resolvedInputChromeStyle(
+            for: state,
+            glassPolicy: glassPolicy,
+            reduceTransparency: accessibilityReduceTransparency
+        )
         let shape = RoundedRectangle(
             cornerRadius: theme.radius.control,
             style: .continuous
@@ -18,42 +26,30 @@ private struct MHInputChromeModifier: ViewModifier {
             .padding(.horizontal, style.horizontalPadding)
             .padding(.vertical, style.verticalPadding)
             .background {
-                shape
-                    .fill(backgroundColor(for: style))
+                MHSurfaceFill(
+                    shape: shape,
+                    style: style.backgroundStyle,
+                    theme: theme,
+                    colorScheme: colorScheme
+                )
             }
             .overlay {
-                shape
-                    .stroke(
-                        borderColor(for: style),
-                        lineWidth: theme.divider.thickness
-                    )
+                if let borderRole = style.backgroundStyle.borderRole {
+                    shape
+                        .stroke(
+                            theme.resolvedColor(
+                                for: borderRole,
+                                in: colorScheme
+                            )
+                            .opacity(style.backgroundStyle.borderOpacity),
+                            lineWidth: theme.divider.thickness
+                        )
+                }
             }
             .animation(
                 .easeOut(duration: theme.motion.quick),
                 value: state
             )
-    }
-}
-
-private extension MHInputChromeModifier {
-    func backgroundColor(
-        for style: MHResolvedInputChromeStyle
-    ) -> Color {
-        theme.resolvedColor(
-            for: style.fillRole,
-            in: colorScheme
-        )
-        .opacity(style.fillOpacity)
-    }
-
-    func borderColor(
-        for style: MHResolvedInputChromeStyle
-    ) -> Color {
-        theme.resolvedColor(
-            for: style.borderRole,
-            in: colorScheme
-        )
-        .opacity(style.borderOpacity)
     }
 }
 

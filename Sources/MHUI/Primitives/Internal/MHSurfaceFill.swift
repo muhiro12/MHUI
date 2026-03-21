@@ -1,34 +1,53 @@
 import SwiftUI
 
-// Shared surface fill keeps solid and material rendering on the same code path.
+// Shared surface fill keeps glass and fallback rendering on the same code path.
 struct MHSurfaceFill<ShapeType: Shape>: View {
     let shape: ShapeType
-    let style: MHResolvedSurfaceStyle
+    let style: MHResolvedGlassBackgroundStyle
     let theme: MHTheme
     let colorScheme: ColorScheme
 
-    var body: some View {
-        if let materialStyle = style.materialStyle, style.usesMaterial {
-            materialStyle.fill(shape)
-
-            if let overlayColorRole = style.overlayColorRole {
+    @ViewBuilder var body: some View {
+        if style.usesGlass {
+            if #available(iOS 26, macOS 26, *) {
                 shape
-                    .fill(
-                        theme.resolvedColor(
-                            for: overlayColorRole,
-                            in: colorScheme
-                        )
-                        .opacity(style.overlayOpacity)
+                    .fill(.clear)
+                    .glassEffect(
+                        .regular,
+                        in: shape
                     )
+
+                if let glassTintRole = style.glassTintRole {
+                    shape
+                        .fill(
+                            theme.resolvedColor(
+                                for: glassTintRole,
+                                in: colorScheme
+                            )
+                            .opacity(style.glassTintOpacity)
+                        )
+                }
+            } else {
+                fallbackFill
             }
         } else {
+            fallbackFill
+        }
+    }
+
+    @ViewBuilder private var fallbackFill: some View {
+        if let fallbackFillRole = style.fallbackFillRole {
             shape
                 .fill(
                     theme.resolvedColor(
-                        for: style.fillColorRole,
+                        for: fallbackFillRole,
                         in: colorScheme
                     )
+                    .opacity(style.fallbackFillOpacity)
                 )
+        } else {
+            shape
+                .fill(.clear)
         }
     }
 }

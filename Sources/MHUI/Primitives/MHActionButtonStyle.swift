@@ -1,8 +1,11 @@
+// swiftlint:disable function_body_length
 import SwiftUI
 /// A restrained button style for primary, secondary, quiet, and destructive actions.
 public struct MHActionButtonStyle: ButtonStyle {
     @Environment(\.mhTheme)
     private var theme
+    @Environment(\.mhGlassPolicy)
+    private var glassPolicy
     @Environment(\.mhActionPresentation)
     private var actionPresentation
     @Environment(\.mhAdaptiveLayoutContext)
@@ -13,6 +16,8 @@ public struct MHActionButtonStyle: ButtonStyle {
     private var isEnabled
     @Environment(\.horizontalSizeClass)
     private var horizontalSizeClass
+    @Environment(\.accessibilityReduceTransparency)
+    private var accessibilityReduceTransparency
 
     private let role: MHButtonRole
 
@@ -31,7 +36,9 @@ public struct MHActionButtonStyle: ButtonStyle {
         )
         let style = theme.resolvedActionButtonStyle(
             for: role,
-            context: context
+            context: context,
+            glassPolicy: glassPolicy,
+            reduceTransparency: accessibilityReduceTransparency
         )
         let presentation = theme.resolvedActionPresentation(
             actionPresentation,
@@ -50,15 +57,28 @@ public struct MHActionButtonStyle: ButtonStyle {
         .padding(.horizontal, style.horizontalPadding)
         .padding(.vertical, style.verticalPadding)
         .background {
-            shape
-                .fill(fillColor(for: style))
+            if let backgroundStyle = style.backgroundStyle {
+                MHSurfaceFill(
+                    shape: shape,
+                    style: backgroundStyle,
+                    theme: theme,
+                    colorScheme: colorScheme
+                )
+            }
         }
         .overlay {
-            shape
-                .stroke(
-                    borderColor(for: style),
-                    lineWidth: style.borderRole == nil ? 0 : theme.divider.thickness
-                )
+            if let backgroundStyle = style.backgroundStyle,
+               let borderRole = backgroundStyle.borderRole {
+                shape
+                    .stroke(
+                        theme.resolvedColor(
+                            for: borderRole,
+                            in: colorScheme
+                        )
+                        .opacity(backgroundStyle.borderOpacity),
+                        lineWidth: theme.divider.thickness
+                    )
+            }
         }
         .opacity(isEnabled ? 1 : style.disabledOpacity)
         .opacity(configuration.isPressed ? style.pressedOpacity : 1)
@@ -115,28 +135,5 @@ private extension MHActionButtonStyle {
             label
         }
     }
-
-    func fillColor(for style: MHResolvedActionButtonStyle) -> Color {
-        guard let fillRole = style.fillRole else {
-            return .clear
-        }
-
-        return theme.resolvedColor(
-            for: fillRole,
-            in: colorScheme
-        )
-        .opacity(style.fillOpacity)
-    }
-
-    func borderColor(for style: MHResolvedActionButtonStyle) -> Color {
-        guard let borderRole = style.borderRole else {
-            return .clear
-        }
-
-        return theme.resolvedColor(
-            for: borderRole,
-            in: colorScheme
-        )
-        .opacity(style.borderOpacity)
-    }
 }
+// swiftlint:enable function_body_length

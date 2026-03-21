@@ -1,8 +1,20 @@
 // swiftlint:disable function_body_length no_magic_numbers
+private struct MHButtonBackgroundRecipe {
+    let fallbackFillRole: MHColorRole?
+    let fallbackFillOpacity: Double
+    let glassTintRole: MHColorRole?
+    let glassTintOpacity: Double
+    let borderRole: MHColorRole?
+    let borderOpacity: Double
+}
+
 extension MHTheme {
     func resolvedActionButtonStyle(
         for role: MHButtonRole,
-        context: MHAdaptiveLayoutContext
+        context: MHAdaptiveLayoutContext,
+        glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool,
+        supportsGlass: Bool = MHGlassRuntimeSupport.isAvailable
     ) -> MHResolvedActionButtonStyle {
         let isCompactWidth = context.isCompactWidth(
             threshold: layout.compactWidthThreshold
@@ -23,13 +35,20 @@ extension MHTheme {
         return switch role {
         case .primary:
             MHResolvedActionButtonStyle(
-                fillRole: .surfaceMuted,
-                fillOpacity: 1,
-                borderRole: .border,
-                borderOpacity: divider.opacity,
+                backgroundStyle: resolvedGlassBackgroundStyle(
+                    .init(
+                        fallbackFillRole: .surfaceMuted,
+                        fallbackFillOpacity: 1,
+                        glassTintRole: .accent,
+                        glassTintOpacity: 0.14,
+                        borderRole: .accent,
+                        borderOpacity: 0.18
+                    ),
+                    glassPolicy: glassPolicy,
+                    reduceTransparency: reduceTransparency,
+                    supportsGlass: supportsGlass
+                ),
                 foregroundRole: .primaryText,
-                accentRuleRole: nil,
-                accentRuleOpacity: 0,
                 horizontalPadding: filledHorizontalPadding,
                 verticalPadding: filledVerticalPadding,
                 pressedOpacity: 0.88,
@@ -37,13 +56,20 @@ extension MHTheme {
             )
         case .secondary:
             MHResolvedActionButtonStyle(
-                fillRole: .surface,
-                fillOpacity: 1,
-                borderRole: .border,
-                borderOpacity: divider.opacity,
+                backgroundStyle: resolvedGlassBackgroundStyle(
+                    .init(
+                        fallbackFillRole: .surface,
+                        fallbackFillOpacity: 1,
+                        glassTintRole: .surface,
+                        glassTintOpacity: 0.12,
+                        borderRole: .border,
+                        borderOpacity: 0.22
+                    ),
+                    glassPolicy: glassPolicy,
+                    reduceTransparency: reduceTransparency,
+                    supportsGlass: supportsGlass
+                ),
                 foregroundRole: .primaryText,
-                accentRuleRole: nil,
-                accentRuleOpacity: 0,
                 horizontalPadding: filledHorizontalPadding,
                 verticalPadding: filledVerticalPadding,
                 pressedOpacity: 0.88,
@@ -51,13 +77,8 @@ extension MHTheme {
             )
         case .quiet:
             MHResolvedActionButtonStyle(
-                fillRole: nil,
-                fillOpacity: 0,
-                borderRole: nil,
-                borderOpacity: 0,
+                backgroundStyle: nil,
                 foregroundRole: .accent,
-                accentRuleRole: nil,
-                accentRuleOpacity: 0,
                 horizontalPadding: quietHorizontalPadding,
                 verticalPadding: quietVerticalPadding,
                 pressedOpacity: 0.72,
@@ -65,13 +86,20 @@ extension MHTheme {
             )
         case .destructive:
             MHResolvedActionButtonStyle(
-                fillRole: .surface,
-                fillOpacity: 1,
-                borderRole: .destructive,
-                borderOpacity: 0.18,
+                backgroundStyle: resolvedGlassBackgroundStyle(
+                    .init(
+                        fallbackFillRole: .surface,
+                        fallbackFillOpacity: 1,
+                        glassTintRole: .destructive,
+                        glassTintOpacity: 0.10,
+                        borderRole: .destructive,
+                        borderOpacity: 0.20
+                    ),
+                    glassPolicy: glassPolicy,
+                    reduceTransparency: reduceTransparency,
+                    supportsGlass: supportsGlass
+                ),
                 foregroundRole: .destructive,
-                accentRuleRole: nil,
-                accentRuleOpacity: 0,
                 horizontalPadding: filledHorizontalPadding,
                 verticalPadding: filledVerticalPadding,
                 pressedOpacity: 0.88,
@@ -83,7 +111,35 @@ extension MHTheme {
     func resolvedActionButtonStyle(
         for role: MHButtonRole
     ) -> MHResolvedActionButtonStyle {
-        resolvedActionButtonStyle(for: role, context: .init())
+        resolvedActionButtonStyle(
+            for: role,
+            context: .init(),
+            glassPolicy: .automatic,
+            reduceTransparency: false
+        )
+    }
+
+    private func resolvedGlassBackgroundStyle(
+        _ recipe: MHButtonBackgroundRecipe,
+        glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool,
+        supportsGlass: Bool
+    ) -> MHResolvedGlassBackgroundStyle {
+        let usesGlass = glassPolicy.resolvesUsesGlass(
+            prefersGlass: true,
+            supportsGlass: supportsGlass,
+            reduceTransparency: reduceTransparency
+        )
+
+        return .init(
+            usesGlass: usesGlass,
+            fallbackFillRole: recipe.fallbackFillRole,
+            fallbackFillOpacity: recipe.fallbackFillOpacity,
+            glassTintRole: usesGlass ? recipe.glassTintRole : nil,
+            glassTintOpacity: usesGlass ? recipe.glassTintOpacity : 0,
+            borderRole: recipe.borderRole,
+            borderOpacity: recipe.borderOpacity
+        )
     }
 }
 // swiftlint:enable function_body_length no_magic_numbers

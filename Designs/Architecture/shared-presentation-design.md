@@ -18,7 +18,7 @@ It explains where new code should live when the same visual rule or container pa
 | Concern | Lives in | Examples |
 | --- | --- | --- |
 | Shared presentation logic | `Sources/MHUI` | `MHTheme`, semantic roles, text styles, surface chrome, grouped rows, section chrome, screen chrome |
-| Package preview support | `Sources/MHUI/PreviewSupport` | preview catalogs, review scenarios, accent and material comparisons |
+| Package preview support | `Sources/MHUI/PreviewSupport` | preview catalogs, review scenarios, accent and glass policy comparisons |
 | Host app composition | App repositories that consume MHUI | feature screens, navigation state, form state, domain-driven copy, feature-specific layouts |
 | Optional integration shell | `Example/` when present | package adoption checks, manual regression review, consumer-side examples |
 

@@ -1,34 +1,52 @@
 import SwiftUI
 
 struct MHResolvedBadgeChromeStyle: Sendable, Equatable {
-    static let neutralFillOpacity: Double = 0.03
-    static let emphasizedFillOpacity: Double = 0.05
-    static let neutralBorderOpacity: Double = 0.08
-    static let emphasizedBorderOpacity: Double = 0.10
+    static let neutralFillOpacity: Double = 0.06
+    static let emphasizedFillOpacity: Double = 0.08
+    static let neutralBorderOpacity: Double = 0.10
+    static let emphasizedBorderOpacity: Double = 0.14
 
     var textRole: MHTextRole
     var foregroundRole: MHColorRole
+    var backgroundStyle: MHResolvedGlassBackgroundStyle
     var horizontalPadding: CGFloat
     var verticalPadding: CGFloat
-    var fillOpacity: Double
-    var borderOpacity: Double
 }
 
 extension MHTheme {
     func resolvedBadgeChromeStyle(
-        for style: MHBadgeStyle
+        for style: MHBadgeStyle,
+        glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool,
+        supportsGlass: Bool = MHGlassRuntimeSupport.isAvailable
     ) -> MHResolvedBadgeChromeStyle {
-        MHResolvedBadgeChromeStyle(
+        let foregroundRole = badgeForegroundColorRole(for: style)
+        let fillOpacity = style == .neutral
+            ? MHResolvedBadgeChromeStyle.neutralFillOpacity
+            : MHResolvedBadgeChromeStyle.emphasizedFillOpacity
+        let borderOpacity = style == .neutral
+            ? MHResolvedBadgeChromeStyle.neutralBorderOpacity
+            : MHResolvedBadgeChromeStyle.emphasizedBorderOpacity
+        let usesGlass = glassPolicy.resolvesUsesGlass(
+            prefersGlass: true,
+            supportsGlass: supportsGlass,
+            reduceTransparency: reduceTransparency
+        )
+
+        return MHResolvedBadgeChromeStyle(
             textRole: .caption,
-            foregroundRole: badgeForegroundColorRole(for: style),
+            foregroundRole: foregroundRole,
+            backgroundStyle: .init(
+                usesGlass: usesGlass,
+                fallbackFillRole: foregroundRole,
+                fallbackFillOpacity: fillOpacity,
+                glassTintRole: usesGlass ? foregroundRole : nil,
+                glassTintOpacity: usesGlass ? fillOpacity : 0,
+                borderRole: foregroundRole,
+                borderOpacity: borderOpacity
+            ),
             horizontalPadding: spacing.control,
-            verticalPadding: spacing.inline,
-            fillOpacity: style == .neutral
-                ? MHResolvedBadgeChromeStyle.neutralFillOpacity
-                : MHResolvedBadgeChromeStyle.emphasizedFillOpacity,
-            borderOpacity: style == .neutral
-                ? MHResolvedBadgeChromeStyle.neutralBorderOpacity
-                : MHResolvedBadgeChromeStyle.emphasizedBorderOpacity
+            verticalPadding: spacing.inline
         )
     }
 

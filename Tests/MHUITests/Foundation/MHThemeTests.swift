@@ -114,11 +114,13 @@ struct MHThemeTests {
         #expect(theme.layout.screenCueHeight == 2)
         #expect(theme.layout.sectionCueWidth == 12)
         #expect(theme.layout.sectionCueHeight == 2)
-        #expect(theme.surfaces.canvas.material == .ultraThin)
-        #expect(theme.surfaces.standard.material == .regular)
-        #expect(theme.surfaces.muted.material == .thin)
+        #expect(!theme.surfaces.canvas.prefersGlass)
+        #expect(theme.surfaces.standard.prefersGlass)
+        #expect(theme.surfaces.muted.prefersGlass)
         #expect(theme.surfaces.standard.fallbackColorRole == .surface)
         #expect(theme.surfaces.muted.fallbackColorRole == .surfaceMuted)
+        #expect(theme.surfaces.standard.glassTintColorRole == .surface)
+        #expect(theme.surfaces.muted.glassTintColorRole == .surfaceMuted)
         #expect(theme.typography.screenTitle.weight == .semibold)
         #expect(theme.typography.sectionTitle.weight == .semibold)
         #expect(theme.typography.bodyStrong.weight == .medium)
@@ -126,10 +128,16 @@ struct MHThemeTests {
         #expect(theme.typography.metadata.weight == .medium)
         #expect(theme.typography.caption.weight == .medium)
 
-        let primary = theme.resolvedActionButtonStyle(for: .primary)
-        #expect(primary.fillRole == .surfaceMuted)
+        let primary = theme.resolvedActionButtonStyle(
+            for: .primary,
+            context: .init(),
+            glassPolicy: .disabled,
+            reduceTransparency: false,
+            supportsGlass: false
+        )
+        #expect(primary.backgroundStyle?.fallbackFillRole == .surfaceMuted)
         #expect(primary.foregroundRole == .primaryText)
-        #expect(primary.accentRuleRole == nil)
+        #expect(primary.backgroundStyle?.borderRole == .accent)
     }
 
     @Test
@@ -149,14 +157,14 @@ struct MHThemeTests {
     }
 
     @Test
-    func environment_values_store_material_policy_overrides() {
+    func environment_values_store_glass_policy_overrides() {
         var values = EnvironmentValues()
 
-        #expect(values.mhMaterialPolicy == .disabled)
+        #expect(values.mhGlassPolicy == .automatic)
 
-        values.mhMaterialPolicy = .enabled
+        values.mhGlassPolicy = .enabled
 
-        #expect(values.mhMaterialPolicy == .enabled)
+        #expect(values.mhGlassPolicy == .enabled)
     }
 
     @Test

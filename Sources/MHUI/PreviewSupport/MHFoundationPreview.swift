@@ -3,7 +3,7 @@ import SwiftUI
 
 private enum MHFoundationPreview {}
 
-private struct MHMaterialBackdrop: View {
+private struct MHGlassBackdrop: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
@@ -28,7 +28,7 @@ private struct MHMaterialBackdrop: View {
     }
 }
 
-private extension MHMaterialBackdrop {
+private extension MHGlassBackdrop {
     var baseColor: Color {
         switch colorScheme {
         case .light:
@@ -133,19 +133,57 @@ private struct MHFoundationCatalogContent: View {
     }
 }
 
-private struct MHMaterialCatalogContent: View {
+private struct MHGlassClusterSample: View {
+    @Namespace private var namespace
+
+    var body: some View {
+        MHGlassContainer(spacing: MHTheme.standard.spacing.control) {
+            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
+                HStack(spacing: MHTheme.standard.spacing.control) {
+                    Text("Pinned")
+                        .mhBadge(style: .accent)
+                        .mhGlassEffectID("cluster-pinned", in: namespace)
+
+                    Text("Review")
+                        .mhBadge()
+                        .mhGlassEffectID("cluster-review", in: namespace)
+
+                    Text("Warning")
+                        .mhBadge(style: .warning)
+                        .mhGlassEffectID("cluster-warning", in: namespace)
+                }
+
+                HStack(spacing: MHTheme.standard.spacing.control) {
+                    Button("Approve") {
+                        // no-op
+                    }
+                    .buttonStyle(.mhPrimary)
+                    .mhGlassEffectID("cluster-approve", in: namespace)
+
+                    Button("Hold") {
+                        // no-op
+                    }
+                    .buttonStyle(.mhSecondary)
+                    .mhGlassEffectID("cluster-hold", in: namespace)
+                }
+            }
+        }
+    }
+}
+
+private struct MHGlassCatalogContent: View {
     var body: some View {
         ZStack {
-            MHMaterialBackdrop()
+            MHGlassBackdrop()
 
             VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
-                Text("Material is optional and scoped to surfaces.")
+                Text("Glass is preferred for detached chrome and falls back to readable solids when needed.")
                     .mhTextStyle(.supporting, colorRole: .secondaryText)
 
                 VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
                     Text("Standard Surface")
                         .mhTextStyle(.sectionTitle)
-                    Text("Compare the same tokens with material off and on.")
+                    Text("Compare automatic glass rendering with a forced fallback policy.")
                         .mhTextStyle(.supporting, colorRole: .secondaryText)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -155,12 +193,24 @@ private struct MHMaterialCatalogContent: View {
                 VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
                     Text("Muted Surface")
                         .mhTextStyle(.sectionTitle)
-                    Text("This should remain restrained even when material is enabled.")
+                    Text("Muted surfaces stay quieter while still sharing the same glass pipeline.")
                         .mhTextStyle(.supporting, colorRole: .secondaryText)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .mhSurfaceInset()
                 .mhSurface(role: .muted)
+
+                VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
+                    Text("Clustered Glass Items")
+                        .mhTextStyle(.sectionTitle)
+                    Text("Grouped badges and actions share one glass container and optional effect identifiers.")
+                        .mhTextStyle(.supporting, colorRole: .secondaryText)
+
+                    MHGlassClusterSample()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .mhSurfaceInset()
+                .mhSurface()
             }
         }
         .padding(MHTheme.standard.spacing.group)
@@ -263,12 +313,12 @@ private struct MHNativeContainerCatalogContent: View {
     }
 }
 
-#Preview("Material Review", traits: .fixedLayout(width: 900, height: 1_300)) {
+#Preview("Glass Review", traits: .fixedLayout(width: 900, height: 1_500)) {
     MHPreviewCatalog(
-        title: "Material comparison",
-        scenarios: MHPreviewStyle.materialReviewScenarios()
+        title: "Glass comparison",
+        scenarios: MHPreviewStyle.glassReviewScenarios()
     ) { _ in
-        MHMaterialCatalogContent()
+        MHGlassCatalogContent()
     }
 }
 
