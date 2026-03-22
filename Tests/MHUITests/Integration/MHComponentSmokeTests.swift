@@ -6,27 +6,7 @@ import Testing
 struct MHComponentSmokeTests {
     @Test
     @MainActor
-    func public_styles_and_modifiers_instantiate() {
-        struct GlassClusterSmokeView: View {
-            @Namespace private var namespace
-
-            var body: some View {
-                MHGlassContainer(spacing: MHTheme.standard.spacing.control) {
-                    HStack(spacing: MHTheme.standard.spacing.control) {
-                        Text("Accent")
-                            .mhBadge(style: .accent)
-                            .mhGlassEffectID("accent", in: namespace)
-
-                        Button("Review") {
-                            // no-op
-                        }
-                        .buttonStyle(.mhSecondary)
-                        .mhGlassEffectID("review", in: namespace)
-                    }
-                }
-            }
-        }
-
+    func package_owned_core_primitives_instantiate_together() {
         let smokeView = AnyView(
             VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
                 VStack(spacing: 0) {
@@ -72,32 +52,17 @@ struct MHComponentSmokeTests {
                 TextField("Name", text: .constant(""))
                     .mhInputChrome(state: .focused)
 
-                Button("Create") {
-                    // no-op
-                }
-                .buttonStyle(.mhSecondary)
-                .mhActionPresentation(.fullWidthLeading)
-
                 MHActionGroup {
-                    Button("Create Something New") {
+                    Button("Create Something New Without Local Workarounds") {
                         // no-op
                     }
                     .buttonStyle(.mhPrimary)
 
-                    Button("Review License Information") {
+                    Button("Review Package-Level Compact Fallback Behavior") {
                         // no-op
                     }
                     .buttonStyle(.mhSecondary)
                 }
-
-                GlassClusterSmokeView()
-
-                LabeledContent(
-                    "Fallback policy",
-                    value: "Stack vertically when width gets tight."
-                )
-                .mhKeyValueLayout(.vertical)
-                .labeledContentStyle(.mhKeyValue)
             }
             .mhScreen(
                 title: "Foundation",
@@ -106,7 +71,7 @@ struct MHComponentSmokeTests {
             .mhGlassPolicy(.enabled)
         )
 
-        #expect(!String(reflecting: type(of: smokeView)).isEmpty)
+        #expect(String(reflecting: type(of: smokeView)).contains("AnyView"))
     }
 
     @Test
@@ -145,13 +110,17 @@ struct MHComponentSmokeTests {
                         TextField("Workspace name", text: .constant("MHUI"))
                             .mhRow()
 
-                        Picker("Appearance", selection: .constant("System")) {
-                            Text("System")
-                                .tag("System")
-                            Text("Light")
-                                .tag("Light")
+                        MHActionGroup {
+                            Button("Save Current Workspace Settings") {
+                                // no-op
+                            }
+                            .buttonStyle(.mhPrimary)
+
+                            Button("Review Advanced Configuration Details") {
+                                // no-op
+                            }
+                            .buttonStyle(.mhSecondary)
                         }
-                        .mhRow()
                     } header: {
                         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
                             Text("Workspace")
@@ -173,45 +142,7 @@ struct MHComponentSmokeTests {
             }
         )
 
-        #expect(!String(reflecting: type(of: smokeView)).isEmpty)
-    }
-
-    @Test
-    @MainActor
-    func shared_runtime_helpers_instantiate() {
-        let theme = MHTheme.standard
-        let rowStyle = theme.resolvedRowChromeStyle()
-        let surfaceStyle = theme.resolvedSurfaceStyle(
-            for: .standard,
-            glassPolicy: .enabled,
-            reduceTransparency: false,
-            supportsGlass: true
-        )
-        let cueStyle = theme.resolvedCueStyle(for: .section)
-
-        let smokeView = AnyView(
-            VStack(spacing: theme.spacing.group) {
-                Text("Row helper")
-                    .mhRowChrome(rowStyle)
-
-                MHSurfaceFill(
-                    shape: RoundedRectangle(
-                        cornerRadius: theme.radius.surface,
-                        style: .continuous
-                    ),
-                    style: surfaceStyle,
-                    theme: theme,
-                    colorScheme: .light
-                )
-                .frame(height: 44)
-
-                MHCueBlock(style: cueStyle) {
-                    Text("Cue helper")
-                }
-            }
-        )
-
-        #expect(!String(reflecting: type(of: smokeView)).isEmpty)
+        #expect(String(reflecting: type(of: smokeView)).contains("AnyView"))
     }
 }
 // swiftlint:enable closure_body_length function_body_length

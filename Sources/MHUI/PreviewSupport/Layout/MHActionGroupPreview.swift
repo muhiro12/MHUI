@@ -1,47 +1,41 @@
 import SwiftUI
 
-#Preview("Action Group", traits: .fixedLayout(width: 420, height: 220)) {
-    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
-        MHActionGroup {
-            Button("Create Something New") {
-                // no-op
-            }
-            .buttonStyle(.mhPrimary)
+private struct MHActionGroupPreview: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
+            MHActionGroup {
+                Button("Create Something New Without Local Layout Workarounds") {
+                    // no-op
+                }
+                .buttonStyle(.mhPrimary)
 
-            Button("Archive This Quietly") {
-                // no-op
-            }
-            .buttonStyle(.mhSecondary)
+                Button("Archive This Quietly After Reviewing Long Secondary Copy") {
+                    // no-op
+                }
+                .buttonStyle(.mhSecondary)
 
-            Button("Review License Information") {
-                // no-op
+                Button("Review Package-Owned Compact Width Collapse Behavior") {
+                    // no-op
+                }
+                .buttonStyle(.mhSecondary)
             }
-            .buttonStyle(.mhSecondary)
         }
+        .mhScreen(
+            title: "Action Group",
+            subtitle: """
+                Automatic groups should stay horizontal only while the single-line intrinsic buttons still fit.
+                """
+        )
     }
-    .mhScreen(title: "Action Group")
-    .mhPreviewTint()
 }
 
-#Preview("Action Group Compact", traits: .fixedLayout(width: 320, height: 260)) {
-    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
-        MHActionGroup {
-            Button("Create Something New") {
-                // no-op
-            }
-            .buttonStyle(.mhPrimary)
-
-            Button("Archive This Quietly") {
-                // no-op
-            }
-            .buttonStyle(.mhSecondary)
-
-            Button("Review License Information") {
-                // no-op
-            }
-            .buttonStyle(.mhSecondary)
-        }
+#Preview("Action Group Validation", traits: .fixedLayout(width: 900, height: 1_450)) {
+    MHPreviewCatalog(
+        title: "Action group validation",
+        scenarios: MHPreviewStyle.actionValidationScenarios(),
+        casePadding: 0
+    ) { context in
+        MHActionGroupPreview()
+            .mhPreviewTint(context)
     }
-    .mhScreen(title: "Action Group")
-    .mhPreviewTint()
 }

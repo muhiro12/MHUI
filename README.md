@@ -2,17 +2,33 @@
 
 ## Overview
 
-MHUI is a small SwiftUI foundation for calm, tool-like sibling apps.
-It is intentionally opinionated and intentionally narrow.
+MHUI is a narrow runtime presentation kit for calm, tool-like sibling apps.
+It is intentionally opinionated and intentionally small.
 
 MHUI focuses on three layers:
 
 - semantic visual tokens
 - styling primitives and modifiers
-- screen and native-container chrome
+- screen and native-container chrome with compact-width fallback behavior
 
-It does not own app business logic, app models, logging, configuration, or infrastructure concerns.
+It does not own app business logic, app models, navigation meaning, logging, configuration, or infrastructure concerns.
 Those responsibilities stay outside the package.
+
+## MHUI Owns
+
+- semantic theme application through `MHTheme.standard()` and `MHTheme.standard(accent:)`
+- text, surface, row, section, screen, and native-container chrome
+- width-adaptive action presentation and action-group fallback
+- key-value row fallback behavior for narrow or constrained widths
+- package-owned validation previews and package tests that prove those shared rules
+
+## MHUI Does Not Own
+
+- art-direction presets or app branding systems
+- low-level glass choreography beyond `MHGlassPolicy` readability fallback
+- replacement controls for native SwiftUI views
+- feature-specific wrappers, domain models, or product-specific screen shells
+- preview-only abstractions that host apps would need to import
 
 ## Repository Layout
 
@@ -36,10 +52,10 @@ The default theme uses system typography, but its distinctiveness comes from hie
 Apps can override the theme via `mhTheme(_:)`, but the customization surface is intentionally small.
 MHUI should feel native first and refined second: interaction patterns stay close to SwiftUI defaults, while spacing, proportion, and surface treatment provide the package's personality.
 The standard theme is built from achromatic neutrals plus the host app's tint color.
-Apps can still choose a preset accent through `MHTheme.standard(accentStyle:)` or override `colors.accent` directly.
+If a host app needs a fixed accent for a specific surface review, use `MHTheme.standard(accent: .fixed(...))`.
 Detached surfaces prefer Liquid Glass by default through `mhGlassPolicy(.automatic)`.
-They still fall back to solid theme colors when transparency should be reduced or the runtime does not support Liquid Glass.
-Preview baselines follow the same host-tint default as runtime usage, while built-in accent comparisons live in explicit review scenarios.
+That policy exists as a runtime readability switch, not as a low-level glass choreography API.
+Compact width tuning lives in the shared theme defaults and internal resolvers so host apps do not need local fallback workarounds for common rows and actions.
 
 Its design attitude is informed by calm, functional retail and editorial environments.
 That influence is about atmosphere only: whitespace, calmer typography, subtle structural accent placement, and practical composition.
@@ -47,13 +63,11 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 
 ## Public Building Blocks
 
-- `MHTheme`, `MHAccentStyle`, `MHTextRole`, `MHColorRole`
-- `MHFontStyle`, `MHFontWeight`, `MHTextMetrics`, `mhTextStyle(_:colorRole:)`
+- `MHTheme`, `MHColorReference`, `MHTextRole`, `MHColorRole`
+- `mhTextStyle(_:colorRole:)`
 - `MHGlassPolicy`, `mhGlassPolicy(_:)`
 - `MHActionButtonStyle` and `ButtonStyle` sugar like `.mhPrimary`
 - `MHActionPresentation`, `mhActionPresentation(_:)`
-- `MHGlassContainer`
-- `mhGlassEffectID(_:in:)`
 - `mhSurface(role:)` and `mhSurfaceInset()`
 - `mhInputChrome(state:)`
 - `mhBadge(style:)`
@@ -113,21 +127,23 @@ Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from s
 
 Start in this order when adjusting appearance:
 
-1. `MHTheme.standard()` for default color, spacing, radius, layout, and surface recipes.
-2. `MHPreviewStyle` and the shared preview catalogs for host tint, accent, glass policy, native container, density, and dynamic type comparisons.
-3. Internal shared resolvers for row chrome, surface fill, and cue chrome only when a shared token is not enough.
+1. `MHTheme.standard()` or `MHTheme.standard(accent:)` for default color, spacing, radius, layout, and surface recipes.
+2. Validation previews at fixed widths `760`, `375`, and `320` before making view-local tweaks.
+3. Internal shared resolvers for row chrome, surface fill, action fallback, and key-value fallback only when a shared token is not enough.
 
-The most useful previews to review first are `Foundation Catalog`, `Glass Review`, `Accent Review`, and `Native Container Review`.
+The most useful previews to review first are `Screen Validation`, `Action Buttons Validation`, `Action Group Validation`, `Key Value Validation`, and `Native Container Validation`.
 
 ## Intentional Boundaries
 
 MHUI does not currently provide:
 
-- wrapper controls that replace `Button`, `TextField`, `Toggle`, or `List`
+- replacement controls that shadow `Button`, `TextField`, `Toggle`, or `List`
 - navigation shells
 - validation engines
 - search components
 - async image components
+- art-direction preset collections
+- low-level glass choreography APIs
 - app-specific feature views
 
 Those can be added later only if they strengthen the shared visual language without turning MHUI into a generic mega framework.

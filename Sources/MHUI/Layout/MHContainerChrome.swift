@@ -8,6 +8,10 @@ private enum MHContainerChromeKind {
     case form
 }
 
+private enum MHScreenChromeDefaults {
+    static let minimumCompactHorizontalMargin: CGFloat = 12
+}
+
 struct MHResolvedScreenChromeStyle: Sendable, Equatable {
     var readableContentWidth: CGFloat?
     var horizontalMargin: CGFloat
@@ -293,13 +297,21 @@ extension MHTheme {
         let isCompactWidth = context.isCompactWidth(
             threshold: layout.compactWidthThreshold
         )
+        let usesNarrowFallback = context.isNarrowWidth(
+            threshold: layout.narrowWidthThreshold
+        )
 
         return MHResolvedScreenChromeStyle(
             readableContentWidth: isCompactWidth
                 ? nil
                 : layout.readableContentWidth,
             horizontalMargin: isCompactWidth
-                ? layout.compactScreenHorizontalMargin
+                ? usesNarrowFallback
+                ? max(
+                    MHScreenChromeDefaults.minimumCompactHorizontalMargin,
+                    layout.compactScreenHorizontalMargin - spacing.inline
+                )
+                : layout.compactScreenHorizontalMargin
                 : layout.screenHorizontalMargin,
             verticalPadding: isCompactWidth
                 ? layout.compactScreenVerticalPadding

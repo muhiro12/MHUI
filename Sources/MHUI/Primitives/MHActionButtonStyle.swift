@@ -121,10 +121,12 @@ private extension MHActionButtonStyle {
         let label = configuration.label
             .lineLimit(presentation.lineLimit)
             .truncationMode(.tail)
+            .allowsTightening(presentation.allowsTightening)
             .fixedSize(
                 horizontal: presentation.usesFixedHorizontalSize,
                 vertical: false
             )
+            .layoutPriority(1)
 
         if presentation.expandsHorizontally {
             label.frame(

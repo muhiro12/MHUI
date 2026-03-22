@@ -1,4 +1,4 @@
-// swiftlint:disable one_declaration_per_file type_contents_order
+// swiftlint:disable one_declaration_per_file type_contents_order no_magic_numbers
 import SwiftUI
 
 /// Canonical MHUI container for arranging related actions.
@@ -10,6 +10,63 @@ public enum MHActionGroupLayout: String, Sendable, CaseIterable {
 
 struct MHResolvedActionGroupStyle: Sendable, Equatable {
     var spacing: CGFloat
+}
+
+enum MHActionLayoutMetrics {
+    static func requiredHorizontalWidth(
+        itemWidths: [CGFloat],
+        spacing: CGFloat
+    ) -> CGFloat {
+        itemWidths.reduce(0, +) + (CGFloat(max(0, itemWidths.count - 1)) * spacing)
+    }
+}
+
+private struct MHActionStripLayout: Layout {
+    let spacing: CGFloat
+
+    func sizeThatFits(
+        proposal _: ProposedViewSize,
+        subviews: Subviews,
+        cache _: inout ()
+    ) -> CGSize {
+        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
+
+        return .init(
+            width: MHActionLayoutMetrics.requiredHorizontalWidth(
+                itemWidths: sizes.map(\.width),
+                spacing: spacing
+            ),
+            height: sizes.map(\.height).max() ?? 0
+        )
+    }
+
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal _: ProposedViewSize,
+        subviews: Subviews,
+        cache _: inout ()
+    ) {
+        var currentX = bounds.minX
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            let origin = CGPoint(
+                x: currentX,
+                y: bounds.minY + ((bounds.height - size.height) / 2)
+            )
+
+            subview.place(
+                at: origin,
+                anchor: .topLeading,
+                proposal: .init(
+                    width: size.width,
+                    height: size.height
+                )
+            )
+
+            currentX += size.width + spacing
+        }
+    }
 }
 
 /// Groups actions with a shared horizontal-to-vertical fallback strategy.
@@ -72,7 +129,7 @@ private extension MHActionGroup {
         subviews: SubviewsCollection,
         spacing: CGFloat
     ) -> some View {
-        HStack(alignment: .center, spacing: spacing) {
+        MHActionStripLayout(spacing: spacing) {
             ForEach(subviews.indices, id: \.self) { index in
                 subviews[index]
                     .mhActionPresentation(.singleLineIntrinsic)
@@ -111,4 +168,4 @@ extension MHTheme {
         )
     }
 }
-// swiftlint:enable one_declaration_per_file type_contents_order
+// swiftlint:enable one_declaration_per_file type_contents_order no_magic_numbers

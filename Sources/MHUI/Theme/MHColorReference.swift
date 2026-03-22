@@ -1,16 +1,59 @@
 import SwiftUI
 
 /// A semantic color source used by MHUI roles.
-public enum MHColorReference: Sendable, Equatable {
-    case adaptive(MHColorToken)
-    case tint
+public struct MHColorReference: Sendable, Equatable {
+    private enum Storage: Sendable, Equatable {
+        case tint
+        case fixed(light: MHColorComponents, dark: MHColorComponents)
+    }
+
+    public static let tint = Self(storage: .tint)
+
+    private let storage: Storage
+
+    public static func fixed(
+        lightHex: UInt32,
+        darkHex: UInt32,
+        lightOpacity: Double = 1,
+        darkOpacity: Double = 1
+    ) -> Self {
+        Self(
+            storage: .fixed(
+                light: .init(
+                    hex: lightHex,
+                    opacity: lightOpacity
+                ),
+                dark: .init(
+                    hex: darkHex,
+                    opacity: darkOpacity
+                )
+            )
+        )
+    }
+
+    static func adaptive(
+        light: MHColorComponents,
+        dark: MHColorComponents
+    ) -> Self {
+        Self(
+            storage: .fixed(
+                light: light,
+                dark: dark
+            )
+        )
+    }
 
     internal func resolve(for colorScheme: ColorScheme) -> Color {
-        switch self {
-        case .adaptive(let token):
-            token.resolve(for: colorScheme)
+        switch storage {
         case .tint:
             .accentColor
+        case let .fixed(light, dark):
+            switch colorScheme {
+            case .dark:
+                dark.color
+            default:
+                light.color
+            }
         }
     }
 }

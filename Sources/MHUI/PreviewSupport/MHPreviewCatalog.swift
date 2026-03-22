@@ -1,7 +1,7 @@
 // swiftlint:disable function_default_parameter_at_end no_magic_numbers
 import SwiftUI
 
-/// Tune preview scenarios here before adjusting individual components.
+/// Tune validation scenarios here before changing package fallback behavior.
 struct MHPreviewCatalog<Content: View>: View {
     private static var labelOpacity: Double {
         0.68

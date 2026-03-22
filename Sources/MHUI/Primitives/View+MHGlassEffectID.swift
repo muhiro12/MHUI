@@ -15,7 +15,7 @@ private struct MHGlassEffectIDModifier<Identifier: Hashable & Sendable>: ViewMod
     }
 }
 
-public extension View {
+extension View {
     /// Tags a view for Liquid Glass transitions when the runtime supports them.
     func mhGlassEffectID<Identifier: Hashable & Sendable>(
         _ identifier: Identifier,

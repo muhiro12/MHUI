@@ -46,6 +46,16 @@ struct MHAdaptiveLayoutContext: Sendable, Equatable {
 
         return availableWidth < threshold
     }
+
+    func isNarrowWidth(
+        threshold: CGFloat
+    ) -> Bool {
+        guard let availableWidth else {
+            return false
+        }
+
+        return availableWidth < threshold
+    }
 }
 
 private struct MHAdaptiveLayoutContextKey: EnvironmentKey {

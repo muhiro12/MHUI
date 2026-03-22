@@ -1,11 +1,11 @@
 import SwiftUI
 
 /// Groups nearby glass-rendered items so the system can coordinate their presentation.
-public struct MHGlassContainer<Content: View>: View {
+struct MHGlassContainer<Content: View>: View {
     private let spacing: CGFloat?
     private let content: Content
 
-    @ViewBuilder public var body: some View {
+    @ViewBuilder var body: some View {
         if #available(iOS 26, macOS 26, *) {
             if let spacing {
                 GlassEffectContainer(spacing: spacing) {
@@ -21,7 +21,7 @@ public struct MHGlassContainer<Content: View>: View {
         }
     }
 
-    public init(
+    init(
         spacing: CGFloat? = nil,
         @ViewBuilder content: () -> Content
     ) {

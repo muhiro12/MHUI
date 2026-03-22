@@ -43,7 +43,6 @@ enum MHPreviewTypeScale: String, Sendable, CaseIterable {
 }
 
 struct MHPreviewContext: Sendable, Equatable, Identifiable {
-    var accentStyle: MHAccentStyle?
     var colorMode: MHPreviewColorMode
     var glassPolicy: MHGlassPolicy
     var typeScale: MHPreviewTypeScale
@@ -51,7 +50,6 @@ struct MHPreviewContext: Sendable, Equatable, Identifiable {
 
     var id: String {
         [
-            accentIdentifier,
             colorMode.rawValue,
             glassPolicy.rawValue,
             typeScale.rawValue,
@@ -63,24 +61,11 @@ struct MHPreviewContext: Sendable, Equatable, Identifiable {
     var title: String {
         [
             colorMode.title,
-            accentTitle,
             glassPolicyTitle,
             typeScale.title,
             isEnabled ? "Enabled" : "Disabled"
         ]
         .joined(separator: " · ")
-    }
-
-    var tintReference: MHColorReference {
-        accentStyle?.colorReference ?? MHTheme.standard.colors.accent
-    }
-
-    private var accentIdentifier: String {
-        accentStyle?.rawValue ?? "host-tint"
-    }
-
-    private var accentTitle: String {
-        accentStyle?.rawValue.capitalized ?? "Host Tint"
     }
 
     private var glassPolicyTitle: String {
@@ -119,14 +104,12 @@ enum MHPreviewStyle {
     static let defaultContext = context()
 
     static func context(
-        accentStyle: MHAccentStyle? = nil,
         colorMode: MHPreviewColorMode = .light,
         glassPolicy: MHGlassPolicy = .automatic,
         typeScale: MHPreviewTypeScale = .regular,
         isEnabled: Bool = true
     ) -> MHPreviewContext {
         .init(
-            accentStyle: accentStyle,
             colorMode: colorMode,
             glassPolicy: glassPolicy,
             typeScale: typeScale,
@@ -135,23 +118,18 @@ enum MHPreviewStyle {
     }
 
     static func theme(
-        accentStyle: MHAccentStyle? = nil
-    ) -> MHTheme {
-        theme(for: context(accentStyle: accentStyle))
-    }
-
-    static func theme(
         for context: MHPreviewContext
     ) -> MHTheme {
-        context.accentStyle.map { accentStyle in
-            MHTheme.standard(accentStyle: accentStyle)
-        } ?? MHTheme.standard()
+        _ = context
+        return MHTheme.standard
     }
 
     static func tintColor(
         for context: MHPreviewContext
     ) -> Color {
-        context.tintReference.resolve(for: context.colorMode.colorScheme)
+        theme(for: context)
+            .colorReference(for: .accent)
+            .resolve(for: context.colorMode.colorScheme)
     }
 
     static func backgroundColor(
@@ -162,19 +140,7 @@ enum MHPreviewStyle {
             .resolve(for: context.colorMode.colorScheme)
     }
 
-    static func lightAccent(
-        accentStyle: MHAccentStyle? = nil
-    ) -> Color {
-        tintColor(for: context(accentStyle: accentStyle))
-    }
-
-    static func lightBackground(
-        accentStyle: MHAccentStyle? = nil
-    ) -> Color {
-        backgroundColor(for: context(accentStyle: accentStyle))
-    }
-
-    static func foundationScenarios() -> [MHPreviewScenario] {
+    static func screenValidationScenarios() -> [MHPreviewScenario] {
         [
             .init(
                 name: "Regular",
@@ -199,28 +165,20 @@ enum MHPreviewStyle {
         ]
     }
 
-    static func glassReviewScenarios() -> [MHPreviewScenario] {
+    static func actionValidationScenarios() -> [MHPreviewScenario] {
         [
             .init(
-                name: "Phone Auto",
+                name: "Phone",
                 width: Widths.phone,
-                context: context(glassPolicy: .automatic)
+                context: context()
             ),
             .init(
-                name: "Phone Fallback",
-                width: Widths.phone,
-                context: context(glassPolicy: .disabled)
+                name: "Stress Phone",
+                width: Widths.stressPhone,
+                context: context(typeScale: .accessibility)
             ),
             .init(
-                name: "Dark Phone Auto",
-                width: Widths.phone,
-                context: context(
-                    colorMode: .dark,
-                    glassPolicy: .automatic
-                )
-            ),
-            .init(
-                name: "Dark Stress Fallback",
+                name: "Dark Stress Phone",
                 width: Widths.stressPhone,
                 context: context(
                     colorMode: .dark,
@@ -231,17 +189,30 @@ enum MHPreviewStyle {
         ]
     }
 
-    static func accentReviewScenarios() -> [MHPreviewScenario] {
-        MHAccentStyle.allCases.map { accentStyle in
+    static func keyValueValidationScenarios() -> [MHPreviewScenario] {
+        [
             .init(
                 name: "Phone",
                 width: Widths.phone,
-                context: context(accentStyle: accentStyle)
+                context: context()
+            ),
+            .init(
+                name: "Stress Phone",
+                width: Widths.stressPhone,
+                context: context(typeScale: .accessibility)
+            ),
+            .init(
+                name: "Dark Stress Phone",
+                width: Widths.stressPhone,
+                context: context(
+                    colorMode: .dark,
+                    glassPolicy: .disabled
+                )
             )
-        }
+        ]
     }
 
-    static func nativeContainerScenarios() -> [MHPreviewScenario] {
+    static func nativeContainerValidationScenarios() -> [MHPreviewScenario] {
         [
             .init(
                 name: "Phone",
@@ -251,7 +222,10 @@ enum MHPreviewStyle {
             .init(
                 name: "Dark Phone",
                 width: Widths.phone,
-                context: context(colorMode: .dark)
+                context: context(
+                    colorMode: .dark,
+                    glassPolicy: .disabled
+                )
             )
         ]
     }
@@ -299,12 +273,8 @@ extension View {
         )
     }
 
-    func mhPreviewTint(
-        accentStyle: MHAccentStyle? = nil
-    ) -> some View {
-        mhPreviewTint(
-            MHPreviewStyle.context(accentStyle: accentStyle)
-        )
+    func mhPreviewTint() -> some View {
+        mhPreviewTint(MHPreviewStyle.defaultContext)
     }
 
     func mhPreviewSurface(
@@ -321,11 +291,10 @@ extension View {
     }
 
     func mhPreviewSurface(
-        accentStyle: MHAccentStyle? = nil,
         padding: CGFloat = MHTheme.standard.spacing.group
     ) -> some View {
         mhPreviewSurface(
-            MHPreviewStyle.context(accentStyle: accentStyle),
+            MHPreviewStyle.defaultContext,
             padding: padding
         )
     }

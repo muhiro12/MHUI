@@ -1,52 +1,46 @@
 import SwiftUI
 
-#Preview("Action Buttons", traits: .fixedLayout(width: 420, height: 240)) {
-    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
-        MHActionGroup(layout: .horizontal) {
-            Button("Create Something New") {
+private struct MHActionButtonStylePreview: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
+            Button("Save Current Workspace Configuration Without Local Workarounds") {
                 // no-op
             }
             .buttonStyle(.mhPrimary)
 
-            Button("Open Current Archive") {
+            Button("Review the Shared Package-Level Compact Width Policy") {
                 // no-op
             }
             .buttonStyle(.mhSecondary)
-        }
 
-        Button("Review License Information") {
-            // no-op
-        }
-        .buttonStyle(.mhPrimary)
-        .mhActionPresentation(.fullWidthLeading)
+            Button("Present the Canonical Full Width Override When Needed") {
+                // no-op
+            }
+            .buttonStyle(.mhSecondary)
+            .mhActionPresentation(.fullWidthLeading)
 
-        Button("Delete Everything") {
-            // no-op
+            Button("Remove This Configuration") {
+                // no-op
+            }
+            .buttonStyle(.mhDestructive)
+            .mhActionPresentation(.fullWidthLeading)
         }
-        .buttonStyle(.mhDestructive)
+        .mhScreen(
+            title: "Action Buttons",
+            subtitle: """
+                Automatic presentation should try intrinsic width first and fall back without host-specific fixes.
+                """
+        )
     }
-    .mhPreviewSurface()
 }
 
-#Preview("Action Buttons Compact", traits: .fixedLayout(width: 320, height: 300)) {
-    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
-        MHActionGroup {
-            Button("Create Something New") {
-                // no-op
-            }
-            .buttonStyle(.mhPrimary)
-
-            Button("Open Current Archive") {
-                // no-op
-            }
-            .buttonStyle(.mhSecondary)
-
-            Button("Review License Information") {
-                // no-op
-            }
-            .buttonStyle(.mhSecondary)
-        }
+#Preview("Action Buttons Validation", traits: .fixedLayout(width: 900, height: 1_500)) {
+    MHPreviewCatalog(
+        title: "Action button validation",
+        scenarios: MHPreviewStyle.actionValidationScenarios(),
+        casePadding: 0
+    ) { context in
+        MHActionButtonStylePreview()
+            .mhPreviewTint(context)
     }
-    .mhScreen(title: "Actions")
-    .mhPreviewTint()
 }

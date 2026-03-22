@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Dynamic type friendly base styles used by MHUI typography.
-public enum MHFontStyle: String, Sendable, CaseIterable {
+enum MHFontStyle: String, Sendable, CaseIterable {
     case title2
     case title3
     case body

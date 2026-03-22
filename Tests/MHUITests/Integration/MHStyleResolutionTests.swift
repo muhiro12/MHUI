@@ -108,6 +108,7 @@ struct MHStyleResolutionTests {
         )
         let section = theme.resolvedSectionChromeStyle(for: compactContext)
         let actionGroup = theme.resolvedActionGroupStyle(for: compactContext)
+        let keyValue = theme.resolvedKeyValueStyle(for: compactContext)
 
         #expect(screen.readableContentWidth == nil)
         #expect(screen.horizontalMargin == theme.layout.compactScreenHorizontalMargin)
@@ -122,6 +123,21 @@ struct MHStyleResolutionTests {
         #expect(grouped.spacerHeight == row.verticalPadding)
         #expect(section.contentSpacing == theme.layout.compactKeyValueSpacing)
         #expect(actionGroup.spacing == theme.layout.compactActionGroupSpacing)
+        #expect(keyValue.minimumValueWidth == theme.layout.compactKeyValueMinimumValueWidth)
+    }
+
+    @Test
+    func narrow_screen_chrome_relaxes_horizontal_margin_before_aesthetic_spacing() {
+        let theme = MHTheme.standard
+        let narrowContext = MHAdaptiveLayoutContext(
+            availableWidth: 320,
+            horizontalSizeClass: .compact
+        )
+        let screen = theme.resolvedScreenChromeStyle(for: narrowContext)
+
+        #expect(screen.readableContentWidth == nil)
+        #expect(screen.horizontalMargin == 12)
+        #expect(screen.verticalPadding == theme.layout.compactScreenVerticalPadding)
     }
 
     @Test
@@ -209,6 +225,7 @@ struct MHStyleResolutionTests {
         #expect(rowChrome.horizontalInset == theme.layout.rowHorizontalInset)
         #expect(rowChrome.accessorySpacing == theme.layout.rowAccessorySpacing)
         #expect(style.rowChrome == rowChrome)
+        #expect(style.minimumValueWidth == theme.layout.regularKeyValueMinimumValueWidth)
         #expect(style.stackedSpacing == theme.layout.compactKeyValueSpacing)
     }
 
@@ -238,8 +255,9 @@ struct MHStyleResolutionTests {
         )
 
         #expect(automatic.lineLimit == 1)
-        #expect(!automatic.usesFixedHorizontalSize)
+        #expect(automatic.usesFixedHorizontalSize)
         #expect(!automatic.expandsHorizontally)
+        #expect(automatic.allowsTightening)
         #expect(intrinsic.lineLimit == 1)
         #expect(intrinsic.usesFixedHorizontalSize)
         #expect(!intrinsic.expandsHorizontally)
@@ -247,6 +265,28 @@ struct MHStyleResolutionTests {
         #expect(fullWidth.alignment == .center)
         #expect(fullWidthLeading.expandsHorizontally)
         #expect(fullWidthLeading.alignment == .leading)
+    }
+
+    @Test
+    func action_group_horizontal_measurement_stays_explicit() {
+        #expect(
+            MHActionLayoutMetrics.requiredHorizontalWidth(
+                itemWidths: [120, 140, 100],
+                spacing: 8
+            ) == 376
+        )
+    }
+
+    @Test
+    func key_value_horizontal_measurement_requires_a_real_value_column() {
+        #expect(
+            MHKeyValueLayoutMetrics.requiredHorizontalWidth(
+                labelWidth: 110,
+                valueWidth: 84,
+                spacing: 12,
+                minimumValueWidth: 160
+            ) == 282
+        )
     }
 
     @Test

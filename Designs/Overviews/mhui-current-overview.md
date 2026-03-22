@@ -1,6 +1,6 @@
 # MHUI Current Repository Overview
 
-Current as of March 10, 2026.
+Current as of March 22, 2026.
 
 ## Purpose
 
@@ -26,11 +26,11 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 ## Public API Areas
 
-- Theme and accent configuration through `MHTheme` and related semantic roles
+- Theme application through `MHTheme.standard()` and related semantic roles
 - Text styling primitives such as `mhTextStyle(_:colorRole:)`
 - Surface, row, section, and grouped-layout modifiers
 - Screen-level chrome such as `mhScreen(...)`, `mhListChrome(...)`, and `mhFormChrome(...)`
-- Presentation helpers including action groups, badges, and input chrome
+- Presentation helpers including action groups, badges, input chrome, and package-owned compact fallback behavior
 
 ## Architecture References
 
@@ -53,4 +53,5 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 - The repository is shared-library-first.
 - App-specific flows, domain models, and infrastructure do not belong in this package.
+- Art-direction presets and low-level glass choreography do not belong in this package.
 - Verification should prefer stable `ci_scripts/tasks/*.sh` entrypoints over ad-hoc commands.

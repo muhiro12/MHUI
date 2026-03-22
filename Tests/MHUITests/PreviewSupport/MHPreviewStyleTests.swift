@@ -7,28 +7,24 @@ struct MHPreviewStyleTests {
         let context = MHPreviewStyle.context()
         let theme = MHPreviewStyle.theme(for: context)
 
-        #expect(context.accentStyle == nil)
-        #expect(context.tintReference == .tint)
-        #expect(context.title.contains("Host Tint"))
+        #expect(context.glassPolicy == .automatic)
+        #expect(context.title.contains("Glass Auto"))
         #expect(theme.colors.accent == .tint)
     }
 
     @Test
-    func preview_context_tracks_accent_glass_and_enabled_state() {
+    func preview_context_tracks_glass_and_enabled_state() {
         let context = MHPreviewStyle.context(
-            accentStyle: .blue,
             colorMode: .dark,
             glassPolicy: .enabled,
             typeScale: .accessibility,
             isEnabled: false
         )
 
-        #expect(context.accentStyle == .blue)
         #expect(context.colorMode == .dark)
         #expect(context.glassPolicy == .enabled)
         #expect(context.typeScale == .accessibility)
         #expect(!context.isEnabled)
-        #expect(context.tintReference == MHTheme.standard(accentStyle: .blue).colors.accent)
     }
 
     @Test
@@ -43,13 +39,44 @@ struct MHPreviewStyleTests {
 
     @Test
     func preview_scenarios_stay_explicit_and_canonical() {
-        let accentStyles = MHPreviewStyle.accentReviewScenarios()
-            .map(\.context.accentStyle)
-
-        #expect(MHPreviewStyle.foundationScenarios().count == 4)
-        #expect(MHPreviewStyle.glassReviewScenarios().count == 4)
-        #expect(accentStyles == MHAccentStyle.allCases.map(Optional.some))
-        #expect(MHPreviewStyle.nativeContainerScenarios().map(\.context.colorMode) == [.light, .dark])
-        #expect(MHPreviewStyle.foundationScenarios().map { Int($0.width.rounded()) } == [760, 375, 375, 320])
+        #expect(MHPreviewStyle.screenValidationScenarios().count == 4)
+        #expect(MHPreviewStyle.actionValidationScenarios().count == 3)
+        #expect(MHPreviewStyle.keyValueValidationScenarios().count == 3)
+        #expect(
+            MHPreviewStyle.screenValidationScenarios().map(\.name)
+                == ["Regular", "Phone", "Phone Disabled", "Stress Phone"]
+        )
+        #expect(
+            MHPreviewStyle.actionValidationScenarios().map(\.name)
+                == ["Phone", "Stress Phone", "Dark Stress Phone"]
+        )
+        #expect(
+            MHPreviewStyle.keyValueValidationScenarios().map(\.name)
+                == ["Phone", "Stress Phone", "Dark Stress Phone"]
+        )
+        #expect(
+            MHPreviewStyle.nativeContainerValidationScenarios().map(\.name)
+                == ["Phone", "Dark Phone"]
+        )
+        #expect(
+            MHPreviewStyle.nativeContainerValidationScenarios().map(\.context.colorMode)
+                == [.light, .dark]
+        )
+        #expect(
+            MHPreviewStyle.screenValidationScenarios().map { Int($0.width.rounded()) }
+                == [760, 375, 375, 320]
+        )
+        #expect(
+            MHPreviewStyle.actionValidationScenarios().map { Int($0.width.rounded()) }
+                == [375, 320, 320]
+        )
+        #expect(
+            MHPreviewStyle.keyValueValidationScenarios().map { Int($0.width.rounded()) }
+                == [375, 320, 320]
+        )
+        #expect(
+            MHPreviewStyle.nativeContainerValidationScenarios().map { Int($0.width.rounded()) }
+                == [375, 375]
+        )
     }
 }

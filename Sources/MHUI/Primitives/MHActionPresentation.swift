@@ -39,43 +39,46 @@ struct MHResolvedActionPresentation: Sendable, Equatable {
     var usesFixedHorizontalSize: Bool
     var expandsHorizontally: Bool
     var alignment: Alignment
+    var allowsTightening: Bool
 }
 
 extension MHTheme {
     func resolvedActionPresentation(
         _ presentation: MHActionPresentation,
-        for context: MHAdaptiveLayoutContext
+        for _: MHAdaptiveLayoutContext
     ) -> MHResolvedActionPresentation {
         switch presentation {
         case .automatic:
             .init(
-                lineLimit: context.isCompactWidth(
-                    threshold: layout.compactWidthThreshold
-                ) ? 1 : nil,
-                usesFixedHorizontalSize: false,
+                lineLimit: 1,
+                usesFixedHorizontalSize: true,
                 expandsHorizontally: false,
-                alignment: .center
+                alignment: .center,
+                allowsTightening: true
             )
         case .singleLineIntrinsic:
             .init(
                 lineLimit: 1,
                 usesFixedHorizontalSize: true,
                 expandsHorizontally: false,
-                alignment: .center
+                alignment: .center,
+                allowsTightening: true
             )
         case .fullWidth:
             .init(
                 lineLimit: 1,
                 usesFixedHorizontalSize: false,
                 expandsHorizontally: true,
-                alignment: .center
+                alignment: .center,
+                allowsTightening: true
             )
         case .fullWidthLeading:
             .init(
                 lineLimit: 1,
                 usesFixedHorizontalSize: false,
                 expandsHorizontally: true,
-                alignment: .leading
+                alignment: .leading,
+                allowsTightening: true
             )
         }
     }

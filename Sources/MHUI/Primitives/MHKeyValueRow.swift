@@ -1,4 +1,4 @@
-// swiftlint:disable one_declaration_per_file file_types_order
+// swiftlint:disable one_declaration_per_file file_types_order no_magic_numbers
 import SwiftUI
 
 private enum MHKeyValueRow {}
@@ -7,7 +7,85 @@ struct MHResolvedKeyValueStyle: Sendable, Equatable {
     var labelColorRole: MHColorRole
     var valueColorRole: MHColorRole
     var rowChrome: MHResolvedRowChromeStyle
+    var minimumValueWidth: CGFloat
     var stackedSpacing: CGFloat
+}
+
+enum MHKeyValueLayoutMetrics {
+    static func requiredHorizontalWidth(
+        labelWidth: CGFloat,
+        valueWidth: CGFloat,
+        spacing: CGFloat,
+        minimumValueWidth: CGFloat
+    ) -> CGFloat {
+        labelWidth + spacing + max(valueWidth, minimumValueWidth)
+    }
+}
+
+private struct MHKeyValueInlineLayout: Layout {
+    let spacing: CGFloat
+    let minimumValueWidth: CGFloat
+
+    func sizeThatFits(
+        proposal _: ProposedViewSize,
+        subviews: Subviews,
+        cache _: inout ()
+    ) -> CGSize {
+        guard subviews.count == 2 else {
+            return .zero
+        }
+
+        let labelSize = subviews[0].sizeThatFits(.unspecified)
+        let valueSize = subviews[1].sizeThatFits(.unspecified)
+
+        return .init(
+            width: MHKeyValueLayoutMetrics.requiredHorizontalWidth(
+                labelWidth: labelSize.width,
+                valueWidth: valueSize.width,
+                spacing: spacing,
+                minimumValueWidth: minimumValueWidth
+            ),
+            height: max(labelSize.height, valueSize.height)
+        )
+    }
+
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal _: ProposedViewSize,
+        subviews: Subviews,
+        cache _: inout ()
+    ) {
+        guard subviews.count == 2 else {
+            return
+        }
+
+        let labelSize = subviews[0].sizeThatFits(.unspecified)
+        let contentX = min(
+            bounds.maxX,
+            bounds.minX + labelSize.width + spacing
+        )
+        let contentWidth = max(0, bounds.maxX - contentX)
+
+        subviews[0].place(
+            at: bounds.origin,
+            anchor: .topLeading,
+            proposal: .init(
+                width: labelSize.width,
+                height: bounds.height
+            )
+        )
+        subviews[1].place(
+            at: CGPoint(
+                x: contentX,
+                y: bounds.minY
+            ),
+            anchor: .topLeading,
+            proposal: .init(
+                width: contentWidth,
+                height: bounds.height
+            )
+        )
+    }
 }
 
 /// A calm `LabeledContentStyle` for settings and detail rows.
@@ -70,6 +148,11 @@ extension MHTheme {
             labelColorRole: .primaryText,
             valueColorRole: .secondaryText,
             rowChrome: resolvedRowChromeStyle(for: context),
+            minimumValueWidth: context.isCompactWidth(
+                threshold: layout.compactWidthThreshold
+            )
+            ? layout.compactKeyValueMinimumValueWidth
+            : layout.regularKeyValueMinimumValueWidth,
             stackedSpacing: layout.compactKeyValueSpacing
         )
     }
@@ -91,7 +174,10 @@ private extension MHKeyValueLabeledContentStyle {
         configuration: Configuration,
         style: MHResolvedKeyValueStyle
     ) -> some View {
-        HStack(alignment: .top, spacing: style.rowChrome.accessorySpacing) {
+        MHKeyValueInlineLayout(
+            spacing: style.rowChrome.accessorySpacing,
+            minimumValueWidth: style.minimumValueWidth
+        ) {
             configuration.label
                 .foregroundStyle(
                     theme.resolvedColor(
@@ -99,7 +185,6 @@ private extension MHKeyValueLabeledContentStyle {
                         in: colorScheme
                     )
                 )
-            Spacer(minLength: style.rowChrome.accessorySpacing)
             configuration.content
                 .foregroundStyle(
                     theme.resolvedColor(
@@ -138,4 +223,4 @@ private extension MHKeyValueLabeledContentStyle {
         .mhRowChrome(style.rowChrome)
     }
 }
-// swiftlint:enable one_declaration_per_file file_types_order
+// swiftlint:enable one_declaration_per_file file_types_order no_magic_numbers

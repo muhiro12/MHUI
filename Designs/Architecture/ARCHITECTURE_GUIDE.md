@@ -17,7 +17,7 @@ Related documents:
 
 | Layer | Owns | Must not own |
 | --- | --- | --- |
-| Package (`Sources/MHUI`) | Semantic tokens, theme recipes, styling modifiers, layout primitives, screen chrome, package-owned preview support | App models, persistence, logging, networking, analytics, remote config, product-specific navigation |
+| Package (`Sources/MHUI`) | Semantic theme application, styling modifiers, layout primitives, compact fallback rules, screen chrome, package-owned validation previews | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets |
 | Host app or sibling app | Feature state, domain rules, platform integrations, app-specific navigation, product composition | Rebuilding shared MHUI primitives as local forks |
 | Example app (`Example/` when present) | Integration review, manual regression checks, sample usage of package APIs | Becoming the source of truth for shared package APIs or hiding canonical styling outside `Sources/MHUI` |
 
@@ -28,6 +28,7 @@ Allowed in the package:
 - Reusable typography, spacing, color, and surface tokens
 - Domain-neutral modifiers and container chrome
 - Shared presentation helpers that improve consistency across sibling apps
+- Width-aware fallback behavior for actions, grouped actions, and key-value rows
 - Preview or example scaffolding that proves package behavior
 
 Not allowed in the package:
@@ -36,6 +37,8 @@ Not allowed in the package:
 - Persistence orchestration or infrastructure services
 - Product-specific search, sync, or analytics behavior
 - Navigation meaning that depends on one host app's feature map
+- Low-level glass choreography APIs
+- Feature-specific wrapper controls that shadow native SwiftUI components
 
 ## Canonical Integration Flow
 
@@ -45,7 +48,7 @@ The package should shape presentation and composition without becoming the owner
 
 ## Example and Preview Mapping
 
-Example projects and preview catalogs follow the same package-first path:
+Example projects and preview validation catalogs follow the same package-first path:
 
 `Host example or preview -> MHUI public APIs -> package-owned tokens and layout primitives`
 
@@ -94,3 +97,4 @@ They may demonstrate package usage, but they should not become the place where n
    - Keep MHUI APIs generic enough to compose multiple sibling products.
    - Keep feature labels, app navigation meaning, and business-state branching outside the package.
    - Treat requests for app-specific screen shells as a signal to add host-side composition rather than package-owned product views.
+   - Prefer package-owned fallback behavior over host-side compact-width workarounds for standard rows and actions.

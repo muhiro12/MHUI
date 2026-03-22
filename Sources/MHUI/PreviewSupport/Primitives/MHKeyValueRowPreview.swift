@@ -1,50 +1,52 @@
 import SwiftUI
 
-#Preview("Key Value Rows", traits: .fixedLayout(width: 420, height: 260)) {
-    VStack(spacing: 0) {
-        LabeledContent(
-            "Visual language",
-            value: "Calm and quietly adaptive"
-        )
-        .labeledContentStyle(.mhKeyValue)
+private struct MHKeyValueRowPreview: View {
+    var body: some View {
+        VStack(spacing: 0) {
+            LabeledContent(
+                "Shared package responsibility for narrow rows",
+                value: """
+                    Automatic vertical stacking should keep long values readable
+                    before a host app writes local workarounds.
+                    """
+            )
+            .labeledContentStyle(.mhKeyValue)
 
-        LabeledContent {
-            VStack(alignment: .trailing, spacing: MHTheme.standard.spacing.inline) {
-                Text("Section / Group / Inline")
-                Text("Shared rhythm")
-                    .mhTextStyle(.caption, colorRole: .secondaryText)
+            LabeledContent {
+                VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+                    Text("Primary and supporting information")
+                    Text("Leading aligned when compact fallback is active.")
+                        .mhTextStyle(.caption, colorRole: .secondaryText)
+                }
+            } label: {
+                VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+                    Text("Current package-level fallback")
+                    Text("Horizontal only when a real value column still fits.")
+                        .mhTextStyle(.caption, colorRole: .secondaryText)
+                }
             }
-        } label: {
-            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
-                Text("Spacing")
-                Text("Screen rhythm shared across sibling apps.")
-                    .mhTextStyle(.caption, colorRole: .secondaryText)
-            }
+            .labeledContentStyle(.mhKeyValue)
+
+            LabeledContent(
+                "Validation target",
+                value: """
+                    Long labels, long values, and accessibility type should remain practical at 375pt and 320pt widths.
+                    """
+            )
+            .labeledContentStyle(.mhKeyValue)
         }
-        .labeledContentStyle(.mhKeyValue)
+        .mhGroupedRows()
+        .mhSurfaceInset()
+        .mhSurface()
     }
-    .mhGroupedRows()
-    .mhSurfaceInset()
-    .mhSurface()
-    .mhPreviewSurface()
 }
 
-#Preview("Key Value Rows Compact", traits: .fixedLayout(width: 320, height: 320)) {
-    VStack(spacing: 0) {
-        LabeledContent(
-            "Surface and spacing policy",
-            value: "Semantic tokens adapt before consumer workarounds are needed."
-        )
-        .labeledContentStyle(.mhKeyValue)
-
-        LabeledContent(
-            "Current compact fallback",
-            value: "Automatic vertical stacking with leading-aligned values"
-        )
-        .labeledContentStyle(.mhKeyValue)
+#Preview("Key Value Validation", traits: .fixedLayout(width: 900, height: 1_350)) {
+    MHPreviewCatalog(
+        title: "Key value validation",
+        scenarios: MHPreviewStyle.keyValueValidationScenarios()
+    ) { context in
+        MHKeyValueRowPreview()
+            .mhPreviewTint(context)
     }
-    .mhGroupedRows()
-    .mhSurfaceInset()
-    .mhSurface()
-    .mhPreviewSurface()
 }
