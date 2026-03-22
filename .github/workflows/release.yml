@@ -1,0 +1,82 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch tags
+        run: git fetch --force --tags origin
+
+      - name: Create GitHub release
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          sort_numeric_release_tags() {
+            sort -t. -k1,1n -k2,2n
+          }
+
+          existing_version=$(
+            git tag --points-at "$GITHUB_SHA" \
+              | awk '/^[0-9]+\.[0-9]+$/' \
+              | sort_numeric_release_tags \
+              | tail -n 1
+          )
+
+          if [[ -n "$existing_version" ]]; then
+            if gh release view "$existing_version" >/dev/null 2>&1; then
+              echo "Release $existing_version already exists for $GITHUB_SHA. Exiting."
+              exit 0
+            fi
+
+            echo "Creating missing release for existing tag $existing_version."
+            gh release create "$existing_version" --generate-notes
+            exit 0
+          fi
+
+          latest_version=$(
+            git tag --list \
+              | awk '/^[0-9]+\.[0-9]+$/' \
+              | sort_numeric_release_tags \
+              | tail -n 1
+          )
+
+          if [[ -z "$latest_version" ]]; then
+            next_version="1.0"
+          else
+            IFS='.' read -r major minor <<<"$latest_version"
+            next_version="${major}.$((minor + 1))"
+          fi
+
+          if gh release view "$next_version" >/dev/null 2>&1; then
+            echo "Release $next_version already exists. Exiting."
+            exit 0
+          fi
+
+          if git rev-parse -q --verify "refs/tags/$next_version" >/dev/null 2>&1; then
+            echo "Tag $next_version already exists. Exiting."
+            exit 0
+          fi
+
+          echo "Creating release $next_version for $GITHUB_SHA."
+          gh release create "$next_version" --target "$GITHUB_SHA" --generate-notes
