@@ -1,3 +1,4 @@
+import MHDesign
 import SwiftUI
 
 /// Shared visual rules for calm, tool-like sibling apps.
@@ -27,22 +28,6 @@ public struct MHTheme: Sendable, Equatable {
         var caption: MHTextMetrics
     }
 
-    /// Shared layout spacing for MHUI surfaces and stacks.
-    struct Spacing: Sendable, Equatable {
-        var inline: CGFloat
-        var control: CGFloat
-        var group: CGFloat
-        var section: CGFloat
-        var screen: CGFloat
-    }
-
-    /// Shared radii for controls and calm surfaces.
-    struct Radius: Sendable, Equatable {
-        var control: CGFloat
-        var surface: CGFloat
-        var pill: CGFloat
-    }
-
     /// Divider treatment for grouped rows and sections.
     struct Divider: Sendable, Equatable {
         var thickness: CGFloat
@@ -53,39 +38,6 @@ public struct MHTheme: Sendable, Equatable {
     struct Motion: Sendable, Equatable {
         var quick: Double
         var regular: Double
-    }
-
-    /// Shared layout tokens for screen composition and row rhythm.
-    struct Layout: Sendable, Equatable {
-        var readableContentWidth: CGFloat
-        var compactWidthThreshold: CGFloat
-        var narrowWidthThreshold: CGFloat
-        var screenHorizontalMargin: CGFloat
-        var screenVerticalPadding: CGFloat
-        var screenContentSpacing: CGFloat
-        var compactScreenHorizontalMargin: CGFloat
-        var compactScreenVerticalPadding: CGFloat
-        var compactScreenContentSpacing: CGFloat
-        var surfaceInsetHorizontal: CGFloat
-        var surfaceInsetVertical: CGFloat
-        var compactSurfaceInsetHorizontal: CGFloat
-        var compactSurfaceInsetVertical: CGFloat
-        var rowHorizontalInset: CGFloat
-        var rowVerticalPadding: CGFloat
-        var rowAccessorySpacing: CGFloat
-        var compactRowHorizontalInset: CGFloat
-        var compactRowVerticalPadding: CGFloat
-        var compactRowAccessorySpacing: CGFloat
-        var compactActionHorizontalPadding: CGFloat
-        var compactActionVerticalPadding: CGFloat
-        var regularKeyValueMinimumValueWidth: CGFloat
-        var compactKeyValueMinimumValueWidth: CGFloat
-        var compactKeyValueSpacing: CGFloat
-        var compactActionGroupSpacing: CGFloat
-        var screenCueWidth: CGFloat
-        var screenCueHeight: CGFloat
-        var sectionCueWidth: CGFloat
-        var sectionCueHeight: CGFloat
     }
 
     /// Surface recipes used by calm containers and screen chrome.
@@ -108,12 +60,22 @@ public struct MHTheme: Sendable, Equatable {
 
     var colors: Colors
     var typography: Typography
-    var spacing: Spacing
-    var radius: Radius
+    var metrics: MHDesignMetrics
     var divider: Divider
     var motion: Motion
-    var layout: Layout
     var surfaces: Surfaces
+
+    var spacing: MHSpacingMetrics {
+        metrics.spacing
+    }
+
+    var radius: MHRadiusMetrics {
+        metrics.radius
+    }
+
+    var layout: MHLayoutMetrics {
+        metrics.layout
+    }
 
     internal func colorReference(for role: MHColorRole) -> MHColorReference {
         switch role {

@@ -4,6 +4,7 @@
 
 MHUI is a narrow runtime presentation kit for calm, tool-like sibling apps.
 It is intentionally opinionated and intentionally small.
+The repository also exposes `MHDesign`, a smaller metrics layer for apps that need the shared spacing, radius, and layout baseline without adopting MHUI chrome.
 
 MHUI focuses on three layers:
 
@@ -32,6 +33,7 @@ Those responsibilities stay outside the package.
 
 ## Repository Layout
 
+- `Sources/MHDesign` - shared spacing, radius, and layout metrics for sibling apps
 - `Sources/MHUI` - shared package source of truth for reusable presentation APIs
 - `Tests/MHUITests` - package verification surface
 - `ci_scripts/` - stable build, test, and verify entrypoints
@@ -63,6 +65,7 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 
 ## Public Building Blocks
 
+- `MHDesignMetrics`, `MHSpacingMetrics`, `MHRadiusMetrics`, `MHLayoutMetrics`
 - `MHTheme`, `MHColorReference`, `MHTextRole`, `MHColorRole`
 - `mhTextStyle(_:colorRole:)`
 - `MHGlassPolicy`, `mhGlassPolicy(_:)`
@@ -84,6 +87,7 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 ## Example
 
 ```swift
+import MHDesign
 import MHUI
 import SwiftUI
 
@@ -98,7 +102,7 @@ struct SettingsScreen: View {
                     LabeledContent("Theme", value: "System")
                         .labeledContentStyle(.mhKeyValue)
                 } header: {
-                    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
+                    VStack(alignment: .leading, spacing: MHDesignMetrics.standard.spacing.control) {
                         Text("Preferences")
                             .mhSectionHeaderTitle()
                         Text("Standard controls keep their native behavior.")
@@ -121,15 +125,18 @@ struct SettingsScreen: View {
 }
 ```
 
+If a sibling app does not want MHUI modifiers or chrome, import `MHDesign` directly and reference `MHDesignMetrics.standard`.
+
 Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from stacks and calm card-like surfaces instead of a native `List` or `Form`.
 
 ## Where To Tune First
 
 Start in this order when adjusting appearance:
 
-1. `MHTheme.standard()` or `MHTheme.standard(accent:)` for default color, spacing, radius, layout, and surface recipes.
-2. Validation previews at fixed widths `760`, `375`, and `320` before making view-local tweaks.
-3. Internal shared resolvers for row chrome, surface fill, action fallback, and key-value fallback only when a shared token is not enough.
+1. `MHDesignMetrics.standard` when an app only needs shared spacing, radius, or layout numbers.
+2. `MHTheme.standard()` or `MHTheme.standard(accent:)` for default color, spacing, radius, layout, and surface recipes.
+3. Validation previews at fixed widths `760`, `375`, and `320` before making view-local tweaks.
+4. Internal shared resolvers for row chrome, surface fill, action fallback, and key-value fallback only when a shared token is not enough.
 
 The most useful previews to review first are `Screen Validation`, `Action Buttons Validation`, `Action Group Validation`, `Key Value Validation`, and `Native Container Validation`.
 

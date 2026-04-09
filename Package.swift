@@ -11,17 +11,32 @@ let package = Package(
     ],
     products: [
         .library(
+            name: "MHDesign",
+            targets: ["MHDesign"]
+        ),
+        .library(
             name: "MHUI",
             targets: ["MHUI"]
         )
     ],
     targets: [
         .target(
-            name: "MHUI"
+            name: "MHDesign"
+        ),
+        .target(
+            name: "MHUI",
+            dependencies: ["MHDesign"]
+        ),
+        .testTarget(
+            name: "MHDesignTests",
+            dependencies: ["MHDesign"]
         ),
         .testTarget(
             name: "MHUITests",
-            dependencies: ["MHUI"]
+            dependencies: [
+                "MHDesign",
+                "MHUI"
+            ]
         )
     ]
 )

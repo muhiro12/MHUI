@@ -17,7 +17,8 @@ Related documents:
 
 | Layer | Owns | Must not own |
 | --- | --- | --- |
-| Package (`Sources/MHUI`) | Semantic theme application, styling modifiers, layout primitives, compact fallback rules, screen chrome, package-owned validation previews | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets |
+| `MHDesign` (`Sources/MHDesign`) | Shared spacing, radius, and layout metrics that sibling apps can adopt without MHUI chrome | Product copy, business rules, navigation meaning, or view-specific styling behavior |
+| `MHUI` (`Sources/MHUI`) | Semantic theme application, styling modifiers, layout primitives, compact fallback rules, screen chrome, package-owned validation previews | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets |
 | Host app or sibling app | Feature state, domain rules, platform integrations, app-specific navigation, product composition | Rebuilding shared MHUI primitives as local forks |
 | Example app (`Example/` when present) | Integration review, manual regression checks, sample usage of package APIs | Becoming the source of truth for shared package APIs or hiding canonical styling outside `Sources/MHUI` |
 
@@ -25,7 +26,8 @@ Related documents:
 
 Allowed in the package:
 
-- Reusable typography, spacing, color, and surface tokens
+- Reusable spacing, radius, and layout metrics in `MHDesign`
+- Reusable typography, color, and surface tokens in `MHUI`
 - Domain-neutral modifiers and container chrome
 - Shared presentation helpers that improve consistency across sibling apps
 - Width-aware fallback behavior for actions, grouped actions, and key-value rows
@@ -42,7 +44,7 @@ Not allowed in the package:
 
 ## Canonical Integration Flow
 
-`Host app screen -> MHTheme and MHUI modifiers -> native SwiftUI controls and containers`
+`Host app screen -> MHDesign metrics and optional MHTheme/MHUI modifiers -> native SwiftUI controls and containers`
 
 The package should shape presentation and composition without becoming the owner of host application behavior.
 
@@ -56,6 +58,7 @@ They may demonstrate package usage, but they should not become the place where n
 
 ## Repository Structure Guidance
 
+- Keep canonical shared design parameters in `Sources/MHDesign`.
 - Keep canonical shared APIs in `Sources/MHUI`.
 - Keep package verification in `Tests/MHUITests`.
 - Keep stable automation entrypoints in `ci_scripts/tasks/`.
@@ -90,10 +93,12 @@ They may demonstrate package usage, but they should not become the place where n
 3. Product-specific meaning should stay in host screens.
 
    Files:
+   - `Sources/MHDesign/`
    - `Sources/MHUI/`
    - host app call sites outside this repository
 
    Minimal plan:
+   - Keep raw shared metrics in `MHDesign` when they should work without MHUI chrome.
    - Keep MHUI APIs generic enough to compose multiple sibling products.
    - Keep feature labels, app navigation meaning, and business-state branching outside the package.
    - Treat requests for app-specific screen shells as a signal to add host-side composition rather than package-owned product views.

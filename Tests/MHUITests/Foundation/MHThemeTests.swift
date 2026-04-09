@@ -1,4 +1,5 @@
 // swiftlint:disable function_body_length
+import MHDesign
 @testable import MHUI
 import SwiftUI
 import Testing
@@ -36,6 +37,7 @@ struct MHThemeTests {
             lightHex: 0x6D6D73,
             darkHex: 0xADADB5
         ))
+        #expect(theme.metrics == MHDesignMetrics.standard)
         #expect(theme.colors.accent == .tint)
         #expect(theme.spacing.inline == 4)
         #expect(theme.spacing.control == 12)
@@ -118,8 +120,10 @@ struct MHThemeTests {
     func environment_values_store_theme_overrides() {
         var values = EnvironmentValues()
         var custom = MHTheme.standard
-        custom.spacing.screen = 44
-        custom.layout.screenVerticalPadding = 80
+        custom.metrics = customDesignMetrics(
+            spacingScreen: 44,
+            screenVerticalPadding: 80
+        )
         custom.colors.accent = .tint
 
         values.mhTheme = custom
@@ -156,3 +160,52 @@ struct MHThemeTests {
     }
 }
 // swiftlint:enable function_body_length
+
+private func customDesignMetrics(
+    spacingScreen: CGFloat,
+    screenVerticalPadding: CGFloat
+) -> MHDesignMetrics {
+    let standard = MHDesignMetrics.standard
+
+    return .init(
+        spacing: .init(
+            inline: standard.spacing.inline,
+            control: standard.spacing.control,
+            group: standard.spacing.group,
+            section: standard.spacing.section,
+            screen: spacingScreen
+        ),
+        radius: standard.radius,
+        layout: .init(
+            readableContentWidth: standard.layout.readableContentWidth,
+            compactWidthThreshold: standard.layout.compactWidthThreshold,
+            narrowWidthThreshold: standard.layout.narrowWidthThreshold,
+            screenHorizontalMargin: standard.layout.screenHorizontalMargin,
+            screenVerticalPadding: screenVerticalPadding,
+            screenContentSpacing: standard.layout.screenContentSpacing,
+            compactScreenHorizontalMargin: standard.layout.compactScreenHorizontalMargin,
+            compactScreenVerticalPadding: standard.layout.compactScreenVerticalPadding,
+            compactScreenContentSpacing: standard.layout.compactScreenContentSpacing,
+            surfaceInsetHorizontal: standard.layout.surfaceInsetHorizontal,
+            surfaceInsetVertical: standard.layout.surfaceInsetVertical,
+            compactSurfaceInsetHorizontal: standard.layout.compactSurfaceInsetHorizontal,
+            compactSurfaceInsetVertical: standard.layout.compactSurfaceInsetVertical,
+            rowHorizontalInset: standard.layout.rowHorizontalInset,
+            rowVerticalPadding: standard.layout.rowVerticalPadding,
+            rowAccessorySpacing: standard.layout.rowAccessorySpacing,
+            compactRowHorizontalInset: standard.layout.compactRowHorizontalInset,
+            compactRowVerticalPadding: standard.layout.compactRowVerticalPadding,
+            compactRowAccessorySpacing: standard.layout.compactRowAccessorySpacing,
+            compactActionHorizontalPadding: standard.layout.compactActionHorizontalPadding,
+            compactActionVerticalPadding: standard.layout.compactActionVerticalPadding,
+            regularKeyValueMinimumValueWidth: standard.layout.regularKeyValueMinimumValueWidth,
+            compactKeyValueMinimumValueWidth: standard.layout.compactKeyValueMinimumValueWidth,
+            compactKeyValueSpacing: standard.layout.compactKeyValueSpacing,
+            compactActionGroupSpacing: standard.layout.compactActionGroupSpacing,
+            screenCueWidth: standard.layout.screenCueWidth,
+            screenCueHeight: standard.layout.screenCueHeight,
+            sectionCueWidth: standard.layout.sectionCueWidth,
+            sectionCueHeight: standard.layout.sectionCueHeight
+        )
+    )
+}

@@ -1,6 +1,6 @@
 # MHUI Current Repository Overview
 
-Current as of March 22, 2026.
+Current as of April 10, 2026.
 
 ## Purpose
 
@@ -11,7 +11,8 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 | Surface | Current role | Key responsibilities |
 | --- | --- | --- |
-| `MHUI` | Shared package | Theme definitions, semantic styling APIs, modifiers, layout helpers, and screen chrome |
+| `MHDesign` | Shared package | Spacing, radius, and layout metrics that sibling apps can adopt without MHUI chrome |
+| `MHUI` | Shared package | Theme definitions, semantic styling APIs, modifiers, layout helpers, and screen chrome built on `MHDesign` |
 | `Tests/MHUITests` | Package verification | Validate the shared package surface through Swift package tests |
 | `ci_scripts` | Workflow layer | Stable build, test, verify, and artifact-capture entrypoints |
 | `Designs` | Architecture documentation | Current overview, architecture guide, and ADR history |
@@ -19,6 +20,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 ## Current Repository Rules
 
+- Shared design parameters live in `Sources/MHDesign`.
 - Shared presentation APIs live in `Sources/MHUI`.
 - Product behavior stays outside the package.
 - The example app, when present, is a consumer of the package rather than a second source of truth.
@@ -26,6 +28,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 ## Public API Areas
 
+- `MHDesignMetrics` and its spacing, radius, and layout value groups
 - Theme application through `MHTheme.standard()` and related semantic roles
 - Text styling primitives such as `mhTextStyle(_:colorRole:)`
 - Surface, row, section, and grouped-layout modifiers

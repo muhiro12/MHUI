@@ -2,11 +2,12 @@
 
 ## Purpose
 
-This document describes the current boundary for shared presentation logic in MHUI.
+This document describes the current boundary for shared design parameters in `MHDesign` and shared presentation logic in `MHUI`.
 It explains where new code should live when the same visual rule or container pattern must work across multiple sibling apps.
 
 ## Core Principles
 
+- `Sources/MHDesign` is the source of truth for shared spacing, radius, and layout parameters that should work without MHUI chrome.
 - `Sources/MHUI` is the source of truth for shared presentation logic.
 - Host apps own product behavior, feature state, and navigation meaning.
 - Example apps and previews are consumers of package APIs, not a second design layer.
@@ -17,6 +18,7 @@ It explains where new code should live when the same visual rule or container pa
 
 | Concern | Lives in | Examples |
 | --- | --- | --- |
+| Shared design parameters | `Sources/MHDesign` | `MHDesignMetrics`, spacing, radii, readable widths, compact thresholds |
 | Shared presentation logic | `Sources/MHUI` | `MHTheme`, semantic roles, text styles, surface chrome, grouped rows, section chrome, screen chrome |
 | Package preview support | `Sources/MHUI/PreviewSupport` | validation catalogs for compact width, native-container chrome, and shared fallback behavior |
 | Host app composition | App repositories that consume MHUI | feature screens, navigation state, form state, domain-driven copy, feature-specific layouts |
@@ -26,6 +28,10 @@ It explains where new code should live when the same visual rule or container pa
 
 The following types and helpers are the current shared entry points for package-owned presentation:
 
+- `MHDesignMetrics`
+- `MHSpacingMetrics`
+- `MHRadiusMetrics`
+- `MHLayoutMetrics`
 - `MHTheme`
 - `MHColorReference`
 - `MHTextRole`
@@ -44,15 +50,17 @@ The following types and helpers are the current shared entry points for package-
 
 ## Placement Rules
 
-1. If a visual rule is intended to stay aligned across more than one app, add or extend MHUI first.
-2. If a component needs business models, persistence, networking, or app-specific routing to make sense, keep it outside MHUI.
-3. If an example or preview starts introducing helper APIs that sibling apps will need, move that API into `Sources/MHUI`.
-4. Keep product wording, feature-specific empty states, and business-state branching out of the package.
-5. Prefer semantic inputs such as roles, policies, and layout intent over app-specific configuration objects or low-level token graphs.
-6. If glue code is reused only inside one consuming app, keep it in that app instead of promoting it into MHUI.
+1. If a shared value should stay aligned across more than one app and does not require MHUI chrome, add or extend `MHDesign` first.
+2. If a visual rule requires presentation behavior or semantic styling, add or extend `MHUI`.
+3. If a component needs business models, persistence, networking, or app-specific routing to make sense, keep it outside MHUI.
+4. If an example or preview starts introducing helper APIs that sibling apps will need, move that API into `Sources/MHUI`.
+5. Keep product wording, feature-specific empty states, and business-state branching out of the package.
+6. Prefer semantic inputs such as roles, policies, and layout intent over app-specific configuration objects or low-level token graphs.
+7. If glue code is reused only inside one consuming app, keep it in that app instead of promoting it into the shared package layers.
 
 ## Current Examples
 
+- `MHDesignMetrics.standard` stays in the package because sibling apps need one shared baseline for spacing, radii, and layout thresholds even when they do not adopt MHUI chrome.
 - `MHTheme.standard()` and `MHTheme.standard(accent:)` stay in the package because they define a reusable semantic baseline rather than one app's branding system.
 - `mhListChrome(...)` and `mhFormChrome(...)` stay in the package because they shape container presentation without needing app-specific business state.
 - Preview validation catalogs remain package-owned because they verify shared compact-width and container behavior directly against the canonical APIs.
@@ -60,5 +68,6 @@ The following types and helpers are the current shared entry points for package-
 
 ## Refactoring Heuristic
 
-When a visual rule is duplicated across sibling apps, the default fix is to move that rule into MHUI.
+When raw spacing, radius, or layout values are duplicated across sibling apps, the default fix is to move that rule into `MHDesign`.
+When a presentation rule is duplicated across sibling apps, the default fix is to move that rule into `MHUI`.
 When the duplicated code still depends on one product's models, copy, or workflows, the default fix is to keep it in the host app and only extract the domain-neutral presentation layer.
