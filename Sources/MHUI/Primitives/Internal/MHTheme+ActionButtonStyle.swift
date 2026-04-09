@@ -30,7 +30,7 @@ extension MHTheme {
             : spacing.control
         let quietVerticalPadding = isCompactWidth
             ? layout.compactKeyValueSpacing
-            : spacing.inline + 2
+            : spacing.inline
 
         return switch role {
         case .primary:

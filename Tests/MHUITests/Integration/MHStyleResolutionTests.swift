@@ -136,7 +136,7 @@ struct MHStyleResolutionTests {
         let screen = theme.resolvedScreenChromeStyle(for: narrowContext)
 
         #expect(screen.readableContentWidth == nil)
-        #expect(screen.horizontalMargin == 12)
+        #expect(screen.horizontalMargin == 8)
         #expect(screen.verticalPadding == theme.layout.compactScreenVerticalPadding)
     }
 

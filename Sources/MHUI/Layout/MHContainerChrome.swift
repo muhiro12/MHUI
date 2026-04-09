@@ -9,7 +9,7 @@ private enum MHContainerChromeKind {
 }
 
 private enum MHScreenChromeDefaults {
-    static let minimumCompactHorizontalMargin: CGFloat = 12
+    static let minimumCompactHorizontalMargin: CGFloat = 8
 }
 
 struct MHResolvedScreenChromeStyle: Sendable, Equatable {

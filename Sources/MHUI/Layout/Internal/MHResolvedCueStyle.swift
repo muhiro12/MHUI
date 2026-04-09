@@ -90,7 +90,7 @@ extension MHTheme {
                 colorRole: .accent,
                 width: layout.sectionCueWidth,
                 height: layout.sectionCueHeight,
-                spacing: spacing.inline + layout.sectionCueHeight
+                spacing: spacing.inline
             )
         }
     }
