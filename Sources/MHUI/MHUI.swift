@@ -1,1 +1,2 @@
-// MHUI module entry point is intentionally empty.
+// MHUI re-exports MHDesign so styled adopters can import one module.
+@_exported import MHDesign

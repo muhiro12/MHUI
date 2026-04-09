@@ -1,5 +1,4 @@
 // swiftlint:disable function_body_length
-import MHDesign
 @testable import MHUI
 import SwiftUI
 import Testing

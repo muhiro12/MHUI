@@ -33,10 +33,7 @@ let package = Package(
         ),
         .testTarget(
             name: "MHUITests",
-            dependencies: [
-                "MHDesign",
-                "MHUI"
-            ]
+            dependencies: ["MHUI"]
         )
     ]
 )

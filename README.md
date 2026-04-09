@@ -6,6 +6,7 @@ MHUI is a narrow runtime presentation kit for calm, tool-like sibling apps.
 It is intentionally opinionated and intentionally small.
 The repository also exposes `MHDesign`, a smaller metrics layer for apps that need the shared spacing, radius, and layout baseline without adopting MHUI chrome.
 `MHDesign` includes a SwiftUI environment bridge so apps and MHUI components can share one active metrics subtree.
+`MHUI` is the styled layer built on top of `MHDesign` and re-exports it for styled adopters.
 
 MHUI focuses on three layers:
 
@@ -35,11 +36,19 @@ Those responsibilities stay outside the package.
 ## Repository Layout
 
 - `Sources/MHDesign` - shared spacing, radius, and layout metrics for sibling apps
-- `Sources/MHUI` - shared package source of truth for reusable presentation APIs
+- `Sources/MHUI` - shared styled presentation APIs built on `MHDesign`
 - `Tests/MHUITests` - package verification surface
 - `ci_scripts/` - stable build, test, and verify entrypoints
 - `Designs/` - architecture notes, current overview, and ADRs
 - `Example/` - optional consumer app used only when present for integration review
+
+## Adoption Paths
+
+- Metrics-only adopter: `import MHDesign`
+- Styled adopter: `import MHUI`
+
+Use `MHDesign` directly when an app wants to avoid MHUI chrome and only share spacing, radius, layout, and the environment bridge.
+Use `MHUI` when an app wants the styled layer. `MHUI` re-exports `MHDesign`, so one import is enough for both the metrics layer and the styled APIs.
 
 ## Design Direction
 
@@ -89,7 +98,6 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 ## Example
 
 ```swift
-import MHDesign
 import MHUI
 import SwiftUI
 
@@ -131,6 +139,7 @@ struct SettingsScreen: View {
 ```
 
 If a sibling app does not want MHUI modifiers or chrome, import `MHDesign` directly and read `@Environment(\.mhDesignMetrics)`.
+If a sibling app wants MHUI styling, import `MHUI` and use both `MHTheme` and `MHDesign` APIs from that one module.
 Apply `.mhDesignMetrics(...)` when a subtree needs layout-only overrides. MHUI components follow the same active metrics automatically.
 
 Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from stacks and calm card-like surfaces instead of a native `List` or `Form`.
