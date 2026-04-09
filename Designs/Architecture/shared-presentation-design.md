@@ -18,7 +18,7 @@ It explains where new code should live when the same visual rule or container pa
 
 | Concern | Lives in | Examples |
 | --- | --- | --- |
-| Shared design parameters | `Sources/MHDesign` | `MHDesignMetrics`, spacing, radii, readable widths, compact thresholds |
+| Shared design parameters | `Sources/MHDesign` | `MHDesignMetrics`, spacing, radii, readable widths, compact thresholds, SwiftUI environment bridge |
 | Shared presentation logic | `Sources/MHUI` | `MHTheme`, semantic roles, text styles, surface chrome, grouped rows, section chrome, screen chrome |
 | Package preview support | `Sources/MHUI/PreviewSupport` | validation catalogs for compact width, native-container chrome, and shared fallback behavior |
 | Host app composition | App repositories that consume MHUI | feature screens, navigation state, form state, domain-driven copy, feature-specific layouts |
@@ -32,6 +32,7 @@ The following types and helpers are the current shared entry points for package-
 - `MHSpacingMetrics`
 - `MHRadiusMetrics`
 - `MHLayoutMetrics`
+- `mhDesignMetrics(_:)`
 - `MHTheme`
 - `MHColorReference`
 - `MHTextRole`

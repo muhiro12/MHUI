@@ -5,6 +5,7 @@
 MHUI is a narrow runtime presentation kit for calm, tool-like sibling apps.
 It is intentionally opinionated and intentionally small.
 The repository also exposes `MHDesign`, a smaller metrics layer for apps that need the shared spacing, radius, and layout baseline without adopting MHUI chrome.
+`MHDesign` includes a SwiftUI environment bridge so apps and MHUI components can share one active metrics subtree.
 
 MHUI focuses on three layers:
 
@@ -66,6 +67,7 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 ## Public Building Blocks
 
 - `MHDesignMetrics`, `MHSpacingMetrics`, `MHRadiusMetrics`, `MHLayoutMetrics`
+- `mhDesignMetrics(_:)` and `@Environment(\.mhDesignMetrics)`
 - `MHTheme`, `MHColorReference`, `MHTextRole`, `MHColorRole`
 - `mhTextStyle(_:colorRole:)`
 - `MHGlassPolicy`, `mhGlassPolicy(_:)`
@@ -92,6 +94,9 @@ import MHUI
 import SwiftUI
 
 struct SettingsScreen: View {
+    @Environment(\.mhDesignMetrics)
+    private var metrics
+
     var body: some View {
         NavigationStack {
             List {
@@ -102,7 +107,7 @@ struct SettingsScreen: View {
                     LabeledContent("Theme", value: "System")
                         .labeledContentStyle(.mhKeyValue)
                 } header: {
-                    VStack(alignment: .leading, spacing: MHDesignMetrics.standard.spacing.control) {
+                    VStack(alignment: .leading, spacing: metrics.spacing.control) {
                         Text("Preferences")
                             .mhSectionHeaderTitle()
                         Text("Standard controls keep their native behavior.")
@@ -125,7 +130,8 @@ struct SettingsScreen: View {
 }
 ```
 
-If a sibling app does not want MHUI modifiers or chrome, import `MHDesign` directly and reference `MHDesignMetrics.standard`.
+If a sibling app does not want MHUI modifiers or chrome, import `MHDesign` directly and read `@Environment(\.mhDesignMetrics)`.
+Apply `.mhDesignMetrics(...)` when a subtree needs layout-only overrides. MHUI components follow the same active metrics automatically.
 
 Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from stacks and calm card-like surfaces instead of a native `List` or `Form`.
 

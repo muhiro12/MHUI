@@ -17,7 +17,7 @@ Related documents:
 
 | Layer | Owns | Must not own |
 | --- | --- | --- |
-| `MHDesign` (`Sources/MHDesign`) | Shared spacing, radius, and layout metrics that sibling apps can adopt without MHUI chrome | Product copy, business rules, navigation meaning, or view-specific styling behavior |
+| `MHDesign` (`Sources/MHDesign`) | Shared spacing, radius, and layout metrics plus the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome | Product copy, business rules, navigation meaning, or view-specific styling behavior |
 | `MHUI` (`Sources/MHUI`) | Semantic theme application, styling modifiers, layout primitives, compact fallback rules, screen chrome, package-owned validation previews | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets |
 | Host app or sibling app | Feature state, domain rules, platform integrations, app-specific navigation, product composition | Rebuilding shared MHUI primitives as local forks |
 | Example app (`Example/` when present) | Integration review, manual regression checks, sample usage of package APIs | Becoming the source of truth for shared package APIs or hiding canonical styling outside `Sources/MHUI` |
@@ -44,7 +44,7 @@ Not allowed in the package:
 
 ## Canonical Integration Flow
 
-`Host app screen -> MHDesign metrics and optional MHTheme/MHUI modifiers -> native SwiftUI controls and containers`
+`Host app screen -> MHDesign environment metrics and optional MHTheme/MHUI modifiers -> native SwiftUI controls and containers`
 
 The package should shape presentation and composition without becoming the owner of host application behavior.
 

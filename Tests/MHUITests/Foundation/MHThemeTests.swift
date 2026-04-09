@@ -135,6 +135,31 @@ struct MHThemeTests {
     }
 
     @Test
+    func environment_values_resolve_theme_with_design_metrics_precedence() {
+        var values = EnvironmentValues()
+        let customTheme = MHTheme.standard(accent: .fixed(
+            lightHex: 0x2473E6,
+            darkHex: 0x73ADFF
+        ))
+        let otherMetrics = customDesignMetrics(
+            spacingScreen: 44,
+            screenVerticalPadding: 80
+        )
+
+        values.mhTheme = customTheme
+
+        #expect(values.mhTheme.metrics == customTheme.metrics)
+        #expect(values.mhTheme.colors == customTheme.colors)
+        #expect(values.mhTheme.typography == customTheme.typography)
+
+        values.mhDesignMetrics = otherMetrics
+
+        #expect(values.mhTheme.metrics == otherMetrics)
+        #expect(values.mhTheme.colors == customTheme.colors)
+        #expect(values.mhTheme.typography == customTheme.typography)
+    }
+
+    @Test
     func environment_values_store_glass_policy_overrides() {
         var values = EnvironmentValues()
 
