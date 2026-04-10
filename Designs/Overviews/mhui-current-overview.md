@@ -22,6 +22,8 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 - Shared design parameters live in `Sources/MHDesign`.
 - Shared presentation APIs live in `Sources/MHUI`, which re-exports `MHDesign`.
+- Versions in the `1.x` line are beta and may include intentional breaking API changes.
+- The package does not keep deprecated aliases, migration helpers, or compatibility shims for consuming apps during `1.x`.
 - Product behavior stays outside the package.
 - The example app, when present, is a consumer of the package rather than a second source of truth.
 - CI scripts write disposable artifacts under `.build/ci/`.
@@ -57,4 +59,5 @@ The repository is intentionally biased toward package-owned visual rules and awa
 - The repository is shared-library-first.
 - App-specific flows, domain models, and infrastructure do not belong in this package.
 - Art-direction presets and low-level glass choreography do not belong in this package.
+- Runtime UI fallback remains package-owned behavior and is separate from consumer-update compatibility policy.
 - Verification should prefer stable `ci_scripts/tasks/*.sh` entrypoints over ad-hoc commands.

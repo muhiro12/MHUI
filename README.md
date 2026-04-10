@@ -51,6 +51,14 @@ Use `MHDesign` directly when an app wants to avoid MHUI chrome and only share sp
 Use `MHUI` when an app wants the styled layer. `MHUI` re-exports `MHDesign`, so one import is enough for both the metrics layer and the styled APIs.
 Row chrome, action fallback, key-value fallback, and cue geometry stay MHUI-owned even when they are backed by shared package defaults.
 
+## Versioning Policy
+
+Versions in the `1.x` line, including `1.0`, `1.5`, and `1.5.1`, are beta releases.
+During `1.x`, MHUI and MHDesign may ship intentional breaking API changes when that keeps the package boundary or public surface clearer.
+During `1.x`, the package does not preserve backward compatibility for consuming apps through deprecated aliases, migration helpers, compatibility shims, or old-caller dual paths.
+Consuming apps are expected to update to the current package APIs when adopting a new `1.x` release.
+This policy applies to package API evolution, not to runtime UI behavior such as compact-width layout or readability fallback.
+
 ## Design Direction
 
 MHUI aims for a quiet interface:

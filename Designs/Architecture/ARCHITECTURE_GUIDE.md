@@ -41,6 +41,14 @@ Not allowed in the package:
 - Navigation meaning that depends on one host app's feature map
 - Low-level glass choreography APIs
 - Feature-specific wrapper controls that shadow native SwiftUI components
+- Consumer-update compatibility layers, migration helpers, or deprecated alias paths during `1.x` beta
+
+## Versioning Contract
+
+- Versions in the `1.x` line, including `1.0`, `1.5`, and `1.5.1`, are beta releases.
+- During `1.x`, breaking package API changes are allowed when they make the shared boundary or public surface clearer.
+- During `1.x`, consuming apps are expected to update to the current package APIs instead of relying on compatibility shims, migration helpers, or deprecated aliases in the package.
+- This contract does not remove runtime UI behavior such as compact-width layout changes or readability fallback, because those remain part of the product surface that the package owns.
 
 ## Canonical Integration Flow
 

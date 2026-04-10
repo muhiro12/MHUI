@@ -13,6 +13,7 @@ It explains where new code should live when the same visual rule or container pa
 - Example apps and previews are consumers of package APIs, not a second design layer.
 - Views and modifiers in MHUI should stay domain neutral even when they feel screen-like.
 - MHUI remains a single package target unless there is a stronger reason than file organization alone.
+- Releases in the `1.x` line are beta, so package API clarity takes precedence over backward compatibility for consuming apps.
 
 ## Responsibility Boundaries
 
@@ -65,6 +66,7 @@ The following types and helpers are the current shared entry points for package-
 5. Keep product wording, feature-specific empty states, and business-state branching out of the package.
 6. Prefer semantic inputs such as roles, policies, and layout intent over app-specific configuration objects or low-level token graphs.
 7. If glue code is reused only inside one consuming app, keep it in that app instead of promoting it into the shared package layers.
+8. During `1.x`, do not add deprecated aliases, migration helpers, compatibility shims, or old-caller dual paths just to ease package upgrades for consuming apps.
 
 ## Current Examples
 
@@ -81,3 +83,4 @@ The following types and helpers are the current shared entry points for package-
 When raw spacing, radius, or generic screen or surface layout values are duplicated across sibling apps, the default fix is to move that rule into `MHDesign`.
 When a presentation rule is duplicated across sibling apps, the default fix is to move that rule into `MHUI`.
 When the duplicated code still depends on one product's models, copy, or workflows, the default fix is to keep it in the host app and only extract the domain-neutral presentation layer.
+When a breaking package API change improves the boundary during `1.x`, prefer the cleaner API over carrying a temporary compatibility layer.
