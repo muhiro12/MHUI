@@ -17,8 +17,8 @@ Related documents:
 
 | Layer | Owns | Must not own |
 | --- | --- | --- |
-| `MHDesign` (`Sources/MHDesign`) | Shared spacing, radius, and layout metrics plus the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome | Product copy, business rules, navigation meaning, or view-specific styling behavior |
-| `MHUI` (`Sources/MHUI`) | Semantic theme application, styling modifiers, layout primitives, compact fallback rules, screen chrome, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets |
+| `MHDesign` (`Sources/MHDesign`) | Shared spacing, radius, generic screen or surface layout metrics, and the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome | Product copy, business rules, navigation meaning, view-specific styling behavior, or MHUI-owned component chrome |
+| `MHUI` (`Sources/MHUI`) | Semantic theme application, styling modifiers, layout primitives, row and action fallback rules, key-value fallback, cue geometry, screen chrome, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets |
 | Host app or sibling app | Feature state, domain rules, platform integrations, app-specific navigation, product composition | Rebuilding shared MHUI primitives as local forks |
 | Example app (`Example/` when present) | Integration review, manual regression checks, sample usage of package APIs | Becoming the source of truth for shared package APIs or hiding canonical styling outside `Sources/MHUI` |
 
@@ -26,7 +26,7 @@ Related documents:
 
 Allowed in the package:
 
-- Reusable spacing, radius, and layout metrics in `MHDesign`
+- Reusable spacing, radius, and generic screen or surface layout metrics in `MHDesign`
 - Reusable typography, color, and surface tokens in `MHUI`
 - Domain-neutral modifiers and container chrome
 - Shared presentation helpers that improve consistency across sibling apps
@@ -103,6 +103,7 @@ They may demonstrate package usage, but they should not become the place where n
 
    Minimal plan:
    - Keep raw shared metrics in `MHDesign` when they should work without MHUI chrome.
+   - Keep row, action, key-value, and cue tuning in `MHUI` even when the implementation is numeric.
    - Keep MHUI APIs generic enough to compose multiple sibling products and re-export `MHDesign` for styled adopters.
    - Keep feature labels, app navigation meaning, and business-state branching outside the package.
    - Treat requests for app-specific screen shells as a signal to add host-side composition rather than package-owned product views.

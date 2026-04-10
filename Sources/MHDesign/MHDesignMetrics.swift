@@ -11,7 +11,7 @@ public struct MHDesignMetrics: Sendable, Equatable {
     /// Shared layout thresholds and insets for screen composition.
     public let layout: MHLayoutMetrics
 
-    package init(
+    public init(
         spacing: MHSpacingMetrics,
         radius: MHRadiusMetrics,
         layout: MHLayoutMetrics

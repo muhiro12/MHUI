@@ -151,9 +151,9 @@ extension MHTheme {
             minimumValueWidth: context.isCompactWidth(
                 threshold: layout.compactWidthThreshold
             )
-            ? layout.compactKeyValueMinimumValueWidth
-            : layout.regularKeyValueMinimumValueWidth,
-            stackedSpacing: layout.compactKeyValueSpacing
+            ? presentation.compactKeyValueMinimumValueWidth
+            : presentation.regularKeyValueMinimumValueWidth,
+            stackedSpacing: presentation.compactKeyValueSpacing
         )
     }
 

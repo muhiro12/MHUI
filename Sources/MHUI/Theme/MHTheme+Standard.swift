@@ -62,6 +62,24 @@ public extension MHTheme {
                 caption: .init(style: .footnote, weight: .medium)
             ),
             metrics: .standard,
+            presentation: .init(
+                rowHorizontalInset: 24,
+                rowVerticalPadding: 16,
+                rowAccessorySpacing: 16,
+                compactRowHorizontalInset: 16,
+                compactRowVerticalPadding: 8,
+                compactRowAccessorySpacing: 8,
+                compactActionHorizontalPadding: 16,
+                compactActionVerticalPadding: 8,
+                regularKeyValueMinimumValueWidth: 160,
+                compactKeyValueMinimumValueWidth: 120,
+                compactKeyValueSpacing: 8,
+                compactActionGroupSpacing: 8,
+                screenCueWidth: 24,
+                screenCueHeight: 2,
+                sectionCueWidth: 16,
+                sectionCueHeight: 2
+            ),
             divider: .init(
                 thickness: 1,
                 opacity: 0.50

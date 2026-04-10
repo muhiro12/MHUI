@@ -6,7 +6,7 @@ public struct MHRadiusMetrics: Sendable, Equatable {
     public let surface: CGFloat
     public let pill: CGFloat
 
-    package init(
+    public init(
         control: CGFloat,
         surface: CGFloat,
         pill: CGFloat

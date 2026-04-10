@@ -61,6 +61,7 @@ public struct MHTheme: Sendable, Equatable {
     var colors: Colors
     var typography: Typography
     var metrics: MHDesignMetrics
+    var presentation: MHPresentationMetrics
     var divider: Divider
     var motion: Motion
     var surfaces: Surfaces

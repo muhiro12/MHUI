@@ -75,7 +75,7 @@ extension MHTheme {
             cueHeight: cue.height,
             cueSpacing: cue.spacing,
             contentSpacing: isCompactWidth
-                ? layout.compactKeyValueSpacing
+                ? presentation.compactKeyValueSpacing
                 : spacing.control,
             leadingInset: spacing.inline,
             footerTopSpacing: spacing.inline

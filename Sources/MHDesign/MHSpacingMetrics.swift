@@ -8,7 +8,7 @@ public struct MHSpacingMetrics: Sendable, Equatable {
     public let section: CGFloat
     public let screen: CGFloat
 
-    package init(
+    public init(
         inline: CGFloat,
         control: CGFloat,
         group: CGFloat,

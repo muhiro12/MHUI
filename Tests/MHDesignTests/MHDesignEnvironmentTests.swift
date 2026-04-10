@@ -35,7 +35,11 @@ private func customDesignMetrics(
             section: standard.spacing.section,
             screen: spacingScreen
         ),
-        radius: standard.radius,
+        radius: .init(
+            control: standard.radius.control,
+            surface: standard.radius.surface,
+            pill: standard.radius.pill
+        ),
         layout: .init(
             readableContentWidth: standard.layout.readableContentWidth,
             compactWidthThreshold: standard.layout.compactWidthThreshold,
@@ -49,23 +53,7 @@ private func customDesignMetrics(
             surfaceInsetHorizontal: standard.layout.surfaceInsetHorizontal,
             surfaceInsetVertical: standard.layout.surfaceInsetVertical,
             compactSurfaceInsetHorizontal: standard.layout.compactSurfaceInsetHorizontal,
-            compactSurfaceInsetVertical: standard.layout.compactSurfaceInsetVertical,
-            rowHorizontalInset: standard.layout.rowHorizontalInset,
-            rowVerticalPadding: standard.layout.rowVerticalPadding,
-            rowAccessorySpacing: standard.layout.rowAccessorySpacing,
-            compactRowHorizontalInset: standard.layout.compactRowHorizontalInset,
-            compactRowVerticalPadding: standard.layout.compactRowVerticalPadding,
-            compactRowAccessorySpacing: standard.layout.compactRowAccessorySpacing,
-            compactActionHorizontalPadding: standard.layout.compactActionHorizontalPadding,
-            compactActionVerticalPadding: standard.layout.compactActionVerticalPadding,
-            regularKeyValueMinimumValueWidth: standard.layout.regularKeyValueMinimumValueWidth,
-            compactKeyValueMinimumValueWidth: standard.layout.compactKeyValueMinimumValueWidth,
-            compactKeyValueSpacing: standard.layout.compactKeyValueSpacing,
-            compactActionGroupSpacing: standard.layout.compactActionGroupSpacing,
-            screenCueWidth: standard.layout.screenCueWidth,
-            screenCueHeight: standard.layout.screenCueHeight,
-            sectionCueWidth: standard.layout.sectionCueWidth,
-            sectionCueHeight: standard.layout.sectionCueHeight
+            compactSurfaceInsetVertical: standard.layout.compactSurfaceInsetVertical
         )
     )
 }

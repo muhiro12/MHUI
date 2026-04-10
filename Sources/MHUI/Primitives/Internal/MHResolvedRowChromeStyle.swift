@@ -47,14 +47,14 @@ extension MHTheme {
 
         return .init(
             verticalPadding: isCompactWidth
-                ? layout.compactRowVerticalPadding
-                : layout.rowVerticalPadding,
+                ? presentation.compactRowVerticalPadding
+                : presentation.rowVerticalPadding,
             horizontalInset: isCompactWidth
-                ? layout.compactRowHorizontalInset
-                : layout.rowHorizontalInset,
+                ? presentation.compactRowHorizontalInset
+                : presentation.rowHorizontalInset,
             accessorySpacing: isCompactWidth
-                ? layout.compactRowAccessorySpacing
-                : layout.rowAccessorySpacing
+                ? presentation.compactRowAccessorySpacing
+                : presentation.rowAccessorySpacing
         )
     }
 

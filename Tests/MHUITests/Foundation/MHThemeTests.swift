@@ -62,22 +62,22 @@ struct MHThemeTests {
         #expect(theme.layout.surfaceInsetVertical == 24)
         #expect(theme.layout.compactSurfaceInsetHorizontal == 16)
         #expect(theme.layout.compactSurfaceInsetVertical == 16)
-        #expect(theme.layout.rowHorizontalInset == 24)
-        #expect(theme.layout.rowVerticalPadding == 16)
-        #expect(theme.layout.rowAccessorySpacing == 16)
-        #expect(theme.layout.compactRowHorizontalInset == 16)
-        #expect(theme.layout.compactRowVerticalPadding == 8)
-        #expect(theme.layout.compactRowAccessorySpacing == 8)
-        #expect(theme.layout.compactActionHorizontalPadding == 16)
-        #expect(theme.layout.compactActionVerticalPadding == 8)
-        #expect(theme.layout.regularKeyValueMinimumValueWidth == 160)
-        #expect(theme.layout.compactKeyValueMinimumValueWidth == 120)
-        #expect(theme.layout.compactKeyValueSpacing == 8)
-        #expect(theme.layout.compactActionGroupSpacing == 8)
-        #expect(theme.layout.screenCueWidth == 24)
-        #expect(theme.layout.screenCueHeight == 2)
-        #expect(theme.layout.sectionCueWidth == 16)
-        #expect(theme.layout.sectionCueHeight == 2)
+        #expect(theme.presentation.rowHorizontalInset == 24)
+        #expect(theme.presentation.rowVerticalPadding == 16)
+        #expect(theme.presentation.rowAccessorySpacing == 16)
+        #expect(theme.presentation.compactRowHorizontalInset == 16)
+        #expect(theme.presentation.compactRowVerticalPadding == 8)
+        #expect(theme.presentation.compactRowAccessorySpacing == 8)
+        #expect(theme.presentation.compactActionHorizontalPadding == 16)
+        #expect(theme.presentation.compactActionVerticalPadding == 8)
+        #expect(theme.presentation.regularKeyValueMinimumValueWidth == 160)
+        #expect(theme.presentation.compactKeyValueMinimumValueWidth == 120)
+        #expect(theme.presentation.compactKeyValueSpacing == 8)
+        #expect(theme.presentation.compactActionGroupSpacing == 8)
+        #expect(theme.presentation.screenCueWidth == 24)
+        #expect(theme.presentation.screenCueHeight == 2)
+        #expect(theme.presentation.sectionCueWidth == 16)
+        #expect(theme.presentation.sectionCueHeight == 2)
         #expect(!theme.surfaces.canvas.prefersGlass)
         #expect(theme.surfaces.standard.prefersGlass)
         #expect(theme.surfaces.muted.prefersGlass)
@@ -154,8 +154,22 @@ struct MHThemeTests {
         values.mhDesignMetrics = otherMetrics
 
         #expect(values.mhTheme.metrics == otherMetrics)
+        #expect(values.mhTheme.presentation == customTheme.presentation)
         #expect(values.mhTheme.colors == customTheme.colors)
         #expect(values.mhTheme.typography == customTheme.typography)
+
+        let compactContext = MHAdaptiveLayoutContext(
+            availableWidth: 375,
+            horizontalSizeClass: .compact
+        )
+
+        #expect(values.mhTheme.resolvedScreenChromeStyle().verticalPadding == 80)
+        #expect(values.mhTheme.resolvedRowChromeStyle().verticalPadding == customTheme.presentation.rowVerticalPadding)
+        #expect(
+            values.mhTheme.resolvedActionGroupStyle(for: compactContext).spacing
+                == customTheme.presentation.compactActionGroupSpacing
+        )
+        #expect(values.mhTheme.resolvedCueStyle(for: .screen).width == customTheme.presentation.screenCueWidth)
     }
 
     @Test
@@ -199,7 +213,11 @@ private func customDesignMetrics(
             section: standard.spacing.section,
             screen: spacingScreen
         ),
-        radius: standard.radius,
+        radius: .init(
+            control: standard.radius.control,
+            surface: standard.radius.surface,
+            pill: standard.radius.pill
+        ),
         layout: .init(
             readableContentWidth: standard.layout.readableContentWidth,
             compactWidthThreshold: standard.layout.compactWidthThreshold,
@@ -213,23 +231,7 @@ private func customDesignMetrics(
             surfaceInsetHorizontal: standard.layout.surfaceInsetHorizontal,
             surfaceInsetVertical: standard.layout.surfaceInsetVertical,
             compactSurfaceInsetHorizontal: standard.layout.compactSurfaceInsetHorizontal,
-            compactSurfaceInsetVertical: standard.layout.compactSurfaceInsetVertical,
-            rowHorizontalInset: standard.layout.rowHorizontalInset,
-            rowVerticalPadding: standard.layout.rowVerticalPadding,
-            rowAccessorySpacing: standard.layout.rowAccessorySpacing,
-            compactRowHorizontalInset: standard.layout.compactRowHorizontalInset,
-            compactRowVerticalPadding: standard.layout.compactRowVerticalPadding,
-            compactRowAccessorySpacing: standard.layout.compactRowAccessorySpacing,
-            compactActionHorizontalPadding: standard.layout.compactActionHorizontalPadding,
-            compactActionVerticalPadding: standard.layout.compactActionVerticalPadding,
-            regularKeyValueMinimumValueWidth: standard.layout.regularKeyValueMinimumValueWidth,
-            compactKeyValueMinimumValueWidth: standard.layout.compactKeyValueMinimumValueWidth,
-            compactKeyValueSpacing: standard.layout.compactKeyValueSpacing,
-            compactActionGroupSpacing: standard.layout.compactActionGroupSpacing,
-            screenCueWidth: standard.layout.screenCueWidth,
-            screenCueHeight: standard.layout.screenCueHeight,
-            sectionCueWidth: standard.layout.sectionCueWidth,
-            sectionCueHeight: standard.layout.sectionCueHeight
+            compactSurfaceInsetVertical: standard.layout.compactSurfaceInsetVertical
         )
     )
 }

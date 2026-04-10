@@ -81,15 +81,15 @@ extension MHTheme {
         case .screen:
             .init(
                 colorRole: .accent,
-                width: layout.screenCueWidth,
-                height: layout.screenCueHeight,
+                width: presentation.screenCueWidth,
+                height: presentation.screenCueHeight,
                 spacing: spacing.control
             )
         case .section:
             .init(
                 colorRole: .accent,
-                width: layout.sectionCueWidth,
-                height: layout.sectionCueHeight,
+                width: presentation.sectionCueWidth,
+                height: presentation.sectionCueHeight,
                 spacing: spacing.inline
             )
         }

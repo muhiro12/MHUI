@@ -163,7 +163,7 @@ extension MHTheme {
 
         return .init(
             spacing: isCompactWidth
-                ? layout.compactActionGroupSpacing
+                ? presentation.compactActionGroupSpacing
                 : spacing.control
         )
     }

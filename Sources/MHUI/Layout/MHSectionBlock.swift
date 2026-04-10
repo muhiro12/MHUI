@@ -149,10 +149,10 @@ public extension View {
 private extension MHSectionModifier {
     var headerBlock: some View {
         VStack(alignment: .leading, spacing: theme.resolvedSectionChromeStyle().contentSpacing) {
-            HStack(alignment: .firstTextBaseline, spacing: theme.layout.rowAccessorySpacing) {
+            HStack(alignment: .firstTextBaseline, spacing: theme.presentation.rowAccessorySpacing) {
                 title
                     .mhSectionHeaderTitle()
-                Spacer(minLength: theme.layout.rowAccessorySpacing)
+                Spacer(minLength: theme.presentation.rowAccessorySpacing)
                 if let accessory {
                     accessory
                 }

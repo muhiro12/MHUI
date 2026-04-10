@@ -1,6 +1,6 @@
 import CoreGraphics
 
-/// Shared layout thresholds and insets for screen composition.
+/// Shared layout thresholds and insets for generic screen and surface composition.
 public struct MHLayoutMetrics: Sendable, Equatable {
     public let readableContentWidth: CGFloat
     public let compactWidthThreshold: CGFloat
@@ -15,24 +15,8 @@ public struct MHLayoutMetrics: Sendable, Equatable {
     public let surfaceInsetVertical: CGFloat
     public let compactSurfaceInsetHorizontal: CGFloat
     public let compactSurfaceInsetVertical: CGFloat
-    public let rowHorizontalInset: CGFloat
-    public let rowVerticalPadding: CGFloat
-    public let rowAccessorySpacing: CGFloat
-    public let compactRowHorizontalInset: CGFloat
-    public let compactRowVerticalPadding: CGFloat
-    public let compactRowAccessorySpacing: CGFloat
-    public let compactActionHorizontalPadding: CGFloat
-    public let compactActionVerticalPadding: CGFloat
-    public let regularKeyValueMinimumValueWidth: CGFloat
-    public let compactKeyValueMinimumValueWidth: CGFloat
-    public let compactKeyValueSpacing: CGFloat
-    public let compactActionGroupSpacing: CGFloat
-    public let screenCueWidth: CGFloat
-    public let screenCueHeight: CGFloat
-    public let sectionCueWidth: CGFloat
-    public let sectionCueHeight: CGFloat
 
-    package init(
+    public init(
         readableContentWidth: CGFloat,
         compactWidthThreshold: CGFloat,
         narrowWidthThreshold: CGFloat,
@@ -45,23 +29,7 @@ public struct MHLayoutMetrics: Sendable, Equatable {
         surfaceInsetHorizontal: CGFloat,
         surfaceInsetVertical: CGFloat,
         compactSurfaceInsetHorizontal: CGFloat,
-        compactSurfaceInsetVertical: CGFloat,
-        rowHorizontalInset: CGFloat,
-        rowVerticalPadding: CGFloat,
-        rowAccessorySpacing: CGFloat,
-        compactRowHorizontalInset: CGFloat,
-        compactRowVerticalPadding: CGFloat,
-        compactRowAccessorySpacing: CGFloat,
-        compactActionHorizontalPadding: CGFloat,
-        compactActionVerticalPadding: CGFloat,
-        regularKeyValueMinimumValueWidth: CGFloat,
-        compactKeyValueMinimumValueWidth: CGFloat,
-        compactKeyValueSpacing: CGFloat,
-        compactActionGroupSpacing: CGFloat,
-        screenCueWidth: CGFloat,
-        screenCueHeight: CGFloat,
-        sectionCueWidth: CGFloat,
-        sectionCueHeight: CGFloat
+        compactSurfaceInsetVertical: CGFloat
     ) {
         self.readableContentWidth = readableContentWidth
         self.compactWidthThreshold = compactWidthThreshold
@@ -76,21 +44,5 @@ public struct MHLayoutMetrics: Sendable, Equatable {
         self.surfaceInsetVertical = surfaceInsetVertical
         self.compactSurfaceInsetHorizontal = compactSurfaceInsetHorizontal
         self.compactSurfaceInsetVertical = compactSurfaceInsetVertical
-        self.rowHorizontalInset = rowHorizontalInset
-        self.rowVerticalPadding = rowVerticalPadding
-        self.rowAccessorySpacing = rowAccessorySpacing
-        self.compactRowHorizontalInset = compactRowHorizontalInset
-        self.compactRowVerticalPadding = compactRowVerticalPadding
-        self.compactRowAccessorySpacing = compactRowAccessorySpacing
-        self.compactActionHorizontalPadding = compactActionHorizontalPadding
-        self.compactActionVerticalPadding = compactActionVerticalPadding
-        self.regularKeyValueMinimumValueWidth = regularKeyValueMinimumValueWidth
-        self.compactKeyValueMinimumValueWidth = compactKeyValueMinimumValueWidth
-        self.compactKeyValueSpacing = compactKeyValueSpacing
-        self.compactActionGroupSpacing = compactActionGroupSpacing
-        self.screenCueWidth = screenCueWidth
-        self.screenCueHeight = screenCueHeight
-        self.sectionCueWidth = sectionCueWidth
-        self.sectionCueHeight = sectionCueHeight
     }
 }

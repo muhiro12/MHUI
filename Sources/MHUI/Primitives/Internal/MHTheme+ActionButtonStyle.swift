@@ -20,16 +20,16 @@ extension MHTheme {
             threshold: layout.compactWidthThreshold
         )
         let filledHorizontalPadding = isCompactWidth
-            ? layout.compactActionHorizontalPadding
+            ? presentation.compactActionHorizontalPadding
             : spacing.group
         let filledVerticalPadding = isCompactWidth
-            ? layout.compactActionVerticalPadding
+            ? presentation.compactActionVerticalPadding
             : spacing.control
         let quietHorizontalPadding = isCompactWidth
-            ? layout.compactRowAccessorySpacing
+            ? presentation.compactRowAccessorySpacing
             : spacing.control
         let quietVerticalPadding = isCompactWidth
-            ? layout.compactKeyValueSpacing
+            ? presentation.compactKeyValueSpacing
             : spacing.inline
 
         return switch role {

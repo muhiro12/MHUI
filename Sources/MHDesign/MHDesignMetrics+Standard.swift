@@ -27,23 +27,7 @@ public extension MHDesignMetrics {
             surfaceInsetHorizontal: 24,
             surfaceInsetVertical: 24,
             compactSurfaceInsetHorizontal: 16,
-            compactSurfaceInsetVertical: 16,
-            rowHorizontalInset: 24,
-            rowVerticalPadding: 16,
-            rowAccessorySpacing: 16,
-            compactRowHorizontalInset: 16,
-            compactRowVerticalPadding: 8,
-            compactRowAccessorySpacing: 8,
-            compactActionHorizontalPadding: 16,
-            compactActionVerticalPadding: 8,
-            regularKeyValueMinimumValueWidth: 160,
-            compactKeyValueMinimumValueWidth: 120,
-            compactKeyValueSpacing: 8,
-            compactActionGroupSpacing: 8,
-            screenCueWidth: 24,
-            screenCueHeight: 2,
-            sectionCueWidth: 16,
-            sectionCueHeight: 2
+            compactSurfaceInsetVertical: 16
         )
     )
     // swiftlint:enable no_magic_numbers

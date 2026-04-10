@@ -4,7 +4,7 @@
 
 MHUI is a narrow runtime presentation kit for calm, tool-like sibling apps.
 It is intentionally opinionated and intentionally small.
-The repository also exposes `MHDesign`, a smaller metrics layer for apps that need the shared spacing, radius, and layout baseline without adopting MHUI chrome.
+The repository also exposes `MHDesign`, a smaller metrics layer for apps that need the shared spacing, radius, and generic screen or surface layout baseline without adopting MHUI chrome.
 `MHDesign` includes a SwiftUI environment bridge so apps and MHUI components can share one active metrics subtree.
 `MHUI` is the styled layer built on top of `MHDesign` and re-exports it for styled adopters.
 
@@ -47,8 +47,9 @@ Those responsibilities stay outside the package.
 - Metrics-only adopter: `import MHDesign`
 - Styled adopter: `import MHUI`
 
-Use `MHDesign` directly when an app wants to avoid MHUI chrome and only share spacing, radius, layout, and the environment bridge.
+Use `MHDesign` directly when an app wants to avoid MHUI chrome and only share spacing, radius, generic screen or surface layout, and the environment bridge.
 Use `MHUI` when an app wants the styled layer. `MHUI` re-exports `MHDesign`, so one import is enough for both the metrics layer and the styled APIs.
+Row chrome, action fallback, key-value fallback, and cue geometry stay MHUI-owned even when they are backed by shared package defaults.
 
 ## Design Direction
 
@@ -142,6 +143,43 @@ If a sibling app does not want MHUI modifiers or chrome, import `MHDesign` direc
 If a sibling app wants MHUI styling, import `MHUI` and use both `MHTheme` and `MHDesign` APIs from that one module.
 Apply `.mhDesignMetrics(...)` when a subtree needs layout-only overrides. MHUI components follow the same active metrics automatically.
 
+Metrics-only adopters can now define their own shared baseline directly:
+
+```swift
+import MHDesign
+import SwiftUI
+
+let editorialMetrics = MHDesignMetrics(
+    spacing: .init(
+        inline: 8,
+        control: 16,
+        group: 24,
+        section: 32,
+        screen: 48
+    ),
+    radius: .init(
+        control: 8,
+        surface: 18,
+        pill: 999
+    ),
+    layout: .init(
+        readableContentWidth: 680,
+        compactWidthThreshold: 600,
+        narrowWidthThreshold: 360,
+        screenHorizontalMargin: 48,
+        screenVerticalPadding: 80,
+        screenContentSpacing: 56,
+        compactScreenHorizontalMargin: 16,
+        compactScreenVerticalPadding: 32,
+        compactScreenContentSpacing: 24,
+        surfaceInsetHorizontal: 24,
+        surfaceInsetVertical: 24,
+        compactSurfaceInsetHorizontal: 16,
+        compactSurfaceInsetVertical: 16
+    )
+)
+```
+
 Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from stacks and calm card-like surfaces instead of a native `List` or `Form`.
 
 ## Where To Tune First
@@ -149,6 +187,7 @@ Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from s
 Start in this order when adjusting appearance:
 
 1. `MHDesignMetrics.standard` when an app only needs shared spacing, radius, or layout numbers.
+   Or create a custom `MHDesignMetrics(...)` when the host app needs its own shared baseline without taking MHUI chrome.
 2. `MHTheme.standard()` or `MHTheme.standard(accent:)` for default color, spacing, radius, layout, and surface recipes.
 3. Validation previews at fixed widths `760`, `375`, and `320` before making view-local tweaks.
 4. Internal shared resolvers for row chrome, surface fill, action fallback, and key-value fallback only when a shared token is not enough.
