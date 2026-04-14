@@ -40,28 +40,27 @@ struct MHThemeTests {
         #expect(theme.colors.accent == .tint)
         #expect(theme.spacing.inline == 8)
         #expect(theme.spacing.control == 16)
-        #expect(theme.spacing.group == 24)
+        #expect(theme.spacing.content == 24)
         #expect(theme.spacing.section == 32)
         #expect(theme.spacing.screen == 40)
-        #expect(theme.radius.control == 8)
-        #expect(theme.radius.surface == 16)
-        #expect(theme.radius.pill > theme.radius.surface)
+        #expect(theme.cornerRadius.control == 8)
+        #expect(theme.cornerRadius.surface == 16)
         #expect(theme.divider.opacity == 0.50)
         #expect(theme.motion.quick == 0.14)
         #expect(theme.motion.regular == 0.22)
         #expect(theme.layout.readableContentWidth == 640)
         #expect(theme.layout.compactWidthThreshold == 600)
-        #expect(theme.layout.narrowWidthThreshold == 360)
-        #expect(theme.layout.screenHorizontalMargin == 40)
-        #expect(theme.layout.screenVerticalPadding == 72)
-        #expect(theme.layout.screenContentSpacing == 48)
-        #expect(theme.layout.compactScreenHorizontalMargin == 16)
-        #expect(theme.layout.compactScreenVerticalPadding == 32)
-        #expect(theme.layout.compactScreenContentSpacing == 24)
-        #expect(theme.layout.surfaceInsetHorizontal == 24)
-        #expect(theme.layout.surfaceInsetVertical == 24)
-        #expect(theme.layout.compactSurfaceInsetHorizontal == 16)
-        #expect(theme.layout.compactSurfaceInsetVertical == 16)
+        #expect(theme.layout.screen.contentInsetHorizontal == 40)
+        #expect(theme.layout.screen.contentInsetVertical == 72)
+        #expect(theme.layout.screen.contentSpacing == 48)
+        #expect(theme.layout.screen.compactContentInsetHorizontal == 16)
+        #expect(theme.layout.screen.compactContentInsetVertical == 32)
+        #expect(theme.layout.screen.compactContentSpacing == 24)
+        #expect(theme.layout.surface.insetHorizontal == 24)
+        #expect(theme.layout.surface.insetVertical == 24)
+        #expect(theme.layout.surface.compactInsetHorizontal == 16)
+        #expect(theme.layout.surface.compactInsetVertical == 16)
+        #expect(theme.layout.control.minimumTouchTarget == 44)
         #expect(theme.presentation.rowHorizontalInset == 24)
         #expect(theme.presentation.rowVerticalPadding == 16)
         #expect(theme.presentation.rowAccessorySpacing == 16)
@@ -121,7 +120,9 @@ struct MHThemeTests {
         var custom = MHTheme.standard
         custom.metrics = customDesignMetrics(
             spacingScreen: 44,
-            screenVerticalPadding: 80
+            screenContentInsetVertical: 80,
+            surfaceContentInsetHorizontal: 28,
+            minimumTouchTarget: 52
         )
         custom.colors.accent = .tint
 
@@ -129,7 +130,9 @@ struct MHThemeTests {
 
         #expect(values.mhTheme == custom)
         #expect(values.mhTheme.spacing.screen == 44)
-        #expect(values.mhTheme.layout.screenVerticalPadding == 80)
+        #expect(values.mhTheme.layout.screen.contentInsetVertical == 80)
+        #expect(values.mhTheme.layout.surface.insetHorizontal == 28)
+        #expect(values.mhTheme.layout.control.minimumTouchTarget == 52)
         #expect(values.mhTheme.colors.accent == .tint)
     }
 
@@ -142,7 +145,9 @@ struct MHThemeTests {
         ))
         let otherMetrics = customDesignMetrics(
             spacingScreen: 44,
-            screenVerticalPadding: 80
+            screenContentInsetVertical: 80,
+            surfaceContentInsetHorizontal: 28,
+            minimumTouchTarget: 52
         )
 
         values.mhTheme = customTheme
@@ -170,6 +175,8 @@ struct MHThemeTests {
                 == customTheme.presentation.compactActionGroupSpacing
         )
         #expect(values.mhTheme.resolvedCueStyle(for: .screen).width == customTheme.presentation.screenCueWidth)
+        #expect(values.mhTheme.layout.surface.insetHorizontal == 28)
+        #expect(values.mhTheme.layout.control.minimumTouchTarget == 52)
     }
 
     @Test
@@ -201,7 +208,9 @@ struct MHThemeTests {
 
 private func customDesignMetrics(
     spacingScreen: CGFloat,
-    screenVerticalPadding: CGFloat
+    screenContentInsetVertical: CGFloat,
+    surfaceContentInsetHorizontal: CGFloat,
+    minimumTouchTarget: CGFloat
 ) -> MHDesignMetrics {
     let standard = MHDesignMetrics.standard
 
@@ -209,29 +218,34 @@ private func customDesignMetrics(
         spacing: .init(
             inline: standard.spacing.inline,
             control: standard.spacing.control,
-            group: standard.spacing.group,
+            content: standard.spacing.content,
             section: standard.spacing.section,
             screen: spacingScreen
         ),
-        radius: .init(
-            control: standard.radius.control,
-            surface: standard.radius.surface,
-            pill: standard.radius.pill
+        cornerRadius: .init(
+            control: standard.cornerRadius.control,
+            surface: standard.cornerRadius.surface
         ),
         layout: .init(
             readableContentWidth: standard.layout.readableContentWidth,
             compactWidthThreshold: standard.layout.compactWidthThreshold,
-            narrowWidthThreshold: standard.layout.narrowWidthThreshold,
-            screenHorizontalMargin: standard.layout.screenHorizontalMargin,
-            screenVerticalPadding: screenVerticalPadding,
-            screenContentSpacing: standard.layout.screenContentSpacing,
-            compactScreenHorizontalMargin: standard.layout.compactScreenHorizontalMargin,
-            compactScreenVerticalPadding: standard.layout.compactScreenVerticalPadding,
-            compactScreenContentSpacing: standard.layout.compactScreenContentSpacing,
-            surfaceInsetHorizontal: standard.layout.surfaceInsetHorizontal,
-            surfaceInsetVertical: standard.layout.surfaceInsetVertical,
-            compactSurfaceInsetHorizontal: standard.layout.compactSurfaceInsetHorizontal,
-            compactSurfaceInsetVertical: standard.layout.compactSurfaceInsetVertical
+            screen: .init(
+                contentInsetHorizontal: standard.layout.screen.contentInsetHorizontal,
+                contentInsetVertical: screenContentInsetVertical,
+                contentSpacing: standard.layout.screen.contentSpacing,
+                compactContentInsetHorizontal: standard.layout.screen.compactContentInsetHorizontal,
+                compactContentInsetVertical: standard.layout.screen.compactContentInsetVertical,
+                compactContentSpacing: standard.layout.screen.compactContentSpacing
+            ),
+            surface: .init(
+                insetHorizontal: surfaceContentInsetHorizontal,
+                insetVertical: standard.layout.surface.insetVertical,
+                compactInsetHorizontal: standard.layout.surface.compactInsetHorizontal,
+                compactInsetVertical: standard.layout.surface.compactInsetVertical
+            ),
+            control: .init(
+                minimumTouchTarget: minimumTouchTarget
+            )
         )
     )
 }

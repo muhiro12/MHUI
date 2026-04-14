@@ -1,7 +1,7 @@
 import SwiftUI
 
 #Preview("Surface", traits: .sizeThatFitsLayout) {
-    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
+    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.content) {
         Text("Calm Surface")
             .mhTextStyle(.sectionTitle)
         Text("Used for grouped settings, cards, and empty states.")

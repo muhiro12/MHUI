@@ -45,7 +45,7 @@ struct MHPreviewCatalog<Content: View>: View {
                             )
                             .clipShape(
                                 RoundedRectangle(
-                                    cornerRadius: MHTheme.standard.radius.surface,
+                                    cornerRadius: MHTheme.standard.cornerRadius.surface,
                                     style: .continuous
                                 )
                             )
@@ -59,7 +59,7 @@ struct MHPreviewCatalog<Content: View>: View {
     init(
         title: String? = nil,
         scenarios: [MHPreviewScenario],
-        casePadding: CGFloat = MHTheme.standard.spacing.group,
+        casePadding: CGFloat = MHTheme.standard.spacing.content,
         @ViewBuilder content: @escaping (MHPreviewContext) -> Content
     ) {
         self.title = title

@@ -2,7 +2,7 @@ import SwiftUI
 
 private struct MHActionButtonStylePreview: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
+        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.content) {
             Button("Save Current Workspace Configuration Without Local Workarounds") {
                 // no-op
             }

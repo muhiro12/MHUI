@@ -33,8 +33,11 @@ struct MHPreviewStyleTests {
 
         #expect(theme.colors.accent == .tint)
         #expect(theme.spacing.control == MHTheme.standard.spacing.control)
-        #expect(theme.layout.screenHorizontalMargin == MHTheme.standard.layout.screenHorizontalMargin)
-        #expect(theme.layout.compactScreenHorizontalMargin == MHTheme.standard.layout.compactScreenHorizontalMargin)
+        #expect(theme.layout.screen.contentInsetHorizontal == MHTheme.standard.layout.screen.contentInsetHorizontal)
+        #expect(
+            theme.layout.screen.compactContentInsetHorizontal
+                == MHTheme.standard.layout.screen.compactContentInsetHorizontal
+        )
     }
 
     @Test

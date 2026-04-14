@@ -1,21 +1,28 @@
 import CoreGraphics
 
-/// Shared radii for controls and calm surfaces.
-public struct MHRadiusMetrics: Sendable, Equatable {
+/// Shared corner radii for controls and calm surfaces.
+public struct MHCornerRadiusMetrics: Sendable, Equatable {
     /// Corner radius for standard controls such as buttons and inputs.
     public let control: CGFloat
     /// Corner radius for larger detached surfaces such as cards or panels.
     public let surface: CGFloat
-    /// Extra-large radius used to create pill-shaped treatments.
-    public let pill: CGFloat
 
     public init(
         control: CGFloat,
-        surface: CGFloat,
-        pill: CGFloat
+        surface: CGFloat
     ) {
         self.control = control
         self.surface = surface
-        self.pill = pill
+    }
+
+    public subscript(
+        _ role: MHCornerRadiusRole
+    ) -> CGFloat {
+        switch role {
+        case .control:
+            control
+        case .surface:
+            surface
+        }
     }
 }

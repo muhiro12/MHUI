@@ -79,7 +79,8 @@ struct MHStyleResolutionTests {
         #expect(quiet.disabledOpacity == 0.50)
         #expect(destructive.foregroundRole == .destructive)
         #expect(destructive.backgroundStyle?.borderRole == .destructive)
-        #expect(primary.horizontalPadding == theme.spacing.group)
+        #expect(primary.horizontalPadding == theme.spacing.content)
+        #expect(primary.minimumHeight == theme.layout.control.minimumTouchTarget)
         #expect(quiet.verticalPadding < primary.verticalPadding)
         #expect(primary.pressedOpacity == 0.88)
         #expect(primary.disabledOpacity == 0.55)
@@ -111,14 +112,15 @@ struct MHStyleResolutionTests {
         let keyValue = theme.resolvedKeyValueStyle(for: compactContext)
 
         #expect(screen.readableContentWidth == nil)
-        #expect(screen.horizontalMargin == theme.layout.compactScreenHorizontalMargin)
-        #expect(screen.verticalPadding == theme.layout.compactScreenVerticalPadding)
-        #expect(screen.contentSpacing == theme.layout.compactScreenContentSpacing)
+        #expect(screen.horizontalMargin == theme.layout.screen.compactContentInsetHorizontal)
+        #expect(screen.verticalPadding == theme.layout.screen.compactContentInsetVertical)
+        #expect(screen.contentSpacing == theme.layout.screen.compactContentSpacing)
         #expect(row.horizontalInset == theme.presentation.compactRowHorizontalInset)
         #expect(row.verticalPadding == theme.presentation.compactRowVerticalPadding)
         #expect(row.accessorySpacing == theme.presentation.compactRowAccessorySpacing)
         #expect(action.horizontalPadding == theme.presentation.compactActionHorizontalPadding)
         #expect(action.verticalPadding == theme.presentation.compactActionVerticalPadding)
+        #expect(action.minimumHeight == theme.layout.control.minimumTouchTarget)
         #expect(grouped.dividerLeadingInset == row.horizontalInset + theme.spacing.inline)
         #expect(grouped.spacerHeight == row.verticalPadding)
         #expect(section.contentSpacing == theme.presentation.compactKeyValueSpacing)
@@ -127,17 +129,17 @@ struct MHStyleResolutionTests {
     }
 
     @Test
-    func narrow_screen_chrome_relaxes_horizontal_margin_before_aesthetic_spacing() {
+    func compact_screen_chrome_uses_compact_metrics_without_a_narrow_fallback() {
         let theme = MHTheme.standard
-        let narrowContext = MHAdaptiveLayoutContext(
+        let compactContext = MHAdaptiveLayoutContext(
             availableWidth: 320,
             horizontalSizeClass: .compact
         )
-        let screen = theme.resolvedScreenChromeStyle(for: narrowContext)
+        let screen = theme.resolvedScreenChromeStyle(for: compactContext)
 
         #expect(screen.readableContentWidth == nil)
-        #expect(screen.horizontalMargin == 8)
-        #expect(screen.verticalPadding == theme.layout.compactScreenVerticalPadding)
+        #expect(screen.horizontalMargin == theme.layout.screen.compactContentInsetHorizontal)
+        #expect(screen.verticalPadding == theme.layout.screen.compactContentInsetVertical)
     }
 
     @Test
@@ -198,7 +200,7 @@ struct MHStyleResolutionTests {
         #expect(theme.surfaceColorRole(for: .standard) == .surface)
         #expect(theme.surfaceColorRole(for: .muted) == .surfaceMuted)
         #expect(grouped.showsDividers)
-        #expect(grouped.dividerLeadingInset == theme.layout.surfaceInsetHorizontal + theme.spacing.inline)
+        #expect(grouped.dividerLeadingInset == theme.layout.surface.insetHorizontal + theme.spacing.inline)
         #expect(grouped.dividerThickness == theme.divider.thickness)
         #expect(grouped.dividerOpacity == theme.divider.opacity)
         #expect(grouped.spacerHeight == theme.presentation.rowVerticalPadding)
@@ -320,7 +322,8 @@ struct MHStyleResolutionTests {
         #expect(focusedInput.backgroundStyle.usesGlass)
         #expect(focusedInput.backgroundStyle.borderRole == .accent)
         #expect(focusedInput.backgroundStyle.borderOpacity == 0.24)
-        #expect(focusedInput.horizontalPadding == theme.spacing.group)
+        #expect(focusedInput.horizontalPadding == theme.spacing.content)
+        #expect(focusedInput.minimumHeight == theme.layout.control.minimumTouchTarget)
         #expect(invalidInput.backgroundStyle.fallbackFillRole == .destructive)
         #expect(!invalidInput.backgroundStyle.usesGlass)
         #expect(invalidInput.backgroundStyle.borderOpacity == 0.20)
@@ -343,8 +346,8 @@ struct MHStyleResolutionTests {
         let section = theme.resolvedSectionChromeStyle()
 
         #expect(screen.readableContentWidth == Optional(theme.layout.readableContentWidth))
-        #expect(screen.horizontalMargin == theme.layout.screenHorizontalMargin)
-        #expect(screen.verticalPadding == theme.layout.screenVerticalPadding)
+        #expect(screen.horizontalMargin == theme.layout.screen.contentInsetHorizontal)
+        #expect(screen.verticalPadding == theme.layout.screen.contentInsetVertical)
         #expect(screenCue.colorRole == .accent)
         #expect(screenCue.width == theme.presentation.screenCueWidth)
         #expect(screenCue.height == theme.presentation.screenCueHeight)

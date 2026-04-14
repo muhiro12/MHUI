@@ -30,7 +30,7 @@ private struct MHSurfaceModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         let shape = RoundedRectangle(
-            cornerRadius: theme.radius.surface,
+            cornerRadius: theme.cornerRadius.surface,
             style: .continuous
         )
         let style = theme.resolvedSurfaceStyle(
@@ -93,11 +93,11 @@ extension MHTheme {
 
         return .init(
             horizontal: isCompactWidth
-                ? layout.compactSurfaceInsetHorizontal
-                : layout.surfaceInsetHorizontal,
+                ? layout.surface.compactInsetHorizontal
+                : layout.surface.insetHorizontal,
             vertical: isCompactWidth
-                ? layout.compactSurfaceInsetVertical
-                : layout.surfaceInsetVertical
+                ? layout.surface.compactInsetVertical
+                : layout.surface.insetVertical
         )
     }
 

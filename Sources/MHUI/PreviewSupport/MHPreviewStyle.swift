@@ -238,7 +238,7 @@ private struct MHPreviewContextModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         let theme = MHPreviewStyle.theme(for: context)
-        let contentPadding = padding ?? theme.spacing.group
+        let contentPadding = padding ?? theme.spacing.content
 
         return content
             .disabled(!context.isEnabled)
@@ -279,7 +279,7 @@ extension View {
 
     func mhPreviewSurface(
         _ context: MHPreviewContext,
-        padding: CGFloat = MHTheme.standard.spacing.group
+        padding: CGFloat = MHTheme.standard.spacing.content
     ) -> some View {
         modifier(
             MHPreviewContextModifier(
@@ -291,7 +291,7 @@ extension View {
     }
 
     func mhPreviewSurface(
-        padding: CGFloat = MHTheme.standard.spacing.group
+        padding: CGFloat = MHTheme.standard.spacing.content
     ) -> some View {
         mhPreviewSurface(
             MHPreviewStyle.defaultContext,

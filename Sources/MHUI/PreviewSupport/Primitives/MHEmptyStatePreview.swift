@@ -14,7 +14,7 @@ import SwiftUI
             // no-op
         }
         .buttonStyle(.mhSecondary)
-        .padding(MHTheme.standard.spacing.group)
+        .padding(MHTheme.standard.spacing.content)
     }
     .mhPreviewSurface()
 }

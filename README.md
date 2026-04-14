@@ -4,7 +4,7 @@
 
 MHUI is a narrow runtime presentation kit for calm, tool-like sibling apps.
 It is intentionally opinionated and intentionally small.
-The repository also exposes `MHDesign`, a smaller metrics layer for apps that need the shared spacing, radius, and generic screen or surface layout baseline without adopting MHUI chrome.
+The repository also exposes `MHDesign`, a smaller metrics layer for apps that need the shared spacing, corner radius, and generic screen or surface layout baseline without adopting MHUI chrome.
 `MHDesign` includes a SwiftUI environment bridge so apps and MHUI components can share one active metrics subtree.
 `MHUI` is the styled layer built on top of `MHDesign` and re-exports it for styled adopters.
 
@@ -35,7 +35,7 @@ Those responsibilities stay outside the package.
 
 ## Repository Layout
 
-- `Sources/MHDesign` - shared spacing, radius, and layout metrics for sibling apps
+- `Sources/MHDesign` - shared spacing, corner-radius, and layout metrics for sibling apps
 - `Sources/MHUI` - shared styled presentation APIs built on `MHDesign`
 - `Tests/MHUITests` - package verification surface
 - `ci_scripts/` - stable build, test, and verify entrypoints
@@ -47,7 +47,7 @@ Those responsibilities stay outside the package.
 - Metrics-only adopter: `import MHDesign`
 - Styled adopter: `import MHUI`
 
-Use `MHDesign` directly when an app wants to avoid MHUI chrome and only share spacing, radius, generic screen or surface layout, and the environment bridge.
+Use `MHDesign` directly when an app wants to avoid MHUI chrome and only share spacing, corner radius, generic screen or surface layout, and the environment bridge.
 Use `MHUI` when an app wants the styled layer. `MHUI` re-exports `MHDesign`, so one import is enough for both the metrics layer and the styled APIs.
 Row chrome, action fallback, key-value fallback, and cue geometry stay MHUI-owned even when they are backed by shared package defaults.
 
@@ -84,7 +84,9 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 
 ## Public Building Blocks
 
-- `MHDesignMetrics`, `MHSpacingMetrics`, `MHRadiusMetrics`, `MHLayoutMetrics`
+- `MHDesignMetrics`, `MHSpacingMetrics`, `MHCornerRadiusMetrics`, `MHLayoutMetrics`
+- `MHScreenLayoutMetrics`, `MHSurfaceLayoutMetrics`, `MHControlLayoutMetrics`
+- `MHSpacingRole`, `MHCornerRadiusRole`, `MHLayoutMode`
 - `mhDesignMetrics(_:)` and `@Environment(\.mhDesignMetrics)`
 - `MHTheme`, `MHColorReference`, `MHTextRole`, `MHColorRole`
 - `mhTextStyle(_:colorRole:)`
@@ -161,29 +163,34 @@ let editorialMetrics = MHDesignMetrics(
     spacing: .init(
         inline: 8,
         control: 16,
-        group: 24,
+        content: 24,
         section: 32,
         screen: 48
     ),
-    radius: .init(
+    cornerRadius: .init(
         control: 8,
-        surface: 18,
-        pill: 999
+        surface: 18
     ),
     layout: .init(
         readableContentWidth: 680,
         compactWidthThreshold: 600,
-        narrowWidthThreshold: 360,
-        screenHorizontalMargin: 48,
-        screenVerticalPadding: 80,
-        screenContentSpacing: 56,
-        compactScreenHorizontalMargin: 16,
-        compactScreenVerticalPadding: 32,
-        compactScreenContentSpacing: 24,
-        surfaceInsetHorizontal: 24,
-        surfaceInsetVertical: 24,
-        compactSurfaceInsetHorizontal: 16,
-        compactSurfaceInsetVertical: 16
+        screen: .init(
+            contentInsetHorizontal: 48,
+            contentInsetVertical: 80,
+            contentSpacing: 56,
+            compactContentInsetHorizontal: 16,
+            compactContentInsetVertical: 32,
+            compactContentSpacing: 24
+        ),
+        surface: .init(
+            insetHorizontal: 24,
+            insetVertical: 24,
+            compactInsetHorizontal: 16,
+            compactInsetVertical: 16
+        ),
+        control: .init(
+            minimumTouchTarget: 44
+        )
     )
 )
 ```
@@ -194,9 +201,9 @@ Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from s
 
 Start in this order when adjusting appearance:
 
-1. `MHDesignMetrics.standard` when an app only needs shared spacing, radius, or layout numbers.
+1. `MHDesignMetrics.standard` when an app only needs shared spacing, corner radius, or layout numbers.
    Or create a custom `MHDesignMetrics(...)` when the host app needs its own shared baseline without taking MHUI chrome.
-2. `MHTheme.standard()` or `MHTheme.standard(accent:)` for default color, spacing, radius, layout, and surface recipes.
+2. `MHTheme.standard()` or `MHTheme.standard(accent:)` for default color, spacing, corner radius, layout, and surface recipes.
 3. Validation previews at fixed widths `760`, `375`, and `320` before making view-local tweaks.
 4. Internal shared resolvers for row chrome, surface fill, action fallback, and key-value fallback only when a shared token is not enough.
 

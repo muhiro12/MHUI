@@ -13,7 +13,7 @@ private struct MHSectionModifier: ViewModifier {
     let footer: AnyView?
 
     func body(content: Content) -> some View {
-        VStack(alignment: .leading, spacing: theme.spacing.group) {
+        VStack(alignment: .leading, spacing: theme.spacing.content) {
             headerBlock
 
             content

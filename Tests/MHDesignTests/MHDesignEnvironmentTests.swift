@@ -12,18 +12,25 @@ struct MHDesignEnvironmentTests {
 
         let custom = customDesignMetrics(
             spacingScreen: 44,
-            screenVerticalPadding: 80
+            screenContentInsetVertical: 80,
+            surfaceContentInsetHorizontal: 28,
+            minimumTouchTarget: 52
         )
         values.mhDesignMetrics = custom
 
         #expect(values.mhDesignMetrics == custom)
         #expect(values.mhHasExplicitDesignMetrics)
+        #expect(values.mhDesignMetrics.layout.screen.contentInsetVertical == 80)
+        #expect(values.mhDesignMetrics.layout.surface.insetHorizontal == 28)
+        #expect(values.mhDesignMetrics.layout.control.minimumTouchTarget == 52)
     }
 }
 
 private func customDesignMetrics(
     spacingScreen: CGFloat,
-    screenVerticalPadding: CGFloat
+    screenContentInsetVertical: CGFloat,
+    surfaceContentInsetHorizontal: CGFloat,
+    minimumTouchTarget: CGFloat
 ) -> MHDesignMetrics {
     let standard = MHDesignMetrics.standard
 
@@ -31,29 +38,34 @@ private func customDesignMetrics(
         spacing: .init(
             inline: standard.spacing.inline,
             control: standard.spacing.control,
-            group: standard.spacing.group,
+            content: standard.spacing.content,
             section: standard.spacing.section,
             screen: spacingScreen
         ),
-        radius: .init(
-            control: standard.radius.control,
-            surface: standard.radius.surface,
-            pill: standard.radius.pill
+        cornerRadius: .init(
+            control: standard.cornerRadius.control,
+            surface: standard.cornerRadius.surface
         ),
         layout: .init(
             readableContentWidth: standard.layout.readableContentWidth,
             compactWidthThreshold: standard.layout.compactWidthThreshold,
-            narrowWidthThreshold: standard.layout.narrowWidthThreshold,
-            screenHorizontalMargin: standard.layout.screenHorizontalMargin,
-            screenVerticalPadding: screenVerticalPadding,
-            screenContentSpacing: standard.layout.screenContentSpacing,
-            compactScreenHorizontalMargin: standard.layout.compactScreenHorizontalMargin,
-            compactScreenVerticalPadding: standard.layout.compactScreenVerticalPadding,
-            compactScreenContentSpacing: standard.layout.compactScreenContentSpacing,
-            surfaceInsetHorizontal: standard.layout.surfaceInsetHorizontal,
-            surfaceInsetVertical: standard.layout.surfaceInsetVertical,
-            compactSurfaceInsetHorizontal: standard.layout.compactSurfaceInsetHorizontal,
-            compactSurfaceInsetVertical: standard.layout.compactSurfaceInsetVertical
+            screen: .init(
+                contentInsetHorizontal: standard.layout.screen.contentInsetHorizontal,
+                contentInsetVertical: screenContentInsetVertical,
+                contentSpacing: standard.layout.screen.contentSpacing,
+                compactContentInsetHorizontal: standard.layout.screen.compactContentInsetHorizontal,
+                compactContentInsetVertical: standard.layout.screen.compactContentInsetVertical,
+                compactContentSpacing: standard.layout.screen.compactContentSpacing
+            ),
+            surface: .init(
+                insetHorizontal: surfaceContentInsetHorizontal,
+                insetVertical: standard.layout.surface.insetVertical,
+                compactInsetHorizontal: standard.layout.surface.compactInsetHorizontal,
+                compactInsetVertical: standard.layout.surface.compactInsetVertical
+            ),
+            control: .init(
+                minimumTouchTarget: minimumTouchTarget
+            )
         )
     )
 }

@@ -7,7 +7,7 @@ It explains where new code should live when the same visual rule or container pa
 
 ## Core Principles
 
-- `Sources/MHDesign` is the source of truth for shared spacing, radius, and generic screen or surface layout parameters that should work without MHUI chrome.
+- `Sources/MHDesign` is the source of truth for shared spacing, corner radius, and generic screen or surface layout parameters that should work without MHUI chrome.
 - `Sources/MHUI` is the source of truth for shared presentation logic built on `MHDesign`.
 - Host apps own product behavior, feature state, and navigation meaning.
 - Example apps and previews are consumers of package APIs, not a second design layer.
@@ -19,7 +19,7 @@ It explains where new code should live when the same visual rule or container pa
 
 | Concern | Lives in | Examples |
 | --- | --- | --- |
-| Shared design parameters | `Sources/MHDesign` | `MHDesignMetrics`, spacing, radii, readable widths, generic screen or surface insets, compact thresholds, SwiftUI environment bridge |
+| Shared design parameters | `Sources/MHDesign` | `MHDesignMetrics`, spacing, corner radii, readable widths, generic screen or surface insets, compact thresholds, SwiftUI environment bridge |
 | Shared presentation logic | `Sources/MHUI` | `MHTheme`, semantic roles, text styles, row and action fallback, key-value fallback, cue geometry, surface chrome, grouped rows, section chrome, screen chrome, and re-export of `MHDesign` |
 | Package preview support | `Sources/MHUI/PreviewSupport` | validation catalogs for compact width, native-container chrome, and shared fallback behavior |
 | Host app composition | App repositories that consume MHUI | feature screens, navigation state, form state, domain-driven copy, feature-specific layouts |
@@ -38,8 +38,14 @@ The following types and helpers are the current shared entry points for package-
 
 - `MHDesignMetrics`
 - `MHSpacingMetrics`
-- `MHRadiusMetrics`
+- `MHSpacingRole`
+- `MHCornerRadiusMetrics`
+- `MHCornerRadiusRole`
 - `MHLayoutMetrics`
+- `MHScreenLayoutMetrics`
+- `MHSurfaceLayoutMetrics`
+- `MHControlLayoutMetrics`
+- `MHLayoutMode`
 - `mhDesignMetrics(_:)`
 - `MHTheme`
 - `MHColorReference`
@@ -70,7 +76,7 @@ The following types and helpers are the current shared entry points for package-
 
 ## Current Examples
 
-- `MHDesignMetrics.standard` stays in the package because sibling apps need one shared baseline for spacing, radii, and generic screen or surface layout thresholds even when they do not adopt MHUI chrome.
+- `MHDesignMetrics.standard` stays in the package because sibling apps need one shared baseline for spacing, corner radii, and generic screen or surface layout thresholds even when they do not adopt MHUI chrome.
 - Re-export of `MHDesign` in `MHUI` stays in the package because styled adopters should reach both layers through one import.
 - `MHTheme.standard()` and `MHTheme.standard(accent:)` stay in the package because they define a reusable semantic baseline rather than one app's branding system.
 - Row insets, compact action padding, key-value fallback widths, and cue geometry stay in `MHUI` because those values only make sense alongside MHUI presentation behavior.
@@ -80,7 +86,7 @@ The following types and helpers are the current shared entry points for package-
 
 ## Refactoring Heuristic
 
-When raw spacing, radius, or generic screen or surface layout values are duplicated across sibling apps, the default fix is to move that rule into `MHDesign`.
+When raw spacing, corner radius, or generic screen or surface layout values are duplicated across sibling apps, the default fix is to move that rule into `MHDesign`.
 When a presentation rule is duplicated across sibling apps, the default fix is to move that rule into `MHUI`.
 When the duplicated code still depends on one product's models, copy, or workflows, the default fix is to keep it in the host app and only extract the domain-neutral presentation layer.
 When a breaking package API change improves the boundary during `1.x`, prefer the cleaner API over carrying a temporary compatibility layer.

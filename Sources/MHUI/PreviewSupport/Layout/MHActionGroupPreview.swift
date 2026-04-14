@@ -2,7 +2,7 @@ import SwiftUI
 
 private struct MHActionGroupPreview: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.group) {
+        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.content) {
             MHActionGroup {
                 Button("Create Something New Without Local Layout Workarounds") {
                     // no-op

@@ -8,10 +8,6 @@ private enum MHContainerChromeKind {
     case form
 }
 
-private enum MHScreenChromeDefaults {
-    static let minimumCompactHorizontalMargin: CGFloat = 8
-}
-
 struct MHResolvedScreenChromeStyle: Sendable, Equatable {
     var readableContentWidth: CGFloat?
     var horizontalMargin: CGFloat
@@ -68,7 +64,7 @@ struct MHScreenTitleBlock: View {
         let style = theme.resolvedScreenChromeStyle(for: context)
 
         return MHCueBlock(style: style.cueStyle) {
-            VStack(alignment: .leading, spacing: theme.spacing.group) {
+            VStack(alignment: .leading, spacing: theme.spacing.content) {
                 if let title {
                     title
                         .mhTextStyle(.screenTitle)
@@ -297,28 +293,20 @@ extension MHTheme {
         let isCompactWidth = context.isCompactWidth(
             threshold: layout.compactWidthThreshold
         )
-        let usesNarrowFallback = context.isNarrowWidth(
-            threshold: layout.narrowWidthThreshold
-        )
 
         return MHResolvedScreenChromeStyle(
             readableContentWidth: isCompactWidth
                 ? nil
                 : layout.readableContentWidth,
             horizontalMargin: isCompactWidth
-                ? usesNarrowFallback
-                ? max(
-                    MHScreenChromeDefaults.minimumCompactHorizontalMargin,
-                    layout.compactScreenHorizontalMargin - spacing.inline
-                )
-                : layout.compactScreenHorizontalMargin
-                : layout.screenHorizontalMargin,
+                ? layout.screen.compactContentInsetHorizontal
+                : layout.screen.contentInsetHorizontal,
             verticalPadding: isCompactWidth
-                ? layout.compactScreenVerticalPadding
-                : layout.screenVerticalPadding,
+                ? layout.screen.compactContentInsetVertical
+                : layout.screen.contentInsetVertical,
             contentSpacing: isCompactWidth
-                ? layout.compactScreenContentSpacing
-                : layout.screenContentSpacing,
+                ? layout.screen.compactContentSpacing
+                : layout.screen.contentSpacing,
             cueColorRole: cue.colorRole,
             cueWidth: cue.width,
             cueHeight: cue.height,

@@ -5,19 +5,19 @@ public struct MHDesignMetrics: Sendable, Equatable {
     /// Shared spacing values for rhythm and separation.
     public let spacing: MHSpacingMetrics
 
-    /// Shared radii for controls and calm surfaces.
-    public let radius: MHRadiusMetrics
+    /// Shared corner radii for controls and calm surfaces.
+    public let cornerRadius: MHCornerRadiusMetrics
 
-    /// Shared layout thresholds and insets for screen composition.
+    /// Shared layout thresholds and role-based layout metrics.
     public let layout: MHLayoutMetrics
 
     public init(
         spacing: MHSpacingMetrics,
-        radius: MHRadiusMetrics,
+        cornerRadius: MHCornerRadiusMetrics,
         layout: MHLayoutMetrics
     ) {
         self.spacing = spacing
-        self.radius = radius
+        self.cornerRadius = cornerRadius
         self.layout = layout
     }
 }

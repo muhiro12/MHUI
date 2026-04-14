@@ -11,7 +11,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 | Surface | Current role | Key responsibilities |
 | --- | --- | --- |
-| `MHDesign` | Shared package | Spacing, radius, and layout metrics that sibling apps can adopt without MHUI chrome |
+| `MHDesign` | Shared package | Spacing, corner-radius, and layout metrics that sibling apps can adopt without MHUI chrome |
 | `MHUI` | Shared package | Theme definitions, semantic styling APIs, modifiers, layout helpers, screen chrome, and re-export of `MHDesign` for styled adopters |
 | `Tests/MHUITests` | Package verification | Validate the shared package surface through Swift package tests |
 | `ci_scripts` | Workflow layer | Stable build, test, verify, and artifact-capture entrypoints |
@@ -30,7 +30,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 ## Public API Areas
 
-- `MHDesignMetrics` and its spacing, radius, and layout value groups
+- `MHDesignMetrics` and its spacing, corner-radius, and layout value groups
 - Theme application through `MHTheme.standard()` and related semantic roles
 - Text styling primitives such as `mhTextStyle(_:colorRole:)`
 - Surface, row, section, and grouped-layout modifiers

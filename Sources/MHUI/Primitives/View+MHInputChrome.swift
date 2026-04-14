@@ -18,13 +18,14 @@ private struct MHInputChromeModifier: ViewModifier {
             reduceTransparency: accessibilityReduceTransparency
         )
         let shape = RoundedRectangle(
-            cornerRadius: theme.radius.control,
+            cornerRadius: theme.cornerRadius.control,
             style: .continuous
         )
 
         content
             .padding(.horizontal, style.horizontalPadding)
             .padding(.vertical, style.verticalPadding)
+            .frame(minHeight: style.minimumHeight)
             .background {
                 MHSurfaceFill(
                     shape: shape,

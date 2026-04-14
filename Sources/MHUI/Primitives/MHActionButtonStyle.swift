@@ -45,7 +45,7 @@ public struct MHActionButtonStyle: ButtonStyle {
             for: context
         )
         let shape = RoundedRectangle(
-            cornerRadius: theme.radius.control,
+            cornerRadius: theme.cornerRadius.control,
             style: .continuous
         )
 
@@ -56,6 +56,7 @@ public struct MHActionButtonStyle: ButtonStyle {
         .mhTextStyle(.bodyStrong, colorRole: style.foregroundRole)
         .padding(.horizontal, style.horizontalPadding)
         .padding(.vertical, style.verticalPadding)
+        .frame(minHeight: style.minimumHeight)
         .background {
             if let backgroundStyle = style.backgroundStyle {
                 MHSurfaceFill(

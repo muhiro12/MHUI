@@ -1,7 +1,7 @@
 import SwiftUI
 
 #Preview("Input Chrome", traits: .sizeThatFitsLayout) {
-    VStack(spacing: MHTheme.standard.spacing.group) {
+    VStack(spacing: MHTheme.standard.spacing.content) {
         TextField("Name", text: .constant(""))
             .mhInputChrome()
         TextField("Focused", text: .constant("Focused"))

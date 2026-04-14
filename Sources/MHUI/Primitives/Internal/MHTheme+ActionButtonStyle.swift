@@ -21,7 +21,7 @@ extension MHTheme {
         )
         let filledHorizontalPadding = isCompactWidth
             ? presentation.compactActionHorizontalPadding
-            : spacing.group
+            : spacing.content
         let filledVerticalPadding = isCompactWidth
             ? presentation.compactActionVerticalPadding
             : spacing.control
@@ -51,6 +51,7 @@ extension MHTheme {
                 foregroundRole: .primaryText,
                 horizontalPadding: filledHorizontalPadding,
                 verticalPadding: filledVerticalPadding,
+                minimumHeight: layout.control.minimumTouchTarget,
                 pressedOpacity: 0.88,
                 disabledOpacity: 0.55
             )
@@ -72,6 +73,7 @@ extension MHTheme {
                 foregroundRole: .primaryText,
                 horizontalPadding: filledHorizontalPadding,
                 verticalPadding: filledVerticalPadding,
+                minimumHeight: layout.control.minimumTouchTarget,
                 pressedOpacity: 0.88,
                 disabledOpacity: 0.55
             )
@@ -81,6 +83,7 @@ extension MHTheme {
                 foregroundRole: .accent,
                 horizontalPadding: quietHorizontalPadding,
                 verticalPadding: quietVerticalPadding,
+                minimumHeight: layout.control.minimumTouchTarget,
                 pressedOpacity: 0.72,
                 disabledOpacity: 0.50
             )
@@ -102,6 +105,7 @@ extension MHTheme {
                 foregroundRole: .destructive,
                 horizontalPadding: filledHorizontalPadding,
                 verticalPadding: filledVerticalPadding,
+                minimumHeight: layout.control.minimumTouchTarget,
                 pressedOpacity: 0.88,
                 disabledOpacity: 0.55
             )

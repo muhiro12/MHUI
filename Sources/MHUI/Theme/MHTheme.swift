@@ -70,8 +70,8 @@ public struct MHTheme: Sendable, Equatable {
         metrics.spacing
     }
 
-    var radius: MHRadiusMetrics {
-        metrics.radius
+    var cornerRadius: MHCornerRadiusMetrics {
+        metrics.cornerRadius
     }
 
     var layout: MHLayoutMetrics {

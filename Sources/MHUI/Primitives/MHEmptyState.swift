@@ -40,10 +40,10 @@ private extension MHTheme {
 
         return .init(
             horizontalPadding: isCompactWidth
-                ? layout.compactSurfaceInsetHorizontal
-                : spacing.group,
+                ? layout.surface.compactInsetHorizontal
+                : spacing.content,
             verticalPadding: isCompactWidth
-                ? spacing.group
+                ? spacing.content
                 : spacing.section
         )
     }

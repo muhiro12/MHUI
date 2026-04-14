@@ -12,6 +12,7 @@ struct MHResolvedInputChromeStyle: Sendable, Equatable {
     var backgroundStyle: MHResolvedGlassBackgroundStyle
     var horizontalPadding: CGFloat
     var verticalPadding: CGFloat
+    var minimumHeight: CGFloat
 }
 
 extension MHTheme {
@@ -30,8 +31,9 @@ extension MHTheme {
                 reduceTransparency: reduceTransparency,
                 supportsGlass: supportsGlass
             ),
-            horizontalPadding: spacing.group,
-            verticalPadding: spacing.control
+            horizontalPadding: spacing.content,
+            verticalPadding: spacing.control,
+            minimumHeight: layout.control.minimumTouchTarget
         )
     }
 
