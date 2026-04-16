@@ -1,6 +1,6 @@
 import SwiftUI
 
-private struct MHActionGroupPreview: View {
+private struct MHActionGroupValidationPreview: View {
     var body: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.content) {
             MHActionGroup {
@@ -35,7 +35,7 @@ private struct MHActionGroupPreview: View {
         scenarios: MHPreviewStyle.actionValidationScenarios(),
         casePadding: 0
     ) { context in
-        MHActionGroupPreview()
+        MHActionGroupValidationPreview()
             .mhPreviewTint(context)
     }
 }

@@ -1,6 +1,6 @@
 import SwiftUI
 
-private struct MHActionButtonStylePreview: View {
+private struct MHActionButtonStyleValidationPreview: View {
     var body: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.content) {
             Button("Save Current Workspace Configuration Without Local Workarounds") {
@@ -40,7 +40,7 @@ private struct MHActionButtonStylePreview: View {
         scenarios: MHPreviewStyle.actionValidationScenarios(),
         casePadding: 0
     ) { context in
-        MHActionButtonStylePreview()
+        MHActionButtonStyleValidationPreview()
             .mhPreviewTint(context)
     }
 }

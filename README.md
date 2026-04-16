@@ -23,7 +23,7 @@ Those responsibilities stay outside the package.
 - text, surface, row, section, screen, and native-container chrome
 - width-adaptive action presentation and action-group fallback
 - key-value row fallback behavior for narrow or constrained widths
-- package-owned validation previews and package tests that prove those shared rules
+- package-owned preview infrastructure: colocated development previews plus validation catalogs and package tests that prove those shared rules
 
 ## MHUI Does Not Own
 
@@ -37,6 +37,7 @@ Those responsibilities stay outside the package.
 
 - `Sources/MHDesign` - shared spacing, corner-radius, and layout metrics for sibling apps
 - `Sources/MHUI` - shared styled presentation APIs built on `MHDesign`
+- `Sources/MHUI/PreviewSupport` - shared preview styling helpers and regression validation catalogs
 - `Tests/MHUITests` - package verification surface
 - `ci_scripts/` - stable build, test, and verify entrypoints
 - `Designs/` - architecture notes, current overview, and ADRs
@@ -105,6 +106,20 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 - `mhScreen(...)`
 - `mhListChrome(...)`, `mhFormChrome(...)`
 - `mhEmptyStateLayout()`
+
+## Preview Model
+
+- Put the first development preview for a public primitive or layout API at the end of its implementation file under `// MARK: - Preview`.
+- Reserve `Sources/MHUI/PreviewSupport` for shared preview styling helpers such as `MHPreviewStyle`, `MHPreviewCatalog`, and fixed-width validation previews that compare multiple runtime scenarios.
+- Use `.mhPreviewSurface()` for component and chrome review.
+- Use `.mhPreviewTint()` for screen-level composition or previews that should not add an extra background surface.
+
+## Modifier Heuristics
+
+- Prefer a direct `View` extension when the API only writes environment values or adds a light styling chain that stays clearer without an extra type.
+- Keep a private `ViewModifier` when the implementation reads environment values, resolves adaptive layout, bundles multiple visual steps such as padding/background/overlay/animation, or is shared by multiple public entry points.
+- Canonical direct-extension examples: `mhTheme(_:)`, `mhGlassPolicy(_:)`, `mhActionPresentation(_:)`, `mhKeyValueLayout(_:)`.
+- Canonical `ViewModifier` examples: `mhSurface(role:)`, `mhTextStyle(_:colorRole:)`, `mhScreen(...)`, `mhSection(...)`, `mhGroupedRows()`, `mhInputChrome(state:)`, `mhBadge(style:)`.
 
 ## Example
 
@@ -204,8 +219,9 @@ Start in this order when adjusting appearance:
 1. `MHDesignMetrics.standard` when an app only needs shared spacing, corner radius, or layout numbers.
    Or create a custom `MHDesignMetrics(...)` when the host app needs its own shared baseline without taking MHUI chrome.
 2. `MHTheme.standard()` or `MHTheme.standard(accent:)` for default color, spacing, corner radius, layout, and surface recipes.
-3. Validation previews at fixed widths `760`, `375`, and `320` before making view-local tweaks.
-4. Internal shared resolvers for row chrome, surface fill, action fallback, and key-value fallback only when a shared token is not enough.
+3. The colocated preview at the end of the edited implementation file for fast local iteration.
+4. Validation previews at fixed widths `760`, `375`, and `320` when you need cross-scenario regression review.
+5. Internal shared resolvers for row chrome, surface fill, action fallback, and key-value fallback only when a shared token is not enough.
 
 The most useful previews to review first are `Screen Validation`, `Action Buttons Validation`, `Action Group Validation`, `Key Value Validation`, and `Native Container Validation`.
 

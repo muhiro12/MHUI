@@ -61,4 +61,16 @@ public extension View {
         modifier(MHBadgeModifier(style: style))
     }
 }
+
+// MARK: - Preview
+
+#Preview("Badge", traits: .sizeThatFitsLayout) {
+    HStack(spacing: MHTheme.standard.spacing.control) {
+        ForEach(MHBadgeStyle.allCases, id: \.rawValue) { style in
+            Text(LocalizedStringKey(style.rawValue.capitalized))
+                .mhBadge(style: style)
+        }
+    }
+    .mhPreviewSurface()
+}
 // swiftlint:enable one_declaration_per_file file_types_order

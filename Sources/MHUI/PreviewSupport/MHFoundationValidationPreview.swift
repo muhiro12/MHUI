@@ -1,7 +1,7 @@
 // swiftlint:disable closure_body_length file_types_order no_magic_numbers one_declaration_per_file
 import SwiftUI
 
-private enum MHFoundationPreview {}
+private enum MHFoundationValidationPreview {}
 
 private struct MHScreenValidationContent: View {
     var body: some View {

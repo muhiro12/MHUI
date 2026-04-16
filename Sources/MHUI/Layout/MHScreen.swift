@@ -126,4 +126,42 @@ private extension MHScreenModifier {
         }
     }
 }
+
+// MARK: - Preview
+
+private struct MHScreenPreviewContent: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
+            VStack(spacing: 0) {
+                LabeledContent("Atmosphere", value: "Calm")
+                    .labeledContentStyle(.mhKeyValue)
+                LabeledContent("Approach", value: "Opinionated")
+                    .labeledContentStyle(.mhKeyValue)
+            }
+            .mhGroupedRows()
+            .mhSection(
+                "Foundation",
+                supporting: "Tokens, styles, and composition helpers."
+            )
+
+            ContentUnavailableView(
+                "No examples yet",
+                systemImage: "square.grid.2x2",
+                description: Text("Use native SwiftUI views and apply MHUI styling.")
+            )
+            .mhEmptyStateLayout()
+            .mhSurfaceInset()
+            .mhSurface()
+        }
+        .mhScreen(
+            title: "MHUI",
+            subtitle: "Focused development preview for screen chrome and section rhythm."
+        )
+    }
+}
+
+#Preview("Screen", traits: .fixedLayout(width: 760, height: 900)) {
+    MHScreenPreviewContent()
+        .mhPreviewTint()
+}
 // swiftlint:enable one_declaration_per_file file_types_order type_contents_order

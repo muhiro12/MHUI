@@ -223,4 +223,37 @@ private extension MHKeyValueLabeledContentStyle {
         .mhRowChrome(style.rowChrome)
     }
 }
+
+// MARK: - Preview
+
+private struct MHKeyValueRowPreviewContent: View {
+    var body: some View {
+        VStack(spacing: 0) {
+            LabeledContent(
+                "Shared package responsibility for narrow rows",
+                value: """
+                    Automatic vertical stacking should keep long values readable
+                    before a host app writes local workarounds.
+                    """
+            )
+            .labeledContentStyle(.mhKeyValue)
+
+            LabeledContent(
+                "Validation target",
+                value: """
+                    Long labels and long values should stay practical at common phone widths.
+                    """
+            )
+            .labeledContentStyle(.mhKeyValue)
+        }
+        .mhGroupedRows()
+        .mhSurfaceInset()
+        .mhSurface()
+    }
+}
+
+#Preview("Key Value Row", traits: .fixedLayout(width: 375, height: 240)) {
+    MHKeyValueRowPreviewContent()
+        .mhPreviewSurface(padding: 0)
+}
 // swiftlint:enable one_declaration_per_file file_types_order no_magic_numbers

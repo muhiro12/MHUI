@@ -165,4 +165,32 @@ private extension MHSectionModifier {
         .mhSectionHeader()
     }
 }
+
+// MARK: - Preview
+
+#Preview("Section", traits: .sizeThatFitsLayout) {
+    VStack(spacing: 0) {
+        HStack(alignment: .top, spacing: MHTheme.standard.spacing.control) {
+            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+                Text("Pattern")
+                    .mhRowOverline()
+                Text("Section title")
+                    .mhRowTitle()
+                Text("Secondary text stays quiet.")
+                    .mhRowSupporting()
+            }
+            Spacer()
+        }
+        .mhRow()
+
+        LabeledContent("Surface", value: "Styled")
+            .labeledContentStyle(.mhKeyValue)
+    }
+    .mhGroupedRows()
+    .mhSection(
+        "Rhythm",
+        supporting: "Shared section framing without owning app workflow."
+    )
+    .mhPreviewSurface()
+}
 // swiftlint:enable one_declaration_per_file file_types_order

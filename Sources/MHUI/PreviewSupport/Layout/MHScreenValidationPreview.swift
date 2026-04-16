@@ -1,7 +1,7 @@
 // swiftlint:disable closure_body_length
 import SwiftUI
 
-#Preview("Screen Regular Focus", traits: .fixedLayout(width: 760, height: 900)) {
+#Preview("Screen Validation Regular", traits: .fixedLayout(width: 760, height: 900)) {
     VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
         VStack(spacing: 0) {
             LabeledContent("Atmosphere", value: "Calm")
@@ -31,7 +31,7 @@ import SwiftUI
     .mhPreviewTint()
 }
 
-#Preview("Screen Compact Focus", traits: .fixedLayout(width: 375, height: 900)) {
+#Preview("Screen Validation Compact", traits: .fixedLayout(width: 375, height: 900)) {
     VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
         MHActionGroup {
             Button("Create Something New") {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-private struct MHKeyValueRowPreview: View {
+private struct MHKeyValueRowValidationPreview: View {
     var body: some View {
         VStack(spacing: 0) {
             LabeledContent(
@@ -46,7 +46,7 @@ private struct MHKeyValueRowPreview: View {
         title: "Key value validation",
         scenarios: MHPreviewStyle.keyValueValidationScenarios()
     ) { context in
-        MHKeyValueRowPreview()
+        MHKeyValueRowValidationPreview()
             .mhPreviewTint(context)
     }
 }

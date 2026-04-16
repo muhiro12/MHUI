@@ -1,4 +1,5 @@
 import SwiftUI
+
 private struct MHInputChromeModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
@@ -61,4 +62,19 @@ public extension View {
     ) -> some View {
         modifier(MHInputChromeModifier(state: state))
     }
+}
+
+// MARK: - Preview
+
+#Preview("Input Chrome", traits: .sizeThatFitsLayout) {
+    VStack(spacing: MHTheme.standard.spacing.content) {
+        TextField("Name", text: .constant(""))
+            .mhInputChrome()
+        TextField("Focused", text: .constant("Focused"))
+            .mhInputChrome(state: .focused)
+        TextEditor(text: .constant("Validation message owned by the app."))
+            .frame(height: 120)
+            .mhInputChrome(state: .invalid)
+    }
+    .mhPreviewSurface()
 }

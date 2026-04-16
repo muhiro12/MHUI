@@ -18,7 +18,7 @@ Related documents:
 | Layer | Owns | Must not own |
 | --- | --- | --- |
 | `MHDesign` (`Sources/MHDesign`) | Shared spacing, corner-radius, generic screen or surface layout metrics, and the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome | Product copy, business rules, navigation meaning, view-specific styling behavior, or MHUI-owned component chrome |
-| `MHUI` (`Sources/MHUI`) | Semantic theme application, styling modifiers, layout primitives, row and action fallback rules, key-value fallback, cue geometry, screen chrome, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets |
+| `MHUI` (`Sources/MHUI`) | Semantic theme application, styling modifiers, layout primitives, row and action fallback rules, key-value fallback, cue geometry, screen chrome, colocated development previews, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets |
 | Host app or sibling app | Feature state, domain rules, platform integrations, app-specific navigation, product composition | Rebuilding shared MHUI primitives as local forks |
 | Example app (`Example/` when present) | Integration review, manual regression checks, sample usage of package APIs | Becoming the source of truth for shared package APIs or hiding canonical styling outside `Sources/MHUI` |
 
@@ -31,7 +31,8 @@ Allowed in the package:
 - Domain-neutral modifiers and container chrome
 - Shared presentation helpers that improve consistency across sibling apps
 - Width-aware fallback behavior for actions, grouped actions, and key-value rows
-- Preview or example scaffolding that proves package behavior
+- Colocated development previews for public primitives and layout APIs
+- Validation scaffolding in `Sources/MHUI/PreviewSupport` that proves package behavior across fixed-width scenarios
 
 Not allowed in the package:
 
@@ -62,11 +63,20 @@ The package should shape presentation and composition without becoming the owner
 
 ## Example and Preview Mapping
 
-Example projects and preview validation catalogs follow the same package-first path:
+Example projects, colocated development previews, and preview validation catalogs follow the same package-first path:
 
 `Host example or preview -> MHUI public APIs -> package-owned tokens and layout primitives`
 
-They may demonstrate package usage, but they should not become the place where new shared styling rules are invented first.
+Daily development previews should live beside the edited implementation file so the package API and its first review surface stay together.
+`Sources/MHUI/PreviewSupport` is reserved for validation helpers and regression catalogs that compare multiple runtime contexts.
+Neither should become the place where new shared styling rules are invented before the canonical package API exists.
+
+## Modifier Structure Guidance
+
+- Prefer a direct `View` extension when an API only writes environment values or adds a light styling chain that stays clearer without an extra type.
+- Keep a private `ViewModifier` when the implementation reads environment values, resolves adaptive layout, bundles multiple visual steps such as padding, background, overlay, or animation, or is shared by multiple public entry points.
+- Canonical direct-extension examples are `mhTheme(_:)`, `mhGlassPolicy(_:)`, `mhActionPresentation(_:)`, and `mhKeyValueLayout(_:)`.
+- Canonical private-`ViewModifier` examples are `mhSurface(role:)`, `mhTextStyle(_:colorRole:)`, `mhScreen(...)`, `mhSection(...)`, `mhGroupedRows()`, `mhInputChrome(state:)`, and `mhBadge(style:)`.
 
 ## Repository Structure Guidance
 

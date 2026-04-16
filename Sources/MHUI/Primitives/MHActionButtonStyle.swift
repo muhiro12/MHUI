@@ -1,4 +1,4 @@
-// swiftlint:disable function_body_length
+// swiftlint:disable file_types_order function_body_length one_declaration_per_file
 import SwiftUI
 /// A restrained button style for primary, secondary, quiet, and destructive actions.
 public struct MHActionButtonStyle: ButtonStyle {
@@ -139,4 +139,33 @@ private extension MHActionButtonStyle {
         }
     }
 }
-// swiftlint:enable function_body_length
+
+// MARK: - Preview
+
+private struct MHActionButtonStylePreviewContent: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.content) {
+            Button("Save Current Workspace Configuration") {
+                // no-op
+            }
+            .buttonStyle(.mhPrimary)
+
+            Button("Review the Shared Compact Width Policy") {
+                // no-op
+            }
+            .buttonStyle(.mhSecondary)
+
+            Button("Remove This Configuration") {
+                // no-op
+            }
+            .buttonStyle(.mhDestructive)
+            .mhActionPresentation(.fullWidthLeading)
+        }
+    }
+}
+
+#Preview("Action Button Style", traits: .fixedLayout(width: 375, height: 320)) {
+    MHActionButtonStylePreviewContent()
+        .mhPreviewSurface()
+}
+// swiftlint:enable file_types_order function_body_length one_declaration_per_file

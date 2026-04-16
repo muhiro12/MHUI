@@ -1,4 +1,4 @@
-// swiftlint:disable one_declaration_per_file type_contents_order no_magic_numbers
+// swiftlint:disable file_types_order one_declaration_per_file type_contents_order no_magic_numbers
 import SwiftUI
 
 /// Canonical MHUI container for arranging related actions.
@@ -168,4 +168,32 @@ extension MHTheme {
         )
     }
 }
-// swiftlint:enable one_declaration_per_file type_contents_order no_magic_numbers
+
+// MARK: - Preview
+
+private struct MHActionGroupPreviewContent: View {
+    var body: some View {
+        MHActionGroup {
+            Button("Create Something New") {
+                // no-op
+            }
+            .buttonStyle(.mhPrimary)
+
+            Button("Archive This Quietly") {
+                // no-op
+            }
+            .buttonStyle(.mhSecondary)
+
+            Button("Review Compact Fallback") {
+                // no-op
+            }
+            .buttonStyle(.mhSecondary)
+        }
+    }
+}
+
+#Preview("Action Group", traits: .fixedLayout(width: 375, height: 220)) {
+    MHActionGroupPreviewContent()
+        .mhPreviewSurface()
+}
+// swiftlint:enable file_types_order one_declaration_per_file type_contents_order no_magic_numbers
