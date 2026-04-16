@@ -24,8 +24,19 @@ private struct MHRowChromeModifier: ViewModifier {
                     trailing: style.horizontalInset
                 )
             )
-            .listRowSeparator(.hidden)
+            .mhListRowSeparatorHidden()
             .listRowBackground(Color.clear)
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func mhListRowSeparatorHidden() -> some View {
+#if os(watchOS)
+        self
+#else
+        listRowSeparator(.hidden)
+#endif
     }
 }
 

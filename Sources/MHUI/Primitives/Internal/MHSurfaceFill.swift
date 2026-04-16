@@ -9,7 +9,7 @@ struct MHSurfaceFill<ShapeType: Shape>: View {
 
     @ViewBuilder var body: some View {
         if style.usesGlass {
-            if #available(iOS 26, macOS 26, *) {
+            if #available(iOS 26, macOS 26, watchOS 26, *) {
                 shape
                     .fill(.clear)
                     .glassEffect(

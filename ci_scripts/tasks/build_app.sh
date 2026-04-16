@@ -29,6 +29,8 @@ package_cache_directory="$cache_directory/package"
 cloned_source_packages_directory="$cache_directory/source_packages"
 swiftpm_cache_directory="$cache_directory/swiftpm/cache"
 swiftpm_config_directory="$cache_directory/swiftpm/config"
+watch_simulator_sdk_path=$(xcrun --sdk watchsimulator --show-sdk-path)
+watch_simulator_triple="arm64-apple-watchos11.0-simulator"
 
 mkdir -p \
   "$work_directory" \
@@ -53,6 +55,17 @@ CLANG_MODULE_CACHE_PATH="$clang_module_cache_directory" \
 SWIFTPM_CACHE_PATH="$swiftpm_cache_directory" \
 SWIFTPM_CONFIG_PATH="$swiftpm_config_directory" \
 swift build
+
+echo "Running swift build for MHUI package (watchOS simulator)."
+HOME="$local_home_directory" \
+TMPDIR="$temporary_directory" \
+XDG_CACHE_HOME="$cache_directory" \
+CLANG_MODULE_CACHE_PATH="$clang_module_cache_directory" \
+SWIFTPM_CACHE_PATH="$swiftpm_cache_directory" \
+SWIFTPM_CONFIG_PATH="$swiftpm_config_directory" \
+swift build \
+  --sdk "$watch_simulator_sdk_path" \
+  --triple "$watch_simulator_triple"
 
 example_project_path="$repository_root/Example/MHUIExample.xcodeproj"
 if [[ ! -d "$example_project_path" ]]; then

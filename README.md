@@ -7,6 +7,7 @@ It is intentionally opinionated and intentionally small.
 The repository also exposes `MHDesign`, a smaller metrics layer for apps that need the shared spacing, corner radius, and generic screen or surface layout baseline without adopting MHUI chrome.
 `MHDesign` includes a SwiftUI environment bridge so apps and MHUI components can share one active metrics subtree.
 `MHUI` is the styled layer built on top of `MHDesign` and re-exports it for styled adopters.
+The Swift Package supports iOS 18+, macOS 15+, and watchOS 11+.
 
 MHUI focuses on three layers:
 
@@ -42,7 +43,7 @@ Those responsibilities stay outside the package.
 - `Tests/MHUITests` - package verification surface
 - `ci_scripts/` - stable build, test, and verify entrypoints
 - `Designs/` - architecture notes, current overview, and ADRs
-- `Example/` - optional consumer app used only when present for integration review
+- `Example/` - optional macOS consumer app used only when present for integration review; watchOS support stays package-level
 
 ## Adoption Paths
 
@@ -245,7 +246,7 @@ Those can be added later only if they strengthen the shared visual language with
 
 ## Requirements
 
-- Xcode 16 or later with the iOS 18 and macOS 15 SDKs installed
+- Xcode 16 or later with the iOS 18, macOS 15, and watchOS 11 SDKs installed
 - Swift 6.2 toolchain
 - `swiftlint` installed if you want to run the standardized verify pipeline
 - `pre-commit` installed if you want `verify.sh` to execute repository hooks
@@ -271,7 +272,7 @@ If you only need the repository hooks:
 bash ci_scripts/tasks/pre_commit.sh
 ```
 
-If you only need the package and optional example app build:
+If you only need the package build, the watchOS simulator compile-only check, and the optional macOS example app build:
 
 ```sh
 bash ci_scripts/tasks/build_app.sh

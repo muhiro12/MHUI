@@ -6,7 +6,7 @@ struct MHGlassContainer<Content: View>: View {
     private let content: Content
 
     @ViewBuilder var body: some View {
-        if #available(iOS 26, macOS 26, *) {
+        if #available(iOS 26, macOS 26, watchOS 26, *) {
             if let spacing {
                 GlassEffectContainer(spacing: spacing) {
                     content

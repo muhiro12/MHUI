@@ -6,7 +6,7 @@ private struct MHGlassEffectIDModifier<Identifier: Hashable & Sendable>: ViewMod
 
     @ViewBuilder
     func body(content: Content) -> some View {
-        if #available(iOS 26, macOS 26, *) {
+        if #available(iOS 26, macOS 26, watchOS 26, *) {
             content
                 .glassEffectID(identifier, in: namespace)
         } else {
