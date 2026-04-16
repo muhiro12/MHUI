@@ -17,7 +17,7 @@ Related documents:
 
 | Layer | Owns | Must not own |
 | --- | --- | --- |
-| `MHDesign` (`Sources/MHDesign`) | Shared spacing, corner-radius, generic screen or surface layout metrics, and the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome | Product copy, business rules, navigation meaning, view-specific styling behavior, or MHUI-owned component chrome |
+| `MHDesign` (`Sources/MHDesign`) | Shared spacing, corner-radius, generic screen or surface layout metrics, the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome, and sidecar tuning previews backed by minimal preview helpers | Product copy, business rules, navigation meaning, view-specific styling behavior, or MHUI-owned component chrome |
 | `MHUI` (`Sources/MHUI`) | Semantic theme application, styling modifiers, layout primitives, row and action fallback rules, key-value fallback, cue geometry, screen chrome, colocated development previews, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets |
 | Host app or sibling app | Feature state, domain rules, platform integrations, app-specific navigation, product composition | Rebuilding shared MHUI primitives as local forks |
 | Example app (`Example/` when present) | Integration review, manual regression checks, sample usage of package APIs | Becoming the source of truth for shared package APIs or hiding canonical styling outside `Sources/MHUI` |
@@ -27,6 +27,7 @@ Related documents:
 Allowed in the package:
 
 - Reusable spacing, corner radius, and generic screen or surface layout metrics in `MHDesign`
+- Sidecar tuning previews and minimal preview helpers for MHDesign metrics and environment overrides
 - Reusable typography, color, and surface tokens in `MHUI`
 - Domain-neutral modifiers and container chrome
 - Shared presentation helpers that improve consistency across sibling apps
@@ -63,11 +64,13 @@ The package should shape presentation and composition without becoming the owner
 
 ## Example and Preview Mapping
 
-Example projects, colocated development previews, and preview validation catalogs follow the same package-first path:
+Example projects, MHDesign sidecar previews, MHUI colocated development previews, and preview validation catalogs follow the same package-first path:
 
 `Host example or preview -> MHUI public APIs -> package-owned tokens and layout primitives`
 
-Daily development previews should live beside the edited implementation file so the package API and its first review surface stay together.
+MHDesign tuning previews should live in same-directory sidecar files so metrics types stay focused on values while still keeping the first review surface nearby.
+MHUI development previews should live inside the edited implementation file so the styled API and its first review surface stay together.
+`Sources/MHDesign/PreviewSupport` is reserved for minimal helper views shared by MHDesign sidecar previews.
 `Sources/MHUI/PreviewSupport` is reserved for validation helpers and regression catalogs that compare multiple runtime contexts.
 Neither should become the place where new shared styling rules are invented before the canonical package API exists.
 
@@ -81,6 +84,7 @@ Neither should become the place where new shared styling rules are invented befo
 ## Repository Structure Guidance
 
 - Keep canonical shared design parameters in `Sources/MHDesign`.
+- Keep MHDesign preview helpers in `Sources/MHDesign/PreviewSupport` and keep metric-specific tuning previews beside the corresponding source files.
 - Keep canonical styled APIs in `Sources/MHUI`.
 - Keep package verification in `Tests/MHUITests`.
 - Keep stable automation entrypoints in `ci_scripts/tasks/`.

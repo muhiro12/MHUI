@@ -36,6 +36,7 @@ Those responsibilities stay outside the package.
 ## Repository Layout
 
 - `Sources/MHDesign` - shared spacing, corner-radius, and layout metrics for sibling apps
+- `Sources/MHDesign/PreviewSupport` - minimal preview helpers for MHDesign sidecar tuning previews
 - `Sources/MHUI` - shared styled presentation APIs built on `MHDesign`
 - `Sources/MHUI/PreviewSupport` - shared preview styling helpers and regression validation catalogs
 - `Tests/MHUITests` - package verification surface
@@ -109,7 +110,8 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 
 ## Preview Model
 
-- Put the first development preview for a public primitive or layout API at the end of its implementation file under `// MARK: - Preview`.
+- Keep MHDesign tuning previews in `+Preview.swift` sidecar files beside the edited metrics type or environment bridge, with only minimal shared helpers in `Sources/MHDesign/PreviewSupport`.
+- Put the first MHUI development preview for a public primitive or layout API at the end of its implementation file under `// MARK: - Preview`.
 - Reserve `Sources/MHUI/PreviewSupport` for shared preview styling helpers such as `MHPreviewStyle`, `MHPreviewCatalog`, and fixed-width validation previews that compare multiple runtime scenarios.
 - Use `.mhPreviewSurface()` for component and chrome review.
 - Use `.mhPreviewTint()` for screen-level composition or previews that should not add an extra background surface.
@@ -218,10 +220,11 @@ Start in this order when adjusting appearance:
 
 1. `MHDesignMetrics.standard` when an app only needs shared spacing, corner radius, or layout numbers.
    Or create a custom `MHDesignMetrics(...)` when the host app needs its own shared baseline without taking MHUI chrome.
-2. `MHTheme.standard()` or `MHTheme.standard(accent:)` for default color, spacing, corner radius, layout, and surface recipes.
-3. The colocated preview at the end of the edited implementation file for fast local iteration.
-4. Validation previews at fixed widths `760`, `375`, and `320` when you need cross-scenario regression review.
-5. Internal shared resolvers for row chrome, surface fill, action fallback, and key-value fallback only when a shared token is not enough.
+2. The MHDesign `+Preview.swift` sidecar beside the edited metrics file when tuning spacing, radius, layout, or environment overrides without MHUI chrome.
+3. `MHTheme.standard()` or `MHTheme.standard(accent:)` for default color, spacing, corner radius, layout, and surface recipes.
+4. The colocated preview at the end of the edited MHUI implementation file for fast local iteration.
+5. Validation previews at fixed widths `760`, `375`, and `320` when you need cross-scenario regression review.
+6. Internal shared resolvers for row chrome, surface fill, action fallback, and key-value fallback only when a shared token is not enough.
 
 The most useful previews to review first are `Screen Validation`, `Action Buttons Validation`, `Action Group Validation`, `Key Value Validation`, and `Native Container Validation`.
 

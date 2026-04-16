@@ -27,6 +27,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 - Product behavior stays outside the package.
 - The example app, when present, is a consumer of the package rather than a second source of truth.
 - CI scripts write disposable artifacts under `.build/ci/`.
+- MHDesign tuning previews live in same-directory `+Preview.swift` files, with minimal shared helpers under `Sources/MHDesign/PreviewSupport`.
 - Development previews for public primitives and layout APIs stay beside the implementation they tune.
 - `Sources/MHUI/PreviewSupport` is reserved for validation catalogs and shared preview styling helpers.
 - `ViewModifier` types are kept only when environment reads, adaptive layout resolution, multi-step chrome, or shared implementation justify them.
