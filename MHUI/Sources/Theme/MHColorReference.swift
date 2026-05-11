@@ -4,6 +4,7 @@ import SwiftUI
 public struct MHColorReference: Sendable, Equatable {
     private enum Storage: Sendable, Equatable {
         case tint
+        case asset(name: String)
         case fixed(light: MHColorComponents, dark: MHColorComponents)
     }
 
@@ -43,10 +44,18 @@ public struct MHColorReference: Sendable, Equatable {
         )
     }
 
+    static func asset(
+        name: String
+    ) -> Self {
+        Self(storage: .asset(name: name))
+    }
+
     internal func resolve(for colorScheme: ColorScheme) -> Color {
         switch storage {
         case .tint:
             .accentColor
+        case let .asset(name):
+            Color(name, bundle: .module)
         case let .fixed(light, dark):
             switch colorScheme {
             case .dark:

@@ -209,20 +209,20 @@ needs_swiftlint=false
 needs_build=false
 needs_tests=false
 
-if grep -Eq '^Sources/|^Tests/|^Example/|^Package\.swift$|^\.swiftlint\.yml$|^\.pre-commit-config\.yaml$|^ci_scripts/' <<<"$changed_files"; then
+if grep -Eq '^MHDesign/|^MHUI/|^Example/|^Package\.swift$|^\.swiftlint\.yml$|^\.pre-commit-config\.yaml$|^ci_scripts/' <<<"$changed_files"; then
   needs_swiftlint=true
 fi
 
-if grep -Eq '^Sources/|^Example/|^Package\.swift$|^ci_scripts/' <<<"$changed_files"; then
+if grep -Eq '^MHDesign/Sources/|^MHUI/Sources/|^MHUI/Resources/|^Example/|^Package\.swift$|^ci_scripts/' <<<"$changed_files"; then
   needs_build=true
 fi
 
-if grep -Eq '^Sources/|^Tests/|^Package\.swift$|^ci_scripts/' <<<"$changed_files"; then
+if grep -Eq '^MHDesign/|^MHUI/|^Package\.swift$|^ci_scripts/' <<<"$changed_files"; then
   needs_tests=true
 fi
 
 if ! $needs_swiftlint && ! $needs_build && ! $needs_tests; then
-  echo "No changes under Sources/, Tests/, Example/, Package.swift, ci_scripts/, .swiftlint.yml, or .pre-commit-config.yaml."
+  echo "No changes under MHDesign/, MHUI/, Example/, Package.swift, ci_scripts/, .swiftlint.yml, or .pre-commit-config.yaml."
   if $should_run_pre_commit; then
     run_note="pre-commit completed. No package-related changes were detected. Build/test steps were skipped."
   else

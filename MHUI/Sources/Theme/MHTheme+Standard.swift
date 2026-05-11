@@ -1,5 +1,17 @@
 import MHDesign
 
+private enum MHStandardColorAsset {
+    static let background = "MHBackground"
+    static let surface = "MHSurface"
+    static let surfaceMuted = "MHSurfaceMuted"
+    static let border = "MHBorder"
+    static let primaryText = "MHPrimaryText"
+    static let secondaryText = "MHSecondaryText"
+    static let positive = "MHPositive"
+    static let warning = "MHWarning"
+    static let destructive = "MHDestructive"
+}
+
 public extension MHTheme {
     // swiftlint:disable no_magic_numbers
     /// The default calm theme used by MHUI components.
@@ -14,43 +26,16 @@ public extension MHTheme {
     ) -> Self {
         Self(
             colors: .init(
-                background: .adaptive(
-                    light: .init(hex: 0xF2F2F2),
-                    dark: .init(hex: 0x1F1F21)
-                ),
-                surface: .adaptive(
-                    light: .init(hex: 0xFBFBFB),
-                    dark: .init(hex: 0x29292B)
-                ),
-                surfaceMuted: .adaptive(
-                    light: .init(hex: 0xEDEDF0),
-                    dark: .init(hex: 0x363638)
-                ),
-                border: .adaptive(
-                    light: .init(hex: 0xBABAC2, opacity: 0.60),
-                    dark: .init(hex: 0x666670, opacity: 0.72)
-                ),
-                primaryText: .adaptive(
-                    light: .init(hex: 0x212124),
-                    dark: .init(hex: 0xEBEBED)
-                ),
-                secondaryText: .adaptive(
-                    light: .init(hex: 0x6D6D73),
-                    dark: .init(hex: 0xADADB5)
-                ),
+                background: .asset(name: MHStandardColorAsset.background),
+                surface: .asset(name: MHStandardColorAsset.surface),
+                surfaceMuted: .asset(name: MHStandardColorAsset.surfaceMuted),
+                border: .asset(name: MHStandardColorAsset.border),
+                primaryText: .asset(name: MHStandardColorAsset.primaryText),
+                secondaryText: .asset(name: MHStandardColorAsset.secondaryText),
                 accent: accent,
-                positive: .adaptive(
-                    light: .init(hex: 0x597354),
-                    dark: .init(hex: 0x8FAB87)
-                ),
-                warning: .adaptive(
-                    light: .init(hex: 0x997A40),
-                    dark: .init(hex: 0xC2A669)
-                ),
-                destructive: .adaptive(
-                    light: .init(hex: 0x994F4D),
-                    dark: .init(hex: 0xC7807A)
-                )
+                positive: .asset(name: MHStandardColorAsset.positive),
+                warning: .asset(name: MHStandardColorAsset.warning),
+                destructive: .asset(name: MHStandardColorAsset.destructive)
             ),
             typography: .init(
                 screenTitle: .init(style: .title2, weight: .semibold),

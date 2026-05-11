@@ -10,12 +10,14 @@ If each app redefines tokens, modifiers, or screen chrome locally, visual drift 
 
 ## Decision
 
-`Sources/MHUI` is the single source of truth for reusable presentation primitives in this repository.
+`MHUI/Sources` and package-owned resources under `MHUI/Resources` are the single source of truth for reusable presentation primitives in this repository.
 Shared theme recipes, semantic roles, modifiers, layout helpers, and screen chrome belong in the package target.
+Standard theme color values may live in `MHUI/Resources` when source access remains semantic.
 
 ## Consequences
 
-- New shared styling APIs should land in `Sources/MHUI` first.
+- New shared styling APIs should land in `MHUI/Sources` first.
+- New package-owned standard color assets should land in `MHUI/Resources` and be referenced through semantic source APIs.
 - README examples, docs, and any example app should point back to package-owned APIs.
 - Host apps may configure tint and theme inputs, but should not fork the common visual language by default.
 - Example integrations can validate package behavior, but they do not define the canonical API surface.

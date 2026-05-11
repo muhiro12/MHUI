@@ -7,8 +7,9 @@ It explains where new code should live when the same visual rule or container pa
 
 ## Core Principles
 
-- `Sources/MHDesign` is the source of truth for shared spacing, corner radius, and generic screen or surface layout parameters that should work without MHUI chrome.
-- `Sources/MHUI` is the source of truth for shared presentation logic built on `MHDesign`.
+- `MHDesign/Sources` is the source of truth for shared spacing, corner radius, and generic screen or surface layout parameters that should work without MHUI chrome.
+- `MHUI/Sources` is the source of truth for shared presentation logic built on `MHDesign`.
+- `MHUI/Resources` is the source of truth for MHUI-owned standard theme assets that should remain package-owned but editable as resources.
 - Host apps own product behavior, feature state, and navigation meaning.
 - Example apps and previews are consumers of package APIs, not a second design layer.
 - Views and modifiers in MHUI should stay domain neutral even when they feel screen-like.
@@ -19,9 +20,10 @@ It explains where new code should live when the same visual rule or container pa
 
 | Concern | Lives in | Examples |
 | --- | --- | --- |
-| Shared design parameters | `Sources/MHDesign` | `MHDesignMetrics`, spacing, corner radii, readable widths, generic screen or surface insets, compact thresholds, SwiftUI environment bridge |
-| Shared presentation logic | `Sources/MHUI` | `MHTheme`, semantic roles, text styles, row and action fallback, key-value fallback, cue geometry, surface chrome, grouped rows, section chrome, screen chrome, and re-export of `MHDesign` |
-| Package preview support | `Sources/MHDesign/PreviewSupport`, `Sources/MHUI/PreviewSupport`, plus local preview files beside the tuned API | minimal MHDesign preview helpers, `MHPreviewStyle`, `MHPreviewCatalog`, validation catalogs for compact width and native-container chrome, plus local previews kept beside the API they tune |
+| Shared design parameters | `MHDesign/Sources` | `MHDesignMetrics`, spacing, corner radii, readable widths, generic screen or surface insets, compact thresholds, SwiftUI environment bridge |
+| Shared presentation logic | `MHUI/Sources` | `MHTheme`, semantic roles, text styles, row and action fallback, key-value fallback, cue geometry, surface chrome, grouped rows, section chrome, screen chrome, and re-export of `MHDesign` |
+| Package resource assets | `MHUI/Resources` | Standard theme color assets referenced by MHUI semantic roles |
+| Package preview support | `MHDesign/Sources/PreviewSupport`, `MHUI/Sources/PreviewSupport`, plus local preview files beside the tuned API | minimal MHDesign preview helpers, `MHPreviewStyle`, `MHPreviewCatalog`, validation catalogs for compact width and native-container chrome, plus local previews kept beside the API they tune |
 | Host app composition | App repositories that consume MHUI | feature screens, navigation state, form state, domain-driven copy, feature-specific layouts |
 | Optional integration shell | `Example/` when present | package adoption checks, manual regression review, consumer-side examples |
 
@@ -68,13 +70,14 @@ The following types and helpers are the current shared entry points for package-
 1. If a shared value should stay aligned across more than one app and does not require MHUI chrome, add or extend `MHDesign` first.
 2. If a visual rule requires presentation behavior, semantic styling, or package-owned component chrome, add or extend `MHUI`.
 3. If a component needs business models, persistence, networking, or app-specific routing to make sense, keep it outside MHUI.
-4. If an example or preview starts introducing helper APIs that sibling apps will need, move that API into `Sources/MHUI`.
-5. Keep product wording, feature-specific empty states, and business-state branching out of the package.
-6. Prefer semantic inputs such as roles, policies, and layout intent over app-specific configuration objects or low-level token graphs.
-7. If glue code is reused only inside one consuming app, keep it in that app instead of promoting it into the shared package layers.
-8. During `1.x`, do not add deprecated aliases, migration helpers, compatibility shims, or old-caller dual paths just to ease package upgrades for consuming apps.
-9. Keep MHDesign tuning previews in same-directory `+Preview.swift` sidecar files so CoreGraphics-first value types stay uncluttered, and keep MHUI development previews in the implementation file under `// MARK: - Preview`.
-10. Prefer direct `View` extensions for environment writes or light styling sugar, and use private `ViewModifier` types only when environment reads, adaptive layout resolution, multi-step chrome, or shared implementation justify the extra structure.
+4. If a standard visual value should remain package-owned but belongs in an Apple resource surface, add it under `MHUI/Resources` and keep source access semantic.
+5. If an example or preview starts introducing helper APIs that sibling apps will need, move that API into `MHUI/Sources`.
+6. Keep product wording, feature-specific empty states, and business-state branching out of the package.
+7. Prefer semantic inputs such as roles, policies, and layout intent over app-specific configuration objects or low-level token graphs.
+8. If glue code is reused only inside one consuming app, keep it in that app instead of promoting it into the shared package layers.
+9. During `1.x`, do not add deprecated aliases, migration helpers, compatibility shims, or old-caller dual paths just to ease package upgrades for consuming apps.
+10. Keep MHDesign tuning previews in same-directory `+Preview.swift` sidecar files so CoreGraphics-first value types stay uncluttered, and keep MHUI development previews in the implementation file under `// MARK: - Preview`.
+11. Prefer direct `View` extensions for environment writes or light styling sugar, and use private `ViewModifier` types only when environment reads, adaptive layout resolution, multi-step chrome, or shared implementation justify the extra structure.
 
 ## Current Examples
 
@@ -83,10 +86,10 @@ The following types and helpers are the current shared entry points for package-
 - `MHTheme.standard()` and `MHTheme.standard(accent:)` stay in the package because they define a reusable semantic baseline rather than one app's branding system.
 - Row insets, compact action padding, key-value fallback widths, and cue geometry stay in `MHUI` because those values only make sense alongside MHUI presentation behavior.
 - `mhListChrome(...)` and `mhFormChrome(...)` stay in the package because they shape container presentation without needing app-specific business state.
-- MHDesign tuning previews stay beside the metrics files they tune, with only minimal helper views in `Sources/MHDesign/PreviewSupport`.
+- MHDesign tuning previews stay beside the metrics files they tune, with only minimal helper views in `MHDesign/Sources/PreviewSupport`.
 - Single-feature previews stay next to the implementation file so day-to-day tuning starts from the edited API instead of a detached preview index.
-- Preview validation catalogs remain package-owned in `Sources/MHUI/PreviewSupport` because they verify shared compact-width and container behavior directly against the canonical APIs.
-- Example app code, when present, should show integration but should not hide canonical styling logic outside `Sources/MHUI`.
+- Preview validation catalogs remain package-owned in `MHUI/Sources/PreviewSupport` because they verify shared compact-width and container behavior directly against the canonical APIs.
+- Example app code, when present, should show integration but should not hide canonical styling logic outside `MHUI/Sources`.
 
 ## Refactoring Heuristic
 

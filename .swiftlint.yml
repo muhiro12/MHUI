@@ -20,3 +20,5 @@ disabled_rules:
 
 excluded:
     - .build
+    - .swiftpm
+    - build

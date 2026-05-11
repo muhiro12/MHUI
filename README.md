@@ -36,11 +36,12 @@ Those responsibilities stay outside the package.
 
 ## Repository Layout
 
-- `Sources/MHDesign` - shared spacing, corner-radius, and layout metrics for sibling apps
-- `Sources/MHDesign/PreviewSupport` - minimal preview helpers for MHDesign sidecar tuning previews
-- `Sources/MHUI` - shared styled presentation APIs built on `MHDesign`
-- `Sources/MHUI/PreviewSupport` - shared preview styling helpers and regression validation catalogs
-- `Tests/MHUITests` - package verification surface
+- `MHDesign/Sources` - shared spacing, corner-radius, and layout metrics for sibling apps
+- `MHDesign/Sources/PreviewSupport` - minimal preview helpers for MHDesign sidecar tuning previews
+- `MHUI/Sources` - shared styled presentation APIs built on `MHDesign`
+- `MHUI/Sources/PreviewSupport` - shared preview styling helpers and regression validation catalogs
+- `MHUI/Resources` - package-owned asset catalogs backing MHUI standard theme resources
+- `MHDesign/Tests` and `MHUI/Tests` - package verification surfaces
 - `ci_scripts/` - stable build, test, and verify entrypoints
 - `Designs/` - architecture notes, current overview, and ADRs
 - `Example/` - optional macOS consumer app used only when present for integration review; watchOS support stays package-level
@@ -53,6 +54,7 @@ Those responsibilities stay outside the package.
 Use `MHDesign` directly when an app wants to avoid MHUI chrome and only share spacing, corner radius, generic screen or surface layout, and the environment bridge.
 Use `MHUI` when an app wants the styled layer. `MHUI` re-exports `MHDesign`, so one import is enough for both the metrics layer and the styled APIs.
 Row chrome, action fallback, key-value fallback, and cue geometry stay MHUI-owned even when they are backed by shared package defaults.
+`Package.swift` keeps each package target scoped to `Sources`, excludes target-local `Tests` from library target discovery, and maps package tests through explicit test target paths.
 
 ## Versioning Policy
 
@@ -75,7 +77,7 @@ MHUI aims for a quiet interface:
 The default theme uses system typography, but its distinctiveness comes from hierarchy, spacing, geometry, and surface language rather than from stock SwiftUI control styling.
 Apps can override the theme via `mhTheme(_:)`, but the customization surface is intentionally small.
 MHUI should feel native first and refined second: interaction patterns stay close to SwiftUI defaults, while spacing, proportion, and surface treatment provide the package's personality.
-The standard theme is built from achromatic neutrals plus the host app's tint color.
+The standard theme is built from package-owned neutral color assets plus the host app's tint color.
 If a host app needs a fixed accent for a specific surface review, use `MHTheme.standard(accent: .fixed(...))`.
 Detached surfaces prefer Liquid Glass by default through `mhGlassPolicy(.automatic)`.
 That policy exists as a runtime readability switch, not as a low-level glass choreography API.
@@ -111,9 +113,9 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 
 ## Preview Model
 
-- Keep MHDesign tuning previews in `+Preview.swift` sidecar files beside the edited metrics type or environment bridge, with only minimal shared helpers in `Sources/MHDesign/PreviewSupport`.
+- Keep MHDesign tuning previews in `+Preview.swift` sidecar files beside the edited metrics type or environment bridge, with only minimal shared helpers in `MHDesign/Sources/PreviewSupport`.
 - Put the first MHUI development preview for a public primitive or layout API at the end of its implementation file under `// MARK: - Preview`.
-- Reserve `Sources/MHUI/PreviewSupport` for shared preview styling helpers such as `MHPreviewStyle`, `MHPreviewCatalog`, and fixed-width validation previews that compare multiple runtime scenarios.
+- Reserve `MHUI/Sources/PreviewSupport` for shared preview styling helpers such as `MHPreviewStyle`, `MHPreviewCatalog`, and fixed-width validation previews that compare multiple runtime scenarios.
 - Use `.mhPreviewSurface()` for component and chrome review.
 - Use `.mhPreviewTint()` for screen-level composition or previews that should not add an extra background surface.
 

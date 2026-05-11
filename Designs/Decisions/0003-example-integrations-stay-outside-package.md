@@ -11,7 +11,7 @@ Those examples are useful, but they can become a shadow design layer if package 
 ## Decision
 
 Keep example-app integration code outside the public package target.
-Examples may consume MHUI and demonstrate integration patterns, but shared styling behavior must still be defined in `Sources/MHUI`.
+Examples may consume MHUI and demonstrate integration patterns, but shared styling behavior must still be defined in `MHUI/Sources`.
 
 ## Consequences
 

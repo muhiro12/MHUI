@@ -10,32 +10,15 @@ struct MHThemeTests {
         let tintTheme = MHTheme.standard(accent: .tint)
 
         #expect(theme == tintTheme)
-        #expect(theme.colors.background == .fixed(
-            lightHex: 0xF2F2F2,
-            darkHex: 0x1F1F21
-        ))
-        #expect(theme.colors.surface == .fixed(
-            lightHex: 0xFBFBFB,
-            darkHex: 0x29292B
-        ))
-        #expect(theme.colors.surfaceMuted == .fixed(
-            lightHex: 0xEDEDF0,
-            darkHex: 0x363638
-        ))
-        #expect(theme.colors.border == .fixed(
-            lightHex: 0xBABAC2,
-            darkHex: 0x666670,
-            lightOpacity: 0.60,
-            darkOpacity: 0.72
-        ))
-        #expect(theme.colors.primaryText == .fixed(
-            lightHex: 0x212124,
-            darkHex: 0xEBEBED
-        ))
-        #expect(theme.colors.secondaryText == .fixed(
-            lightHex: 0x6D6D73,
-            darkHex: 0xADADB5
-        ))
+        #expect(theme.colors.background == .asset(name: "MHBackground"))
+        #expect(theme.colors.surface == .asset(name: "MHSurface"))
+        #expect(theme.colors.surfaceMuted == .asset(name: "MHSurfaceMuted"))
+        #expect(theme.colors.border == .asset(name: "MHBorder"))
+        #expect(theme.colors.primaryText == .asset(name: "MHPrimaryText"))
+        #expect(theme.colors.secondaryText == .asset(name: "MHSecondaryText"))
+        #expect(theme.colors.positive == .asset(name: "MHPositive"))
+        #expect(theme.colors.warning == .asset(name: "MHWarning"))
+        #expect(theme.colors.destructive == .asset(name: "MHDestructive"))
         #expect(theme.metrics == MHDesignMetrics.standard)
         #expect(theme.colors.accent == .tint)
         #expect(theme.spacing.inline == 8)

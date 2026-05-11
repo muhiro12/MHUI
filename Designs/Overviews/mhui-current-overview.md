@@ -1,6 +1,6 @@
 # MHUI Current Repository Overview
 
-Current as of April 10, 2026.
+Current as of May 11, 2026.
 
 ## Purpose
 
@@ -13,23 +13,25 @@ The repository is intentionally biased toward package-owned visual rules and awa
 | --- | --- | --- |
 | `MHDesign` | Shared package | Spacing, corner-radius, and layout metrics that sibling apps can adopt without MHUI chrome |
 | `MHUI` | Shared package | Theme definitions, semantic styling APIs, modifiers, layout helpers, screen chrome, and re-export of `MHDesign` for styled adopters |
-| `Tests/MHUITests` | Package verification | Validate the shared package surface through Swift package tests |
+| `MHUI/Resources` | Package resources | Asset catalogs that back MHUI standard theme colors while preserving semantic role APIs in source |
+| `MHDesign/Tests`, `MHUI/Tests` | Package verification | Validate the shared package surfaces through Swift package tests |
 | `ci_scripts` | Workflow layer | Stable build, test, verify, and artifact-capture entrypoints |
 | `Designs` | Architecture documentation | Current overview, architecture guide, and ADR history |
 | `Example/` | Optional consumer app | Review package integration in a host-app context when the example project exists |
 
 ## Current Repository Rules
 
-- Shared design parameters live in `Sources/MHDesign`.
-- Shared presentation APIs live in `Sources/MHUI`, which re-exports `MHDesign`.
+- Shared design parameters live in `MHDesign/Sources`.
+- Shared presentation APIs live in `MHUI/Sources`, which re-exports `MHDesign`.
+- Standard MHUI color values live in `MHUI/Resources` and are reached through semantic roles in `MHUI/Sources`.
 - Versions in the `1.x` line are beta and may include intentional breaking API changes.
 - The package does not keep deprecated aliases, migration helpers, or compatibility shims for consuming apps during `1.x`.
 - Product behavior stays outside the package.
 - The example app, when present, is a consumer of the package rather than a second source of truth.
 - CI scripts write disposable artifacts under `.build/ci/`.
-- MHDesign tuning previews live in same-directory `+Preview.swift` files, with minimal shared helpers under `Sources/MHDesign/PreviewSupport`.
+- MHDesign tuning previews live in same-directory `+Preview.swift` files, with minimal shared helpers under `MHDesign/Sources/PreviewSupport`.
 - Development previews for public primitives and layout APIs stay beside the implementation they tune.
-- `Sources/MHUI/PreviewSupport` is reserved for validation catalogs and shared preview styling helpers.
+- `MHUI/Sources/PreviewSupport` is reserved for validation catalogs and shared preview styling helpers.
 - `ViewModifier` types are kept only when environment reads, adaptive layout resolution, multi-step chrome, or shared implementation justify them.
 
 ## Public API Areas

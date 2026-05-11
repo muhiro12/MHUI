@@ -17,10 +17,10 @@ Related documents:
 
 | Layer | Owns | Must not own |
 | --- | --- | --- |
-| `MHDesign` (`Sources/MHDesign`) | Shared spacing, corner-radius, generic screen or surface layout metrics, the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome, and sidecar tuning previews backed by minimal preview helpers | Product copy, business rules, navigation meaning, view-specific styling behavior, or MHUI-owned component chrome |
-| `MHUI` (`Sources/MHUI`) | Semantic theme application, styling modifiers, layout primitives, row and action fallback rules, key-value fallback, cue geometry, screen chrome, colocated development previews, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets |
+| `MHDesign` (`MHDesign/Sources`) | Shared spacing, corner-radius, generic screen or surface layout metrics, the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome, and sidecar tuning previews backed by minimal preview helpers | Product copy, business rules, navigation meaning, view-specific styling behavior, or MHUI-owned component chrome |
+| `MHUI` (`MHUI/Sources`, `MHUI/Resources`) | Semantic theme application, standard theme assets, styling modifiers, layout primitives, row and action fallback rules, key-value fallback, cue geometry, screen chrome, colocated development previews, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets |
 | Host app or sibling app | Feature state, domain rules, platform integrations, app-specific navigation, product composition | Rebuilding shared MHUI primitives as local forks |
-| Example app (`Example/` when present) | Integration review, manual regression checks, sample usage of package APIs | Becoming the source of truth for shared package APIs or hiding canonical styling outside `Sources/MHUI` |
+| Example app (`Example/` when present) | Integration review, manual regression checks, sample usage of package APIs | Becoming the source of truth for shared package APIs or hiding canonical styling outside `MHUI/Sources` |
 
 ## Package Rules
 
@@ -29,11 +29,12 @@ Allowed in the package:
 - Reusable spacing, corner radius, and generic screen or surface layout metrics in `MHDesign`
 - Sidecar tuning previews and minimal preview helpers for MHDesign metrics and environment overrides
 - Reusable typography, color, and surface tokens in `MHUI`
+- Package-owned color assets in `MHUI/Resources` when source APIs continue to expose semantic roles
 - Domain-neutral modifiers and container chrome
 - Shared presentation helpers that improve consistency across sibling apps
 - Width-aware fallback behavior for actions, grouped actions, and key-value rows
 - Colocated development previews for public primitives and layout APIs
-- Validation scaffolding in `Sources/MHUI/PreviewSupport` that proves package behavior across fixed-width scenarios
+- Validation scaffolding in `MHUI/Sources/PreviewSupport` that proves package behavior across fixed-width scenarios
 
 Not allowed in the package:
 
@@ -70,8 +71,8 @@ Example projects, MHDesign sidecar previews, MHUI colocated development previews
 
 MHDesign tuning previews should live in same-directory sidecar files so metrics types stay focused on values while still keeping the first review surface nearby.
 MHUI development previews should live inside the edited implementation file so the styled API and its first review surface stay together.
-`Sources/MHDesign/PreviewSupport` is reserved for minimal helper views shared by MHDesign sidecar previews.
-`Sources/MHUI/PreviewSupport` is reserved for validation helpers and regression catalogs that compare multiple runtime contexts.
+`MHDesign/Sources/PreviewSupport` is reserved for minimal helper views shared by MHDesign sidecar previews.
+`MHUI/Sources/PreviewSupport` is reserved for validation helpers and regression catalogs that compare multiple runtime contexts.
 Neither should become the place where new shared styling rules are invented before the canonical package API exists.
 
 ## Modifier Structure Guidance
@@ -83,10 +84,12 @@ Neither should become the place where new shared styling rules are invented befo
 
 ## Repository Structure Guidance
 
-- Keep canonical shared design parameters in `Sources/MHDesign`.
-- Keep MHDesign preview helpers in `Sources/MHDesign/PreviewSupport` and keep metric-specific tuning previews beside the corresponding source files.
-- Keep canonical styled APIs in `Sources/MHUI`.
-- Keep package verification in `Tests/MHUITests`.
+- Keep canonical shared design parameters in `MHDesign/Sources`.
+- Keep MHDesign preview helpers in `MHDesign/Sources/PreviewSupport` and keep metric-specific tuning previews beside the corresponding source files.
+- Keep canonical styled APIs in `MHUI/Sources`.
+- Keep MHUI package resource assets in `MHUI/Resources` so source and resources remain siblings under the `MHUI` target root.
+- Keep package verification in `MHDesign/Tests` and `MHUI/Tests`.
+- Scope library targets to `Sources`, exclude target-local `Tests` from library target discovery, and expose package tests through explicit SwiftPM test targets.
 - Keep stable automation entrypoints in `ci_scripts/tasks/`.
 - Keep architectural intent in `Designs/`.
 - Treat `Example/` as optional and adapter-like when it exists.
@@ -113,14 +116,14 @@ Neither should become the place where new shared styling rules are invented befo
 
    Minimal plan:
    - Build the example app only as a consumer of the package.
-   - Do not move shared primitives out of `Sources/MHUI` to satisfy example-only needs.
+   - Do not move shared primitives out of `MHUI/Sources` to satisfy example-only needs.
    - Skip example app build work entirely when the directory is absent.
 
 3. Product-specific meaning should stay in host screens.
 
    Files:
-   - `Sources/MHDesign/`
-   - `Sources/MHUI/`
+   - `MHDesign/Sources/`
+   - `MHUI/Sources/`
    - host app call sites outside this repository
 
    Minimal plan:

@@ -22,19 +22,30 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "MHDesign"
+            name: "MHDesign",
+            path: "MHDesign",
+            exclude: ["Tests"],
+            sources: ["Sources"]
         ),
         .target(
             name: "MHUI",
-            dependencies: ["MHDesign"]
+            dependencies: ["MHDesign"],
+            path: "MHUI",
+            exclude: ["Tests"],
+            sources: ["Sources"],
+            resources: [
+                .process("Resources")
+            ]
         ),
         .testTarget(
             name: "MHDesignTests",
-            dependencies: ["MHDesign"]
+            dependencies: ["MHDesign"],
+            path: "MHDesign/Tests"
         ),
         .testTarget(
             name: "MHUITests",
-            dependencies: ["MHUI"]
+            dependencies: ["MHUI"],
+            path: "MHUI/Tests"
         )
     ]
 )
