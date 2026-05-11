@@ -84,7 +84,7 @@ private struct MHNativeContainerValidationContent: View {
                         .mhSectionFooterText()
                 }
             }
-            .frame(height: 300)
+            .frame(height: 360)
             .mhListChrome(
                 title: "List",
                 subtitle: "Thin container chrome over native rows."
@@ -119,7 +119,7 @@ private struct MHNativeContainerValidationContent: View {
                         .mhSectionFooterText()
                 }
             }
-            .frame(height: 340)
+            .frame(height: 430)
             .mhFormChrome(
                 title: "Form",
                 subtitle: "Shared framing without wrapped controls."
@@ -131,7 +131,8 @@ private struct MHNativeContainerValidationContent: View {
 #Preview("Screen Validation", traits: .fixedLayout(width: 900, height: 1_700)) {
     MHPreviewCatalog(
         title: "Screen validation",
-        scenarios: MHPreviewStyle.screenValidationScenarios()
+        scenarios: MHPreviewStyle.screenValidationScenarios(),
+        caseHeight: 760
     ) { context in
         MHScreenValidationContent()
             .mhPreviewTint(context)
@@ -142,7 +143,8 @@ private struct MHNativeContainerValidationContent: View {
     MHPreviewCatalog(
         title: "Native container validation",
         scenarios: MHPreviewStyle.nativeContainerValidationScenarios(),
-        casePadding: 0
+        casePadding: 0,
+        caseHeight: 1_020
     ) { context in
         MHNativeContainerValidationContent()
             .mhPreviewTint(context)

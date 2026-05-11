@@ -121,6 +121,11 @@ private extension MHActionButtonStyle {
     ) -> some View {
         let label = configuration.label
             .lineLimit(presentation.lineLimit)
+            .multilineTextAlignment(
+                presentation.alignment == .leading
+                    ? .leading
+                    : .center
+            )
             .truncationMode(.tail)
             .allowsTightening(presentation.allowsTightening)
             .fixedSize(

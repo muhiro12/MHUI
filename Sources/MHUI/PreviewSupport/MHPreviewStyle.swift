@@ -245,6 +245,7 @@ private struct MHPreviewContextModifier: ViewModifier {
             .mhTheme(theme)
             .mhGlassPolicy(context.glassPolicy)
             .tint(MHPreviewStyle.tintColor(for: context))
+            .environment(\.colorScheme, context.colorMode.colorScheme)
             .preferredColorScheme(context.colorMode.colorScheme)
             .dynamicTypeSize(context.typeScale.dynamicTypeSize)
             .padding(showsBackground ? contentPadding : 0)

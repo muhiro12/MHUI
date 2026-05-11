@@ -38,7 +38,8 @@ private struct MHActionButtonStyleValidationPreview: View {
     MHPreviewCatalog(
         title: "Action button validation",
         scenarios: MHPreviewStyle.actionValidationScenarios(),
-        casePadding: 0
+        casePadding: 0,
+        caseHeight: 680
     ) { context in
         MHActionButtonStyleValidationPreview()
             .mhPreviewTint(context)

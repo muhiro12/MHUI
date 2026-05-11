@@ -29,6 +29,9 @@ private struct MHBadgeModifier: ViewModifier {
         content
             .mhTextStyle(chromeStyle.textRole, colorRole: chromeStyle.foregroundRole)
             .textCase(.uppercase)
+            .lineLimit(1)
+            .allowsTightening(true)
+            .fixedSize(horizontal: true, vertical: false)
             .padding(.horizontal, chromeStyle.horizontalPadding)
             .padding(.vertical, chromeStyle.verticalPadding)
             .background {

@@ -72,14 +72,14 @@ public extension View {
             .mhInputChrome()
         TextField("Focused", text: .constant("Focused"))
             .mhInputChrome(state: .focused)
-#if os(watchOS)
+        #if os(watchOS)
         TextField("Validation message", text: .constant("Validation message"))
             .mhInputChrome(state: .invalid)
-#else
+        #else
         TextEditor(text: .constant("Validation message owned by the app."))
             .frame(height: 120)
             .mhInputChrome(state: .invalid)
-#endif
+        #endif
     }
     .mhPreviewSurface()
 }

@@ -33,7 +33,8 @@ private struct MHActionGroupValidationPreview: View {
     MHPreviewCatalog(
         title: "Action group validation",
         scenarios: MHPreviewStyle.actionValidationScenarios(),
-        casePadding: 0
+        casePadding: 0,
+        caseHeight: 620
     ) { context in
         MHActionGroupValidationPreview()
             .mhPreviewTint(context)

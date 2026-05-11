@@ -6,6 +6,7 @@ struct MHResolvedRowChromeStyle: Sendable, Equatable {
     var verticalPadding: CGFloat
     var horizontalInset: CGFloat
     var accessorySpacing: CGFloat
+    var minimumHeight: CGFloat
 }
 
 private struct MHRowChromeModifier: ViewModifier {
@@ -14,7 +15,11 @@ private struct MHRowChromeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .padding(.vertical, style.verticalPadding)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(
+                maxWidth: .infinity,
+                minHeight: style.minimumHeight,
+                alignment: .leading
+            )
             .contentShape(.rect)
             .listRowInsets(
                 .init(
@@ -32,11 +37,11 @@ private struct MHRowChromeModifier: ViewModifier {
 private extension View {
     @ViewBuilder
     func mhListRowSeparatorHidden() -> some View {
-#if os(watchOS)
+        #if os(watchOS)
         self
-#else
+        #else
         listRowSeparator(.hidden)
-#endif
+        #endif
     }
 }
 
@@ -65,7 +70,8 @@ extension MHTheme {
                 : presentation.rowHorizontalInset,
             accessorySpacing: isCompactWidth
                 ? presentation.compactRowAccessorySpacing
-                : presentation.rowAccessorySpacing
+                : presentation.rowAccessorySpacing,
+            minimumHeight: layout.control.minimumTouchTarget
         )
     }
 

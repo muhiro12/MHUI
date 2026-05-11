@@ -13,6 +13,7 @@ struct MHPreviewCatalog<Content: View>: View {
     let title: String?
     let scenarios: [MHPreviewScenario]
     let casePadding: CGFloat
+    let caseHeight: CGFloat?
     let content: (MHPreviewContext) -> Content
 
     private var labelColor: Color {
@@ -37,8 +38,7 @@ struct MHPreviewCatalog<Content: View>: View {
                             .font(.footnote.weight(.medium))
                             .foregroundStyle(labelColor)
 
-                        content(scenario.context)
-                            .frame(width: scenario.width, alignment: .leading)
+                        scenarioContent(scenario)
                             .mhPreviewSurface(
                                 scenario.context,
                                 padding: casePadding
@@ -60,12 +60,31 @@ struct MHPreviewCatalog<Content: View>: View {
         title: String? = nil,
         scenarios: [MHPreviewScenario],
         casePadding: CGFloat = MHTheme.standard.spacing.content,
+        caseHeight: CGFloat? = nil,
         @ViewBuilder content: @escaping (MHPreviewContext) -> Content
     ) {
         self.title = title
         self.scenarios = scenarios
         self.casePadding = casePadding
+        self.caseHeight = caseHeight
         self.content = content
+    }
+
+    @ViewBuilder
+    private func scenarioContent(
+        _ scenario: MHPreviewScenario
+    ) -> some View {
+        if let caseHeight {
+            content(scenario.context)
+                .frame(
+                    width: scenario.width,
+                    height: caseHeight,
+                    alignment: .topLeading
+                )
+        } else {
+            content(scenario.context)
+                .frame(width: scenario.width, alignment: .leading)
+        }
     }
 }
 // swiftlint:enable function_default_parameter_at_end no_magic_numbers

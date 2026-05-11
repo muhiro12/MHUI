@@ -226,6 +226,7 @@ struct MHStyleResolutionTests {
         #expect(rowChrome.verticalPadding == theme.presentation.rowVerticalPadding)
         #expect(rowChrome.horizontalInset == theme.presentation.rowHorizontalInset)
         #expect(rowChrome.accessorySpacing == theme.presentation.rowAccessorySpacing)
+        #expect(rowChrome.minimumHeight == theme.layout.control.minimumTouchTarget)
         #expect(style.rowChrome == rowChrome)
         #expect(style.minimumValueWidth == theme.presentation.regularKeyValueMinimumValueWidth)
         #expect(style.stackedSpacing == theme.presentation.compactKeyValueSpacing)
@@ -238,10 +239,18 @@ struct MHStyleResolutionTests {
             availableWidth: 320,
             horizontalSizeClass: .compact
         )
+        let regularContext = MHAdaptiveLayoutContext(
+            availableWidth: 760,
+            horizontalSizeClass: .regular
+        )
 
         let automatic = theme.resolvedActionPresentation(
             .automatic,
             for: compactContext
+        )
+        let regularAutomatic = theme.resolvedActionPresentation(
+            .automatic,
+            for: regularContext
         )
         let intrinsic = theme.resolvedActionPresentation(
             .singleLineIntrinsic,
@@ -256,15 +265,21 @@ struct MHStyleResolutionTests {
             for: compactContext
         )
 
-        #expect(automatic.lineLimit == 1)
-        #expect(automatic.usesFixedHorizontalSize)
-        #expect(!automatic.expandsHorizontally)
+        #expect(automatic.lineLimit == nil)
+        #expect(!automatic.usesFixedHorizontalSize)
+        #expect(automatic.expandsHorizontally)
+        #expect(automatic.alignment == .leading)
         #expect(automatic.allowsTightening)
+        #expect(regularAutomatic.lineLimit == 1)
+        #expect(regularAutomatic.usesFixedHorizontalSize)
+        #expect(!regularAutomatic.expandsHorizontally)
         #expect(intrinsic.lineLimit == 1)
         #expect(intrinsic.usesFixedHorizontalSize)
         #expect(!intrinsic.expandsHorizontally)
+        #expect(fullWidth.lineLimit == nil)
         #expect(fullWidth.expandsHorizontally)
         #expect(fullWidth.alignment == .center)
+        #expect(fullWidthLeading.lineLimit == nil)
         #expect(fullWidthLeading.expandsHorizontally)
         #expect(fullWidthLeading.alignment == .leading)
     }
