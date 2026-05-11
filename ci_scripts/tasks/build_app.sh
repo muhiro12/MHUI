@@ -29,8 +29,8 @@ package_cache_directory="$cache_directory/package"
 cloned_source_packages_directory="$cache_directory/source_packages"
 swiftpm_cache_directory="$cache_directory/swiftpm/cache"
 swiftpm_config_directory="$cache_directory/swiftpm/config"
-watch_simulator_sdk_path=$(xcrun --sdk watchsimulator --show-sdk-path)
-watch_simulator_triple="arm64-apple-watchos11.0-simulator"
+package_workspace_path="$repository_root/.swiftpm/xcode/package.xcworkspace"
+package_scheme="MHUI-Package"
 
 mkdir -p \
   "$work_directory" \
@@ -47,25 +47,37 @@ mkdir -p \
   "$derived_data_path" \
   "$results_directory"
 
-echo "Running swift build for MHUI package."
+echo "Running Xcode build for MHUI package (iOS Simulator)."
 HOME="$local_home_directory" \
 TMPDIR="$temporary_directory" \
 XDG_CACHE_HOME="$cache_directory" \
 CLANG_MODULE_CACHE_PATH="$clang_module_cache_directory" \
-SWIFTPM_CACHE_PATH="$swiftpm_cache_directory" \
-SWIFTPM_CONFIG_PATH="$swiftpm_config_directory" \
-swift build
+xcodebuild \
+  -workspace "$package_workspace_path" \
+  -scheme "$package_scheme" \
+  -destination 'generic/platform=iOS Simulator' \
+  -derivedDataPath "$derived_data_path" \
+  -clonedSourcePackagesDirPath "$cloned_source_packages_directory" \
+  -packageCachePath "$package_cache_directory" \
+  CODE_SIGNING_ALLOWED=NO \
+  "CLANG_MODULE_CACHE_PATH=$clang_module_cache_directory" \
+  build
 
-echo "Running swift build for MHUI package (watchOS simulator)."
+echo "Running Xcode build for MHUI package (watchOS Simulator)."
 HOME="$local_home_directory" \
 TMPDIR="$temporary_directory" \
 XDG_CACHE_HOME="$cache_directory" \
 CLANG_MODULE_CACHE_PATH="$clang_module_cache_directory" \
-SWIFTPM_CACHE_PATH="$swiftpm_cache_directory" \
-SWIFTPM_CONFIG_PATH="$swiftpm_config_directory" \
-swift build \
-  --sdk "$watch_simulator_sdk_path" \
-  --triple "$watch_simulator_triple"
+xcodebuild \
+  -workspace "$package_workspace_path" \
+  -scheme "$package_scheme" \
+  -destination 'generic/platform=watchOS Simulator' \
+  -derivedDataPath "$derived_data_path" \
+  -clonedSourcePackagesDirPath "$cloned_source_packages_directory" \
+  -packageCachePath "$package_cache_directory" \
+  CODE_SIGNING_ALLOWED=NO \
+  "CLANG_MODULE_CACHE_PATH=$clang_module_cache_directory" \
+  build
 
 example_project_path="$repository_root/Example/MHUIExample.xcodeproj"
 if [[ ! -d "$example_project_path" ]]; then

@@ -88,6 +88,7 @@ Neither should become the place where new shared styling rules are invented befo
 - Keep MHDesign preview helpers in `MHDesign/Sources/PreviewSupport` and keep metric-specific tuning previews beside the corresponding source files.
 - Keep canonical styled APIs in `MHUI/Sources`.
 - Keep MHUI package resource assets in `MHUI/Resources` so source and resources remain siblings under the `MHUI` target root.
+- Keep package color assets in `MHUI/Resources/Assets.xcassets` and rely on Xcode-generated asset symbols during package builds.
 - Keep package verification in `MHDesign/Tests` and `MHUI/Tests`.
 - Scope library targets to `Sources`, exclude target-local `Tests` from library target discovery, and expose package tests through explicit SwiftPM test targets.
 - Keep stable automation entrypoints in `ci_scripts/tasks/`.

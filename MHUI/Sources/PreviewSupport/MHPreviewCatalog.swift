@@ -1,28 +1,13 @@
-// swiftlint:disable function_default_parameter_at_end no_magic_numbers
+// swiftlint:disable function_default_parameter_at_end
 import SwiftUI
 
 /// Tune validation scenarios here before changing package fallback behavior.
 struct MHPreviewCatalog<Content: View>: View {
-    private static var labelOpacity: Double {
-        0.68
-    }
-
-    @Environment(\.colorScheme)
-    private var colorScheme
-
     let title: String?
     let scenarios: [MHPreviewScenario]
     let casePadding: CGFloat
     let caseHeight: CGFloat?
     let content: (MHPreviewContext) -> Content
-
-    private var labelColor: Color {
-        MHColorToken(
-            light: .init(hex: 0x212124, opacity: Self.labelOpacity),
-            dark: .init(hex: 0xEBEBED, opacity: Self.labelOpacity)
-        )
-        .resolve(for: colorScheme)
-    }
 
     var body: some View {
         ScrollView {
@@ -35,8 +20,7 @@ struct MHPreviewCatalog<Content: View>: View {
                 ForEach(scenarios) { scenario in
                     VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
                         Text(scenario.title)
-                            .font(.footnote.weight(.medium))
-                            .foregroundStyle(labelColor)
+                            .mhTextStyle(.caption, colorRole: .secondaryText)
 
                         scenarioContent(scenario)
                             .mhPreviewSurface(
@@ -87,4 +71,4 @@ struct MHPreviewCatalog<Content: View>: View {
         }
     }
 }
-// swiftlint:enable function_default_parameter_at_end no_magic_numbers
+// swiftlint:enable function_default_parameter_at_end

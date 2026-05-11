@@ -270,6 +270,6 @@ fi
 if $needs_tests; then
   run_logged_step \
     "test_shared_library" \
-    "Run Swift package tests" \
+    "Run Xcode package tests" \
     bash "$repository_root/ci_scripts/tasks/test_shared_library.sh"
 fi

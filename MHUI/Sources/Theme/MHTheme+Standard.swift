@@ -1,17 +1,5 @@
 import MHDesign
 
-private enum MHStandardColorAsset {
-    static let background = "MHBackground"
-    static let surface = "MHSurface"
-    static let surfaceMuted = "MHSurfaceMuted"
-    static let border = "MHBorder"
-    static let primaryText = "MHPrimaryText"
-    static let secondaryText = "MHSecondaryText"
-    static let positive = "MHPositive"
-    static let warning = "MHWarning"
-    static let destructive = "MHDestructive"
-}
-
 public extension MHTheme {
     // swiftlint:disable no_magic_numbers
     /// The default calm theme used by MHUI components.
@@ -26,16 +14,16 @@ public extension MHTheme {
     ) -> Self {
         Self(
             colors: .init(
-                background: .asset(name: MHStandardColorAsset.background),
-                surface: .asset(name: MHStandardColorAsset.surface),
-                surfaceMuted: .asset(name: MHStandardColorAsset.surfaceMuted),
-                border: .asset(name: MHStandardColorAsset.border),
-                primaryText: .asset(name: MHStandardColorAsset.primaryText),
-                secondaryText: .asset(name: MHStandardColorAsset.secondaryText),
+                background: .asset(.mhBackground),
+                surface: .asset(.mhSurface),
+                surfaceMuted: .asset(.mhSurfaceMuted),
+                border: .asset(.mhBorder),
+                primaryText: .asset(.mhPrimaryText),
+                secondaryText: .asset(.mhSecondaryText),
                 accent: accent,
-                positive: .asset(name: MHStandardColorAsset.positive),
-                warning: .asset(name: MHStandardColorAsset.warning),
-                destructive: .asset(name: MHStandardColorAsset.destructive)
+                positive: .asset(.mhPositive),
+                warning: .asset(.mhWarning),
+                destructive: .asset(.mhDestructive)
             ),
             typography: .init(
                 screenTitle: .init(style: .title2, weight: .semibold),
