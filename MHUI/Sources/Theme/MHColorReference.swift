@@ -14,20 +14,12 @@ public struct MHColorReference: Sendable, Equatable {
 
     public static func fixed(
         lightHex: UInt32,
-        darkHex: UInt32,
-        lightOpacity: Double = 1,
-        darkOpacity: Double = 1
+        darkHex: UInt32
     ) -> Self {
         Self(
             storage: .fixed(
-                light: .init(
-                    hex: lightHex,
-                    opacity: lightOpacity
-                ),
-                dark: .init(
-                    hex: darkHex,
-                    opacity: darkOpacity
-                )
+                light: .init(hex: lightHex),
+                dark: .init(hex: darkHex)
             )
         )
     }

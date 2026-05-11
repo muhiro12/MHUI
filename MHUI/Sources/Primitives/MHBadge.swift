@@ -48,9 +48,9 @@ private struct MHBadgeModifier: ViewModifier {
                         .stroke(
                             theme.resolvedColor(
                                 for: borderRole,
-                                in: colorScheme
-                            )
-                            .opacity(chromeStyle.backgroundStyle.borderOpacity),
+                                in: colorScheme,
+                                accentOpacity: chromeStyle.backgroundStyle.accentBorderOpacity
+                            ),
                             lineWidth: theme.divider.thickness
                         )
                 }

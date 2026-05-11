@@ -7,7 +7,7 @@ struct MHResolvedGroupedRowsStyle: Sendable, Equatable {
     var showsDividers: Bool
     var dividerLeadingInset: CGFloat
     var dividerThickness: CGFloat
-    var dividerOpacity: Double
+    var dividerColorRole: MHColorRole
     var spacerHeight: CGFloat
 }
 
@@ -45,10 +45,9 @@ private struct MHGroupedRowsModifier: ViewModifier {
                                 Rectangle()
                                     .fill(
                                         theme.resolvedColor(
-                                            for: .border,
+                                            for: style.dividerColorRole,
                                             in: colorScheme
                                         )
-                                        .opacity(style.dividerOpacity)
                                     )
                                     .frame(height: style.dividerThickness)
                                     .padding(.leading, style.dividerLeadingInset)
@@ -75,7 +74,7 @@ extension MHTheme {
             showsDividers: showsDividers,
             dividerLeadingInset: rowChrome.horizontalInset + spacing.inline,
             dividerThickness: divider.thickness,
-            dividerOpacity: divider.opacity,
+            dividerColorRole: divider.colorRole,
             spacerHeight: rowChrome.verticalPadding
         )
     }

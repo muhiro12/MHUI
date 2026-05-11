@@ -49,15 +49,17 @@ private struct MHSurfaceModifier: ViewModifier {
                 )
             }
             .overlay {
-                shape
-                    .stroke(
-                        theme.resolvedColor(
-                            for: style.borderRole ?? .border,
-                            in: colorScheme
+                if let borderRole = style.borderRole {
+                    shape
+                        .stroke(
+                            theme.resolvedColor(
+                                for: borderRole,
+                                in: colorScheme,
+                                accentOpacity: style.accentBorderOpacity
+                            ),
+                            lineWidth: theme.divider.thickness
                         )
-                        .opacity(style.borderOpacity),
-                        lineWidth: theme.divider.thickness
-                    )
+                }
             }
     }
 }
@@ -163,11 +165,11 @@ extension MHTheme {
         return MHResolvedSurfaceStyle(
             usesGlass: usesGlass,
             fallbackFillRole: treatment.fallbackColorRole,
-            fallbackFillOpacity: treatment.fallbackOpacity,
+            accentFallbackFillOpacity: nil,
             glassTintRole: usesGlass ? treatment.glassTintColorRole : nil,
-            glassTintOpacity: usesGlass ? treatment.glassTintOpacity : 0,
+            accentGlassTintOpacity: nil,
             borderRole: treatment.borderColorRole,
-            borderOpacity: treatment.borderOpacity
+            accentBorderOpacity: nil
         )
     }
 }

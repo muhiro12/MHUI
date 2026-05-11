@@ -3,9 +3,9 @@ import SwiftUI
 struct MHResolvedGlassBackgroundStyle: Sendable, Equatable {
     var usesGlass: Bool
     var fallbackFillRole: MHColorRole?
-    var fallbackFillOpacity: Double
+    var accentFallbackFillOpacity: Double?
     var glassTintRole: MHColorRole?
-    var glassTintOpacity: Double
+    var accentGlassTintOpacity: Double?
     var borderRole: MHColorRole?
-    var borderOpacity: Double
+    var accentBorderOpacity: Double?
 }
