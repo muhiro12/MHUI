@@ -41,9 +41,9 @@ private struct MHKeyValueRowValidationPreview: View {
     }
 }
 
-#Preview("Key Value Validation", traits: .fixedLayout(width: 900, height: 1_350)) {
+#Preview("Validation / Key Value Rows", traits: .fixedLayout(width: 900, height: 1_350)) {
     MHPreviewCatalog(
-        title: "Key value validation",
+        title: "Validation / Key Value Rows",
         scenarios: MHPreviewStyle.keyValueValidationScenarios()
     ) { context in
         MHKeyValueRowValidationPreview()

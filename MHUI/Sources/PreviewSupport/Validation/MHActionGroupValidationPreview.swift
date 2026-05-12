@@ -29,9 +29,9 @@ private struct MHActionGroupValidationPreview: View {
     }
 }
 
-#Preview("Action Group Validation", traits: .fixedLayout(width: 900, height: 1_450)) {
+#Preview("Validation / Action Group", traits: .fixedLayout(width: 900, height: 1_450)) {
     MHPreviewCatalog(
-        title: "Action group validation",
+        title: "Validation / Action Group",
         scenarios: MHPreviewStyle.actionValidationScenarios(),
         casePadding: 0,
         caseHeight: 620

@@ -31,7 +31,7 @@ private struct MHColorAssetUsagePreview: View {
     }
 }
 
-#Preview("Color Asset Usage Light") {
+#Preview("Design System / 02 Color Asset Usage / Light") {
     MHColorAssetUsagePreview(
         context: MHPreviewStyle.context(
             colorMode: .light,
@@ -40,7 +40,7 @@ private struct MHColorAssetUsagePreview: View {
     )
 }
 
-#Preview("Color Asset Usage Dark") {
+#Preview("Design System / 02 Color Asset Usage / Dark") {
     MHColorAssetUsagePreview(
         context: MHPreviewStyle.context(
             colorMode: .dark,

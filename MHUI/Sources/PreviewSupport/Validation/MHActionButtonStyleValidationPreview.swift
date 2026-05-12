@@ -34,9 +34,9 @@ private struct MHActionButtonStyleValidationPreview: View {
     }
 }
 
-#Preview("Action Buttons Validation", traits: .fixedLayout(width: 900, height: 1_500)) {
+#Preview("Validation / Action Buttons", traits: .fixedLayout(width: 900, height: 1_500)) {
     MHPreviewCatalog(
-        title: "Action button validation",
+        title: "Validation / Action Buttons",
         scenarios: MHPreviewStyle.actionValidationScenarios(),
         casePadding: 0,
         caseHeight: 680

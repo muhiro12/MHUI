@@ -1,7 +1,7 @@
 // swiftlint:disable closure_body_length file_types_order no_magic_numbers one_declaration_per_file
 import SwiftUI
 
-private enum MHFoundationValidationPreview {}
+private enum MHScreenContainerValidationPreview {}
 
 private struct MHScreenValidationContent: View {
     var body: some View {
@@ -128,9 +128,9 @@ private struct MHNativeContainerValidationContent: View {
     }
 }
 
-#Preview("Screen Validation", traits: .fixedLayout(width: 900, height: 1_700)) {
+#Preview("Validation / Screen / Responsive", traits: .fixedLayout(width: 900, height: 1_700)) {
     MHPreviewCatalog(
-        title: "Screen validation",
+        title: "Validation / Screen",
         scenarios: MHPreviewStyle.screenValidationScenarios(),
         caseHeight: 760
     ) { context in
@@ -139,9 +139,9 @@ private struct MHNativeContainerValidationContent: View {
     }
 }
 
-#Preview("Native Container Validation", traits: .fixedLayout(width: 900, height: 1_800)) {
+#Preview("Validation / Native Containers", traits: .fixedLayout(width: 900, height: 1_800)) {
     MHPreviewCatalog(
-        title: "Native container validation",
+        title: "Validation / Native Containers",
         scenarios: MHPreviewStyle.nativeContainerValidationScenarios(),
         casePadding: 0,
         caseHeight: 1_020
