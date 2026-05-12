@@ -3,7 +3,7 @@ import Testing
 
 struct MHPreviewStyleTests {
     @Test
-    func preview_default_context_matches_runtime_tint_baseline() {
+    func preview_default_context_matches_runtime_accent_baseline() {
         let context = MHPreviewStyle.context()
         let theme = MHPreviewStyle.theme(for: context)
 

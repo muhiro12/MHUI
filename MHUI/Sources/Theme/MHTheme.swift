@@ -7,11 +7,14 @@ public struct MHTheme: Sendable, Equatable {
     struct Colors: Sendable, Equatable {
         var background: MHColorReference
         var surface: MHColorReference
+        var surfaceElevated: MHColorReference
         var surfaceMuted: MHColorReference
         var border: MHColorReference
         var primaryText: MHColorReference
         var secondaryText: MHColorReference
+        var tertiaryText: MHColorReference
         var accent: MHColorReference
+        var onAccent: MHColorReference
         var positive: MHColorReference
         var warning: MHColorReference
         var destructive: MHColorReference
@@ -78,12 +81,15 @@ public struct MHTheme: Sendable, Equatable {
         metrics.layout
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     internal func colorReference(for role: MHColorRole) -> MHColorReference {
         switch role {
         case .background:
             colors.background
         case .surface:
             colors.surface
+        case .surfaceElevated:
+            colors.surfaceElevated
         case .surfaceMuted:
             colors.surfaceMuted
         case .border:
@@ -92,8 +98,12 @@ public struct MHTheme: Sendable, Equatable {
             colors.primaryText
         case .secondaryText:
             colors.secondaryText
+        case .tertiaryText:
+            colors.tertiaryText
         case .accent:
             colors.accent
+        case .onAccent:
+            colors.onAccent
         case .positive:
             colors.positive
         case .warning:

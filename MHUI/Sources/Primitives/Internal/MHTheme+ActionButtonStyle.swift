@@ -32,23 +32,24 @@ extension MHTheme {
             ? presentation.compactKeyValueSpacing
             : spacing.inline
 
-        return switch role {
+        switch role {
         case .primary:
-            MHResolvedActionButtonStyle(
-                backgroundStyle: resolvedGlassBackgroundStyle(
-                    .init(
-                        fallbackFillRole: .surfaceMuted,
-                        fallbackFillOpacity: 1,
-                        glassTintRole: .accent,
-                        glassTintOpacity: 0.14,
-                        borderRole: .accent,
-                        borderOpacity: 0.18
-                    ),
-                    glassPolicy: glassPolicy,
-                    reduceTransparency: reduceTransparency,
-                    supportsGlass: supportsGlass
+            let backgroundStyle = resolvedGlassBackgroundStyle(
+                .init(
+                    fallbackFillRole: .accent,
+                    fallbackFillOpacity: 1,
+                    glassTintRole: .accent,
+                    glassTintOpacity: 0.20,
+                    borderRole: .accent,
+                    borderOpacity: 0
                 ),
-                foregroundRole: .primaryText,
+                glassPolicy: glassPolicy,
+                reduceTransparency: reduceTransparency,
+                supportsGlass: supportsGlass
+            )
+            return MHResolvedActionButtonStyle(
+                backgroundStyle: backgroundStyle,
+                foregroundRole: backgroundStyle.usesGlass ? .primaryText : .onAccent,
                 horizontalPadding: filledHorizontalPadding,
                 verticalPadding: filledVerticalPadding,
                 minimumHeight: layout.control.minimumTouchTarget,
@@ -56,7 +57,7 @@ extension MHTheme {
                 disabledOpacity: 0.55
             )
         case .secondary:
-            MHResolvedActionButtonStyle(
+            return MHResolvedActionButtonStyle(
                 backgroundStyle: resolvedGlassBackgroundStyle(
                     .init(
                         fallbackFillRole: .surface,
@@ -78,7 +79,7 @@ extension MHTheme {
                 disabledOpacity: 0.55
             )
         case .quiet:
-            MHResolvedActionButtonStyle(
+            return MHResolvedActionButtonStyle(
                 backgroundStyle: nil,
                 foregroundRole: .accent,
                 horizontalPadding: quietHorizontalPadding,
@@ -88,7 +89,7 @@ extension MHTheme {
                 disabledOpacity: 0.50
             )
         case .destructive:
-            MHResolvedActionButtonStyle(
+            return MHResolvedActionButtonStyle(
                 backgroundStyle: resolvedGlassBackgroundStyle(
                     .init(
                         fallbackFillRole: .surface,

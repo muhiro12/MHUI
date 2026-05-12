@@ -16,11 +16,14 @@ public extension MHTheme {
             colors: .init(
                 background: .asset(.mhBackground),
                 surface: .asset(.mhSurface),
+                surfaceElevated: .asset(.mhSurfaceElevated),
                 surfaceMuted: .asset(.mhSurfaceMuted),
                 border: .asset(.mhBorder),
                 primaryText: .asset(.mhPrimaryText),
                 secondaryText: .asset(.mhSecondaryText),
+                tertiaryText: .asset(.mhTertiaryText),
                 accent: accent,
+                onAccent: .asset(.mhOnAccent),
                 positive: .asset(.mhPositive),
                 warning: .asset(.mhWarning),
                 destructive: .asset(.mhDestructive)

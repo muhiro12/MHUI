@@ -9,18 +9,21 @@ struct MHThemeTests {
         let theme = MHTheme.standard
         let tintTheme = MHTheme.standard(accent: .tint)
 
-        #expect(theme == tintTheme)
         #expect(theme.colors.background == .asset(.mhBackground))
         #expect(theme.colors.surface == .asset(.mhSurface))
+        #expect(theme.colors.surfaceElevated == .asset(.mhSurfaceElevated))
         #expect(theme.colors.surfaceMuted == .asset(.mhSurfaceMuted))
         #expect(theme.colors.border == .asset(.mhBorder))
         #expect(theme.colors.primaryText == .asset(.mhPrimaryText))
         #expect(theme.colors.secondaryText == .asset(.mhSecondaryText))
+        #expect(theme.colors.tertiaryText == .asset(.mhTertiaryText))
+        #expect(theme.colors.accent == .tint)
+        #expect(theme.colors.onAccent == .asset(.mhOnAccent))
         #expect(theme.colors.positive == .asset(.mhPositive))
         #expect(theme.colors.warning == .asset(.mhWarning))
         #expect(theme.colors.destructive == .asset(.mhDestructive))
         #expect(theme.metrics == MHDesignMetrics.standard)
-        #expect(theme.colors.accent == .tint)
+        #expect(theme == tintTheme)
         #expect(theme.spacing.inline == 8)
         #expect(theme.spacing.control == 16)
         #expect(theme.spacing.content == 24)
@@ -81,8 +84,8 @@ struct MHThemeTests {
             reduceTransparency: false,
             supportsGlass: false
         )
-        #expect(primary.backgroundStyle?.fallbackFillRole == .surfaceMuted)
-        #expect(primary.foregroundRole == .primaryText)
+        #expect(primary.backgroundStyle?.fallbackFillRole == .accent)
+        #expect(primary.foregroundRole == .onAccent)
         #expect(primary.backgroundStyle?.borderRole == .accent)
     }
 

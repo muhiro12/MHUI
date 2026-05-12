@@ -70,7 +70,7 @@ struct MHStyleResolutionTests {
         )
 
         #expect(primary.backgroundStyle?.usesGlass == true)
-        #expect(primary.backgroundStyle?.fallbackFillRole == .surfaceMuted)
+        #expect(primary.backgroundStyle?.fallbackFillRole == .accent)
         #expect(primary.backgroundStyle?.borderRole == .accent)
         #expect(primary.foregroundRole == .primaryText)
         #expect(quiet.backgroundStyle == nil)

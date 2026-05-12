@@ -20,7 +20,7 @@ private struct MHColorRoleMappingPreview: View {
 
     private var header: some View {
         HStack(alignment: .firstTextBaseline) {
-            Text("Color Role Usage")
+            Text("Color Asset Usage")
                 .mhTextStyle(.screenTitle)
 
             Spacer(minLength: MHTheme.standard.spacing.control)
@@ -33,7 +33,10 @@ private struct MHColorRoleMappingPreview: View {
 
 #Preview("Color Role Usage Light") {
     MHColorRoleMappingPreview(
-        context: MHPreviewStyle.context(colorMode: .light)
+        context: MHPreviewStyle.context(
+            colorMode: .light,
+            glassPolicy: .disabled
+        )
     )
 }
 
