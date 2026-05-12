@@ -98,6 +98,14 @@ struct MHThemeTests {
     }
 
     @Test
+    func standard_theme_accepts_system_accent_sources() {
+        let accent = MHColorReference.system(.purple)
+        let theme = MHTheme.standard(accent: accent)
+
+        #expect(theme.colors.accent == accent)
+    }
+
+    @Test
     func environment_values_store_theme_overrides() {
         var values = EnvironmentValues()
         var custom = MHTheme.standard

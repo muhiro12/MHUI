@@ -5,6 +5,7 @@ public struct MHColorReference: Sendable, Equatable {
     private enum Storage: Sendable, Equatable {
         case tint
         case asset(ColorResource)
+        case system(MHSystemColor)
         case fixed(light: MHColorComponents, dark: MHColorComponents)
     }
 
@@ -50,12 +51,20 @@ public struct MHColorReference: Sendable, Equatable {
         Self(storage: .asset(asset))
     }
 
+    public static func system(
+        _ color: MHSystemColor
+    ) -> Self {
+        Self(storage: .system(color))
+    }
+
     internal func resolve(for colorScheme: ColorScheme) -> Color {
         switch storage {
         case .tint:
             .accentColor
         case let .asset(resource):
             Color(resource)
+        case let .system(color):
+            color.color
         case let .fixed(light, dark):
             switch colorScheme {
             case .dark:
