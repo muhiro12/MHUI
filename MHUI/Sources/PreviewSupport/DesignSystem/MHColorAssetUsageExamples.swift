@@ -194,22 +194,17 @@ struct MHColorAssetUsageExamples: View {
 
                 HStack(alignment: .top, spacing: MHTheme.standard.spacing.control) {
                     statusCell(
-                        "Positive",
-                        style: .positive,
-                        tags: [("MHPositive", "success status")]
-                    )
-                    statusCell(
                         "Warning",
                         style: .warning,
                         tags: [("MHWarning", "warning status")]
                     )
-                }
 
-                statusCell(
-                    "Destructive",
-                    style: .destructive,
-                    tags: [("MHDestructive", "status")]
-                )
+                    statusCell(
+                        "Destructive",
+                        style: .destructive,
+                        tags: [("MHDestructive", "status")]
+                    )
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .mhSurfaceInset()

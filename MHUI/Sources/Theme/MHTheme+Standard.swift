@@ -24,7 +24,6 @@ public extension MHTheme {
                 tertiaryText: .asset(.mhTertiaryText),
                 accent: accent,
                 onAccent: .asset(.mhOnAccent),
-                positive: .asset(.mhPositive),
                 warning: .asset(.mhWarning),
                 destructive: .asset(.mhDestructive)
             ),

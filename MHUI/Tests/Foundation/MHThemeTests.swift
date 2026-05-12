@@ -19,7 +19,6 @@ struct MHThemeTests {
         #expect(theme.colors.tertiaryText == .asset(.mhTertiaryText))
         #expect(theme.colors.accent == .tint)
         #expect(theme.colors.onAccent == .asset(.mhOnAccent))
-        #expect(theme.colors.positive == .asset(.mhPositive))
         #expect(theme.colors.warning == .asset(.mhWarning))
         #expect(theme.colors.destructive == .asset(.mhDestructive))
         #expect(theme.metrics == MHDesignMetrics.standard)

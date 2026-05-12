@@ -52,7 +52,7 @@ struct MHComponentTreatmentScreen: View {
                 Spacer(minLength: MHTheme.standard.spacing.inline)
 
                 Text("+12%")
-                    .mhTextStyle(.caption, colorRole: .positive)
+                    .mhTextStyle(.caption, colorRole: .secondaryText)
             }
 
             Text("$4,280")
@@ -79,8 +79,8 @@ struct MHComponentTreatmentScreen: View {
 
     private var statusRow: some View {
         HStack(spacing: MHTheme.standard.spacing.control) {
-            Text("Paid")
-                .mhBadge(style: .positive)
+            Text("Live")
+                .mhBadge(style: .accent)
             Text("Due")
                 .mhBadge(style: .warning)
             Text("Risk")

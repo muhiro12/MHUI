@@ -71,7 +71,7 @@ struct MHRoughTokenScreen: View {
 
             Text("+12%")
                 .font(.footnote.weight(.semibold))
-                .foregroundStyle(style.positive)
+                .foregroundStyle(style.secondaryText)
         }
     }
 
@@ -123,7 +123,7 @@ struct MHRoughTokenScreen: View {
 
     private var statusRow: some View {
         HStack(spacing: MHTheme.standard.spacing.control) {
-            status("Paid", color: style.positive)
+            status("Live", color: style.accent)
             status("Due", color: style.warning)
             status("Risk", color: style.destructive)
         }
@@ -174,7 +174,6 @@ struct MHRoughTokenScreenStyle {
     var primaryText: Color
     var secondaryText: Color
     var accent: Color
-    var positive: Color
     var warning: Color
     var destructive: Color
     var onAccent: Color
@@ -190,7 +189,6 @@ struct MHRoughTokenScreenStyle {
             primaryText: .primary,
             secondaryText: .secondary,
             accent: .accentColor,
-            positive: .green,
             warning: .yellow,
             destructive: .red,
             onAccent: colorScheme == .dark ? .black : .white
@@ -210,7 +208,6 @@ struct MHRoughTokenScreenStyle {
             primaryText: theme.resolvedColor(for: .primaryText, in: colorScheme),
             secondaryText: theme.resolvedColor(for: .secondaryText, in: colorScheme),
             accent: theme.resolvedColor(for: .accent, in: colorScheme),
-            positive: theme.resolvedColor(for: .positive, in: colorScheme),
             warning: theme.resolvedColor(for: .warning, in: colorScheme),
             destructive: theme.resolvedColor(for: .destructive, in: colorScheme),
             onAccent: theme.resolvedColor(for: .onAccent, in: colorScheme)

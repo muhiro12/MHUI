@@ -15,7 +15,6 @@ public struct MHTheme: Sendable, Equatable {
         var tertiaryText: MHColorReference
         var accent: MHColorReference
         var onAccent: MHColorReference
-        var positive: MHColorReference
         var warning: MHColorReference
         var destructive: MHColorReference
     }
@@ -104,8 +103,6 @@ public struct MHTheme: Sendable, Equatable {
             colors.accent
         case .onAccent:
             colors.onAccent
-        case .positive:
-            colors.positive
         case .warning:
             colors.warning
         case .destructive:

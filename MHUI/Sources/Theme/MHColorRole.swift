@@ -10,7 +10,6 @@ public enum MHColorRole: String, Sendable, CaseIterable {
     case tertiaryText
     case accent
     case onAccent
-    case positive
     case warning
     case destructive
 }

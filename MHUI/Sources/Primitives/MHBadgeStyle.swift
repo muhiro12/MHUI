@@ -4,7 +4,6 @@ import SwiftUI
 public enum MHBadgeStyle: String, Sendable, CaseIterable {
     case neutral
     case accent
-    case positive
     case warning
     case destructive
 }

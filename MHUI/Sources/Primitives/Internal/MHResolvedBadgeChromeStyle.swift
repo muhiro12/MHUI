@@ -58,8 +58,6 @@ extension MHTheme {
             .secondaryText
         case .accent:
             .accent
-        case .positive:
-            .positive
         case .warning:
             .warning
         case .destructive:
