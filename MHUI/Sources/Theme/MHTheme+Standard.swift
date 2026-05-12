@@ -8,9 +8,31 @@ public extension MHTheme {
 
     // swiftlint:disable function_body_length
     /// Creates the standard neutral MHUI theme using the selected accent source.
-    /// Detached surfaces prefer Liquid Glass when the runtime and policy allow it.
+    /// Uses the default MHUI on-accent foreground asset.
     static func standard(
         accent: MHColorReference = .tint
+    ) -> Self {
+        standard(
+            accent: accent,
+            onAccent: .asset(.mhOnAccent)
+        )
+    }
+
+    /// Creates the standard neutral MHUI theme with an app-provided on-accent foreground.
+    static func standard(
+        onAccent: MHColorReference
+    ) -> Self {
+        standard(
+            accent: .tint,
+            onAccent: onAccent
+        )
+    }
+
+    /// Creates the standard neutral MHUI theme with an app-provided on-accent foreground.
+    /// Use this when the app's accent color needs a foreground other than the MHUI default.
+    static func standard(
+        accent: MHColorReference,
+        onAccent: MHColorReference
     ) -> Self {
         Self(
             colors: .init(
@@ -23,7 +45,7 @@ public extension MHTheme {
                 secondaryText: .asset(.mhSecondaryText),
                 tertiaryText: .asset(.mhTertiaryText),
                 accent: accent,
-                onAccent: .asset(.mhOnAccent),
+                onAccent: onAccent,
                 warning: .asset(.mhWarning),
                 destructive: .asset(.mhDestructive)
             ),

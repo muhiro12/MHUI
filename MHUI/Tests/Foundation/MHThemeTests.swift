@@ -108,6 +108,25 @@ struct MHThemeTests {
     }
 
     @Test
+    func standard_theme_accepts_on_accent_overrides() {
+        let accent = MHColorReference.system(.yellow)
+        let onAccent = MHColorReference.fixed(
+            lightHex: 0x111111,
+            darkHex: 0x111111
+        )
+        let theme = MHTheme.standard(
+            accent: accent,
+            onAccent: onAccent
+        )
+        let tintTheme = MHTheme.standard(onAccent: onAccent)
+
+        #expect(theme.colors.accent == accent)
+        #expect(theme.colors.onAccent == onAccent)
+        #expect(tintTheme.colors.accent == .tint)
+        #expect(tintTheme.colors.onAccent == onAccent)
+    }
+
+    @Test
     func environment_values_store_theme_overrides() {
         var values = EnvironmentValues()
         var custom = MHTheme.standard
