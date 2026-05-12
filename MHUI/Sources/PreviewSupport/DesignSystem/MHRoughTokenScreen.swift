@@ -218,7 +218,7 @@ struct MHRoughTokenScreenStyle {
     }
 }
 
-private enum MHPlatformSystemColors {
+enum MHPlatformSystemColors {
     static var canvas: Color {
         #if os(iOS)
         Color(uiColor: .systemGroupedBackground)

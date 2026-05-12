@@ -95,29 +95,79 @@ private struct MHDesignSystemStageCard: View {
     let colorMode: MHPreviewColorMode
 
     var body: some View {
+        decoratedContent
+            .mhGlassPolicy(.disabled)
+            .environment(\.colorScheme, colorMode.colorScheme)
+            .preferredColorScheme(colorMode.colorScheme)
+    }
+
+    @ViewBuilder private var decoratedContent: some View {
+        if stage == .system {
+            baseContent
+                .mhSurfaceInset()
+                .background {
+                    cardShape.fill(MHPlatformSystemColors.surface)
+                }
+                .overlay {
+                    cardShape.stroke(
+                        MHPlatformSystemColors.border,
+                        lineWidth: MHTheme.standard.divider.thickness
+                    )
+                }
+        } else {
+            baseContent
+                .mhSurfaceInset()
+                .mhSurface()
+        }
+    }
+
+    private var baseContent: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.content) {
             header
             content
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .mhSurfaceInset()
-        .mhSurface()
-        .mhGlassPolicy(.disabled)
-        .environment(\.colorScheme, colorMode.colorScheme)
-        .preferredColorScheme(colorMode.colorScheme)
     }
 
     private var header: some View {
         HStack(alignment: .firstTextBaseline) {
-            Text(stage.title)
-                .mhTextStyle(.bodyStrong)
+            stageTitle
 
             Spacer(minLength: MHTheme.standard.spacing.inline)
 
+            stageIdentifier
+        }
+    }
+
+    @ViewBuilder private var stageTitle: some View {
+        if stage == .system {
+            Text(stage.title)
+                .font(.body.weight(.semibold))
+                .foregroundStyle(.primary)
+        } else {
+            Text(stage.title)
+                .mhTextStyle(.bodyStrong)
+        }
+    }
+
+    @ViewBuilder private var stageIdentifier: some View {
+        if stage == .system {
+            Text(stage.rawValue)
+                .font(.footnote.weight(.medium))
+                .fontDesign(.monospaced)
+                .foregroundStyle(.secondary)
+        } else {
             Text(stage.rawValue)
                 .mhTextStyle(.caption, colorRole: .secondaryText)
                 .fontDesign(.monospaced)
         }
+    }
+
+    private var cardShape: RoundedRectangle {
+        RoundedRectangle(
+            cornerRadius: MHTheme.standard.cornerRadius.surface,
+            style: .continuous
+        )
     }
 
     @ViewBuilder private var content: some View {
