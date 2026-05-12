@@ -1,7 +1,7 @@
 // swiftlint:disable closure_body_length no_magic_numbers type_body_length
 import SwiftUI
 
-struct MHColorRoleUsageExamples: View {
+struct MHColorAssetUsageExamples: View {
     @Environment(\.mhTheme)
     private var theme
     @Environment(\.colorScheme)

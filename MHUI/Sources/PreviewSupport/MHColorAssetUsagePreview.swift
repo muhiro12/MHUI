@@ -1,6 +1,6 @@
 import SwiftUI
 
-private struct MHColorRoleMappingPreview: View {
+private struct MHColorAssetUsagePreview: View {
     let context: MHPreviewContext
 
     var body: some View {
@@ -10,7 +10,7 @@ private struct MHColorRoleMappingPreview: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
                     header
-                    MHColorRoleUsageExamples()
+                    MHColorAssetUsageExamples()
                 }
                 .padding(MHTheme.standard.spacing.screen)
             }
@@ -31,8 +31,8 @@ private struct MHColorRoleMappingPreview: View {
     }
 }
 
-#Preview("Color Role Usage Light") {
-    MHColorRoleMappingPreview(
+#Preview("Color Asset Usage Light") {
+    MHColorAssetUsagePreview(
         context: MHPreviewStyle.context(
             colorMode: .light,
             glassPolicy: .disabled
@@ -40,8 +40,8 @@ private struct MHColorRoleMappingPreview: View {
     )
 }
 
-#Preview("Color Role Usage Dark") {
-    MHColorRoleMappingPreview(
+#Preview("Color Asset Usage Dark") {
+    MHColorAssetUsagePreview(
         context: MHPreviewStyle.context(
             colorMode: .dark,
             glassPolicy: .disabled
