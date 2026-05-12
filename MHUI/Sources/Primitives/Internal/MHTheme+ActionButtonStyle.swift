@@ -1,11 +1,11 @@
 // swiftlint:disable function_body_length no_magic_numbers
 private struct MHButtonBackgroundRecipe {
     let fallbackFillRole: MHColorRole?
-    let accentFallbackFillOpacity: Double?
+    let fallbackFillOpacity: Double
     let glassTintRole: MHColorRole?
-    let accentGlassTintOpacity: Double?
+    let glassTintOpacity: Double
     let borderRole: MHColorRole?
-    let accentBorderOpacity: Double?
+    let borderOpacity: Double
 }
 
 extension MHTheme {
@@ -38,11 +38,11 @@ extension MHTheme {
                 backgroundStyle: resolvedGlassBackgroundStyle(
                     .init(
                         fallbackFillRole: .surfaceMuted,
-                        accentFallbackFillOpacity: nil,
+                        fallbackFillOpacity: 1,
                         glassTintRole: .accent,
-                        accentGlassTintOpacity: 0.14,
+                        glassTintOpacity: 0.14,
                         borderRole: .accent,
-                        accentBorderOpacity: 0.18
+                        borderOpacity: 0.18
                     ),
                     glassPolicy: glassPolicy,
                     reduceTransparency: reduceTransparency,
@@ -60,11 +60,11 @@ extension MHTheme {
                 backgroundStyle: resolvedGlassBackgroundStyle(
                     .init(
                         fallbackFillRole: .surface,
-                        accentFallbackFillOpacity: nil,
-                        glassTintRole: .surfaceTint,
-                        accentGlassTintOpacity: nil,
-                        borderRole: .controlBorder,
-                        accentBorderOpacity: nil
+                        fallbackFillOpacity: 1,
+                        glassTintRole: .surface,
+                        glassTintOpacity: 0.12,
+                        borderRole: .border,
+                        borderOpacity: 0.22
                     ),
                     glassPolicy: glassPolicy,
                     reduceTransparency: reduceTransparency,
@@ -92,11 +92,11 @@ extension MHTheme {
                 backgroundStyle: resolvedGlassBackgroundStyle(
                     .init(
                         fallbackFillRole: .surface,
-                        accentFallbackFillOpacity: nil,
-                        glassTintRole: .destructiveTint,
-                        accentGlassTintOpacity: nil,
-                        borderRole: .destructiveBorder,
-                        accentBorderOpacity: nil
+                        fallbackFillOpacity: 1,
+                        glassTintRole: .destructive,
+                        glassTintOpacity: 0.10,
+                        borderRole: .destructive,
+                        borderOpacity: 0.20
                     ),
                     glassPolicy: glassPolicy,
                     reduceTransparency: reduceTransparency,
@@ -138,13 +138,11 @@ extension MHTheme {
         return .init(
             usesGlass: usesGlass,
             fallbackFillRole: recipe.fallbackFillRole,
-            accentFallbackFillOpacity: recipe.accentFallbackFillOpacity,
+            fallbackFillOpacity: recipe.fallbackFillOpacity,
             glassTintRole: usesGlass ? recipe.glassTintRole : nil,
-            accentGlassTintOpacity: usesGlass
-                ? recipe.accentGlassTintOpacity
-                : nil,
+            glassTintOpacity: usesGlass ? recipe.glassTintOpacity : 0,
             borderRole: recipe.borderRole,
-            accentBorderOpacity: recipe.accentBorderOpacity
+            borderOpacity: recipe.borderOpacity
         )
     }
 }

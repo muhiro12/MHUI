@@ -1,9 +1,10 @@
-// swiftlint:disable file_types_order one_declaration_per_file
 import SwiftUI
 
 struct MHResolvedBadgeChromeStyle: Sendable, Equatable {
-    static let accentFillOpacity: Double = 0.08
-    static let accentBorderOpacity: Double = 0.14
+    static let neutralFillOpacity: Double = 0.06
+    static let emphasizedFillOpacity: Double = 0.08
+    static let neutralBorderOpacity: Double = 0.10
+    static let emphasizedBorderOpacity: Double = 0.14
 
     var textRole: MHTextRole
     var foregroundRole: MHColorRole
@@ -19,7 +20,13 @@ extension MHTheme {
         reduceTransparency: Bool,
         supportsGlass: Bool = MHGlassRuntimeSupport.isAvailable
     ) -> MHResolvedBadgeChromeStyle {
-        let colors = badgeColorRoles(for: style)
+        let foregroundRole = badgeForegroundColorRole(for: style)
+        let fillOpacity = style == .neutral
+            ? MHResolvedBadgeChromeStyle.neutralFillOpacity
+            : MHResolvedBadgeChromeStyle.emphasizedFillOpacity
+        let borderOpacity = style == .neutral
+            ? MHResolvedBadgeChromeStyle.neutralBorderOpacity
+            : MHResolvedBadgeChromeStyle.emphasizedBorderOpacity
         let usesGlass = glassPolicy.resolvesUsesGlass(
             prefersGlass: true,
             supportsGlass: supportsGlass,
@@ -28,90 +35,35 @@ extension MHTheme {
 
         return MHResolvedBadgeChromeStyle(
             textRole: .caption,
-            foregroundRole: colors.foregroundRole,
+            foregroundRole: foregroundRole,
             backgroundStyle: .init(
                 usesGlass: usesGlass,
-                fallbackFillRole: colors.fillRole,
-                accentFallbackFillOpacity: colors.accentFillOpacity,
-                glassTintRole: usesGlass ? colors.tintRole : nil,
-                accentGlassTintOpacity: usesGlass
-                    ? colors.accentFillOpacity
-                    : nil,
-                borderRole: colors.borderRole,
-                accentBorderOpacity: colors.accentBorderOpacity
+                fallbackFillRole: foregroundRole,
+                fallbackFillOpacity: fillOpacity,
+                glassTintRole: usesGlass ? foregroundRole : nil,
+                glassTintOpacity: usesGlass ? fillOpacity : 0,
+                borderRole: foregroundRole,
+                borderOpacity: borderOpacity
             ),
             horizontalPadding: spacing.control,
             verticalPadding: spacing.inline
         )
     }
 
-    private func badgeColorRoles(
+    private func badgeForegroundColorRole(
         for style: MHBadgeStyle
-    ) -> BadgeColorRoles {
+    ) -> MHColorRole {
         switch style {
         case .neutral:
-            .init(
-                foregroundRole: .secondaryText,
-                fillRole: .badgeNeutralFill,
-                tintRole: .badgeNeutralFill,
-                borderRole: .badgeNeutralBorder
-            )
+            .secondaryText
         case .accent:
-            .init(
-                foregroundRole: .accent,
-                fillRole: .accent,
-                tintRole: .accent,
-                borderRole: .accent,
-                accentFillOpacity: MHResolvedBadgeChromeStyle.accentFillOpacity,
-                accentBorderOpacity: MHResolvedBadgeChromeStyle.accentBorderOpacity
-            )
+            .accent
         case .positive:
-            .init(
-                foregroundRole: .positive,
-                fillRole: .badgePositiveFill,
-                tintRole: .badgePositiveFill,
-                borderRole: .badgePositiveBorder
-            )
+            .positive
         case .warning:
-            .init(
-                foregroundRole: .warning,
-                fillRole: .badgeWarningFill,
-                tintRole: .badgeWarningFill,
-                borderRole: .badgeWarningBorder
-            )
+            .warning
         case .destructive:
-            .init(
-                foregroundRole: .destructive,
-                fillRole: .badgeDestructiveFill,
-                tintRole: .badgeDestructiveFill,
-                borderRole: .badgeDestructiveBorder
-            )
+            .destructive
         }
     }
 }
-
-private struct BadgeColorRoles {
-    var foregroundRole: MHColorRole
-    var fillRole: MHColorRole
-    var tintRole: MHColorRole
-    var borderRole: MHColorRole
-    var accentFillOpacity: Double?
-    var accentBorderOpacity: Double?
-
-    init(
-        foregroundRole: MHColorRole,
-        fillRole: MHColorRole,
-        tintRole: MHColorRole,
-        borderRole: MHColorRole,
-        accentFillOpacity: Double? = nil,
-        accentBorderOpacity: Double? = nil
-    ) {
-        self.foregroundRole = foregroundRole
-        self.fillRole = fillRole
-        self.tintRole = tintRole
-        self.borderRole = borderRole
-        self.accentFillOpacity = accentFillOpacity
-        self.accentBorderOpacity = accentBorderOpacity
-    }
-}
-// swiftlint:enable file_types_order one_declaration_per_file

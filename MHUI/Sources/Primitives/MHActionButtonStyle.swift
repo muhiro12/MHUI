@@ -74,9 +74,9 @@ public struct MHActionButtonStyle: ButtonStyle {
                     .stroke(
                         theme.resolvedColor(
                             for: borderRole,
-                            in: colorScheme,
-                            accentOpacity: backgroundStyle.accentBorderOpacity
-                        ),
+                            in: colorScheme
+                        )
+                        .opacity(backgroundStyle.borderOpacity),
                         lineWidth: theme.divider.thickness
                     )
             }

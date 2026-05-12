@@ -22,9 +22,9 @@ struct MHSurfaceFill<ShapeType: Shape>: View {
                         .fill(
                             theme.resolvedColor(
                                 for: glassTintRole,
-                                in: colorScheme,
-                                accentOpacity: style.accentGlassTintOpacity
+                                in: colorScheme
                             )
+                            .opacity(style.glassTintOpacity)
                         )
                 }
             } else {
@@ -41,9 +41,9 @@ struct MHSurfaceFill<ShapeType: Shape>: View {
                 .fill(
                     theme.resolvedColor(
                         for: fallbackFillRole,
-                        in: colorScheme,
-                        accentOpacity: style.accentFallbackFillOpacity
+                        in: colorScheme
                     )
+                    .opacity(style.fallbackFillOpacity)
                 )
         } else {
             shape

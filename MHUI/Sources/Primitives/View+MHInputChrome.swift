@@ -41,9 +41,9 @@ private struct MHInputChromeModifier: ViewModifier {
                         .stroke(
                             theme.resolvedColor(
                                 for: borderRole,
-                                in: colorScheme,
-                                accentOpacity: style.backgroundStyle.accentBorderOpacity
-                            ),
+                                in: colorScheme
+                            )
+                            .opacity(style.backgroundStyle.borderOpacity),
                             lineWidth: theme.divider.thickness
                         )
                 }

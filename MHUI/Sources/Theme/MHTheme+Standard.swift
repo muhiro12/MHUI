@@ -16,34 +16,14 @@ public extension MHTheme {
             colors: .init(
                 background: .asset(.mhBackground),
                 surface: .asset(.mhSurface),
-                surfaceTint: .asset(.mhSurfaceTint),
                 surfaceMuted: .asset(.mhSurfaceMuted),
-                surfaceMutedTint: .asset(.mhSurfaceMutedTint),
-                surfaceBorder: .asset(.mhSurfaceBorder),
-                surfaceMutedBorder: .asset(.mhSurfaceMutedBorder),
-                controlBorder: .asset(.mhControlBorder),
                 border: .asset(.mhBorder),
-                divider: .asset(.mhDivider),
                 primaryText: .asset(.mhPrimaryText),
                 secondaryText: .asset(.mhSecondaryText),
                 accent: accent,
                 positive: .asset(.mhPositive),
                 warning: .asset(.mhWarning),
-                destructive: .asset(.mhDestructive),
-                destructiveTint: .asset(.mhDestructiveTint),
-                destructiveBorder: .asset(.mhDestructiveBorder),
-                inputBorder: .asset(.mhInputBorder),
-                inputTint: .asset(.mhInputTint),
-                inputInvalidFill: .asset(.mhInputInvalidFill),
-                inputInvalidTint: .asset(.mhInputInvalidTint),
-                badgeNeutralFill: .asset(.mhBadgeNeutralFill),
-                badgeNeutralBorder: .asset(.mhBadgeNeutralBorder),
-                badgePositiveFill: .asset(.mhBadgePositiveFill),
-                badgePositiveBorder: .asset(.mhBadgePositiveBorder),
-                badgeWarningFill: .asset(.mhBadgeWarningFill),
-                badgeWarningBorder: .asset(.mhBadgeWarningBorder),
-                badgeDestructiveFill: .asset(.mhBadgeDestructiveFill),
-                badgeDestructiveBorder: .asset(.mhBadgeDestructiveBorder)
+                destructive: .asset(.mhDestructive)
             ),
             typography: .init(
                 screenTitle: .init(style: .title2, weight: .semibold),
@@ -75,7 +55,7 @@ public extension MHTheme {
             ),
             divider: .init(
                 thickness: 1,
-                colorRole: .divider
+                opacity: 0.50
             ),
             motion: .init(
                 quick: 0.14,
@@ -85,20 +65,29 @@ public extension MHTheme {
                 canvas: .init(
                     prefersGlass: false,
                     fallbackColorRole: .background,
+                    fallbackOpacity: 1,
                     glassTintColorRole: nil,
-                    borderColorRole: nil
+                    glassTintOpacity: 0,
+                    borderColorRole: .border,
+                    borderOpacity: 0
                 ),
                 standard: .init(
                     prefersGlass: true,
                     fallbackColorRole: .surface,
-                    glassTintColorRole: .surfaceTint,
-                    borderColorRole: .surfaceBorder
+                    fallbackOpacity: 1,
+                    glassTintColorRole: .surface,
+                    glassTintOpacity: 0.12,
+                    borderColorRole: .border,
+                    borderOpacity: 0.24
                 ),
                 muted: .init(
                     prefersGlass: true,
                     fallbackColorRole: .surfaceMuted,
-                    glassTintColorRole: .surfaceMutedTint,
-                    borderColorRole: .surfaceMutedBorder
+                    fallbackOpacity: 1,
+                    glassTintColorRole: .surfaceMuted,
+                    glassTintOpacity: 0.08,
+                    borderColorRole: .border,
+                    borderOpacity: 0.18
                 )
             )
         )

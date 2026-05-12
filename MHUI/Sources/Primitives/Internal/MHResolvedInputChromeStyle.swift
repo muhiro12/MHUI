@@ -1,7 +1,13 @@
 import SwiftUI
 
 struct MHResolvedInputChromeStyle: Sendable, Equatable {
+    static let normalBorderOpacity: Double = 0.20
     static let focusedBorderOpacity: Double = 0.24
+    static let invalidFillOpacity: Double = 0.06
+    static let invalidBorderOpacity: Double = 0.20
+    static let normalGlassTintOpacity: Double = 0.10
+    static let focusedGlassTintOpacity: Double = 0.12
+    static let invalidGlassTintOpacity: Double = 0.08
 
     var backgroundStyle: MHResolvedGlassBackgroundStyle
     var horizontalPadding: CGFloat
@@ -46,11 +52,11 @@ extension MHTheme {
         return .init(
             usesGlass: usesGlass,
             fallbackFillRole: recipe.fallbackFillRole,
-            accentFallbackFillOpacity: nil,
+            fallbackFillOpacity: recipe.fallbackFillOpacity,
             glassTintRole: usesGlass ? recipe.glassTintRole : nil,
-            accentGlassTintOpacity: nil,
+            glassTintOpacity: usesGlass ? recipe.glassTintOpacity : 0,
             borderRole: recipe.borderRole,
-            accentBorderOpacity: recipe.accentBorderOpacity
+            borderOpacity: recipe.borderOpacity
         )
     }
 
@@ -61,23 +67,29 @@ extension MHTheme {
         case .normal:
             .init(
                 fallbackFillRole: .surface,
-                glassTintRole: .inputTint,
-                borderRole: .inputBorder,
-                accentBorderOpacity: nil
+                fallbackFillOpacity: 1,
+                glassTintRole: .surface,
+                glassTintOpacity: MHResolvedInputChromeStyle.normalGlassTintOpacity,
+                borderRole: .border,
+                borderOpacity: MHResolvedInputChromeStyle.normalBorderOpacity
             )
         case .focused:
             .init(
                 fallbackFillRole: .surface,
-                glassTintRole: .surfaceTint,
+                fallbackFillOpacity: 1,
+                glassTintRole: .surface,
+                glassTintOpacity: MHResolvedInputChromeStyle.focusedGlassTintOpacity,
                 borderRole: .accent,
-                accentBorderOpacity: MHResolvedInputChromeStyle.focusedBorderOpacity
+                borderOpacity: MHResolvedInputChromeStyle.focusedBorderOpacity
             )
         case .invalid:
             .init(
-                fallbackFillRole: .inputInvalidFill,
-                glassTintRole: .inputInvalidTint,
-                borderRole: .destructiveBorder,
-                accentBorderOpacity: nil
+                fallbackFillRole: .destructive,
+                fallbackFillOpacity: MHResolvedInputChromeStyle.invalidFillOpacity,
+                glassTintRole: .destructive,
+                glassTintOpacity: MHResolvedInputChromeStyle.invalidGlassTintOpacity,
+                borderRole: .destructive,
+                borderOpacity: MHResolvedInputChromeStyle.invalidBorderOpacity
             )
         }
     }
