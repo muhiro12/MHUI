@@ -65,6 +65,18 @@ The following types and helpers are the current shared entry points for package-
 - `mhFormChrome(...)`
 - `mhEmptyStateLayout()`
 
+## Liquid Glass Policy
+
+MHUI may use Liquid Glass only as package-owned surface treatment for domain-neutral primitives.
+The package should keep the policy high level: host apps choose `mhGlassPolicy(_:)`, while
+MHUI resolves platform support, Reduce Transparency, and fallback fills.
+Do not add low-level glass choreography, feature-specific morphing, or per-screen art direction
+to shared APIs.
+When several package-owned glass surfaces appear near each other, prefer `MHGlassContainer` so
+SwiftUI can coordinate effects and avoid unnecessary standalone glass rendering.
+Canvas backgrounds should stay solid by default; glass belongs on contained controls, rows,
+badges, inputs, and surfaces where the fallback remains equally usable.
+
 ## Placement Rules
 
 1. If a shared value should stay aligned across more than one app and does not require MHUI chrome, add or extend `MHDesign` first.
