@@ -42,52 +42,72 @@ struct MHPreviewStyleTests {
 
     @Test
     func preview_scenarios_stay_explicit_and_canonical() {
-        #expect(MHPreviewStyle.screenValidationScenarios().count == 4)
-        #expect(MHPreviewStyle.actionValidationScenarios().count == 3)
-        #expect(MHPreviewStyle.keyValueValidationScenarios().count == 3)
+        #expect(MHPreviewStyle.screenValidationScenarios().count == 5)
+        #expect(MHPreviewStyle.actionValidationScenarios().count == 4)
+        #expect(MHPreviewStyle.keyValueValidationScenarios().count == 4)
         #expect(
             MHPreviewStyle.screenValidationScenarios().map(\.name)
-                == ["Regular", "Phone", "Phone Disabled", "Stress Phone"]
+                == [
+                    "Regular",
+                    "Phone",
+                    "Phone Disabled",
+                    "Stress Phone",
+                    "Largest Type Phone"
+                ]
         )
         #expect(
             MHPreviewStyle.actionValidationScenarios().map(\.name)
-                == ["Phone", "Stress Phone", "Dark Stress Phone"]
+                == [
+                    "Phone",
+                    "Stress Phone",
+                    "Dark Stress Phone",
+                    "Largest Type Phone"
+                ]
         )
         #expect(
             MHPreviewStyle.keyValueValidationScenarios().map(\.name)
-                == ["Phone", "Stress Phone", "Dark Stress Phone"]
+                == [
+                    "Phone",
+                    "Stress Phone",
+                    "Dark Stress Phone",
+                    "Largest Type Phone"
+                ]
         )
         #expect(
             MHPreviewStyle.nativeContainerValidationScenarios().map(\.name)
-                == ["Phone", "Dark Phone"]
+                == ["Phone", "Dark Phone", "Largest Type Phone"]
         )
         #expect(
             MHPreviewStyle.nativeContainerValidationScenarios().map(\.context.colorMode)
-                == [.light, .dark]
+                == [.light, .dark, .light]
         )
         #expect(
             MHPreviewStyle.screenValidationScenarios().map { scenario in
                 Int(scenario.width.rounded())
             }
-                == [760, 375, 375, 320]
+                == [760, 375, 375, 320, 320]
         )
         #expect(
             MHPreviewStyle.actionValidationScenarios().map { scenario in
                 Int(scenario.width.rounded())
             }
-                == [375, 320, 320]
+                == [375, 320, 320, 320]
         )
         #expect(
             MHPreviewStyle.keyValueValidationScenarios().map { scenario in
                 Int(scenario.width.rounded())
             }
-                == [375, 320, 320]
+                == [375, 320, 320, 320]
         )
         #expect(
             MHPreviewStyle.nativeContainerValidationScenarios().map { scenario in
                 Int(scenario.width.rounded())
             }
-                == [375, 375]
+                == [375, 375, 320]
+        )
+        #expect(
+            MHPreviewStyle.screenValidationScenarios().last?.context.typeScale
+                == .largestAccessibility
         )
     }
 }

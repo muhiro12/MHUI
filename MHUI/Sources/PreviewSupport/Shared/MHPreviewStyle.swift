@@ -22,6 +22,7 @@ enum MHPreviewColorMode: String, Sendable, CaseIterable {
 enum MHPreviewTypeScale: String, Sendable, CaseIterable {
     case regular
     case accessibility
+    case largestAccessibility
 
     var dynamicTypeSize: DynamicTypeSize {
         switch self {
@@ -29,6 +30,8 @@ enum MHPreviewTypeScale: String, Sendable, CaseIterable {
             .large
         case .accessibility:
             .accessibility2
+        case .largestAccessibility:
+            .accessibility5
         }
     }
 
@@ -38,6 +41,8 @@ enum MHPreviewTypeScale: String, Sendable, CaseIterable {
             "Default Type"
         case .accessibility:
             "Accessibility Type"
+        case .largestAccessibility:
+            "Largest Accessibility Type"
         }
     }
 }
@@ -161,6 +166,11 @@ enum MHPreviewStyle {
                 name: "Stress Phone",
                 width: Widths.stressPhone,
                 context: context(typeScale: .accessibility)
+            ),
+            .init(
+                name: "Largest Type Phone",
+                width: Widths.stressPhone,
+                context: context(typeScale: .largestAccessibility)
             )
         ]
     }
@@ -185,6 +195,11 @@ enum MHPreviewStyle {
                     glassPolicy: .disabled,
                     typeScale: .accessibility
                 )
+            ),
+            .init(
+                name: "Largest Type Phone",
+                width: Widths.stressPhone,
+                context: context(typeScale: .largestAccessibility)
             )
         ]
     }
@@ -208,6 +223,11 @@ enum MHPreviewStyle {
                     colorMode: .dark,
                     glassPolicy: .disabled
                 )
+            ),
+            .init(
+                name: "Largest Type Phone",
+                width: Widths.stressPhone,
+                context: context(typeScale: .largestAccessibility)
             )
         ]
     }
@@ -226,6 +246,11 @@ enum MHPreviewStyle {
                     colorMode: .dark,
                     glassPolicy: .disabled
                 )
+            ),
+            .init(
+                name: "Largest Type Phone",
+                width: Widths.stressPhone,
+                context: context(typeScale: .largestAccessibility)
             )
         ]
     }
