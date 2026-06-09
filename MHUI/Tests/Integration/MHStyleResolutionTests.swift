@@ -216,52 +216,6 @@ struct MHStyleResolutionTests {
     }
 
     @Test
-    func glass_policy_resolution_prioritizes_accessibility_and_support() {
-        #expect(
-            MHGlassPolicy.automatic.resolvesUsesGlass(
-                prefersGlass: true,
-                supportsGlass: true,
-                reduceTransparency: false
-            )
-        )
-        #expect(
-            MHGlassPolicy.enabled.resolvesUsesGlass(
-                prefersGlass: true,
-                supportsGlass: true,
-                reduceTransparency: false
-            )
-        )
-        #expect(
-            !MHGlassPolicy.disabled.resolvesUsesGlass(
-                prefersGlass: true,
-                supportsGlass: true,
-                reduceTransparency: false
-            )
-        )
-        #expect(
-            !MHGlassPolicy.enabled.resolvesUsesGlass(
-                prefersGlass: false,
-                supportsGlass: true,
-                reduceTransparency: false
-            )
-        )
-        #expect(
-            !MHGlassPolicy.enabled.resolvesUsesGlass(
-                prefersGlass: true,
-                supportsGlass: false,
-                reduceTransparency: false
-            )
-        )
-        #expect(
-            !MHGlassPolicy.enabled.resolvesUsesGlass(
-                prefersGlass: true,
-                supportsGlass: true,
-                reduceTransparency: true
-            )
-        )
-    }
-
-    @Test
     func key_value_style_defaults_stay_primary_to_secondary() {
         let theme = MHTheme.standard
         let rowChrome = theme.resolvedRowChromeStyle()

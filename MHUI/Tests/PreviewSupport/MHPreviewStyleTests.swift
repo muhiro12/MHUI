@@ -14,7 +14,7 @@ struct MHPreviewStyleTests {
     }
 
     @Test
-    func preview_context_tracks_glass_and_enabled_state() {
+    func preview_context_tracks_glass_control_size_and_enabled_state() {
         let context = MHPreviewStyle.context(
             colorMode: .dark,
             glassPolicy: .enabled,
@@ -44,11 +44,15 @@ struct MHPreviewStyleTests {
     }
 
     @Test
-    func preview_scenarios_stay_explicit_and_canonical() {
+    func preview_scenario_counts_stay_explicit() {
         #expect(MHPreviewStyle.screenValidationScenarios().count == 6)
         #expect(MHPreviewStyle.actionValidationScenarios().count == 4)
         #expect(MHPreviewStyle.keyValueValidationScenarios().count == 4)
         #expect(MHPreviewStyle.nativeContainerValidationScenarios().count == 4)
+    }
+
+    @Test
+    func preview_scenario_names_stay_canonical() {
         #expect(
             MHPreviewStyle.screenValidationScenarios().map(\.name)
                 == [
@@ -62,69 +66,46 @@ struct MHPreviewStyleTests {
         )
         #expect(
             MHPreviewStyle.actionValidationScenarios().map(\.name)
-                == [
-                    "Phone",
-                    "Stress Phone",
-                    "Dark Stress Phone",
-                    "Largest Type Phone"
-                ]
+                == ["Phone", "Stress Phone", "Dark Stress Phone", "Largest Type Phone"]
         )
         #expect(
             MHPreviewStyle.keyValueValidationScenarios().map(\.name)
-                == [
-                    "Phone",
-                    "Stress Phone",
-                    "Dark Stress Phone",
-                    "Largest Type Phone"
-                ]
+                == ["Phone", "Stress Phone", "Dark Stress Phone", "Largest Type Phone"]
         )
         #expect(
             MHPreviewStyle.nativeContainerValidationScenarios().map(\.name)
-                == [
-                    "Phone",
-                    "Dark Phone",
-                    "Largest Type Phone",
-                    "Pointer Small Controls"
-                ]
+                == ["Phone", "Dark Phone", "Largest Type Phone", "Pointer Small Controls"]
         )
-        #expect(
-            MHPreviewStyle.nativeContainerValidationScenarios().map(\.context.colorMode)
-                == [.light, .dark, .light, .light]
-        )
-        #expect(
-            MHPreviewStyle.screenValidationScenarios().map { scenario in
-                Int(scenario.width.rounded())
-            }
-                == [760, 375, 375, 320, 320, 760]
-        )
-        #expect(
-            MHPreviewStyle.actionValidationScenarios().map { scenario in
-                Int(scenario.width.rounded())
-            }
-                == [375, 320, 320, 320]
-        )
-        #expect(
-            MHPreviewStyle.keyValueValidationScenarios().map { scenario in
-                Int(scenario.width.rounded())
-            }
-                == [375, 320, 320, 320]
-        )
-        #expect(
-            MHPreviewStyle.nativeContainerValidationScenarios().map { scenario in
-                Int(scenario.width.rounded())
-            }
-                == [375, 375, 320, 760]
-        )
+    }
+
+    @Test
+    func preview_scenario_widths_stay_canonical() {
+        #expect(widths(for: MHPreviewStyle.screenValidationScenarios()) == [760, 375, 375, 320, 320, 760])
+        #expect(widths(for: MHPreviewStyle.actionValidationScenarios()) == [375, 320, 320, 320])
+        #expect(widths(for: MHPreviewStyle.keyValueValidationScenarios()) == [375, 320, 320, 320])
+        #expect(widths(for: MHPreviewStyle.nativeContainerValidationScenarios()) == [375, 375, 320, 760])
+    }
+
+    @Test
+    func preview_scenario_contexts_cover_accessibility_and_pointer_controls() {
         #expect(
             MHPreviewStyle.screenValidationScenarios().contains { scenario in
                 scenario.context.typeScale == .largestAccessibility
             }
         )
         #expect(
-            MHPreviewStyle.screenValidationScenarios().last?.context.controlSize == .small
+            MHPreviewStyle.nativeContainerValidationScenarios().map(\.context.colorMode)
+                == [.light, .dark, .light, .light]
         )
-        #expect(
-            MHPreviewStyle.nativeContainerValidationScenarios().last?.context.controlSize == .small
-        )
+        #expect(MHPreviewStyle.screenValidationScenarios().last?.context.controlSize == .small)
+        #expect(MHPreviewStyle.nativeContainerValidationScenarios().last?.context.controlSize == .small)
+    }
+
+    private func widths(
+        for scenarios: [MHPreviewScenario]
+    ) -> [Int] {
+        scenarios.map { scenario in
+            Int(scenario.width.rounded())
+        }
     }
 }
