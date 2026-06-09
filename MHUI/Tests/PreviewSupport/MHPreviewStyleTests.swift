@@ -66,19 +66,27 @@ struct MHPreviewStyleTests {
                 == [.light, .dark]
         )
         #expect(
-            MHPreviewStyle.screenValidationScenarios().map { Int($0.width.rounded()) }
+            MHPreviewStyle.screenValidationScenarios().map { scenario in
+                Int(scenario.width.rounded())
+            }
                 == [760, 375, 375, 320]
         )
         #expect(
-            MHPreviewStyle.actionValidationScenarios().map { Int($0.width.rounded()) }
+            MHPreviewStyle.actionValidationScenarios().map { scenario in
+                Int(scenario.width.rounded())
+            }
                 == [375, 320, 320]
         )
         #expect(
-            MHPreviewStyle.keyValueValidationScenarios().map { Int($0.width.rounded()) }
+            MHPreviewStyle.keyValueValidationScenarios().map { scenario in
+                Int(scenario.width.rounded())
+            }
                 == [375, 320, 320]
         )
         #expect(
-            MHPreviewStyle.nativeContainerValidationScenarios().map { Int($0.width.rounded()) }
+            MHPreviewStyle.nativeContainerValidationScenarios().map { scenario in
+                Int(scenario.width.rounded())
+            }
                 == [375, 375]
         )
     }

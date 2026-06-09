@@ -100,7 +100,9 @@ public extension View {
     ) -> some View {
         mhSection(
             title: Text(title),
-            supporting: supporting.map { Text($0) }
+            supporting: supporting.map { supporting in
+                Text(supporting)
+            }
         )
     }
 
@@ -112,7 +114,9 @@ public extension View {
     ) -> some View {
         mhSection(
             title: Text(title),
-            supporting: supporting.map { Text($0) },
+            supporting: supporting.map { supporting in
+                Text(supporting)
+            },
             accessory: accessory
         )
     }
@@ -125,7 +129,9 @@ public extension View {
     ) -> some View {
         mhSection(
             title: Text(title),
-            supporting: supporting.map { Text($0) },
+            supporting: supporting.map { supporting in
+                Text(supporting)
+            },
             footer: footer
         )
     }
@@ -139,7 +145,9 @@ public extension View {
     ) -> some View {
         mhSection(
             title: Text(title),
-            supporting: supporting.map { Text($0) },
+            supporting: supporting.map { supporting in
+                Text(supporting)
+            },
             accessory: accessory,
             footer: footer
         )

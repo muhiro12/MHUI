@@ -60,8 +60,12 @@ public extension View {
         subtitle: LocalizedStringKey? = nil
     ) -> some View {
         mhScreen(
-            title: title.map { Text($0) },
-            subtitle: subtitle.map { Text($0) }
+            title: title.map { title in
+                Text(title)
+            },
+            subtitle: subtitle.map { subtitle in
+                Text(subtitle)
+            }
         )
     }
 
@@ -72,8 +76,12 @@ public extension View {
         @ViewBuilder header: () -> Header
     ) -> some View {
         mhScreen(
-            title: title.map { Text($0) },
-            subtitle: subtitle.map { Text($0) },
+            title: title.map { title in
+                Text(title)
+            },
+            subtitle: subtitle.map { subtitle in
+                Text(subtitle)
+            },
             header: header
         )
     }

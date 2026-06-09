@@ -29,7 +29,9 @@ private struct MHActionStripLayout: Layout {
         subviews: Subviews,
         cache _: inout ()
     ) -> CGSize {
-        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        let sizes = subviews.map { subview in
+            subview.sizeThatFits(.unspecified)
+        }
 
         return .init(
             width: MHActionLayoutMetrics.requiredHorizontalWidth(

@@ -211,8 +211,12 @@ public extension View {
         subtitle: LocalizedStringKey? = nil
     ) -> some View {
         mhListChrome(
-            title: title.map { Text($0) },
-            subtitle: subtitle.map { Text($0) }
+            title: title.map { title in
+                Text(title)
+            },
+            subtitle: subtitle.map { subtitle in
+                Text(subtitle)
+            }
         )
     }
 
@@ -223,8 +227,12 @@ public extension View {
         @ViewBuilder header: () -> Header
     ) -> some View {
         mhListChrome(
-            title: title.map { Text($0) },
-            subtitle: subtitle.map { Text($0) },
+            title: title.map { title in
+                Text(title)
+            },
+            subtitle: subtitle.map { subtitle in
+                Text(subtitle)
+            },
             header: header
         )
     }
@@ -266,8 +274,12 @@ public extension View {
         subtitle: LocalizedStringKey? = nil
     ) -> some View {
         mhFormChrome(
-            title: title.map { Text($0) },
-            subtitle: subtitle.map { Text($0) }
+            title: title.map { title in
+                Text(title)
+            },
+            subtitle: subtitle.map { subtitle in
+                Text(subtitle)
+            }
         )
     }
 
@@ -278,8 +290,12 @@ public extension View {
         @ViewBuilder header: () -> Header
     ) -> some View {
         mhFormChrome(
-            title: title.map { Text($0) },
-            subtitle: subtitle.map { Text($0) },
+            title: title.map { title in
+                Text(title)
+            },
+            subtitle: subtitle.map { subtitle in
+                Text(subtitle)
+            },
             header: header
         )
     }
