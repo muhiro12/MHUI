@@ -33,7 +33,10 @@ struct MHComponentSmokeTests {
 
                 HStack(spacing: MHTheme.standard.spacing.control) {
                     Text("Accent")
-                        .mhBadge(style: .accent)
+                        .mhBadge(
+                            style: .accent,
+                            accessibilityLabel: Text("Accent status")
+                        )
                     Text("Quiet")
                         .mhBadge(style: .neutral)
                 }

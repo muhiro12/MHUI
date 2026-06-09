@@ -81,6 +81,7 @@ public struct MHActionButtonStyle: ButtonStyle {
                     )
             }
         }
+        .contentShape(shape)
         .opacity(isEnabled ? 1 : style.disabledOpacity)
         .opacity(configuration.isPressed ? style.pressedOpacity : 1)
     }

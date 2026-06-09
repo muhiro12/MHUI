@@ -14,6 +14,7 @@ private struct MHBadgeModifier: ViewModifier {
     private var accessibilityReduceTransparency
 
     let style: MHBadgeStyle
+    let accessibilityLabel: Text?
 
     func body(content: Content) -> some View {
         let chromeStyle = theme.resolvedBadgeChromeStyle(
@@ -26,7 +27,7 @@ private struct MHBadgeModifier: ViewModifier {
             style: .continuous
         )
 
-        content
+        let styledContent = content
             .mhTextStyle(chromeStyle.textRole, colorRole: chromeStyle.foregroundRole)
             .textCase(.uppercase)
             .lineLimit(1)
@@ -55,13 +56,34 @@ private struct MHBadgeModifier: ViewModifier {
                         )
                 }
             }
+
+        return accessibilityAdjustedContent(styledContent)
+    }
+
+    @ViewBuilder
+    private func accessibilityAdjustedContent<StyledContent: View>(
+        _ content: StyledContent
+    ) -> some View {
+        if let accessibilityLabel {
+            content.accessibilityLabel(accessibilityLabel)
+        } else {
+            content
+        }
     }
 }
 
 public extension View {
     /// Applies restrained badge chrome for compact metadata.
-    func mhBadge(style: MHBadgeStyle = .neutral) -> some View {
-        modifier(MHBadgeModifier(style: style))
+    func mhBadge(
+        style: MHBadgeStyle = .neutral,
+        accessibilityLabel: Text? = nil
+    ) -> some View {
+        modifier(
+            MHBadgeModifier(
+                style: style,
+                accessibilityLabel: accessibilityLabel
+            )
+        )
     }
 }
 
