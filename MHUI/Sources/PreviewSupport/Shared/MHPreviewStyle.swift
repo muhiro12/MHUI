@@ -51,6 +51,7 @@ struct MHPreviewContext: Sendable, Equatable, Identifiable {
     var colorMode: MHPreviewColorMode
     var glassPolicy: MHGlassPolicy
     var typeScale: MHPreviewTypeScale
+    var controlSize: ControlSize
     var isEnabled: Bool
 
     var id: String {
@@ -58,6 +59,7 @@ struct MHPreviewContext: Sendable, Equatable, Identifiable {
             colorMode.rawValue,
             glassPolicy.rawValue,
             typeScale.rawValue,
+            controlSizeIdentifier,
             isEnabled ? "enabled" : "disabled"
         ]
         .joined(separator: "-")
@@ -68,6 +70,7 @@ struct MHPreviewContext: Sendable, Equatable, Identifiable {
             colorMode.title,
             glassPolicyTitle,
             typeScale.title,
+            controlSizeTitle,
             isEnabled ? "Enabled" : "Disabled"
         ]
         .joined(separator: " · ")
@@ -81,6 +84,40 @@ struct MHPreviewContext: Sendable, Equatable, Identifiable {
             "Glass On"
         case .disabled:
             "Glass Fallback"
+        }
+    }
+
+    private var controlSizeIdentifier: String {
+        switch controlSize {
+        case .mini:
+            "mini-controls"
+        case .small:
+            "small-controls"
+        case .regular:
+            "regular-controls"
+        case .large:
+            "large-controls"
+        case .extraLarge:
+            "extra-large-controls"
+        @unknown default:
+            "adaptive-controls"
+        }
+    }
+
+    private var controlSizeTitle: String {
+        switch controlSize {
+        case .mini:
+            "Mini Controls"
+        case .small:
+            "Small Controls"
+        case .regular:
+            "Regular Controls"
+        case .large:
+            "Large Controls"
+        case .extraLarge:
+            "Extra Large Controls"
+        @unknown default:
+            "Adaptive Controls"
         }
     }
 }
@@ -112,12 +149,14 @@ enum MHPreviewStyle {
         colorMode: MHPreviewColorMode = .light,
         glassPolicy: MHGlassPolicy = .automatic,
         typeScale: MHPreviewTypeScale = .regular,
+        controlSize: ControlSize = .regular,
         isEnabled: Bool = true
     ) -> MHPreviewContext {
         .init(
             colorMode: colorMode,
             glassPolicy: glassPolicy,
             typeScale: typeScale,
+            controlSize: controlSize,
             isEnabled: isEnabled
         )
     }
@@ -171,6 +210,11 @@ enum MHPreviewStyle {
                 name: "Largest Type Phone",
                 width: Widths.stressPhone,
                 context: context(typeScale: .largestAccessibility)
+            ),
+            .init(
+                name: "Pointer Small Controls",
+                width: Widths.regular,
+                context: context(controlSize: .small)
             )
         ]
     }
@@ -251,6 +295,11 @@ enum MHPreviewStyle {
                 name: "Largest Type Phone",
                 width: Widths.stressPhone,
                 context: context(typeScale: .largestAccessibility)
+            ),
+            .init(
+                name: "Pointer Small Controls",
+                width: Widths.regular,
+                context: context(controlSize: .small)
             )
         ]
     }
@@ -273,6 +322,7 @@ private struct MHPreviewContextModifier: ViewModifier {
             .environment(\.colorScheme, context.colorMode.colorScheme)
             .preferredColorScheme(context.colorMode.colorScheme)
             .dynamicTypeSize(context.typeScale.dynamicTypeSize)
+            .controlSize(context.controlSize)
             .padding(showsBackground ? contentPadding : 0)
             .background(backgroundView)
     }
