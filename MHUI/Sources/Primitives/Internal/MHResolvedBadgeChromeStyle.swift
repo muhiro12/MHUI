@@ -33,7 +33,7 @@ extension MHTheme {
             reduceTransparency: reduceTransparency
         )
 
-        return MHResolvedBadgeChromeStyle(
+        return .init(
             textRole: .caption,
             foregroundRole: foregroundRole,
             backgroundStyle: .init(

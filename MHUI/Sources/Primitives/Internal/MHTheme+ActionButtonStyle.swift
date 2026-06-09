@@ -47,7 +47,7 @@ extension MHTheme {
                 reduceTransparency: reduceTransparency,
                 supportsGlass: supportsGlass
             )
-            return MHResolvedActionButtonStyle(
+            return .init(
                 backgroundStyle: backgroundStyle,
                 foregroundRole: backgroundStyle.usesGlass ? .primaryText : .onAccent,
                 horizontalPadding: filledHorizontalPadding,
@@ -57,7 +57,7 @@ extension MHTheme {
                 disabledOpacity: 0.55
             )
         case .secondary:
-            return MHResolvedActionButtonStyle(
+            return .init(
                 backgroundStyle: resolvedGlassBackgroundStyle(
                     .init(
                         fallbackFillRole: .surface,
@@ -79,7 +79,7 @@ extension MHTheme {
                 disabledOpacity: 0.55
             )
         case .quiet:
-            return MHResolvedActionButtonStyle(
+            return .init(
                 backgroundStyle: nil,
                 foregroundRole: .accent,
                 horizontalPadding: quietHorizontalPadding,
@@ -89,7 +89,7 @@ extension MHTheme {
                 disabledOpacity: 0.50
             )
         case .destructive:
-            return MHResolvedActionButtonStyle(
+            return .init(
                 backgroundStyle: resolvedGlassBackgroundStyle(
                     .init(
                         fallbackFillRole: .surface,

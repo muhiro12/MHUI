@@ -310,7 +310,7 @@ extension MHTheme {
             threshold: layout.compactWidthThreshold
         )
 
-        return MHResolvedScreenChromeStyle(
+        return .init(
             readableContentWidth: isCompactWidth
                 ? nil
                 : layout.readableContentWidth,

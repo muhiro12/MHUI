@@ -71,7 +71,7 @@ extension MHTheme {
     ) -> MHResolvedGroupedRowsStyle {
         let rowChrome = resolvedRowChromeStyle(for: context)
 
-        return MHResolvedGroupedRowsStyle(
+        return .init(
             showsDividers: showsDividers,
             dividerLeadingInset: rowChrome.horizontalInset + spacing.inline,
             dividerThickness: divider.thickness,

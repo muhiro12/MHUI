@@ -69,7 +69,7 @@ extension MHTheme {
             threshold: layout.compactWidthThreshold
         )
 
-        return MHResolvedSectionChromeStyle(
+        return .init(
             cueColorRole: cue.colorRole,
             cueWidth: cue.width,
             cueHeight: cue.height,

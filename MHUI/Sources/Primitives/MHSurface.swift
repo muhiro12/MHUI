@@ -160,7 +160,7 @@ extension MHTheme {
             reduceTransparency: reduceTransparency
         )
 
-        return MHResolvedSurfaceStyle(
+        return .init(
             usesGlass: usesGlass,
             fallbackFillRole: treatment.fallbackColorRole,
             fallbackFillOpacity: treatment.fallbackOpacity,
