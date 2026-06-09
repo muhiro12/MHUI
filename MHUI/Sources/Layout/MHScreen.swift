@@ -3,13 +3,13 @@ import SwiftUI
 
 private enum MHScreen {}
 
-private struct MHScreenModifier: ViewModifier {
+private struct MHScreenModifier<Header: View>: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
 
     let title: Text?
     let subtitle: Text?
-    let header: AnyView?
+    let header: Header?
 
     func body(content: Content) -> some View {
         MHAdaptiveLayoutScope { context in
@@ -31,7 +31,7 @@ public extension View {
         subtitle: Text? = nil
     ) -> some View {
         modifier(
-            MHScreenModifier(
+            MHScreenModifier<EmptyView>(
                 title: title,
                 subtitle: subtitle,
                 header: nil
@@ -49,7 +49,7 @@ public extension View {
             MHScreenModifier(
                 title: title,
                 subtitle: subtitle,
-                header: AnyView(header())
+                header: header()
             )
         )
     }

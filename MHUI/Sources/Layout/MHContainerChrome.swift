@@ -78,14 +78,14 @@ struct MHScreenTitleBlock: View {
     }
 }
 
-private struct MHContainerChromeModifier: ViewModifier {
+private struct MHContainerChromeModifier<Header: View>: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
 
     let kind: MHContainerChromeKind
     let title: Text?
     let subtitle: Text?
-    let header: AnyView?
+    let header: Header?
 
     func body(content: Content) -> some View {
         MHAdaptiveLayoutScope { context in
@@ -180,7 +180,7 @@ public extension View {
         subtitle: Text? = nil
     ) -> some View {
         modifier(
-            MHContainerChromeModifier(
+            MHContainerChromeModifier<EmptyView>(
                 kind: .list,
                 title: title,
                 subtitle: subtitle,
@@ -200,7 +200,7 @@ public extension View {
                 kind: .list,
                 title: title,
                 subtitle: subtitle,
-                header: AnyView(header())
+                header: header()
             )
         )
     }
@@ -243,7 +243,7 @@ public extension View {
         subtitle: Text? = nil
     ) -> some View {
         modifier(
-            MHContainerChromeModifier(
+            MHContainerChromeModifier<EmptyView>(
                 kind: .form,
                 title: title,
                 subtitle: subtitle,
@@ -263,7 +263,7 @@ public extension View {
                 kind: .form,
                 title: title,
                 subtitle: subtitle,
-                header: AnyView(header())
+                header: header()
             )
         )
     }

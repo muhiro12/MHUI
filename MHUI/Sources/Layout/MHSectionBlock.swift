@@ -3,14 +3,14 @@ import SwiftUI
 
 private enum MHSectionBlock {}
 
-private struct MHSectionModifier: ViewModifier {
+private struct MHSectionModifier<Accessory: View, Footer: View>: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
 
     let title: Text
     let supporting: Text?
-    let accessory: AnyView?
-    let footer: AnyView?
+    let accessory: Accessory?
+    let footer: Footer?
 
     func body(content: Content) -> some View {
         VStack(alignment: .leading, spacing: theme.spacing.content) {
@@ -35,7 +35,7 @@ public extension View {
         supporting: Text? = nil
     ) -> some View {
         modifier(
-            MHSectionModifier(
+            MHSectionModifier<EmptyView, EmptyView>(
                 title: title,
                 supporting: supporting,
                 accessory: nil,
@@ -51,10 +51,10 @@ public extension View {
         @ViewBuilder accessory: () -> Accessory
     ) -> some View {
         modifier(
-            MHSectionModifier(
+            MHSectionModifier<Accessory, EmptyView>(
                 title: title,
                 supporting: supporting,
-                accessory: AnyView(accessory()),
+                accessory: accessory(),
                 footer: nil
             )
         )
@@ -67,11 +67,11 @@ public extension View {
         @ViewBuilder footer: () -> Footer
     ) -> some View {
         modifier(
-            MHSectionModifier(
+            MHSectionModifier<EmptyView, Footer>(
                 title: title,
                 supporting: supporting,
                 accessory: nil,
-                footer: AnyView(footer())
+                footer: footer()
             )
         )
     }
@@ -87,8 +87,8 @@ public extension View {
             MHSectionModifier(
                 title: title,
                 supporting: supporting,
-                accessory: AnyView(accessory()),
-                footer: AnyView(footer())
+                accessory: accessory(),
+                footer: footer()
             )
         )
     }
