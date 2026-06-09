@@ -14,7 +14,7 @@ public extension MHTheme {
     ) -> Self {
         standard(
             accent: accent,
-            onAccent: .asset(.mhOnAccent)
+            onAccent: .asset(MHColorAsset.onAccent)
         )
     }
 
@@ -36,18 +36,18 @@ public extension MHTheme {
     ) -> Self {
         Self(
             colors: .init(
-                background: .asset(.mhBackground),
-                surface: .asset(.mhSurface),
-                surfaceElevated: .asset(.mhSurfaceElevated),
-                surfaceMuted: .asset(.mhSurfaceMuted),
-                border: .asset(.mhBorder),
-                primaryText: .asset(.mhPrimaryText),
-                secondaryText: .asset(.mhSecondaryText),
-                tertiaryText: .asset(.mhTertiaryText),
+                background: .asset(MHColorAsset.background),
+                surface: .asset(MHColorAsset.surface),
+                surfaceElevated: .asset(MHColorAsset.surfaceElevated),
+                surfaceMuted: .asset(MHColorAsset.surfaceMuted),
+                border: .asset(MHColorAsset.border),
+                primaryText: .asset(MHColorAsset.primaryText),
+                secondaryText: .asset(MHColorAsset.secondaryText),
+                tertiaryText: .asset(MHColorAsset.tertiaryText),
                 accent: accent,
                 onAccent: onAccent,
-                warning: .asset(.mhWarning),
-                destructive: .asset(.mhDestructive)
+                warning: .asset(MHColorAsset.warning),
+                destructive: .asset(MHColorAsset.destructive)
             ),
             typography: .init(
                 screenTitle: .init(style: .title2, weight: .semibold),

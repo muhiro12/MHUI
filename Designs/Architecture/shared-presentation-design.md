@@ -21,7 +21,7 @@ It explains where new code should live when the same visual rule or container pa
 | Concern | Lives in | Examples |
 | --- | --- | --- |
 | Shared design parameters | `MHDesign/Sources` | `MHDesignMetrics`, spacing, corner radii, readable widths, generic screen or surface insets, compact thresholds, SwiftUI environment bridge |
-| Shared presentation logic | `MHUI/Sources` | `MHTheme`, semantic roles, text styles, row and action fallback, key-value fallback, cue geometry, surface chrome, grouped rows, section chrome, screen chrome, and re-export of `MHDesign` |
+| Shared presentation logic | `MHUI/Sources` | `MHTheme`, semantic roles, host-color variants, text styles, row and action fallback, key-value fallback, cue geometry, surface chrome, grouped rows, section chrome, screen chrome, small presentation affordances, and re-export of `MHDesign` |
 | Package resource assets | `MHUI/Resources` | Standard theme color assets referenced by MHUI semantic roles |
 | Package preview support | `MHDesign/Sources/PreviewSupport`, `MHUI/Sources/PreviewSupport`, plus local preview files beside the tuned API | minimal MHDesign preview helpers, `MHPreviewStyle`, `MHPreviewCatalog`, validation catalogs for compact width and native-container chrome, plus local previews kept beside the API they tune |
 | Host app composition | App repositories that consume MHUI | feature screens, navigation state, form state, domain-driven copy, feature-specific layouts |
@@ -53,7 +53,12 @@ The following types and helpers are the current shared entry points for package-
 - `MHColorReference`
 - `MHTextRole`
 - `MHColorRole`
+- `Color.mhAdjusted(by:)`
 - `mhTextStyle(_:colorRole:)`
+- `MHDismissButton`
+- `mhHidden(_:)`
+- `mhSingleLine()`
+- `mhTwoLines()`
 - `mhSurface(role:)`
 - `mhRow()`
 - `MHActionPresentation`
@@ -88,14 +93,28 @@ badges, inputs, and surfaces where the fallback remains equally usable.
 7. Prefer semantic inputs such as roles, policies, and layout intent over app-specific configuration objects or low-level token graphs.
 8. If glue code is reused only inside one consuming app, keep it in that app instead of promoting it into the shared package layers.
 9. During `1.x`, do not add deprecated aliases, migration helpers, compatibility shims, or old-caller dual paths just to ease package upgrades for consuming apps.
-10. Keep MHDesign tuning previews in same-directory `+Preview.swift` sidecar files so CoreGraphics-first value types stay uncluttered, and keep MHUI development previews in the implementation file under `// MARK: - Preview`.
-11. Prefer direct `View` extensions for environment writes or light styling sugar, and use private `ViewModifier` types only when environment reads, adaptive layout resolution, multi-step chrome, or shared implementation justify the extra structure.
+10. Keep generic Foundation, SwiftData, date, string, numeric, image-decoding, and bundle-introspection utilities outside MHUI.
+11. Do not import SwiftData in MHUI or MHDesign presentation source.
+12. Do not add SwiftUtilities as a package/project dependency reference or source import; MHUI should own only the presentation APIs it adopts.
+13. Keep MHDesign tuning previews in same-directory `+Preview.swift` sidecar
+    files so CoreGraphics-first value types stay uncluttered, and keep MHUI
+    development previews in the implementation file under `// MARK: - Preview`.
+14. Prefer direct `View` extensions for environment writes or light styling
+    sugar, and use private `ViewModifier` types only when environment reads,
+    adaptive layout resolution, multi-step chrome, or shared implementation
+    justify the extra structure.
 
 ## Current Examples
 
 - `MHDesignMetrics.standard` stays in the package because sibling apps need one shared baseline for spacing, corner radii, and generic screen or surface layout thresholds even when they do not adopt MHUI chrome.
 - Re-export of `MHDesign` in `MHUI` stays in the package because styled adopters should reach both layers through one import.
 - `MHTheme.standard()` and `MHTheme.standard(accent:)` stay in the package because they define a reusable semantic baseline rather than one app's branding system.
+- `Color.mhAdjusted(by:)` stays in the package because host apps sometimes need
+  a deterministic presentation variant of a host-owned color without adding
+  random colors or package-owned brand tokens.
+- `MHDismissButton`, `mhHidden(_:)`, `mhSingleLine()`, and `mhTwoLines()` stay in
+  the package because they are small, domain-neutral presentation affordances
+  reused across sibling app screens.
 - Row insets, compact action padding, key-value fallback widths, and cue geometry stay in `MHUI` because those values only make sense alongside MHUI presentation behavior.
 - `mhListChrome(...)` and `mhFormChrome(...)` stay in the package because they shape container presentation without needing app-specific business state.
 - MHDesign tuning previews stay beside the metrics files they tune, with only minimal helper views in `MHDesign/Sources/PreviewSupport`.
@@ -108,4 +127,7 @@ badges, inputs, and surfaces where the fallback remains equally usable.
 When raw spacing, corner radius, or generic screen or surface layout values are duplicated across sibling apps, the default fix is to move that rule into `MHDesign`.
 When a presentation rule is duplicated across sibling apps, the default fix is to move that rule into `MHUI`.
 When the duplicated code still depends on one product's models, copy, or workflows, the default fix is to keep it in the host app and only extract the domain-neutral presentation layer.
+When a duplicated helper is generic data, persistence, date, string, numeric,
+image decoding, or bundle introspection, the default fix is to keep it out of
+MHUI and evaluate it for a platform foundation instead.
 When a breaking package API change improves the boundary during `1.x`, prefer the cleaner API over carrying a temporary compatibility layer.

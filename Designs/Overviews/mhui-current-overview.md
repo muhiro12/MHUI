@@ -1,6 +1,6 @@
 # MHUI Current Repository Overview
 
-Current as of May 11, 2026.
+Current as of June 10, 2026.
 
 ## Purpose
 
@@ -28,6 +28,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 - The package does not keep deprecated aliases, migration helpers, or compatibility shims for consuming apps during `1.x`.
 - Product behavior stays outside the package.
 - The example app, when present, is a consumer of the package rather than a second source of truth.
+- Small shared presentation affordances can live in MHUI when they are native, app-agnostic, and reusable across sibling apps.
 - CI scripts write disposable artifacts under `.build/ci/`.
 - MHDesign tuning previews live in same-directory `+Preview.swift` files, with minimal shared helpers under `MHDesign/Sources/PreviewSupport`.
 - Development previews for public primitives and layout APIs stay beside the implementation they tune.
@@ -38,9 +39,11 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 - `MHDesignMetrics` and its spacing, corner-radius, and layout value groups
 - Theme application through `MHTheme.standard()` and related semantic roles
+- Host-color presentation variants through `Color.mhAdjusted(by:)`
 - Text styling primitives such as `mhTextStyle(_:colorRole:)`
 - Surface, row, section, and grouped-layout modifiers
 - Screen-level chrome such as `mhScreen(...)`, `mhListChrome(...)`, and `mhFormChrome(...)`
+- Small presentation affordances such as `MHDismissButton`, `mhHidden(_:)`, `mhSingleLine()`, and `mhTwoLines()`
 - Presentation helpers including action groups, badges, input chrome, and package-owned compact fallback behavior
 
 ## Architecture References
@@ -64,6 +67,12 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 - The repository is shared-library-first.
 - App-specific flows, domain models, and infrastructure do not belong in this package.
+- Generic Foundation, SwiftData, date, string, numeric, image-decoding, and
+  bundle-introspection utilities do not belong in MHUI.
+- Shared spacing, corner-radius, and layout scale APIs should use
+  `MHDesignMetrics` rather than ad-hoc `CGFloat` helpers.
+- Verification guards the package boundary so MHUI and MHDesign sources do not
+  depend on or import SwiftUtilities or SwiftData.
 - Art-direction presets and low-level glass choreography do not belong in this package.
 - Runtime UI fallback remains package-owned behavior and is separate from consumer-update compatibility policy.
 - Verification should prefer stable `ci_scripts/tasks/*.sh` entrypoints over ad-hoc commands.

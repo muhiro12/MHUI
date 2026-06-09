@@ -213,16 +213,16 @@ if grep -Eq '^MHDesign/|^MHUI/|^Example/|^Package\.swift$|^\.swiftlint\.yml$|^\.
   needs_swiftlint=true
 fi
 
-if grep -Eq '^MHDesign/Sources/|^MHUI/Sources/|^MHUI/Resources/|^Example/|^Package\.swift$|^ci_scripts/' <<<"$changed_files"; then
+if grep -Eq '^MHDesign/Sources/|^MHUI/Sources/|^MHUI/Resources/|^Example/|(^|/)Package\.swift$|(^|/)Package\.resolved$|(^|/)project\.pbxproj$|^ci_scripts/' <<<"$changed_files"; then
   needs_build=true
 fi
 
-if grep -Eq '^MHDesign/|^MHUI/|^Package\.swift$|^ci_scripts/' <<<"$changed_files"; then
+if grep -Eq '^MHDesign/|^MHUI/|(^|/)Package\.swift$|(^|/)Package\.resolved$|(^|/)project\.pbxproj$|^ci_scripts/' <<<"$changed_files"; then
   needs_tests=true
 fi
 
 if ! $needs_swiftlint && ! $needs_build && ! $needs_tests; then
-  echo "No changes under MHDesign/, MHUI/, Example/, Package.swift, ci_scripts/, .swiftlint.yml, or .pre-commit-config.yaml."
+  echo "No changes under MHDesign/, MHUI/, Example/, package/project dependency files, ci_scripts/, .swiftlint.yml, or .pre-commit-config.yaml."
   if $should_run_pre_commit; then
     run_note="pre-commit completed. No package-related changes were detected. Build/test steps were skipped."
   else
@@ -238,6 +238,21 @@ if $needs_build || $needs_tests; then
     "check_models_directory_consistency" \
     "Check models directory consistency" \
     bash "$repository_root/ci_scripts/tasks/check_models_directory_consistency.sh"
+
+  run_logged_step \
+    "check_swiftutilities_boundary" \
+    "Check SwiftUtilities boundary" \
+    bash "$repository_root/ci_scripts/tasks/check_swiftutilities_boundary.sh"
+
+  run_logged_step \
+    "test_swiftutilities_boundary" \
+    "Test SwiftUtilities boundary guard" \
+    bash "$repository_root/ci_scripts/tasks/test_swiftutilities_boundary.sh"
+
+  run_logged_step \
+    "test_mhui_consumer_adoption" \
+    "Test MHUI consumer adoption" \
+    bash "$repository_root/ci_scripts/tasks/test_mhui_consumer_adoption.sh"
 fi
 
 if $needs_swiftlint; then

@@ -18,7 +18,7 @@ Related documents:
 | Layer | Owns | Must not own |
 | --- | --- | --- |
 | `MHDesign` (`MHDesign/Sources`) | Shared spacing, corner-radius, generic screen or surface layout metrics, the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome, and sidecar tuning previews backed by minimal preview helpers | Product copy, business rules, navigation meaning, view-specific styling behavior, or MHUI-owned component chrome |
-| `MHUI` (`MHUI/Sources`, `MHUI/Resources`) | Semantic theme application, standard theme assets, styling modifiers, layout primitives, row and action fallback rules, key-value fallback, cue geometry, screen chrome, colocated development previews, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets |
+| `MHUI` (`MHUI/Sources`, `MHUI/Resources`) | Semantic theme application, standard theme assets, styling modifiers, host-color presentation variants, layout primitives, row and action fallback rules, key-value fallback, cue geometry, screen chrome, small shared presentation affordances, colocated development previews, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets, generic Foundation or SwiftData utilities |
 | Host app or sibling app | Feature state, domain rules, platform integrations, app-specific navigation, product composition | Rebuilding shared MHUI primitives as local forks |
 | Example app (`Example/` when present) | Integration review, manual regression checks, sample usage of package APIs | Becoming the source of truth for shared package APIs or hiding canonical styling outside `MHUI/Sources` |
 
@@ -30,6 +30,7 @@ Allowed in the package:
 - Sidecar tuning previews and minimal preview helpers for MHDesign metrics and environment overrides
 - Reusable typography, color, and surface tokens in `MHUI`
 - Package-owned color assets in `MHUI/Resources` when source APIs continue to expose semantic roles
+- Host-color presentation variants that do not add package-owned brand colors
 - Domain-neutral modifiers and container chrome
 - Shared presentation helpers that improve consistency across sibling apps
 - Width-aware fallback behavior for actions, grouped actions, and key-value rows
@@ -44,6 +45,9 @@ Not allowed in the package:
 - Navigation meaning that depends on one host app's feature map
 - Low-level glass choreography APIs
 - Feature-specific wrapper controls that shadow native SwiftUI components
+- Generic Foundation, SwiftData, date, string, numeric, image-decoding, or bundle-introspection utilities
+- Direct SwiftData imports in MHUI or MHDesign presentation source
+- Direct SwiftUtilities package/project dependency references or source imports
 - Consumer-update compatibility layers, migration helpers, or deprecated alias paths during `1.x` beta
 
 ## Versioning Contract
@@ -88,7 +92,9 @@ Neither should become the place where new shared styling rules are invented befo
 - Keep MHDesign preview helpers in `MHDesign/Sources/PreviewSupport` and keep metric-specific tuning previews beside the corresponding source files.
 - Keep canonical styled APIs in `MHUI/Sources`.
 - Keep MHUI package resource assets in `MHUI/Resources` so source and resources remain siblings under the `MHUI` target root.
-- Keep package color assets in `MHUI/Resources/Assets.xcassets` and rely on Xcode-generated asset symbols during package builds.
+- Keep package color assets in `MHUI/Resources/Assets.xcassets` and resolve them
+  through package-owned resource references so Xcode and SwiftPM consumers share
+  the same boundary.
 - Keep package verification in `MHDesign/Tests` and `MHUI/Tests`.
 - Scope library targets to `Sources`, exclude target-local `Tests` from library target discovery, and expose package tests through explicit SwiftPM test targets.
 - Keep stable automation entrypoints in `ci_scripts/tasks/`.
