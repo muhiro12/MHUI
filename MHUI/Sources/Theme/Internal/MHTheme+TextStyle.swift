@@ -46,7 +46,7 @@ extension MHTheme {
         colorRole: MHColorRole,
         tracking: CGFloat = 0
     ) -> MHResolvedTextStyle {
-        MHResolvedTextStyle(
+        .init(
             metrics: textMetrics(for: role),
             colorRole: colorRole,
             design: .default,
