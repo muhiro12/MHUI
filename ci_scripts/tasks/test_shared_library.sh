@@ -70,7 +70,9 @@ resolve_test_destination() {
     return 0
   fi
 
-  printf '%s\n' 'platform=iOS Simulator,name=iPhone 17 Pro Max'
+  echo "No available iPhone simulator destination was found." >&2
+  echo "Set MHUI_TEST_DESTINATION to an available xcodebuild destination and retry." >&2
+  return 1
 }
 
 timestamp=$(date +%s)
