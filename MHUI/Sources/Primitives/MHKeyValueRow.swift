@@ -144,7 +144,7 @@ extension MHTheme {
     func resolvedKeyValueStyle(
         for context: MHAdaptiveLayoutContext
     ) -> MHResolvedKeyValueStyle {
-        MHResolvedKeyValueStyle(
+        .init(
             labelColorRole: .primaryText,
             valueColorRole: .secondaryText,
             rowChrome: resolvedRowChromeStyle(for: context),
@@ -165,7 +165,7 @@ extension MHTheme {
 public extension LabeledContentStyle where Self == MHKeyValueLabeledContentStyle {
     /// Returns the quiet MHUI style for key-value `LabeledContent`.
     static var mhKeyValue: Self {
-        MHKeyValueLabeledContentStyle()
+        .init()
     }
 }
 

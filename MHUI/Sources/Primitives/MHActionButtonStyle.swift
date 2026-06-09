@@ -89,27 +89,27 @@ public struct MHActionButtonStyle: ButtonStyle {
 public extension ButtonStyle where Self == MHActionButtonStyle {
     /// Returns the restrained primary MHUI action button style.
     static var mhPrimary: Self {
-        Self(role: .primary)
+        .init(role: .primary)
     }
 
     /// Returns the restrained secondary MHUI action button style.
     static var mhSecondary: Self {
-        Self(role: .secondary)
+        .init(role: .secondary)
     }
 
     /// Returns the text-first quiet MHUI action button style.
     static var mhQuiet: Self {
-        Self(role: .quiet)
+        .init(role: .quiet)
     }
 
     /// Returns the restrained destructive MHUI action button style.
     static var mhDestructive: Self {
-        Self(role: .destructive)
+        .init(role: .destructive)
     }
 
     /// Returns an MHUI action button style for the requested semantic role.
     static func mhAction(_ role: MHButtonRole) -> Self {
-        Self(role: role)
+        .init(role: role)
     }
 }
 
