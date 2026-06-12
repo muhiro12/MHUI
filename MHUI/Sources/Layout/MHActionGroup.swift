@@ -131,10 +131,12 @@ private extension MHActionGroup {
         subviews: SubviewsCollection,
         spacing: CGFloat
     ) -> some View {
-        MHActionStripLayout(spacing: spacing) {
-            ForEach(subviews.indices, id: \.self) { index in
-                subviews[index]
-                    .mhActionPresentation(.singleLineIntrinsic)
+        MHGlassContainer(spacing: spacing) {
+            MHActionStripLayout(spacing: spacing) {
+                ForEach(subviews.indices, id: \.self) { index in
+                    subviews[index]
+                        .mhActionPresentation(.singleLineIntrinsic)
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -144,11 +146,13 @@ private extension MHActionGroup {
         subviews: SubviewsCollection,
         spacing: CGFloat
     ) -> some View {
-        VStack(alignment: .leading, spacing: spacing) {
-            ForEach(subviews.indices, id: \.self) { index in
-                subviews[index]
-                    .mhActionPresentation(.fullWidthLeading)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+        MHGlassContainer(spacing: spacing) {
+            VStack(alignment: .leading, spacing: spacing) {
+                ForEach(subviews.indices, id: \.self) { index in
+                    subviews[index]
+                        .mhActionPresentation(.fullWidthLeading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

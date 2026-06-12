@@ -66,6 +66,15 @@ struct MHComponentSmokeTests {
                     }
                     .buttonStyle(.mhSecondary)
                 }
+
+                MHGlassContainer(spacing: MHTheme.standard.spacing.control) {
+                    HStack(spacing: MHTheme.standard.spacing.control) {
+                        Text("Coordinated")
+                            .mhBadge(style: .accent)
+                        Text("Glass")
+                            .mhBadge(style: .neutral)
+                    }
+                }
             }
             .mhScreen(
                 title: "Foundation",
