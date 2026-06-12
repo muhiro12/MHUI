@@ -111,14 +111,36 @@ tasks.filter { $0.isCompleted }
 
 ## Build and Test Entry Point
 
-Agents MUST use one of these standardized entrypoints:
+Agents MUST prefer XcodeBuildMCP for Apple build, test, run, Simulator,
+runtime log, screenshot, and UI snapshot verification.
+
+For MHUI package compile checks, use XcodeBuildMCP `build_sim` with:
+
+- Workspace: `.swiftpm/xcode/package.xcworkspace`
+- Scheme: `MHUI-Package`
+- Simulator: an available iPhone simulator
+
+For package tests, use XcodeBuildMCP `test_sim` with the same workspace and
+scheme. Before the first MCP build or test call in a session, run XcodeBuildMCP
+`session_show_defaults`. If defaults do not point at MHUI, set them for the
+current session instead of relying on shell wrappers.
+
+Agents should also run the retained repository rule checks:
 
 ```sh
-bash ci_scripts/tasks/run_required_builds.sh
-bash ci_scripts/tasks/verify.sh
+bash ci_scripts/tasks/check_repository_rules.sh
 ```
 
-CI run artifacts are written under `.build/ci/runs/<RUN_ID>/`.
+`check_repository_rules.sh` runs SwiftLint, package boundary checks, consumer
+adoption checks, and static architecture checks that are not naturally covered
+by XcodeBuildMCP.
+
+`verify.sh` is retained as a pre-commit plus repository-rules compatibility
+wrapper. Direct shell build and test scripts are compatibility or fallback tools;
+do not treat them as the primary agent verification surface when MCP is
+available.
+
+Compatibility build and test run artifacts are written under `.build/ci/runs/<RUN_ID>/`.
 Each run stores `summary.md`, `commands.txt`, `meta.json`, `logs/`, `results/`, and `work/`.
 Shared CI directories are under `.build/ci/shared/` (`cache/`, `DerivedData/`, `tmp/`, `home/`).
 Only the newest 5 run directories are retained.

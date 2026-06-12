@@ -309,22 +309,31 @@ Those can be added later only if they strengthen the shared visual language with
 
 - Xcode 16 or later with the iOS 18, macOS 15, and watchOS 11 SDKs installed
 - Swift 6.2 toolchain
-- `swiftlint` installed if you want to run the standardized verify pipeline
+- `swiftlint` installed if you want to run retained repository rule checks
 - `pre-commit` installed if you want `verify.sh` to execute repository hooks
 
 ## Build and Test
 
-Use the helper scripts in `ci_scripts/` as needed.
-For full local verification:
+Use Xcode and XcodeBuildMCP for Apple build, test, run, Simulator, runtime log,
+screenshot, and UI snapshot verification.
+
+For MHUI package compile checks, use XcodeBuildMCP `build_sim` with
+`.swiftpm/xcode/package.xcworkspace` and the `MHUI-Package` scheme. For package
+tests, use XcodeBuildMCP `test_sim` with the same workspace and scheme.
+
+The remaining helper scripts in `ci_scripts/` are retained for repository rules
+and compatibility wrappers that are not naturally covered by XcodeBuildMCP.
+
+For retained repository rule checks:
+
+```sh
+bash ci_scripts/tasks/check_repository_rules.sh
+```
+
+For pre-commit plus retained repository rule checks:
 
 ```sh
 bash ci_scripts/tasks/verify.sh
-```
-
-If you only need required checks based on local changes:
-
-```sh
-bash ci_scripts/tasks/run_required_builds.sh
 ```
 
 If you only need the repository hooks:
@@ -333,13 +342,18 @@ If you only need the repository hooks:
 bash ci_scripts/tasks/pre_commit.sh
 ```
 
-If you only need the package build, the watchOS simulator compile-only check, and the optional macOS example app build:
+The aggregate shell build and test wrappers are kept for compatibility and
+fallback use when MCP is unavailable or when a check is not yet covered by the
+available MCP tool surface.
+
+For the compatibility package build, watchOS simulator compile-only check, and
+optional macOS example app build:
 
 ```sh
 bash ci_scripts/tasks/build_app.sh
 ```
 
-If you only need Xcode package tests:
+For compatibility Xcode package tests:
 
 ```sh
 bash ci_scripts/tasks/test_shared_library.sh

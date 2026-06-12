@@ -11,5 +11,6 @@ script_directory=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 repository_root=$(cd "$script_directory/../.." && pwd)
 cd "$repository_root"
 
-echo "Running verify pipeline (pre-commit + required MHUI checks)..."
-CI_RUN_ENABLE_PRE_COMMIT=1 bash "$repository_root/ci_scripts/tasks/run_required_builds.sh"
+echo "Running verify pipeline (pre-commit + retained MHUI repository rules)..."
+bash "$repository_root/ci_scripts/tasks/pre_commit.sh"
+bash "$repository_root/ci_scripts/tasks/check_repository_rules.sh"
