@@ -1,7 +1,8 @@
 # AGENTS.md
 
-This document defines the **global agent behavior contract** shared across projects.
-It contains only strict, minimal rules that agents must always follow.
+This document defines the **repository-specific agent behavior contract** for
+MHUI. It contains only strict, minimal rules that agents must always follow in
+this repository.
 
 ## Agent Philosophy
 
@@ -9,6 +10,21 @@ It contains only strict, minimal rules that agents must always follow.
 - Do not invent architecture or workflows.
 - When uncertain, prefer leaving TODO comments rather than guessing.
 - Prefer **minimal, safe changes** over large refactors.
+
+## Repository Boundaries
+
+- `MHDesign` owns shared spacing, corner-radius, generic screen and surface
+  layout metrics, and the SwiftUI environment bridge that work without MHUI
+  chrome.
+- `MHUI` owns semantic theme application, standard theme assets, presentation
+  primitives, native-container chrome, package-owned fallback behavior, preview
+  validation, and re-export of `MHDesign` for styled adopters.
+- Host apps own business logic, domain models, product wording, navigation
+  meaning, app-specific screen shells, persistence, networking, analytics,
+  logging, configuration, and platform side effects.
+- Do not add replacement controls that shadow native SwiftUI controls.
+- Do not add low-level Liquid Glass choreography APIs without a concrete
+  package-owned primitive that needs them.
 
 ## Naming and Language Rules
 
