@@ -54,14 +54,21 @@ The repository is intentionally biased toward package-owned visual rules and awa
 - `Designs/Decisions/0002-host-apps-own-product-behavior.md`
 - `Designs/Decisions/0003-example-integrations-stay-outside-package.md`
 - `Designs/Decisions/0004-host-screens-own-product-meaning.md`
+- `Designs/Decisions/0005-swiftutilities-presentation-boundary.md`
 
 ## Verification Entry Points
 
+- XcodeBuildMCP `build_sim` with `.swiftpm/xcode/package.xcworkspace` and the
+  `MHUI-Package` scheme
+- XcodeBuildMCP `test_sim` with `.swiftpm/xcode/package.xcworkspace` and the
+  `MHUI-Package` scheme
+- `bash ci_scripts/tasks/check_repository_rules.sh`
 - `bash ci_scripts/tasks/verify.sh`
-- `bash ci_scripts/tasks/run_required_builds.sh`
 - `bash ci_scripts/tasks/pre_commit.sh`
-- `bash ci_scripts/tasks/build_app.sh`
-- `bash ci_scripts/tasks/test_shared_library.sh`
+
+The shell build and test wrappers remain compatibility or fallback tools when
+MCP is unavailable or when the available MCP tool surface does not cover a
+check.
 
 ## Known Boundary Decisions
 
