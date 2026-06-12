@@ -73,6 +73,19 @@ if [[ -n "$swiftutilities_api_mirror_matches" ]]; then
   printf '%s\n' "$swiftutilities_api_mirror_matches" >&2
 fi
 
+swiftutilities_presentation_replacement_matches=$(
+  find MHDesign/Sources MHUI/Sources \
+    -type f \
+    -name '*.swift' \
+    -print0 |
+    xargs -0 grep -nE '(struct|typealias)[[:space:]]+MHDismissButton([[:space:]:{]|$)|func[[:space:]]+mhHidden[[:space:]]*\(|func[[:space:]]+mhSingleLine[[:space:]]*\(|func[[:space:]]+mhTwoLines[[:space:]]*\(|func[[:space:]]+mhAdjusted[[:space:]]*\([[:space:]]*by[[:space:]]' || true
+)
+
+if [[ -n "$swiftutilities_presentation_replacement_matches" ]]; then
+  record_failure "MHUI must not add MHUI-prefixed SwiftUtilities presentation replacements."
+  printf '%s\n' "$swiftutilities_presentation_replacement_matches" >&2
+fi
+
 if [[ $failure_count -ne 0 ]]; then
   exit 1
 fi

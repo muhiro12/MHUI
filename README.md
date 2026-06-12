@@ -24,7 +24,6 @@ Those responsibilities stay outside the package.
 - text, surface, row, section, screen, and native-container chrome
 - width-adaptive action presentation and action-group fallback
 - key-value row fallback behavior for narrow or constrained widths
-- small shared presentation affordances such as dismiss actions and text-line helpers
 - package-owned preview infrastructure: colocated development previews plus validation catalogs and package tests that prove those shared rules
 
 ## MHUI Does Not Own
@@ -32,6 +31,8 @@ Those responsibilities stay outside the package.
 - art-direction presets or app branding systems
 - low-level glass choreography beyond `MHGlassPolicy` readability fallback
 - replacement controls for native SwiftUI views
+- generic SwiftUtilities presentation shortcuts such as dismiss buttons,
+  visibility helpers, text-line helpers, or arbitrary color adjustment helpers
 - feature-specific wrappers, domain models, or product-specific screen shells
 - preview-only abstractions that host apps would need to import
 
@@ -60,21 +61,17 @@ Package-owned color assets live in `MHUI/Resources/Assets.xcassets` and are
 resolved through MHUI-owned resource references so Xcode and SwiftPM consumers
 use the same package boundary.
 
-When replacing earlier SwiftUtilities presentation helpers, use the MHUI-prefixed API surface:
+MHUI does not provide replacement APIs for earlier SwiftUtilities helpers.
+Apps that need local presentation shortcuts should implement them in the app,
+while durable cross-app non-UI utilities should be evaluated for a platform
+foundation instead.
 
-| Earlier helper | MHUI replacement |
-| --- | --- |
-| `CloseButton` | `MHDismissButton` |
-| `hidden(_:)` | `mhHidden(_:)` |
-| `singleLine()` | `mhSingleLine()` |
-| `twoLines()` | `mhTwoLines()` |
-| `Color.adjusted(by:)` | `Color.mhAdjusted(by:)` |
-
-SwiftUtilities helpers that are not presentation-specific should not become MHUI APIs:
+SwiftUtilities helper areas should not become MHUI APIs:
 
 | Earlier helper area | MHUI decision |
 | --- | --- |
-| `Color.random()` | No MHUI replacement; shared UI should use semantic theme roles or host-owned colors. |
+| `CloseButton`, `hidden(_:)`, `singleLine()`, `twoLines()` | No MHUI replacement; apps can use native SwiftUI directly or keep app-local helpers. |
+| `Color.adjusted(by:)`, `Color.random()` | No MHUI replacement; shared UI should use semantic theme roles or host-owned colors. |
 | Raw `CGFloat` scale helpers | Use `MHDesignMetrics` for shared spacing, corner radius, and layout scale. |
 | `Image(data:)`, `UIImage.appIcon` | No MHUI replacement; image decoding and bundle introspection stay outside MHUI. |
 | Foundation and persistence helpers | Keep outside MHUI; evaluate for a platform foundation instead. |
@@ -83,34 +80,6 @@ Representative non-MHUI helpers include `CGFloat.space(_:)`, `CGFloat.icon(_:)`,
 `CGFloat.component(_:)`, `Optional.orEmpty`, `Collection.isNotEmpty`,
 `StringProtocol.normalizedContains(_:)`, `ModelContext.fetchFirst(_:)`, and
 `PersistentIdentifier.base64Encoded()`.
-
-Typical call-site migrations should rename to the MHUI API instead of relying on compatibility aliases:
-
-```swift
-import MHUI
-
-// Toolbar close affordance.
-ToolbarItem(placement: .cancellationAction) {
-    MHDismissButton()
-}
-
-// Conditional presentation.
-Text("Optional focus hint")
-    .mhHidden(focusedField != .content)
-
-// Compact widget or row text.
-Text(title)
-    .mhSingleLine()
-
-// Deterministic host-color variants.
-let variant = baseColor.mhAdjusted(by: percentage)
-```
-
-Use `MHDismissButton` for dismiss-only close affordances, such as toolbar items
-that leave a detail view, sheet, or preview surface without committing data.
-For form flows where the action meaning is cancel, save, create, or destructive,
-keep an app-owned text button so the toolbar communicates the task in native
-language.
 
 ## Versioning Policy
 
@@ -150,13 +119,10 @@ MHUI must not copy their layouts, information architecture, or visual motifs dir
 - `MHSpacingRole`, `MHCornerRadiusRole`, `MHLayoutMode`
 - `mhDesignMetrics(_:)` and `@Environment(\.mhDesignMetrics)`
 - `MHTheme`, `MHColorReference`, `MHTextRole`, `MHColorRole`
-- `Color.mhAdjusted(by:)`
 - `mhTextStyle(_:colorRole:)`
 - `MHGlassPolicy`, `mhGlassPolicy(_:)`
 - `MHActionButtonStyle` and `ButtonStyle` sugar like `.mhPrimary`
 - `MHActionPresentation`, `mhActionPresentation(_:)`
-- `MHDismissButton`
-- `mhHidden(_:)`, `mhSingleLine()`, `mhTwoLines()`
 - `mhSurface(role:)` and `mhSurfaceInset()`
 - `mhInputChrome(state:)`
 - `mhBadge(style:)`
@@ -387,3 +353,4 @@ Shared caches and build state live in `.build/ci/shared/` under `cache/`, `Deriv
 - [ADR 0002: Host apps own product behavior](Designs/Decisions/0002-host-apps-own-product-behavior.md)
 - [ADR 0003: Example integrations stay outside package](Designs/Decisions/0003-example-integrations-stay-outside-package.md)
 - [ADR 0004: Host screens own product meaning](Designs/Decisions/0004-host-screens-own-product-meaning.md)
+- [ADR 0005: SwiftUtilities presentation boundary](Designs/Decisions/0005-swiftutilities-presentation-boundary.md)

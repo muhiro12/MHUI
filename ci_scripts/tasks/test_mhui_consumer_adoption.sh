@@ -62,25 +62,29 @@ import SwiftUI
 struct MHUIConsumerProbe {
     @MainActor
     static func main() {
-        let adjustedColor = Color.red.mhAdjusted(by: 50)
         let view = AnyView(
             NavigationStack {
-                VStack {
-                    Text("Primary")
-                        .mhSingleLine()
-                    Text("Supporting")
-                        .mhTwoLines()
-                    Rectangle()
-                        .fill(adjustedColor)
-                        .mhHidden(false)
-                }
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        MHDismissButton()
+                List {
+                    Section {
+                        LabeledContent("Mode", value: "Focused")
+                            .labeledContentStyle(.mhKeyValue)
+
+                        MHActionGroup {
+                            Button("Continue") {}
+                                .buttonStyle(.mhPrimary)
+
+                            Button("Review") {}
+                                .buttonStyle(.mhSecondary)
+                        }
                     }
                 }
+                .mhListChrome(
+                    title: "Workspace",
+                    subtitle: "Shared package chrome."
+                )
             }
         )
+        .mhTheme(.standard())
 
         print(String(reflecting: type(of: view)))
     }

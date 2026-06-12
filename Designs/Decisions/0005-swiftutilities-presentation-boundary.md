@@ -5,38 +5,39 @@
 
 ## Context
 
-Some sibling apps previously reached presentation helpers through `SwiftUtilities`.
-MHUI should let styled adopters depend on MHUI for shared presentation behavior
-without making `SwiftUtilities` a child package or importing every generic helper
-into the UI layer.
+Some sibling apps previously reached presentation helpers through
+`SwiftUtilities`. MHUI still needs to keep that package out of the UI layer, but
+the migration should not turn MHUI into the new owner of thin app-local
+shortcuts.
 
-The current presentation inventory shows repeated use of `CloseButton`,
-`hidden(_:)`, `singleLine()`, and `Color.adjusted(by:)`.
-No sibling app call site currently requires the SwiftUtilities `Image(data:)`
-initializer; image decoding call sites use platform image APIs directly.
-Generic collection, optional, string, date, number, and SwiftData helpers are
-already better aligned with the platform foundation layer than with MHUI's
-presentation boundary.
+Helpers such as `CloseButton`, `hidden(_:)`, `singleLine()`, `twoLines()`, and
+`Color.adjusted(by:)` can be implemented directly by host apps when they are
+useful. They do not define MHUI semantic roles, package chrome, native-container
+fallback, or package-owned preview validation. Generic collection, optional,
+string, date, number, image-decoding, bundle-introspection, and SwiftData
+helpers are also outside MHUI's presentation boundary.
 
 ## Decision
 
-MHUI adopts only the SwiftUtilities functionality that is presentation-specific,
-domain neutral, and consistent with the package's public API shape.
-Adopted helpers use MHUI-prefixed names rather than source-compatible aliases.
+MHUI does not adopt SwiftUtilities presentation helpers as package APIs. It
+must not provide source-compatible aliases or MHUI-prefixed replacements for
+those helpers just to reduce consumer migration work.
+
 Generic Foundation, SwiftData, date, string, numeric, collection, optional,
-image-decoding, and bundle-introspection helpers stay outside MHUI and should be
-evaluated in a platform foundation instead.
+image-decoding, bundle-introspection, and local presentation shortcuts stay
+outside MHUI. Durable cross-app non-UI utilities should be evaluated in a
+platform foundation instead.
 MHUI must not add a package or project dependency reference to `SwiftUtilities`,
 and MHUI or MHDesign source files must not import `SwiftUtilities` or
 `SwiftData`.
 
 ## Consequences
 
-- Apps can migrate shared presentation call sites to MHUI without bringing `SwiftUtilities` into MHUI.
-- `CloseButton`, `hidden(_:)`, `singleLine()`, `twoLines()`, and `Color.adjusted(by:)` have MHUI-prefixed replacements.
+- Apps that need those helpers must keep them app-owned or move non-UI utility
+  concerns to a platform foundation.
 - `Color.random()`, raw `CGFloat` scale helpers, `Image(data:)`,
   `UIImage.appIcon`, and non-presentation utilities are deliberately not
   mirrored in MHUI.
 - CI guards the package boundary so future changes do not accidentally
   reintroduce a `SwiftUtilities` dependency, a `SwiftData` import, or
-  source-compatible API mirrors.
+  SwiftUtilities helper mirror.

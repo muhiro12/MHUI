@@ -63,8 +63,17 @@ write_violation_probe() {
     'import SwiftData' \
     'import SwiftUtilities' \
     'public struct CloseButton {}' \
+    'public struct MHDismissButton: View {' \
+    '    public var body: some View { Button("Close") {} }' \
+    '}' \
     'public extension View {' \
     '    func hidden(_ hidden: Bool = true) -> some View { self }' \
+    '    func mhHidden(_ hidden: Bool = true) -> some View { self }' \
+    '    func mhSingleLine() -> some View { self }' \
+    '    func mhTwoLines() -> some View { self }' \
+    '}' \
+    'public extension Color {' \
+    '    func mhAdjusted(by percentage: Double) -> Color { self }' \
     '}' \
     > "$temporary_root/MHUI/Sources/Violation.swift"
 }
@@ -108,5 +117,6 @@ require_output "$violation_output" "Package and project dependency files must no
 require_output "$violation_output" "Swift source files must not import SwiftUtilities."
 require_output "$violation_output" "MHUI and MHDesign must not import SwiftData"
 require_output "$violation_output" "MHUI must not add source-compatible SwiftUtilities API mirrors."
+require_output "$violation_output" "MHUI must not add MHUI-prefixed SwiftUtilities presentation replacements."
 
 echo "SwiftUtilities boundary guard test passed."

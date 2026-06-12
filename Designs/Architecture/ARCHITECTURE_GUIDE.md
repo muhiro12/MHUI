@@ -12,13 +12,14 @@ Related documents:
 - [0002-host-apps-own-product-behavior.md](../Decisions/0002-host-apps-own-product-behavior.md)
 - [0003-example-integrations-stay-outside-package.md](../Decisions/0003-example-integrations-stay-outside-package.md)
 - [0004-host-screens-own-product-meaning.md](../Decisions/0004-host-screens-own-product-meaning.md)
+- [0005-swiftutilities-presentation-boundary.md](../Decisions/0005-swiftutilities-presentation-boundary.md)
 
 ## Responsibility Boundaries
 
 | Layer | Owns | Must not own |
 | --- | --- | --- |
 | `MHDesign` (`MHDesign/Sources`) | Shared spacing, corner-radius, generic screen or surface layout metrics, the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome, and sidecar tuning previews backed by minimal preview helpers | Product copy, business rules, navigation meaning, view-specific styling behavior, or MHUI-owned component chrome |
-| `MHUI` (`MHUI/Sources`, `MHUI/Resources`) | Semantic theme application, standard theme assets, styling modifiers, host-color presentation variants, layout primitives, row and action fallback rules, key-value fallback, cue geometry, screen chrome, small shared presentation affordances, colocated development previews, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets, generic Foundation or SwiftData utilities |
+| `MHUI` (`MHUI/Sources`, `MHUI/Resources`) | Semantic theme application, standard theme assets, styling modifiers, layout primitives, row and action fallback rules, key-value fallback, cue geometry, screen chrome, colocated development previews, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets, generic Foundation or SwiftData utilities |
 | Host app or sibling app | Feature state, domain rules, platform integrations, app-specific navigation, product composition | Rebuilding shared MHUI primitives as local forks |
 | Example app (`Example/` when present) | Integration review, manual regression checks, sample usage of package APIs | Becoming the source of truth for shared package APIs or hiding canonical styling outside `MHUI/Sources` |
 
@@ -30,9 +31,7 @@ Allowed in the package:
 - Sidecar tuning previews and minimal preview helpers for MHDesign metrics and environment overrides
 - Reusable typography, color, and surface tokens in `MHUI`
 - Package-owned color assets in `MHUI/Resources` when source APIs continue to expose semantic roles
-- Host-color presentation variants that do not add package-owned brand colors
 - Domain-neutral modifiers and container chrome
-- Shared presentation helpers that improve consistency across sibling apps
 - Width-aware fallback behavior for actions, grouped actions, and key-value rows
 - Colocated development previews for public primitives and layout APIs
 - Validation scaffolding in `MHUI/Sources/PreviewSupport` that proves package behavior across fixed-width scenarios
@@ -45,6 +44,7 @@ Not allowed in the package:
 - Navigation meaning that depends on one host app's feature map
 - Low-level glass choreography APIs
 - Feature-specific wrapper controls that shadow native SwiftUI components
+- Source-compatible or MHUI-prefixed SwiftUtilities helper replacements
 - Generic Foundation, SwiftData, date, string, numeric, image-decoding, or bundle-introspection utilities
 - Direct SwiftData imports in MHUI or MHDesign presentation source
 - Direct SwiftUtilities package/project dependency references or source imports
