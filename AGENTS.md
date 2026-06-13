@@ -43,6 +43,18 @@ scheme. Before the first MCP build or test call in a session, run XcodeBuildMCP
 `session_show_defaults`. If defaults do not point at MHUI, set them for the
 current session instead of relying on shell wrappers.
 
+Treat package tests, retained consumer checks, preview-sensitive evidence, and
+runtime/UI evidence as separate verification capabilities. Choose the smallest
+set that proves the current change, and prefer stronger evidence when public
+products, SwiftUI APIs, package boundaries, design tokens, visual treatments,
+previews, or adopter-facing behavior are affected.
+
+- For package source or product changes, use the package build/test checks above.
+- For consumer adoption or package-boundary changes, run the retained repository
+  rule checks below.
+- For SwiftUI visual primitives, preview behavior, or design-system treatment
+  changes, add targeted preview, sample, or runtime/UI evidence when available.
+
 Agents should also run the retained repository rule checks:
 
 ```sh
