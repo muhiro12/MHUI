@@ -1,4 +1,3 @@
-// swiftlint:disable file_types_order one_declaration_per_file
 import SwiftUI
 
 struct MHAdaptiveLayoutContext: Sendable, Equatable {
@@ -57,19 +56,3 @@ struct MHAdaptiveLayoutContext: Sendable, Equatable {
         return availableWidth < threshold
     }
 }
-
-private struct MHAdaptiveLayoutContextKey: EnvironmentKey {
-    static let defaultValue = MHAdaptiveLayoutContext()
-}
-
-extension EnvironmentValues {
-    var mhAdaptiveLayoutContext: MHAdaptiveLayoutContext {
-        get {
-            self[MHAdaptiveLayoutContextKey.self]
-        }
-        set {
-            self[MHAdaptiveLayoutContextKey.self] = newValue
-        }
-    }
-}
-// swiftlint:enable file_types_order one_declaration_per_file
