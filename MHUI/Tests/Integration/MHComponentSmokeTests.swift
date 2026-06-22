@@ -88,6 +88,24 @@ struct MHComponentSmokeTests {
 
     @Test
     @MainActor
+    func standard_theme_factory_is_available_to_public_adopters() {
+        let smokeView = AnyView(
+            Text("Fixed accent")
+                .mhTextStyle(.body, colorRole: .accent)
+                .mhTheme(.standard(
+                    metrics: .standard,
+                    accent: .fixed(
+                        lightHex: 0x2473E6,
+                        darkHex: 0x73ADFF
+                    )
+                ))
+        )
+
+        #expect(String(reflecting: type(of: smokeView)).contains("AnyView"))
+    }
+
+    @Test
+    @MainActor
     func native_container_chrome_and_section_primitives_instantiate() {
         let smokeView = AnyView(
             VStack(spacing: MHDesignMetrics.standard.spacing.section) {

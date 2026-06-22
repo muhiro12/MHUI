@@ -362,13 +362,6 @@ If you only need the SwiftUtilities boundary guard self-test:
 bash ci_scripts/tasks/test_swiftutilities_boundary.sh
 ```
 
-If you only need to verify that an external SwiftPM consumer can depend on MHUI
-alone:
-
-```sh
-bash ci_scripts/tasks/test_mhui_consumer_adoption.sh
-```
-
 ### Script Cache Layout
 
 Compatibility shell build and test scripts may write generated artifacts under
