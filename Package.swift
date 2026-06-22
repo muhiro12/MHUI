@@ -23,7 +23,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/SimplyDanny/SwiftLintPlugins",
-            exact: "0.64.0"
+            "0.0.0"..<"1.0.0"
         )
     ],
     targets: [
