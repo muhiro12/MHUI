@@ -148,6 +148,7 @@ private struct MHColorAccentVariantCard: View {
     }
 }
 
+#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview(
     "Design System / 03 App Tint Variants / Light",
     traits: .fixedLayout(
@@ -168,3 +169,4 @@ private struct MHColorAccentVariantCard: View {
     MHColorAccentVariantsPreview(colorMode: .dark)
 }
 // swiftlint:enable file_types_order one_declaration_per_file
+#endif

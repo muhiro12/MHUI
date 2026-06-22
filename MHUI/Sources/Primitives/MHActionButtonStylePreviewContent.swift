@@ -22,7 +22,9 @@ private struct MHActionButtonStylePreviewContent: View {
     }
 }
 
+#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Action Button Style", traits: .sizeThatFitsLayout) {
     MHActionButtonStylePreviewContent()
         .mhPreviewSurface()
 }
+#endif

@@ -11,6 +11,7 @@ public extension View {
 
 // MARK: - Preview
 
+#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Grouped Rows", traits: .sizeThatFitsLayout) {
     VStack(spacing: 0) {
         HStack {
@@ -41,3 +42,4 @@ public extension View {
     .mhSurface()
     .mhPreviewSurface()
 }
+#endif

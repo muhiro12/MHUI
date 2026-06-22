@@ -21,7 +21,9 @@ private struct MHActionGroupPreviewContent: View {
     }
 }
 
+#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Action Group", traits: .sizeThatFitsLayout) {
     MHActionGroupPreviewContent()
         .mhPreviewSurface()
 }
+#endif

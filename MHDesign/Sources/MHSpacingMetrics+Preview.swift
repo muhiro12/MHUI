@@ -73,6 +73,7 @@ private extension MHSpacingMetrics {
     static let previewComparison = MHDesignPreviewSupport.comparisonMetrics.spacing
 }
 
+#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Spacing Metrics", traits: .fixedLayout(width: 760, height: 900)) {
     MHDesignPreviewSupport.PreviewCanvas(
         title: "Spacing metrics",
@@ -92,3 +93,4 @@ private extension MHSpacingMetrics {
     }
 }
 // swiftlint:enable no_magic_numbers
+#endif

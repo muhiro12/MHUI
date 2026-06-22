@@ -188,6 +188,7 @@ private struct MHDesignSystemStageCard: View {
     }
 }
 
+#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview(
     "Design System / 01 Stages / Light",
     traits: .fixedLayout(
@@ -208,3 +209,4 @@ private struct MHDesignSystemStageCard: View {
     MHDesignSystemStagesPreview(colorMode: .dark)
 }
 // swiftlint:enable file_types_order one_declaration_per_file
+#endif

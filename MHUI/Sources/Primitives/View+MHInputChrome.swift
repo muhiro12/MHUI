@@ -66,6 +66,7 @@ public extension View {
 
 // MARK: - Preview
 
+#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Input Chrome", traits: .sizeThatFitsLayout) {
     VStack(spacing: MHTheme.standard.spacing.content) {
         TextField("Name", text: .constant(""))
@@ -83,3 +84,4 @@ public extension View {
     }
     .mhPreviewSurface()
 }
+#endif

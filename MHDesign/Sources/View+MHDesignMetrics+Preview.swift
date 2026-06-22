@@ -33,6 +33,7 @@ private extension View {
     }
 }
 
+#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview(
     "Design Metrics Override",
     traits: .fixedLayout(
@@ -60,3 +61,4 @@ private extension View {
     }
 }
 // swiftlint:enable no_magic_numbers
+#endif

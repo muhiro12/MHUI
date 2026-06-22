@@ -31,6 +31,7 @@ private struct MHColorAssetUsagePreview: View {
     }
 }
 
+#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Design System / 02 Color Asset Usage / Light") {
     MHColorAssetUsagePreview(
         context: MHPreviewStyle.context(
@@ -48,3 +49,4 @@ private struct MHColorAssetUsagePreview: View {
         )
     )
 }
+#endif

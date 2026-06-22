@@ -34,6 +34,7 @@ private struct MHActionButtonStyleValidationPreview: View {
     }
 }
 
+#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Validation / Action Buttons", traits: .fixedLayout(width: 900, height: 1_500)) {
     MHPreviewCatalog(
         title: "Validation / Action Buttons",
@@ -45,3 +46,4 @@ private struct MHActionButtonStyleValidationPreview: View {
             .mhPreviewTint(context)
     }
 }
+#endif

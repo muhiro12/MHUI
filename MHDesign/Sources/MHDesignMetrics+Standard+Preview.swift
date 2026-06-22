@@ -4,6 +4,7 @@ private extension MHDesignMetrics {
     static let previewComparison = MHDesignPreviewSupport.comparisonMetrics
 }
 
+#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Design Metrics Tuning", traits: .fixedLayout(width: 980, height: 1_800)) {
     MHDesignPreviewSupport.PreviewCanvas(
         title: "MHDesign metrics tuning",
@@ -33,3 +34,4 @@ private extension MHDesignMetrics {
         }
     }
 }
+#endif

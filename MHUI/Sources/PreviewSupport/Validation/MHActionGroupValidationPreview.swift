@@ -29,6 +29,7 @@ private struct MHActionGroupValidationPreview: View {
     }
 }
 
+#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Validation / Action Group", traits: .fixedLayout(width: 900, height: 1_450)) {
     MHPreviewCatalog(
         title: "Validation / Action Group",
@@ -40,3 +41,4 @@ private struct MHActionGroupValidationPreview: View {
             .mhPreviewTint(context)
     }
 }
+#endif
