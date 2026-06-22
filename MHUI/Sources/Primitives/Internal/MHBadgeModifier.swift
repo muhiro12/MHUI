@@ -26,7 +26,6 @@ struct MHBadgeModifier: ViewModifier {
 
         let styledContent = content
             .mhTextStyle(chromeStyle.textRole, colorRole: chromeStyle.foregroundRole)
-            .textCase(.uppercase)
             .lineLimit(1)
             .allowsTightening(true)
             .fixedSize(horizontal: true, vertical: false)

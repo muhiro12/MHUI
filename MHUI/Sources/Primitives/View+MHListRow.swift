@@ -9,7 +9,6 @@ public extension View {
     /// Styles restrained row metadata shown above a row title.
     func mhRowOverline() -> some View {
         mhTextStyle(.metadata, colorRole: .secondaryText)
-            .textCase(.uppercase)
     }
 
     /// Styles a row title with quiet emphasis.

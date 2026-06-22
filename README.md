@@ -107,6 +107,9 @@ If a host app needs a fixed accent for a specific surface review, use `MHTheme.s
 Detached surfaces prefer Liquid Glass by default through `mhGlassPolicy(.automatic)`.
 That policy exists as a runtime readability switch, not as a low-level glass choreography API.
 Compact width tuning lives in the shared theme defaults and internal resolvers so host apps do not need local fallback workarounds for common rows and actions.
+Text and badge styling modifiers do not force runtime casing; pass the intended
+localized copy at the call site so each language can preserve its own case
+conventions.
 
 Its design attitude is informed by calm, functional retail and editorial environments.
 That influence is about atmosphere only: whitespace, calmer typography, subtle structural accent placement, and practical composition.
