@@ -40,6 +40,7 @@ extension MHTheme {
         return .init(
             backgroundStyle: resolvedInputBackgroundStyle(
                 recipe,
+                isInteractive: state != .normal,
                 glassPolicy: glassPolicy,
                 reduceTransparency: reduceTransparency,
                 supportsGlass: supportsGlass
@@ -52,6 +53,7 @@ extension MHTheme {
 
     private func resolvedInputBackgroundStyle(
         _ recipe: MHInputBackgroundRecipe,
+        isInteractive: Bool,
         glassPolicy: MHGlassPolicy,
         reduceTransparency: Bool,
         supportsGlass: Bool
@@ -68,6 +70,7 @@ extension MHTheme {
             fallbackFillOpacity: recipe.fallbackFillOpacity,
             glassTintRole: usesGlass ? recipe.glassTintRole : nil,
             glassTintOpacity: usesGlass ? recipe.glassTintOpacity : 0,
+            isGlassInteractive: isInteractive && usesGlass,
             borderRole: recipe.borderRole,
             borderOpacity: recipe.borderOpacity
         )

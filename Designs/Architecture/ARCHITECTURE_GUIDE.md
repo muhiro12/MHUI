@@ -42,7 +42,8 @@ Not allowed in the package:
 - Persistence orchestration or infrastructure services
 - Product-specific search, sync, or analytics behavior
 - Navigation meaning that depends on one host app's feature map
-- Low-level glass choreography APIs
+- Low-level glass choreography APIs, glass-effect identity wiring, or morphing
+  transition control
 - Feature-specific wrapper controls that shadow native SwiftUI components
 - Source-compatible or MHUI-prefixed SwiftUtilities helper replacements
 - Generic Foundation, SwiftData, date, string, numeric, image-decoding, or bundle-introspection utilities
@@ -141,5 +142,9 @@ Neither should become the place where new shared styling rules are invented befo
    - Keep row, action, key-value, and cue tuning in `MHUI` even when the implementation is numeric.
    - Keep MHUI APIs generic enough to compose multiple sibling products and re-export `MHDesign` for styled adopters.
    - Keep feature labels, app navigation meaning, and business-state branching outside the package.
+   - Keep Liquid Glass use to package-owned chrome: grouped glass containers,
+     semantic tinting, action interactivity, and accessibility fallbacks.
+   - Prefer native SwiftUI glass, toolbar, and button APIs in host apps when
+     behavior is product-specific.
    - Treat requests for app-specific screen shells as a signal to add host-side composition rather than package-owned product views.
    - Prefer package-owned fallback behavior over host-side compact-width workarounds for standard rows and actions.

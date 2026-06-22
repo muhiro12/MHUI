@@ -83,6 +83,8 @@ check.
 - Verification guards the package boundary so MHUI and MHDesign sources do not
   depend on or import SwiftUtilities or SwiftData.
 - Art-direction presets and low-level glass choreography do not belong in this package.
+- Package-owned Liquid Glass behavior is limited to semantic tinting, grouped
+  chrome containers, action interactivity, and accessibility/runtime fallback.
 - Runtime UI fallback remains package-owned behavior and is separate from consumer-update compatibility policy.
 - Verification should prefer documented XcodeBuildMCP checks and retained
   `ci_scripts/tasks/*.sh` rule entrypoints over ad-hoc commands.

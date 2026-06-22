@@ -55,6 +55,7 @@ extension MHTheme {
                 fallbackFillOpacity: fillOpacity,
                 glassTintRole: usesGlass ? foregroundRole : nil,
                 glassTintOpacity: usesGlass ? fillOpacity : 0,
+                isGlassInteractive: false,
                 borderRole: foregroundRole,
                 borderOpacity: borderOpacity
             ),

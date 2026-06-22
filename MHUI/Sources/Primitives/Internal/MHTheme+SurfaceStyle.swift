@@ -105,6 +105,7 @@ extension MHTheme {
             fallbackFillOpacity: treatment.fallbackOpacity,
             glassTintRole: usesGlass ? treatment.glassTintColorRole : nil,
             glassTintOpacity: usesGlass ? treatment.glassTintOpacity : .zero,
+            isGlassInteractive: false,
             borderRole: treatment.borderColorRole,
             borderOpacity: treatment.borderOpacity
         )

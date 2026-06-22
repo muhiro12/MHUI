@@ -70,6 +70,7 @@ struct MHStyleResolutionTests {
         )
 
         #expect(primary.backgroundStyle?.usesGlass == true)
+        #expect(primary.backgroundStyle?.isGlassInteractive == true)
         #expect(primary.backgroundStyle?.fallbackFillRole == .accent)
         #expect(primary.backgroundStyle?.borderRole == .accent)
         #expect(primary.foregroundRole == .primaryText)
@@ -206,6 +207,7 @@ struct MHStyleResolutionTests {
         #expect(grouped.spacerHeight == theme.presentation.rowVerticalPadding)
         #expect(automaticSurface.usesGlass)
         #expect(enabledSurface.usesGlass)
+        #expect(!enabledSurface.isGlassInteractive)
         #expect(!disabledSurface.usesGlass)
         #expect(!unsupportedSurface.usesGlass)
         #expect(!reducedTransparencySurface.usesGlass)

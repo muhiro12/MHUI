@@ -84,6 +84,7 @@ struct MHThemeTests {
             supportsGlass: false
         )
         #expect(primary.backgroundStyle?.fallbackFillRole == .accent)
+        #expect(primary.backgroundStyle?.isGlassInteractive == false)
         #expect(primary.foregroundRole == .onAccent)
         #expect(primary.backgroundStyle?.borderRole == .accent)
     }

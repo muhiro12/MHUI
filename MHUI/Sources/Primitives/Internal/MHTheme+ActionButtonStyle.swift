@@ -192,6 +192,7 @@ private extension MHTheme {
             glassTintOpacity: usesGlass
                 ? recipe.glassTintOpacity
                 : MHActionButtonConstants.noOpacity,
+            isGlassInteractive: usesGlass,
             borderRole: recipe.borderRole,
             borderOpacity: recipe.borderOpacity
         )
