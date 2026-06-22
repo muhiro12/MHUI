@@ -33,18 +33,6 @@ public struct MHColorReference: Sendable, Equatable {
         )
     }
 
-    static func adaptive(
-        light: MHColorComponents,
-        dark: MHColorComponents
-    ) -> Self {
-        Self(
-            storage: .fixed(
-                light: light,
-                dark: dark
-            )
-        )
-    }
-
     static func asset(
         _ asset: ColorResource
     ) -> Self {
