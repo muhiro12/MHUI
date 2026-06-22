@@ -20,6 +20,12 @@ let package = Package(
             targets: ["MHUI"]
         )
     ],
+    dependencies: [
+        .package(
+            url: "https://github.com/SimplyDanny/SwiftLintPlugins",
+            exact: "0.64.0"
+        )
+    ],
     targets: [
         .target(
             name: "MHDesign",

@@ -4,9 +4,16 @@ struct MHAdaptiveLayoutContext: Sendable, Equatable {
     var availableWidth: CGFloat?
     var horizontalSizeClass: UserInterfaceSizeClass?
 
+    init() {
+        self.init(
+            availableWidth: nil,
+            horizontalSizeClass: nil
+        )
+    }
+
     init(
-        availableWidth: CGFloat? = nil,
-        horizontalSizeClass: UserInterfaceSizeClass? = nil
+        availableWidth: CGFloat?,
+        horizontalSizeClass: UserInterfaceSizeClass?
     ) {
         self.availableWidth = availableWidth
         self.horizontalSizeClass = horizontalSizeClass
@@ -23,8 +30,8 @@ struct MHAdaptiveLayoutContext: Sendable, Equatable {
         }
 
         if context.availableWidth == nil,
-           let horizontalSizeClass = context.horizontalSizeClass,
-           horizontalSizeClass != .regular {
+           let resolvedHorizontalSizeClass = context.horizontalSizeClass,
+           resolvedHorizontalSizeClass != .regular {
             context.availableWidth = threshold - 1
         }
 

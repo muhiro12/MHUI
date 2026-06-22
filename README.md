@@ -276,7 +276,6 @@ Those can be added later only if they strengthen the shared visual language with
 - Xcode with Swift 6.2 and the current iOS, macOS, and watchOS SDKs needed by
   SwiftUI Liquid Glass symbols
 - iOS 18, macOS 15, and watchOS 11 remain the package deployment targets
-- `swiftlint` installed if you want to run retained repository rule checks
 - `pre-commit` installed if you want `verify.sh` to execute repository hooks
 
 ## Build and Test
@@ -290,6 +289,16 @@ tests, use XcodeBuildMCP `test_sim` with the same workspace and scheme.
 
 The remaining helper scripts in `ci_scripts/` are retained for repository rules
 and compatibility wrappers that are not naturally covered by XcodeBuildMCP.
+
+SwiftLint is resolved from the `SimplyDanny/SwiftLintPlugins` package declared
+in `Package.swift`. The repository scripts do not require a separately
+installed `swiftlint` binary on your `PATH`.
+
+Before running retained script checks, diagnose local prerequisites:
+
+```sh
+bash ci_scripts/tasks/check_environment.sh --profile rules
+```
 
 For SwiftLint formatting before final verification:
 

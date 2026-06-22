@@ -1,4 +1,3 @@
-// swiftlint:disable function_default_parameter_at_end
 import SwiftUI
 
 /// Tune validation scenarios here before changing package fallback behavior.
@@ -41,10 +40,10 @@ struct MHPreviewCatalog<Content: View>: View {
     }
 
     init(
-        title: String? = nil,
+        title: String?,
         scenarios: [MHPreviewScenario],
-        casePadding: CGFloat = MHTheme.standard.spacing.content,
-        caseHeight: CGFloat? = nil,
+        casePadding: CGFloat,
+        caseHeight: CGFloat?,
         @ViewBuilder content: @escaping (MHPreviewContext) -> Content
     ) {
         self.title = title
@@ -52,6 +51,50 @@ struct MHPreviewCatalog<Content: View>: View {
         self.casePadding = casePadding
         self.caseHeight = caseHeight
         self.content = content
+    }
+
+    init(
+        title: String?,
+        scenarios: [MHPreviewScenario],
+        @ViewBuilder content: @escaping (MHPreviewContext) -> Content
+    ) {
+        self.init(
+            title: title,
+            scenarios: scenarios,
+            casePadding: MHTheme.standard.spacing.content,
+            caseHeight: nil,
+            content: content
+        )
+    }
+
+    init(
+        title: String?,
+        scenarios: [MHPreviewScenario],
+        caseHeight: CGFloat,
+        @ViewBuilder content: @escaping (MHPreviewContext) -> Content
+    ) {
+        self.init(
+            title: title,
+            scenarios: scenarios,
+            casePadding: MHTheme.standard.spacing.content,
+            caseHeight: caseHeight,
+            content: content
+        )
+    }
+
+    init(
+        title: String?,
+        scenarios: [MHPreviewScenario],
+        casePadding: CGFloat,
+        @ViewBuilder content: @escaping (MHPreviewContext) -> Content
+    ) {
+        self.init(
+            title: title,
+            scenarios: scenarios,
+            casePadding: casePadding,
+            caseHeight: nil,
+            content: content
+        )
     }
 
     @ViewBuilder
@@ -71,4 +114,3 @@ struct MHPreviewCatalog<Content: View>: View {
         }
     }
 }
-// swiftlint:enable function_default_parameter_at_end

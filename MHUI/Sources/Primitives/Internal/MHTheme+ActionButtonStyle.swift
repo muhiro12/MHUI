@@ -3,8 +3,23 @@ extension MHTheme {
         for role: MHButtonRole,
         context: MHAdaptiveLayoutContext,
         glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool
+    ) -> MHResolvedActionButtonStyle {
+        resolvedActionButtonStyle(
+            for: role,
+            context: context,
+            glassPolicy: glassPolicy,
+            reduceTransparency: reduceTransparency,
+            supportsGlass: MHGlassRuntimeSupport.isAvailable
+        )
+    }
+
+    func resolvedActionButtonStyle(
+        for role: MHButtonRole,
+        context: MHAdaptiveLayoutContext,
+        glassPolicy: MHGlassPolicy,
         reduceTransparency: Bool,
-        supportsGlass: Bool = MHGlassRuntimeSupport.isAvailable
+        supportsGlass: Bool
     ) -> MHResolvedActionButtonStyle {
         let padding = actionButtonPadding(for: context)
 

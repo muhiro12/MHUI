@@ -22,10 +22,17 @@ struct MHGlassContainer<Content: View>: View {
     }
 
     init(
-        spacing: CGFloat? = nil,
+        spacing: CGFloat,
         @ViewBuilder content: () -> Content
     ) {
         self.spacing = spacing
+        self.content = content()
+    }
+
+    init(
+        @ViewBuilder content: () -> Content
+    ) {
+        self.spacing = nil
         self.content = content()
     }
 }

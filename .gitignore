@@ -1,6 +1,9 @@
 # Finder
 .DS_Store
 
+# SwiftPM and local CI artifacts
+.build/
+
 # Xcode - User files
 xcuserdata/
 

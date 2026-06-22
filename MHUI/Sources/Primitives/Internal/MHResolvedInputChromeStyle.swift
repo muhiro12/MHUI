@@ -19,8 +19,21 @@ extension MHTheme {
     func resolvedInputChromeStyle(
         for state: MHFieldState,
         glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool
+    ) -> MHResolvedInputChromeStyle {
+        resolvedInputChromeStyle(
+            for: state,
+            glassPolicy: glassPolicy,
+            reduceTransparency: reduceTransparency,
+            supportsGlass: MHGlassRuntimeSupport.isAvailable
+        )
+    }
+
+    func resolvedInputChromeStyle(
+        for state: MHFieldState,
+        glassPolicy: MHGlassPolicy,
         reduceTransparency: Bool,
-        supportsGlass: Bool = MHGlassRuntimeSupport.isAvailable
+        supportsGlass: Bool
     ) -> MHResolvedInputChromeStyle {
         let recipe = inputBackgroundRecipe(for: state)
 

@@ -28,8 +28,21 @@ extension MHTheme {
     func resolvedSurfaceStyle(
         for role: MHSurfaceRole,
         glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool
+    ) -> MHResolvedSurfaceStyle {
+        resolvedSurfaceStyle(
+            for: role,
+            glassPolicy: glassPolicy,
+            reduceTransparency: reduceTransparency,
+            supportsGlass: MHGlassRuntimeSupport.isAvailable
+        )
+    }
+
+    func resolvedSurfaceStyle(
+        for role: MHSurfaceRole,
+        glassPolicy: MHGlassPolicy,
         reduceTransparency: Bool,
-        supportsGlass: Bool = MHGlassRuntimeSupport.isAvailable
+        supportsGlass: Bool
     ) -> MHResolvedSurfaceStyle {
         resolvedSurfaceStyle(
             treatment: treatment(for: role),
@@ -41,8 +54,19 @@ extension MHTheme {
 
     func resolvedCanvasSurfaceStyle(
         glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool
+    ) -> MHResolvedSurfaceStyle {
+        resolvedCanvasSurfaceStyle(
+            glassPolicy: glassPolicy,
+            reduceTransparency: reduceTransparency,
+            supportsGlass: MHGlassRuntimeSupport.isAvailable
+        )
+    }
+
+    func resolvedCanvasSurfaceStyle(
+        glassPolicy: MHGlassPolicy,
         reduceTransparency: Bool,
-        supportsGlass: Bool = MHGlassRuntimeSupport.isAvailable
+        supportsGlass: Bool
     ) -> MHResolvedSurfaceStyle {
         resolvedSurfaceStyle(
             treatment: surfaces.canvas,

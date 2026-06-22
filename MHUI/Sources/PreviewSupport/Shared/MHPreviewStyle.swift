@@ -143,24 +143,6 @@ enum MHPreviewStyle {
         static let stressPhone: CGFloat = 320
     }
 
-    static let defaultContext = context()
-
-    static func context(
-        colorMode: MHPreviewColorMode = .light,
-        glassPolicy: MHGlassPolicy = .automatic,
-        typeScale: MHPreviewTypeScale = .regular,
-        controlSize: ControlSize = .regular,
-        isEnabled: Bool = true
-    ) -> MHPreviewContext {
-        .init(
-            colorMode: colorMode,
-            glassPolicy: glassPolicy,
-            typeScale: typeScale,
-            controlSize: controlSize,
-            isEnabled: isEnabled
-        )
-    }
-
     static func theme(
         for context: MHPreviewContext
     ) -> MHTheme {
@@ -305,7 +287,7 @@ enum MHPreviewStyle {
     }
 }
 
-private struct MHPreviewContextModifier: ViewModifier {
+struct MHPreviewContextModifier: ViewModifier {
     let context: MHPreviewContext
     let padding: CGFloat?
     let showsBackground: Bool
@@ -333,46 +315,6 @@ private struct MHPreviewContextModifier: ViewModifier {
                 MHPreviewStyle.backgroundColor(for: context)
             }
         }
-    }
-}
-
-extension View {
-    func mhPreviewTint(
-        _ context: MHPreviewContext
-    ) -> some View {
-        modifier(
-            MHPreviewContextModifier(
-                context: context,
-                padding: nil,
-                showsBackground: false
-            )
-        )
-    }
-
-    func mhPreviewTint() -> some View {
-        mhPreviewTint(MHPreviewStyle.defaultContext)
-    }
-
-    func mhPreviewSurface(
-        _ context: MHPreviewContext,
-        padding: CGFloat = MHTheme.standard.spacing.content
-    ) -> some View {
-        modifier(
-            MHPreviewContextModifier(
-                context: context,
-                padding: padding,
-                showsBackground: true
-            )
-        )
-    }
-
-    func mhPreviewSurface(
-        padding: CGFloat = MHTheme.standard.spacing.content
-    ) -> some View {
-        mhPreviewSurface(
-            MHPreviewStyle.defaultContext,
-            padding: padding
-        )
     }
 }
 // swiftlint:enable file_types_order one_declaration_per_file type_contents_order

@@ -81,12 +81,23 @@ extension MHDesignPreviewSupport {
 
         init(
             title: String,
-            supporting: String? = nil,
+            supporting: String?,
             @ViewBuilder content: () -> Content
         ) {
             self.title = title
             self.supporting = supporting
             self.content = content()
+        }
+
+        init(
+            title: String,
+            @ViewBuilder content: () -> Content
+        ) {
+            self.init(
+                title: title,
+                supporting: nil,
+                content: content
+            )
         }
 
         var body: some View {
@@ -118,12 +129,23 @@ extension MHDesignPreviewSupport {
 
         init(
             title: String,
-            supporting: String? = nil,
+            supporting: String?,
             @ViewBuilder content: () -> Content
         ) {
             self.title = title
             self.supporting = supporting
             self.content = content()
+        }
+
+        init(
+            title: String,
+            @ViewBuilder content: () -> Content
+        ) {
+            self.init(
+                title: title,
+                supporting: nil,
+                content: content
+            )
         }
 
         var body: some View {

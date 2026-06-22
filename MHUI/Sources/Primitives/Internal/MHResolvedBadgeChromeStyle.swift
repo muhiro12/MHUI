@@ -17,8 +17,21 @@ extension MHTheme {
     func resolvedBadgeChromeStyle(
         for style: MHBadgeStyle,
         glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool
+    ) -> MHResolvedBadgeChromeStyle {
+        resolvedBadgeChromeStyle(
+            for: style,
+            glassPolicy: glassPolicy,
+            reduceTransparency: reduceTransparency,
+            supportsGlass: MHGlassRuntimeSupport.isAvailable
+        )
+    }
+
+    func resolvedBadgeChromeStyle(
+        for style: MHBadgeStyle,
+        glassPolicy: MHGlassPolicy,
         reduceTransparency: Bool,
-        supportsGlass: Bool = MHGlassRuntimeSupport.isAvailable
+        supportsGlass: Bool
     ) -> MHResolvedBadgeChromeStyle {
         let foregroundRole = badgeForegroundColorRole(for: style)
         let fillOpacity = style == .neutral

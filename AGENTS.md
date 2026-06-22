@@ -79,7 +79,9 @@ bash ci_scripts/tasks/check_repository_rules.sh
 
 `check_repository_rules.sh` runs SwiftLint, package boundary checks, consumer
 adoption checks, and static architecture checks that are not naturally covered
-by XcodeBuildMCP. SwiftLint is resolved from the local `swiftlint` command.
+by XcodeBuildMCP. SwiftLint is resolved from the `SimplyDanny/SwiftLintPlugins`
+package declared in `Package.swift`, not from a separately installed
+`swiftlint` binary.
 
 `verify.sh` is retained as a pre-commit plus repository-rules compatibility
 wrapper. Direct shell build and test scripts are compatibility or fallback tools;
