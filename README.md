@@ -44,7 +44,7 @@ Those responsibilities stay outside the package.
 - `MHUI/Sources/PreviewSupport` - shared preview styling helpers and regression validation catalogs
 - `MHUI/Resources` - package-owned asset catalogs backing MHUI standard theme resources
 - `MHDesign/Tests` and `MHUI/Tests` - package verification surfaces
-- `ci_scripts/` - stable build, test, and verify entrypoints
+- `ci_scripts/` - retained repository rules, SwiftLint helpers, and compatibility entrypoints
 - `Designs/` - architecture notes, current overview, and ADRs
 - `Example/` - optional macOS consumer app used only when present for integration review; watchOS support stays package-level
 
@@ -273,8 +273,9 @@ Those can be added later only if they strengthen the shared visual language with
 
 ## Requirements
 
-- Xcode 16 or later with the iOS 18, macOS 15, and watchOS 11 SDKs installed
-- Swift 6.2 toolchain
+- Xcode with Swift 6.2 and the current iOS, macOS, and watchOS SDKs needed by
+  SwiftUI Liquid Glass symbols
+- iOS 18, macOS 15, and watchOS 11 remain the package deployment targets
 - `swiftlint` installed if you want to run retained repository rule checks
 - `pre-commit` installed if you want `verify.sh` to execute repository hooks
 
@@ -289,6 +290,12 @@ tests, use XcodeBuildMCP `test_sim` with the same workspace and scheme.
 
 The remaining helper scripts in `ci_scripts/` are retained for repository rules
 and compatibility wrappers that are not naturally covered by XcodeBuildMCP.
+
+For SwiftLint formatting before final verification:
+
+```sh
+bash ci_scripts/tasks/format_swift.sh
+```
 
 For retained repository rule checks:
 
@@ -308,9 +315,14 @@ If you only need the repository hooks:
 bash ci_scripts/tasks/pre_commit.sh
 ```
 
-The aggregate shell build and test wrappers are kept for compatibility and
-fallback use when MCP is unavailable or when a check is not yet covered by the
-available MCP tool surface.
+If you only need strict SwiftLint:
+
+```sh
+bash ci_scripts/tasks/lint_swift.sh
+```
+
+The compatibility shell build and test wrappers are kept for cases where MCP is
+unavailable or the available MCP tool surface does not cover the check.
 
 For the compatibility package build, watchOS simulator compile-only check, and
 optional macOS example app build:
@@ -338,11 +350,12 @@ alone:
 bash ci_scripts/tasks/test_mhui_consumer_adoption.sh
 ```
 
-### CI Artifact Layout
+### Script Cache Layout
 
-CI helper scripts write generated artifacts under `.build/ci/`.
-Run-scoped outputs are stored in `.build/ci/runs/<RUN_ID>/` and include `summary.md`, `commands.txt`, `meta.json`, `logs/`, `results/`, and `work/`.
-Shared caches and build state live in `.build/ci/shared/` under `cache/`, `DerivedData/`, `tmp/`, and `home/`.
+Compatibility shell build and test scripts may write generated artifacts under
+`.build/ci/shared/`.
+Shared caches and build state live under `cache/`, `DerivedData`, `tmp`, and
+`home`, with result bundles under `results` when a shell wrapper creates them.
 
 ## Architecture Docs
 

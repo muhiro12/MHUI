@@ -27,6 +27,16 @@ Repository-specific agent contract for MHUI.
   <https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md>.
 - Swift code must comply with the repository SwiftLint configuration.
 
+## Toolchain Compatibility
+
+- Treat the selected latest Xcode with Swift 6.2 and the current Apple platform
+  SDKs as the default local package toolchain.
+- Keep the package deployment targets at iOS 18, macOS 15, and watchOS 11 unless
+  a package contract change explicitly moves them.
+- For Liquid Glass and other SDK-sensitive SwiftUI APIs, prefer latest SDK
+  spelling in package code, then isolate older-runtime behavior behind small
+  availability-checked helpers with explicit fallbacks.
+
 ## Build and Test Entry Point
 
 Agents MUST prefer XcodeBuildMCP for Apple build, test, run, Simulator,
@@ -55,6 +65,12 @@ previews, or adopter-facing behavior are affected.
 - For SwiftUI visual primitives, preview behavior, or design-system treatment
   changes, add targeted preview, sample, or runtime/UI evidence when available.
 
+When Swift files are edited, agents should run:
+
+```sh
+bash ci_scripts/tasks/format_swift.sh
+```
+
 Agents should also run the retained repository rule checks:
 
 ```sh
@@ -63,13 +79,12 @@ bash ci_scripts/tasks/check_repository_rules.sh
 
 `check_repository_rules.sh` runs SwiftLint, package boundary checks, consumer
 adoption checks, and static architecture checks that are not naturally covered
-by XcodeBuildMCP.
+by XcodeBuildMCP. SwiftLint is resolved from the local `swiftlint` command.
 
 `verify.sh` is retained as a pre-commit plus repository-rules compatibility
 wrapper. Direct shell build and test scripts are compatibility or fallback tools;
 do not treat them as the primary agent verification surface when MCP is
 available.
 
-Compatibility scripts write disposable CI artifacts under
-`.build/ci/runs/<RUN_ID>/` and shared data under `.build/ci/shared/`. Only the
-newest 5 run directories are retained.
+Compatibility shell build and test scripts may write disposable cache data and
+result bundles under `.build/ci/shared/`.

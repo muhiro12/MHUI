@@ -97,13 +97,14 @@ Neither should become the place where new shared styling rules are invented befo
   the same boundary.
 - Keep package verification in `MHDesign/Tests` and `MHUI/Tests`.
 - Scope library targets to `Sources`, exclude target-local `Tests` from library target discovery, and expose package tests through explicit SwiftPM test targets.
-- Keep stable automation entrypoints in `ci_scripts/tasks/`.
+- Keep retained repository-rule scripts, SwiftLint helpers, and compatibility
+  entrypoints in `ci_scripts/tasks/`.
 - Keep architectural intent in `Designs/`.
 - Treat `Example/` as optional and adapter-like when it exists.
 
 ## Current Hotspots and Minimal Plans
 
-1. CI and architecture docs should stay package-first.
+1. Verification and architecture docs should stay package-first.
 
    Files:
    - `README.md`
@@ -113,7 +114,9 @@ Neither should become the place where new shared styling rules are invented befo
    Minimal plan:
    - Keep contributor workflow documented at the repository root.
    - Keep architecture intent in versioned docs under `Designs/`.
-   - Keep automation entrypoints stable so humans and CI can reuse them.
+   - Keep XcodeBuildMCP as the primary Apple build and test surface.
+   - Keep shell scripts focused on retained rules, SwiftLint, and compatibility
+     fallback checks.
 
 2. Example app integration should remain optional and thin.
 
