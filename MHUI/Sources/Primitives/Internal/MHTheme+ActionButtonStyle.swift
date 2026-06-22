@@ -1,13 +1,3 @@
-// swiftlint:disable function_body_length no_magic_numbers
-private struct MHButtonBackgroundRecipe {
-    let fallbackFillRole: MHColorRole?
-    let fallbackFillOpacity: Double
-    let glassTintRole: MHColorRole?
-    let glassTintOpacity: Double
-    let borderRole: MHColorRole?
-    let borderOpacity: Double
-}
-
 extension MHTheme {
     func resolvedActionButtonStyle(
         for role: MHButtonRole,
@@ -16,99 +6,31 @@ extension MHTheme {
         reduceTransparency: Bool,
         supportsGlass: Bool = MHGlassRuntimeSupport.isAvailable
     ) -> MHResolvedActionButtonStyle {
-        let isCompactWidth = context.isCompactWidth(
-            threshold: layout.compactWidthThreshold
-        )
-        let filledHorizontalPadding = isCompactWidth
-            ? presentation.compactActionHorizontalPadding
-            : spacing.content
-        let filledVerticalPadding = isCompactWidth
-            ? presentation.compactActionVerticalPadding
-            : spacing.control
-        let quietHorizontalPadding = isCompactWidth
-            ? presentation.compactRowAccessorySpacing
-            : spacing.control
-        let quietVerticalPadding = isCompactWidth
-            ? presentation.compactKeyValueSpacing
-            : spacing.inline
+        let padding = actionButtonPadding(for: context)
 
         switch role {
         case .primary:
-            let backgroundStyle = resolvedGlassBackgroundStyle(
-                .init(
-                    fallbackFillRole: .accent,
-                    fallbackFillOpacity: 1,
-                    glassTintRole: .accent,
-                    glassTintOpacity: 0.20,
-                    borderRole: .accent,
-                    borderOpacity: 0
-                ),
+            return primaryActionButtonStyle(
+                padding: padding,
                 glassPolicy: glassPolicy,
                 reduceTransparency: reduceTransparency,
                 supportsGlass: supportsGlass
             )
-            return .init(
-                backgroundStyle: backgroundStyle,
-                foregroundRole: backgroundStyle.usesGlass ? .primaryText : .onAccent,
-                horizontalPadding: filledHorizontalPadding,
-                verticalPadding: filledVerticalPadding,
-                minimumHeight: layout.control.minimumTouchTarget,
-                pressedOpacity: 0.88,
-                disabledOpacity: 0.55
-            )
         case .secondary:
-            return .init(
-                backgroundStyle: resolvedGlassBackgroundStyle(
-                    .init(
-                        fallbackFillRole: .surface,
-                        fallbackFillOpacity: 1,
-                        glassTintRole: .surface,
-                        glassTintOpacity: 0.12,
-                        borderRole: .border,
-                        borderOpacity: 0.22
-                    ),
-                    glassPolicy: glassPolicy,
-                    reduceTransparency: reduceTransparency,
-                    supportsGlass: supportsGlass
-                ),
-                foregroundRole: .primaryText,
-                horizontalPadding: filledHorizontalPadding,
-                verticalPadding: filledVerticalPadding,
-                minimumHeight: layout.control.minimumTouchTarget,
-                pressedOpacity: 0.88,
-                disabledOpacity: 0.55
+            return secondaryActionButtonStyle(
+                padding: padding,
+                glassPolicy: glassPolicy,
+                reduceTransparency: reduceTransparency,
+                supportsGlass: supportsGlass
             )
         case .quiet:
-            return .init(
-                backgroundStyle: nil,
-                foregroundRole: .accent,
-                horizontalPadding: quietHorizontalPadding,
-                verticalPadding: quietVerticalPadding,
-                minimumHeight: layout.control.minimumTouchTarget,
-                pressedOpacity: 0.72,
-                disabledOpacity: 0.50
-            )
+            return quietActionButtonStyle(padding: padding)
         case .destructive:
-            return .init(
-                backgroundStyle: resolvedGlassBackgroundStyle(
-                    .init(
-                        fallbackFillRole: .surface,
-                        fallbackFillOpacity: 1,
-                        glassTintRole: .destructive,
-                        glassTintOpacity: 0.10,
-                        borderRole: .destructive,
-                        borderOpacity: 0.20
-                    ),
-                    glassPolicy: glassPolicy,
-                    reduceTransparency: reduceTransparency,
-                    supportsGlass: supportsGlass
-                ),
-                foregroundRole: .destructive,
-                horizontalPadding: filledHorizontalPadding,
-                verticalPadding: filledVerticalPadding,
-                minimumHeight: layout.control.minimumTouchTarget,
-                pressedOpacity: 0.88,
-                disabledOpacity: 0.55
+            return destructiveActionButtonStyle(
+                padding: padding,
+                glassPolicy: glassPolicy,
+                reduceTransparency: reduceTransparency,
+                supportsGlass: supportsGlass
             )
         }
     }
@@ -123,8 +45,119 @@ extension MHTheme {
             reduceTransparency: false
         )
     }
+}
 
-    private func resolvedGlassBackgroundStyle(
+private extension MHTheme {
+    func actionButtonPadding(
+        for context: MHAdaptiveLayoutContext
+    ) -> MHActionButtonPadding {
+        let isCompactWidth = context.isCompactWidth(
+            threshold: layout.compactWidthThreshold
+        )
+
+        return .init(
+            filledHorizontal: isCompactWidth
+                ? presentation.compactActionHorizontalPadding
+                : spacing.content,
+            filledVertical: isCompactWidth
+                ? presentation.compactActionVerticalPadding
+                : spacing.control,
+            quietHorizontal: isCompactWidth
+                ? presentation.compactRowAccessorySpacing
+                : spacing.control,
+            quietVertical: isCompactWidth
+                ? presentation.compactKeyValueSpacing
+                : spacing.inline
+        )
+    }
+
+    func primaryActionButtonStyle(
+        padding: MHActionButtonPadding,
+        glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool,
+        supportsGlass: Bool
+    ) -> MHResolvedActionButtonStyle {
+        let backgroundStyle = resolvedGlassBackgroundStyle(
+            .primary,
+            glassPolicy: glassPolicy,
+            reduceTransparency: reduceTransparency,
+            supportsGlass: supportsGlass
+        )
+
+        return filledActionButtonStyle(
+            backgroundStyle: backgroundStyle,
+            foregroundRole: backgroundStyle.usesGlass ? .primaryText : .onAccent,
+            padding: padding
+        )
+    }
+
+    func secondaryActionButtonStyle(
+        padding: MHActionButtonPadding,
+        glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool,
+        supportsGlass: Bool
+    ) -> MHResolvedActionButtonStyle {
+        filledActionButtonStyle(
+            backgroundStyle: resolvedGlassBackgroundStyle(
+                .secondary,
+                glassPolicy: glassPolicy,
+                reduceTransparency: reduceTransparency,
+                supportsGlass: supportsGlass
+            ),
+            foregroundRole: .primaryText,
+            padding: padding
+        )
+    }
+
+    func destructiveActionButtonStyle(
+        padding: MHActionButtonPadding,
+        glassPolicy: MHGlassPolicy,
+        reduceTransparency: Bool,
+        supportsGlass: Bool
+    ) -> MHResolvedActionButtonStyle {
+        filledActionButtonStyle(
+            backgroundStyle: resolvedGlassBackgroundStyle(
+                .destructive,
+                glassPolicy: glassPolicy,
+                reduceTransparency: reduceTransparency,
+                supportsGlass: supportsGlass
+            ),
+            foregroundRole: .destructive,
+            padding: padding
+        )
+    }
+
+    func quietActionButtonStyle(
+        padding: MHActionButtonPadding
+    ) -> MHResolvedActionButtonStyle {
+        .init(
+            backgroundStyle: nil,
+            foregroundRole: .accent,
+            horizontalPadding: padding.quietHorizontal,
+            verticalPadding: padding.quietVertical,
+            minimumHeight: layout.control.minimumTouchTarget,
+            pressedOpacity: MHActionButtonConstants.quietPressedOpacity,
+            disabledOpacity: MHActionButtonConstants.quietDisabledOpacity
+        )
+    }
+
+    func filledActionButtonStyle(
+        backgroundStyle: MHResolvedGlassBackgroundStyle,
+        foregroundRole: MHColorRole,
+        padding: MHActionButtonPadding
+    ) -> MHResolvedActionButtonStyle {
+        .init(
+            backgroundStyle: backgroundStyle,
+            foregroundRole: foregroundRole,
+            horizontalPadding: padding.filledHorizontal,
+            verticalPadding: padding.filledVertical,
+            minimumHeight: layout.control.minimumTouchTarget,
+            pressedOpacity: MHActionButtonConstants.filledPressedOpacity,
+            disabledOpacity: MHActionButtonConstants.filledDisabledOpacity
+        )
+    }
+
+    func resolvedGlassBackgroundStyle(
         _ recipe: MHButtonBackgroundRecipe,
         glassPolicy: MHGlassPolicy,
         reduceTransparency: Bool,
@@ -141,10 +174,40 @@ extension MHTheme {
             fallbackFillRole: recipe.fallbackFillRole,
             fallbackFillOpacity: recipe.fallbackFillOpacity,
             glassTintRole: usesGlass ? recipe.glassTintRole : nil,
-            glassTintOpacity: usesGlass ? recipe.glassTintOpacity : 0,
+            glassTintOpacity: usesGlass
+                ? recipe.glassTintOpacity
+                : MHActionButtonConstants.noOpacity,
             borderRole: recipe.borderRole,
             borderOpacity: recipe.borderOpacity
         )
     }
 }
-// swiftlint:enable function_body_length no_magic_numbers
+
+private extension MHButtonBackgroundRecipe {
+    static let primary = Self(
+        fallbackFillRole: .accent,
+        fallbackFillOpacity: MHActionButtonConstants.opaque,
+        glassTintRole: .accent,
+        glassTintOpacity: MHActionButtonConstants.primaryGlassTintOpacity,
+        borderRole: .accent,
+        borderOpacity: MHActionButtonConstants.noOpacity
+    )
+
+    static let secondary = Self(
+        fallbackFillRole: .surface,
+        fallbackFillOpacity: MHActionButtonConstants.opaque,
+        glassTintRole: .surface,
+        glassTintOpacity: MHActionButtonConstants.secondaryGlassTintOpacity,
+        borderRole: .border,
+        borderOpacity: MHActionButtonConstants.secondaryBorderOpacity
+    )
+
+    static let destructive = Self(
+        fallbackFillRole: .surface,
+        fallbackFillOpacity: MHActionButtonConstants.opaque,
+        glassTintRole: .destructive,
+        glassTintOpacity: MHActionButtonConstants.destructiveGlassTintOpacity,
+        borderRole: .destructive,
+        borderOpacity: MHActionButtonConstants.destructiveBorderOpacity
+    )
+}

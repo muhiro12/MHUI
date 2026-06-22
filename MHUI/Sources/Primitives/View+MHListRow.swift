@@ -1,26 +1,4 @@
-// swiftlint:disable one_declaration_per_file file_types_order
 import SwiftUI
-
-private enum MHListRow {}
-
-private struct MHRowModifier: ViewModifier {
-    @Environment(\.mhTheme)
-    private var theme
-    @Environment(\.mhAdaptiveLayoutContext)
-    private var adaptiveLayoutContext
-    @Environment(\.horizontalSizeClass)
-    private var horizontalSizeClass
-
-    func body(content: Content) -> some View {
-        let context = adaptiveLayoutContext.resolved(
-            with: horizontalSizeClass,
-            threshold: theme.layout.compactWidthThreshold
-        )
-
-        content
-            .mhRowChrome(theme.resolvedRowChromeStyle(for: context))
-    }
-}
 
 public extension View {
     /// Applies the shared MHUI row container rhythm.
@@ -77,4 +55,3 @@ public extension View {
     .mhSurface()
     .mhPreviewSurface()
 }
-// swiftlint:enable one_declaration_per_file file_types_order

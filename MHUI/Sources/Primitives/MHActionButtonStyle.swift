@@ -1,5 +1,5 @@
-// swiftlint:disable file_types_order function_body_length one_declaration_per_file
 import SwiftUI
+
 /// A restrained button style for primary, secondary, quiet, and destructive actions.
 public struct MHActionButtonStyle: ButtonStyle {
     @Environment(\.mhTheme)
@@ -44,134 +44,19 @@ public struct MHActionButtonStyle: ButtonStyle {
             actionPresentation,
             for: context
         )
-        let shape = RoundedRectangle(
-            cornerRadius: theme.cornerRadius.control,
-            style: .continuous
-        )
 
-        resolvedLabel(
+        return resolvedLabel(
             for: configuration,
             presentation: presentation
         )
-        .mhTextStyle(.bodyStrong, colorRole: style.foregroundRole)
-        .padding(.horizontal, style.horizontalPadding)
-        .padding(.vertical, style.verticalPadding)
-        .frame(minHeight: style.minimumHeight)
-        .background {
-            if let backgroundStyle = style.backgroundStyle {
-                MHSurfaceFill(
-                    shape: shape,
-                    style: backgroundStyle,
-                    theme: theme,
-                    colorScheme: colorScheme
-                )
-            }
-        }
-        .overlay {
-            if let backgroundStyle = style.backgroundStyle,
-               let borderRole = backgroundStyle.borderRole {
-                shape
-                    .stroke(
-                        theme.resolvedColor(
-                            for: borderRole,
-                            in: colorScheme
-                        )
-                        .opacity(backgroundStyle.borderOpacity),
-                        lineWidth: theme.divider.thickness
-                    )
-            }
-        }
-        .contentShape(shape)
-        .opacity(isEnabled ? 1 : style.disabledOpacity)
-        .opacity(configuration.isPressed ? style.pressedOpacity : 1)
-    }
-}
-
-public extension ButtonStyle where Self == MHActionButtonStyle {
-    /// Returns the restrained primary MHUI action button style.
-    static var mhPrimary: Self {
-        .init(role: .primary)
-    }
-
-    /// Returns the restrained secondary MHUI action button style.
-    static var mhSecondary: Self {
-        .init(role: .secondary)
-    }
-
-    /// Returns the text-first quiet MHUI action button style.
-    static var mhQuiet: Self {
-        .init(role: .quiet)
-    }
-
-    /// Returns the restrained destructive MHUI action button style.
-    static var mhDestructive: Self {
-        .init(role: .destructive)
-    }
-
-    /// Returns an MHUI action button style for the requested semantic role.
-    static func mhAction(_ role: MHButtonRole) -> Self {
-        .init(role: role)
-    }
-}
-
-private extension MHActionButtonStyle {
-    @ViewBuilder
-    func resolvedLabel(
-        for configuration: Configuration,
-        presentation: MHResolvedActionPresentation
-    ) -> some View {
-        let label = configuration.label
-            .lineLimit(presentation.lineLimit)
-            .multilineTextAlignment(
-                presentation.alignment == .leading
-                    ? .leading
-                    : .center
+        .modifier(
+            MHActionButtonChromeModifier(
+                style: style,
+                theme: theme,
+                colorScheme: colorScheme,
+                isEnabled: isEnabled,
+                isPressed: configuration.isPressed
             )
-            .truncationMode(.tail)
-            .allowsTightening(presentation.allowsTightening)
-            .fixedSize(
-                horizontal: presentation.usesFixedHorizontalSize,
-                vertical: false
-            )
-            .layoutPriority(1)
-
-        if presentation.expandsHorizontally {
-            label.frame(
-                maxWidth: .infinity,
-                alignment: presentation.alignment
-            )
-        } else {
-            label
-        }
+        )
     }
 }
-
-// MARK: - Preview
-
-private struct MHActionButtonStylePreviewContent: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.content) {
-            Button("Save Current Workspace Configuration") {
-                // no-op
-            }
-            .buttonStyle(.mhPrimary)
-
-            Button("Review the Shared Compact Width Policy") {
-                // no-op
-            }
-            .buttonStyle(.mhSecondary)
-
-            Button("Remove This Configuration") {
-                // no-op
-            }
-            .buttonStyle(.mhDestructive)
-            .mhActionPresentation(.fullWidthLeading)
-        }
-    }
-}
-
-#Preview("Action Button Style", traits: .fixedLayout(width: 375, height: 320)) {
-    MHActionButtonStylePreviewContent()
-        .mhPreviewSurface()
-}
-// swiftlint:enable file_types_order function_body_length one_declaration_per_file

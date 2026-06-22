@@ -6,7 +6,85 @@ public extension MHTheme {
     /// Tune default spacing, typography, and surface recipes here first.
     static let standard = standard()
 
-    // swiftlint:disable function_body_length
+    private static var standardTypography: Typography {
+        .init(
+            screenTitle: .init(style: .title2, weight: .semibold),
+            sectionTitle: .init(style: .title3, weight: .semibold),
+            body: .init(style: .body, weight: .regular),
+            bodyStrong: .init(style: .body, weight: .medium),
+            supporting: .init(style: .subheadline, weight: .regular),
+            metadata: .init(style: .footnote, weight: .medium),
+            caption: .init(style: .footnote, weight: .medium)
+        )
+    }
+
+    private static var standardPresentation: MHPresentationMetrics {
+        .init(
+            rowHorizontalInset: 24,
+            rowVerticalPadding: 16,
+            rowAccessorySpacing: 16,
+            compactRowHorizontalInset: 16,
+            compactRowVerticalPadding: 8,
+            compactRowAccessorySpacing: 8,
+            compactActionHorizontalPadding: 16,
+            compactActionVerticalPadding: 8,
+            regularKeyValueMinimumValueWidth: 160,
+            compactKeyValueMinimumValueWidth: 120,
+            compactKeyValueSpacing: 8,
+            compactActionGroupSpacing: 8,
+            screenCueWidth: 24,
+            screenCueHeight: 2,
+            sectionCueWidth: 16,
+            sectionCueHeight: 2
+        )
+    }
+
+    private static var standardDivider: Divider {
+        .init(
+            thickness: 1,
+            opacity: 0.50
+        )
+    }
+
+    private static var standardMotion: Motion {
+        .init(
+            quick: 0.14,
+            regular: 0.22
+        )
+    }
+
+    private static var standardSurfaces: Surfaces {
+        .init(
+            canvas: .init(
+                prefersGlass: false,
+                fallbackColorRole: .background,
+                fallbackOpacity: 1,
+                glassTintColorRole: nil,
+                glassTintOpacity: 0,
+                borderColorRole: .border,
+                borderOpacity: 0
+            ),
+            standard: .init(
+                prefersGlass: true,
+                fallbackColorRole: .surface,
+                fallbackOpacity: 1,
+                glassTintColorRole: .surface,
+                glassTintOpacity: 0.12,
+                borderColorRole: .border,
+                borderOpacity: 0.24
+            ),
+            muted: .init(
+                prefersGlass: true,
+                fallbackColorRole: .surfaceMuted,
+                fallbackOpacity: 1,
+                glassTintColorRole: .surfaceMuted,
+                glassTintOpacity: 0.08,
+                borderColorRole: .border,
+                borderOpacity: 0.18
+            )
+        )
+    }
+
     /// Creates the standard neutral MHUI theme using the selected accent source.
     /// Uses the default MHUI on-accent foreground asset.
     static func standard(
@@ -35,87 +113,38 @@ public extension MHTheme {
         onAccent: MHColorReference
     ) -> Self {
         Self(
-            colors: .init(
-                background: .asset(MHColorAsset.background),
-                surface: .asset(MHColorAsset.surface),
-                surfaceElevated: .asset(MHColorAsset.surfaceElevated),
-                surfaceMuted: .asset(MHColorAsset.surfaceMuted),
-                border: .asset(MHColorAsset.border),
-                primaryText: .asset(MHColorAsset.primaryText),
-                secondaryText: .asset(MHColorAsset.secondaryText),
-                tertiaryText: .asset(MHColorAsset.tertiaryText),
+            colors: standardColors(
                 accent: accent,
-                onAccent: onAccent,
-                warning: .asset(MHColorAsset.warning),
-                destructive: .asset(MHColorAsset.destructive)
+                onAccent: onAccent
             ),
-            typography: .init(
-                screenTitle: .init(style: .title2, weight: .semibold),
-                sectionTitle: .init(style: .title3, weight: .semibold),
-                body: .init(style: .body, weight: .regular),
-                bodyStrong: .init(style: .body, weight: .medium),
-                supporting: .init(style: .subheadline, weight: .regular),
-                metadata: .init(style: .footnote, weight: .medium),
-                caption: .init(style: .footnote, weight: .medium)
-            ),
+            typography: standardTypography,
             metrics: .standard,
-            presentation: .init(
-                rowHorizontalInset: 24,
-                rowVerticalPadding: 16,
-                rowAccessorySpacing: 16,
-                compactRowHorizontalInset: 16,
-                compactRowVerticalPadding: 8,
-                compactRowAccessorySpacing: 8,
-                compactActionHorizontalPadding: 16,
-                compactActionVerticalPadding: 8,
-                regularKeyValueMinimumValueWidth: 160,
-                compactKeyValueMinimumValueWidth: 120,
-                compactKeyValueSpacing: 8,
-                compactActionGroupSpacing: 8,
-                screenCueWidth: 24,
-                screenCueHeight: 2,
-                sectionCueWidth: 16,
-                sectionCueHeight: 2
-            ),
-            divider: .init(
-                thickness: 1,
-                opacity: 0.50
-            ),
-            motion: .init(
-                quick: 0.14,
-                regular: 0.22
-            ),
-            surfaces: .init(
-                canvas: .init(
-                    prefersGlass: false,
-                    fallbackColorRole: .background,
-                    fallbackOpacity: 1,
-                    glassTintColorRole: nil,
-                    glassTintOpacity: 0,
-                    borderColorRole: .border,
-                    borderOpacity: 0
-                ),
-                standard: .init(
-                    prefersGlass: true,
-                    fallbackColorRole: .surface,
-                    fallbackOpacity: 1,
-                    glassTintColorRole: .surface,
-                    glassTintOpacity: 0.12,
-                    borderColorRole: .border,
-                    borderOpacity: 0.24
-                ),
-                muted: .init(
-                    prefersGlass: true,
-                    fallbackColorRole: .surfaceMuted,
-                    fallbackOpacity: 1,
-                    glassTintColorRole: .surfaceMuted,
-                    glassTintOpacity: 0.08,
-                    borderColorRole: .border,
-                    borderOpacity: 0.18
-                )
-            )
+            presentation: standardPresentation,
+            divider: standardDivider,
+            motion: standardMotion,
+            surfaces: standardSurfaces
         )
     }
-    // swiftlint:enable function_body_length
+
+    private static func standardColors(
+        accent: MHColorReference,
+        onAccent: MHColorReference
+    ) -> Colors {
+        .init(
+            background: .asset(MHColorAsset.background),
+            surface: .asset(MHColorAsset.surface),
+            surfaceElevated: .asset(MHColorAsset.surfaceElevated),
+            surfaceMuted: .asset(MHColorAsset.surfaceMuted),
+            border: .asset(MHColorAsset.border),
+            primaryText: .asset(MHColorAsset.primaryText),
+            secondaryText: .asset(MHColorAsset.secondaryText),
+            tertiaryText: .asset(MHColorAsset.tertiaryText),
+            accent: accent,
+            onAccent: onAccent,
+            warning: .asset(MHColorAsset.warning),
+            destructive: .asset(MHColorAsset.destructive)
+        )
+    }
+
     // swiftlint:enable no_magic_numbers
 }
