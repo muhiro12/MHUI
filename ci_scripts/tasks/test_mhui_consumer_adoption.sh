@@ -154,6 +154,7 @@ struct MHUIConsumerProbe {
             Text("Fixed accent")
                 .mhTextStyle(.body, colorRole: .accent)
                 .mhTheme(.standard(
+                    metrics: .standard,
                     accent: .fixed(
                         lightHex: 0x2473E6,
                         darkHex: 0x73ADFF

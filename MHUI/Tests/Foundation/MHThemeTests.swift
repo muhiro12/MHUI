@@ -101,6 +101,32 @@ struct MHThemeTests {
     }
 
     @Test
+    func standard_theme_accepts_custom_design_metrics() {
+        let metrics = customDesignMetrics(
+            spacingScreen: 52,
+            screenContentInsetVertical: 88,
+            surfaceContentInsetHorizontal: 30,
+            minimumTouchTarget: 48
+        )
+        let accent = MHColorReference.fixed(
+            lightHex: 0x2473E6,
+            darkHex: 0x73ADFF
+        )
+        let theme = MHTheme.standard(
+            metrics: metrics,
+            accent: accent
+        )
+
+        #expect(theme.metrics == metrics)
+        #expect(theme.colors.accent == accent)
+        #expect(theme.colors.onAccent == .asset(MHColorAsset.onAccent))
+        #expect(theme.spacing.screen == 52)
+        #expect(theme.layout.screen.contentInsetVertical == 88)
+        #expect(theme.layout.surface.insetHorizontal == 30)
+        #expect(theme.layout.control.minimumTouchTarget == 48)
+    }
+
+    @Test
     func standard_theme_accepts_on_accent_overrides() {
         let accent = MHColorReference.fixed(
             lightHex: 0xF4C430,

@@ -91,6 +91,7 @@ public extension MHTheme {
         accent: MHColorReference = .tint
     ) -> Self {
         standard(
+            metrics: .standard,
             accent: accent,
             onAccent: .asset(MHColorAsset.onAccent)
         )
@@ -101,8 +102,21 @@ public extension MHTheme {
         onAccent: MHColorReference
     ) -> Self {
         standard(
+            metrics: .standard,
             accent: .tint,
             onAccent: onAccent
+        )
+    }
+
+    /// Creates the standard neutral MHUI theme with an app-provided metrics baseline.
+    static func standard(
+        metrics: MHDesignMetrics,
+        accent: MHColorReference = .tint
+    ) -> Self {
+        standard(
+            metrics: metrics,
+            accent: accent,
+            onAccent: .asset(MHColorAsset.onAccent)
         )
     }
 
@@ -112,13 +126,27 @@ public extension MHTheme {
         accent: MHColorReference,
         onAccent: MHColorReference
     ) -> Self {
+        standard(
+            metrics: .standard,
+            accent: accent,
+            onAccent: onAccent
+        )
+    }
+
+    /// Creates the standard neutral MHUI theme with app-provided metrics and colors.
+    /// Use this when an app wants MHUI chrome with its own shared layout baseline.
+    static func standard(
+        metrics: MHDesignMetrics,
+        accent: MHColorReference,
+        onAccent: MHColorReference
+    ) -> Self {
         Self(
             colors: standardColors(
                 accent: accent,
                 onAccent: onAccent
             ),
             typography: standardTypography,
-            metrics: .standard,
+            metrics: metrics,
             presentation: standardPresentation,
             divider: standardDivider,
             motion: standardMotion,

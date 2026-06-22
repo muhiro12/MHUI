@@ -100,7 +100,9 @@ MHUI aims for a quiet interface:
 - stable composition rules
 
 The default theme uses system typography, but its distinctiveness comes from hierarchy, spacing, geometry, and surface language rather than from stock SwiftUI control styling.
-Apps can override the theme via `mhTheme(_:)`, but the customization surface is intentionally small.
+Apps can override the theme via `mhTheme(_:)`, but the customization surface is
+intentionally small: start from `MHTheme.standard(metrics:accent:)` when an app
+needs MHUI chrome on top of its own `MHDesignMetrics` baseline.
 MHUI should feel native first and refined second: interaction patterns stay close to SwiftUI defaults, while spacing, proportion, and surface treatment provide the package's personality.
 The standard theme is built from package-owned neutral color assets plus the host app's tint color.
 If a host app needs a fixed accent for a specific surface review, use `MHTheme.standard(accent: .fixed(...))`.
