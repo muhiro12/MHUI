@@ -19,7 +19,9 @@ cleanup() {
 }
 trap cleanup EXIT
 
-mkdir -p "$temporary_root/Sources/MHUIConsumerProbe"
+mkdir -p \
+  "$temporary_root/Sources/MHDesignConsumerProbe" \
+  "$temporary_root/Sources/MHUIConsumerProbe"
 mkdir -p \
   "$temporary_root/home" \
   "$temporary_root/tmp" \
@@ -49,9 +51,72 @@ let package = Package(
                     package: "MHUI"
                 )
             ]
+        ),
+        .executableTarget(
+            name: "MHDesignConsumerProbe",
+            dependencies: [
+                .product(
+                    name: "MHDesign",
+                    package: "MHUI"
+                )
+            ]
         )
     ]
 )
+EOF
+
+cat > "$temporary_root/Sources/MHDesignConsumerProbe/MHDesignConsumerProbe.swift" <<'EOF'
+import MHDesign
+import SwiftUI
+
+@main
+struct MHDesignConsumerProbe {
+    @MainActor
+    static func main() {
+        let metrics = MHDesignMetrics(
+            spacing: .init(
+                inline: 6,
+                control: 12,
+                content: 18,
+                section: 24,
+                screen: 36
+            ),
+            cornerRadius: .init(
+                control: 7,
+                surface: 14
+            ),
+            layout: .init(
+                readableContentWidth: 640,
+                compactWidthThreshold: 560,
+                screen: .init(
+                    contentInsetHorizontal: 32,
+                    contentInsetVertical: 48,
+                    contentSpacing: 28,
+                    compactContentInsetHorizontal: 16,
+                    compactContentInsetVertical: 24,
+                    compactContentSpacing: 18
+                ),
+                surface: .init(
+                    insetHorizontal: 20,
+                    insetVertical: 18,
+                    compactInsetHorizontal: 14,
+                    compactInsetVertical: 12
+                ),
+                control: .init(
+                    minimumTouchTarget: 44
+                )
+            )
+        )
+        let view = AnyView(
+            Text("Metrics")
+                .padding(metrics.spacing[.control])
+                .mhDesignMetrics(metrics)
+        )
+
+        print(String(reflecting: type(of: view)))
+        print(metrics.layout.mode(for: 320))
+    }
+}
 EOF
 
 cat > "$temporary_root/Sources/MHUIConsumerProbe/MHUIConsumerProbe.swift" <<'EOF'
@@ -85,6 +150,16 @@ struct MHUIConsumerProbe {
             }
         )
         .mhTheme(.standard())
+        let fixedAccentView = AnyView(
+            Text("Fixed accent")
+                .mhTextStyle(.body, colorRole: .accent)
+                .mhTheme(.standard(
+                    accent: .fixed(
+                        lightHex: 0x2473E6,
+                        darkHex: 0x73ADFF
+                    )
+                ))
+        )
         let unlabeledChrome = AnyView(
             VStack {
                 Color.clear
@@ -103,6 +178,7 @@ struct MHUIConsumerProbe {
         )
 
         print(String(reflecting: type(of: view)))
+        print(String(reflecting: type(of: fixedAccentView)))
         print(String(reflecting: type(of: unlabeledChrome)))
     }
 }

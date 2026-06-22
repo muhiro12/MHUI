@@ -72,8 +72,10 @@ The package should keep the policy high level: host apps choose `mhGlassPolicy(_
 MHUI resolves platform support, Reduce Transparency, and fallback fills.
 Do not add low-level glass choreography, feature-specific morphing, or per-screen art direction
 to shared APIs.
-When several package-owned glass surfaces appear near each other, prefer `MHGlassContainer` so
-SwiftUI can coordinate effects and avoid unnecessary standalone glass rendering.
+When several package-owned glass surfaces appear near each other, keep
+coordination inside MHUI-owned primitives so SwiftUI can coordinate effects and
+avoid unnecessary standalone glass rendering without exposing low-level glass
+choreography to adopters.
 Canvas backgrounds should stay solid by default; glass belongs on contained controls, rows,
 badges, inputs, and surfaces where the fallback remains equally usable.
 

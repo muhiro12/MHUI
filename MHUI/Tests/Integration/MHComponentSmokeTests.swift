@@ -1,5 +1,5 @@
 // swiftlint:disable closure_body_length function_body_length
-@testable import MHUI
+import MHUI
 import SwiftUI
 import Testing
 
@@ -8,10 +8,10 @@ struct MHComponentSmokeTests {
     @MainActor
     func package_owned_core_primitives_instantiate_together() {
         let smokeView = AnyView(
-            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
+            VStack(alignment: .leading, spacing: MHDesignMetrics.standard.spacing.section) {
                 VStack(spacing: 0) {
-                    HStack(alignment: .top, spacing: MHTheme.standard.spacing.control) {
-                        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+                    HStack(alignment: .top, spacing: MHDesignMetrics.standard.spacing.control) {
+                        VStack(alignment: .leading, spacing: MHDesignMetrics.standard.spacing.inline) {
                             Text("Foundation")
                                 .mhRowOverline()
                             Text("Tokens")
@@ -31,7 +31,7 @@ struct MHComponentSmokeTests {
                 .mhGroupedRows()
                 .mhSection("Section")
 
-                HStack(spacing: MHTheme.standard.spacing.control) {
+                HStack(spacing: MHDesignMetrics.standard.spacing.control) {
                     Text("Accent")
                         .mhBadge(
                             style: .accent,
@@ -67,14 +67,14 @@ struct MHComponentSmokeTests {
                     .buttonStyle(.mhSecondary)
                 }
 
-                MHGlassContainer(spacing: MHTheme.standard.spacing.control) {
-                    HStack(spacing: MHTheme.standard.spacing.control) {
-                        Text("Coordinated")
-                            .mhBadge(style: .accent)
-                        Text("Glass")
-                            .mhBadge(style: .neutral)
-                    }
+                HStack(spacing: MHDesignMetrics.standard.spacing.control) {
+                    Text("Coordinated")
+                        .mhBadge(style: .accent)
+                    Text("Surface")
+                        .mhBadge(style: .neutral)
                 }
+                .mhSurfaceInset()
+                .mhSurface(role: .muted)
             }
             .mhScreen(
                 "Foundation",
@@ -90,7 +90,7 @@ struct MHComponentSmokeTests {
     @MainActor
     func native_container_chrome_and_section_primitives_instantiate() {
         let smokeView = AnyView(
-            VStack(spacing: MHTheme.standard.spacing.section) {
+            VStack(spacing: MHDesignMetrics.standard.spacing.section) {
                 List {
                     Section {
                         Toggle("Use iCloud Sync", isOn: .constant(true))
@@ -99,7 +99,7 @@ struct MHComponentSmokeTests {
                         LabeledContent("Theme", value: "System")
                             .labeledContentStyle(.mhKeyValue)
                     } header: {
-                        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
+                        VStack(alignment: .leading, spacing: MHDesignMetrics.standard.spacing.control) {
                             Text("Preferences")
                                 .mhSectionHeaderTitle()
                             Text("Native list controls keep SwiftUI behavior.")
@@ -134,7 +134,7 @@ struct MHComponentSmokeTests {
                             .buttonStyle(.mhSecondary)
                         }
                     } header: {
-                        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
+                        VStack(alignment: .leading, spacing: MHDesignMetrics.standard.spacing.control) {
                             Text("Workspace")
                                 .mhSectionHeaderTitle()
                             Text("Form chrome should stay native, not custom.")
