@@ -77,7 +77,7 @@ struct MHComponentSmokeTests {
                 }
             }
             .mhScreen(
-                title: "Foundation",
+                "Foundation",
                 subtitle: "Quiet composition"
             )
             .mhGlassPolicy(.enabled)
@@ -113,7 +113,7 @@ struct MHComponentSmokeTests {
                 }
                 .frame(height: 260)
                 .mhListChrome(
-                    title: "List Chrome",
+                    "List Chrome",
                     subtitle: "Calmer spacing over native List."
                 )
 
@@ -148,7 +148,7 @@ struct MHComponentSmokeTests {
                 }
                 .frame(height: 280)
                 .mhFormChrome(
-                    title: "Form Chrome",
+                    "Form Chrome",
                     subtitle: "Shared layout without wrapped controls."
                 )
             }

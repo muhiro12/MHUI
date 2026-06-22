@@ -26,7 +26,7 @@ private struct MHActionButtonStyleValidationPreview: View {
             .mhActionPresentation(.fullWidthLeading)
         }
         .mhScreen(
-            title: "Action Buttons",
+            "Action Buttons",
             subtitle: """
                 Automatic presentation should try intrinsic width first and fall back without host-specific fixes.
                 """

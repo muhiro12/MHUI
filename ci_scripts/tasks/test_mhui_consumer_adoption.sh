@@ -79,14 +79,31 @@ struct MHUIConsumerProbe {
                     }
                 }
                 .mhListChrome(
-                    title: "Workspace",
+                    "Workspace",
                     subtitle: "Shared package chrome."
                 )
             }
         )
         .mhTheme(.standard())
+        let unlabeledChrome = AnyView(
+            VStack {
+                Color.clear
+                    .mhScreen()
+
+                List {
+                    Text("Row")
+                }
+                .mhListChrome()
+
+                Form {
+                    Text("Field")
+                }
+                .mhFormChrome()
+            }
+        )
 
         print(String(reflecting: type(of: view)))
+        print(String(reflecting: type(of: unlabeledChrome)))
     }
 }
 EOF

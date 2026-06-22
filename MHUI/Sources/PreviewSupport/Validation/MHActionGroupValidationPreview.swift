@@ -21,7 +21,7 @@ private struct MHActionGroupValidationPreview: View {
             }
         }
         .mhScreen(
-            title: "Action Group",
+            "Action Group",
             subtitle: """
                 Automatic groups should stay horizontal only while the single-line intrinsic buttons still fit.
                 """

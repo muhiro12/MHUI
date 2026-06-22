@@ -52,7 +52,7 @@ private struct MHScreenValidationContent: View {
             .mhSurface(role: .muted)
         }
         .mhScreen(
-            title: "MHUI",
+            "MHUI",
             subtitle: "Screen-level validation for compact resilience and shared runtime responsibilities."
         )
     }
@@ -86,7 +86,7 @@ private struct MHNativeContainerValidationContent: View {
             }
             .frame(height: 360)
             .mhListChrome(
-                title: "List",
+                "List",
                 subtitle: "Thin container chrome over native rows."
             )
 
@@ -121,7 +121,7 @@ private struct MHNativeContainerValidationContent: View {
             }
             .frame(height: 430)
             .mhFormChrome(
-                title: "Form",
+                "Form",
                 subtitle: "Shared framing without wrapped controls."
             )
         }

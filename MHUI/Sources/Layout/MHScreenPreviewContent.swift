@@ -25,7 +25,7 @@ private struct MHScreenPreviewContent: View {
             .mhSurface()
         }
         .mhScreen(
-            title: "MHUI",
+            "MHUI",
             subtitle: "Focused development preview for screen chrome and section rhythm."
         )
     }

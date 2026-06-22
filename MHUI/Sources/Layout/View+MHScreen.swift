@@ -30,31 +30,27 @@ public extension View {
         )
     }
 
-    /// Wraps content in the MHUI centered screen layout using localized string keys.
+    /// Wraps content in the MHUI centered screen layout using a localized title.
     func mhScreen(
-        title: LocalizedStringKey? = nil,
+        _ title: LocalizedStringKey,
         subtitle: LocalizedStringKey? = nil
     ) -> some View {
         mhScreen(
-            title: title.map { title in
-                Text(title)
-            },
+            title: Text(title),
             subtitle: subtitle.map { subtitle in
                 Text(subtitle)
             }
         )
     }
 
-    /// Wraps content in the MHUI centered screen layout using localized string keys and a header block.
+    /// Wraps content in the MHUI centered screen layout using a localized title and a header block.
     func mhScreen<Header: View>(
-        title: LocalizedStringKey? = nil,
+        _ title: LocalizedStringKey,
         subtitle: LocalizedStringKey? = nil,
         @ViewBuilder header: () -> Header
     ) -> some View {
         mhScreen(
-            title: title.map { title in
-                Text(title)
-            },
+            title: Text(title),
             subtitle: subtitle.map { subtitle in
                 Text(subtitle)
             },

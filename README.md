@@ -184,7 +184,7 @@ struct SettingsScreen: View {
                 }
             }
             .mhListChrome(
-                title: "Workspace",
+                "Workspace",
                 subtitle: "Shared rhythm and low-noise hierarchy."
             )
         }

@@ -32,31 +32,27 @@ public extension View {
         )
     }
 
-    /// Wraps a native `List` in MHUI screen chrome using localized string keys.
+    /// Wraps a native `List` in MHUI screen chrome using a localized title.
     func mhListChrome(
-        title: LocalizedStringKey? = nil,
+        _ title: LocalizedStringKey,
         subtitle: LocalizedStringKey? = nil
     ) -> some View {
         mhListChrome(
-            title: title.map { title in
-                Text(title)
-            },
+            title: Text(title),
             subtitle: subtitle.map { subtitle in
                 Text(subtitle)
             }
         )
     }
 
-    /// Wraps a native `List` in MHUI screen chrome using localized string keys and a header block.
+    /// Wraps a native `List` in MHUI screen chrome using a localized title and a header block.
     func mhListChrome<Header: View>(
-        title: LocalizedStringKey? = nil,
+        _ title: LocalizedStringKey,
         subtitle: LocalizedStringKey? = nil,
         @ViewBuilder header: () -> Header
     ) -> some View {
         mhListChrome(
-            title: title.map { title in
-                Text(title)
-            },
+            title: Text(title),
             subtitle: subtitle.map { subtitle in
                 Text(subtitle)
             },
@@ -95,31 +91,27 @@ public extension View {
         )
     }
 
-    /// Wraps a native `Form` in MHUI screen chrome using localized string keys.
+    /// Wraps a native `Form` in MHUI screen chrome using a localized title.
     func mhFormChrome(
-        title: LocalizedStringKey? = nil,
+        _ title: LocalizedStringKey,
         subtitle: LocalizedStringKey? = nil
     ) -> some View {
         mhFormChrome(
-            title: title.map { title in
-                Text(title)
-            },
+            title: Text(title),
             subtitle: subtitle.map { subtitle in
                 Text(subtitle)
             }
         )
     }
 
-    /// Wraps a native `Form` in MHUI screen chrome using localized string keys and a header block.
+    /// Wraps a native `Form` in MHUI screen chrome using a localized title and a header block.
     func mhFormChrome<Header: View>(
-        title: LocalizedStringKey? = nil,
+        _ title: LocalizedStringKey,
         subtitle: LocalizedStringKey? = nil,
         @ViewBuilder header: () -> Header
     ) -> some View {
         mhFormChrome(
-            title: title.map { title in
-                Text(title)
-            },
+            title: Text(title),
             subtitle: subtitle.map { subtitle in
                 Text(subtitle)
             },
