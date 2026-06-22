@@ -100,16 +100,11 @@ struct MHThemeTests {
     }
 
     @Test
-    func standard_theme_accepts_system_accent_sources() {
-        let accent = MHColorReference.system(.purple)
-        let theme = MHTheme.standard(accent: accent)
-
-        #expect(theme.colors.accent == accent)
-    }
-
-    @Test
     func standard_theme_accepts_on_accent_overrides() {
-        let accent = MHColorReference.system(.yellow)
+        let accent = MHColorReference.fixed(
+            lightHex: 0xF4C430,
+            darkHex: 0xFFD85A
+        )
         let onAccent = MHColorReference.fixed(
             lightHex: 0x111111,
             darkHex: 0x111111

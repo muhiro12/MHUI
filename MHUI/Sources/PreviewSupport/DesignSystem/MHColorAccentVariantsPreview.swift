@@ -8,7 +8,32 @@ private enum MHColorAccentVariantsPreviewLayout {
     static let swatchSize: CGFloat = 18
 }
 
+private struct MHAccentPreviewColor: Identifiable {
+    let name: String
+    let color: Color
+
+    var id: String {
+        name
+    }
+}
+
 private struct MHColorAccentVariantsPreview: View {
+    private let accentColors: [MHAccentPreviewColor] = [
+        .init(name: "Red", color: .red),
+        .init(name: "Orange", color: .orange),
+        .init(name: "Yellow", color: .yellow),
+        .init(name: "Green", color: .green),
+        .init(name: "Mint", color: .mint),
+        .init(name: "Teal", color: .teal),
+        .init(name: "Cyan", color: .cyan),
+        .init(name: "Blue", color: .blue),
+        .init(name: "Indigo", color: .indigo),
+        .init(name: "Purple", color: .purple),
+        .init(name: "Pink", color: .pink),
+        .init(name: "Brown", color: .brown),
+        .init(name: "Gray", color: .gray)
+    ]
+
     let colorMode: MHPreviewColorMode
 
     private let columns = [
@@ -56,9 +81,9 @@ private struct MHColorAccentVariantsPreview: View {
             alignment: .leading,
             spacing: MHTheme.standard.spacing.content
         ) {
-            ForEach(MHSystemColor.allCases) { systemColor in
+            ForEach(accentColors) { accentColor in
                 MHColorAccentVariantCard(
-                    systemColor: systemColor,
+                    accentColor: accentColor,
                     colorMode: colorMode
                 )
             }
@@ -67,7 +92,7 @@ private struct MHColorAccentVariantsPreview: View {
 }
 
 private struct MHColorAccentVariantCard: View {
-    let systemColor: MHSystemColor
+    let accentColor: MHAccentPreviewColor
     let colorMode: MHPreviewColorMode
 
     var body: some View {
@@ -82,9 +107,9 @@ private struct MHColorAccentVariantCard: View {
         .mhActionPresentation(.singleLineIntrinsic)
         .mhSurfaceInset()
         .mhSurface()
-        .mhTheme(MHTheme.standard(accent: .system(systemColor)))
+        .mhTheme(MHTheme.standard(accent: .tint))
         .mhGlassPolicy(.disabled)
-        .tint(systemColor.color)
+        .tint(accentColor.color)
         .environment(\.colorScheme, colorMode.colorScheme)
         .preferredColorScheme(colorMode.colorScheme)
     }
@@ -92,20 +117,14 @@ private struct MHColorAccentVariantCard: View {
     private var header: some View {
         HStack(alignment: .firstTextBaseline, spacing: MHTheme.standard.spacing.control) {
             Circle()
-                .fill(systemColor.color)
+                .fill(accentColor.color)
                 .frame(
                     width: MHColorAccentVariantsPreviewLayout.swatchSize,
                     height: MHColorAccentVariantsPreviewLayout.swatchSize
                 )
 
-            Text(systemColor.title)
+            Text(accentColor.name)
                 .mhTextStyle(.bodyStrong)
-
-            Spacer(minLength: MHTheme.standard.spacing.inline)
-
-            Text(systemColor.rawValue)
-                .mhTextStyle(.caption, colorRole: .secondaryText)
-                .fontDesign(.monospaced)
         }
     }
 
