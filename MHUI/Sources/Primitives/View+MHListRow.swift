@@ -31,7 +31,6 @@ public extension View {
 
 // MARK: - Preview
 
-#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Row", traits: .sizeThatFitsLayout) {
     HStack(alignment: .top, spacing: MHTheme.standard.spacing.control) {
         Image(systemName: "square.stack.3d.up")
@@ -55,4 +54,3 @@ public extension View {
     .mhSurface()
     .mhPreviewSurface()
 }
-#endif

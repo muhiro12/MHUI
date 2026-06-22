@@ -34,7 +34,6 @@ private extension MHDesignMetrics {
     )
 }
 
-#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Layout Metrics", traits: .fixedLayout(width: 980, height: 1_700)) {
     MHDesignPreviewSupport.PreviewCanvas(
         title: "Layout metrics",
@@ -64,4 +63,3 @@ private extension MHDesignMetrics {
         }
     }
 }
-#endif

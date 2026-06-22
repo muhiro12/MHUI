@@ -26,9 +26,7 @@ private struct MHKeyValueRowPreviewContent: View {
     }
 }
 
-#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Key Value Row", traits: .sizeThatFitsLayout) {
     MHKeyValueRowPreviewContent()
         .mhPreviewSurface(padding: .zero)
 }
-#endif

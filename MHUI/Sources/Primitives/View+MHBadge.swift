@@ -17,7 +17,6 @@ public extension View {
 
 // MARK: - Preview
 
-#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Badge", traits: .sizeThatFitsLayout) {
     HStack(spacing: MHTheme.standard.spacing.control) {
         ForEach(MHBadgeStyle.allCases, id: \.rawValue) { style in
@@ -27,4 +26,3 @@ public extension View {
     }
     .mhPreviewSurface()
 }
-#endif

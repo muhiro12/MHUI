@@ -41,7 +41,6 @@ private struct MHKeyValueRowValidationPreview: View {
     }
 }
 
-#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Validation / Key Value Rows", traits: .fixedLayout(width: 900, height: 1_350)) {
     MHPreviewCatalog(
         title: "Validation / Key Value Rows",
@@ -51,4 +50,3 @@ private struct MHKeyValueRowValidationPreview: View {
             .mhPreviewTint(context)
     }
 }
-#endif

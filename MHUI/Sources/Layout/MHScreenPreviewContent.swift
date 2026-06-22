@@ -31,9 +31,7 @@ private struct MHScreenPreviewContent: View {
     }
 }
 
-#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Screen", traits: .sizeThatFitsLayout) {
     MHScreenPreviewContent()
         .mhPreviewTint()
 }
-#endif

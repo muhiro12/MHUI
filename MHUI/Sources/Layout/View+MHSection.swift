@@ -128,7 +128,6 @@ public extension View {
 
 // MARK: - Preview
 
-#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Section", traits: .sizeThatFitsLayout) {
     VStack(spacing: 0) {
         HStack(alignment: .top, spacing: MHTheme.standard.spacing.control) {
@@ -154,4 +153,3 @@ public extension View {
     )
     .mhPreviewSurface()
 }
-#endif

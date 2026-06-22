@@ -193,8 +193,6 @@ swift build \
   --cache-path "$temporary_root/cache" \
   --config-path "$temporary_root/config" \
   --scratch-path "$temporary_root/build" \
-  -Xswiftc -D \
-  -Xswiftc MHUI_DISABLE_PACKAGE_PREVIEWS \
   --manifest-cache local \
   --package-path "$temporary_root"
 

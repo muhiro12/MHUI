@@ -128,7 +128,6 @@ private struct MHNativeContainerValidationContent: View {
     }
 }
 
-#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Validation / Screen / Responsive", traits: .fixedLayout(width: 900, height: 1_700)) {
     MHPreviewCatalog(
         title: "Validation / Screen",
@@ -152,4 +151,3 @@ private struct MHNativeContainerValidationContent: View {
     }
 }
 // swiftlint:enable closure_body_length file_types_order no_magic_numbers one_declaration_per_file
-#endif

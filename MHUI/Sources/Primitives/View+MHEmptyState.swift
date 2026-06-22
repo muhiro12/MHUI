@@ -9,7 +9,6 @@ public extension View {
 
 // MARK: - Preview
 
-#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Empty State", traits: .sizeThatFitsLayout) {
     ContentUnavailableView {
         Label("Nothing here yet", systemImage: "square.grid.2x2")
@@ -26,4 +25,3 @@ public extension View {
     .mhSurface()
     .mhPreviewSurface()
 }
-#endif

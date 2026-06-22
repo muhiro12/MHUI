@@ -1,6 +1,5 @@
 import SwiftUI
 
-#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Surface", traits: .sizeThatFitsLayout) {
     VStack(alignment: .leading, spacing: MHTheme.standard.spacing.content) {
         Text("Calm Surface")
@@ -13,4 +12,3 @@ import SwiftUI
     .mhSurface()
     .mhPreviewSurface(padding: .zero)
 }
-#endif

@@ -69,7 +69,6 @@ private extension MHCornerRadiusMetrics {
     static let previewComparison = MHDesignPreviewSupport.comparisonMetrics.cornerRadius
 }
 
-#if !MHUI_DISABLE_PACKAGE_PREVIEWS
 #Preview("Corner Radius Metrics", traits: .sizeThatFitsLayout) {
     MHDesignPreviewSupport.PreviewCanvas(
         title: "Corner radius metrics",
@@ -89,4 +88,3 @@ private extension MHCornerRadiusMetrics {
     }
 }
 // swiftlint:enable no_magic_numbers
-#endif
