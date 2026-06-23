@@ -42,7 +42,7 @@ public extension MHTheme {
     private static var standardDivider: Divider {
         .init(
             thickness: 1,
-            opacity: 0.50
+            opacity: 0.72
         )
     }
 
@@ -71,7 +71,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.24
+                borderOpacity: 0.34
             ),
             muted: .init(
                 prefersGlass: false,
@@ -80,7 +80,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.18
+                borderOpacity: 0.28
             )
         )
     }
@@ -159,18 +159,18 @@ public extension MHTheme {
         onAccent: MHColorReference
     ) -> Colors {
         .init(
-            background: .asset(MHColorAsset.background),
-            surface: .asset(MHColorAsset.surface),
-            surfaceElevated: .asset(MHColorAsset.surfaceElevated),
-            surfaceMuted: .asset(MHColorAsset.surfaceMuted),
-            border: .asset(MHColorAsset.border),
-            primaryText: .asset(MHColorAsset.primaryText),
-            secondaryText: .asset(MHColorAsset.secondaryText),
-            tertiaryText: .asset(MHColorAsset.tertiaryText),
+            background: .system(.background),
+            surface: .system(.surface),
+            surfaceElevated: .system(.surfaceElevated),
+            surfaceMuted: .system(.surfaceMuted),
+            border: .system(.border),
+            primaryText: .system(.primaryText),
+            secondaryText: .system(.secondaryText),
+            tertiaryText: .system(.tertiaryText),
             accent: accent,
             onAccent: onAccent,
-            warning: .asset(MHColorAsset.warning),
-            destructive: .asset(MHColorAsset.destructive)
+            warning: .system(.warning),
+            destructive: .system(.destructive)
         )
     }
 
