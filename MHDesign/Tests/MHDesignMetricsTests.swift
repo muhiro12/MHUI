@@ -13,6 +13,20 @@ struct MHDesignMetricsTests {
         #expect(metrics.spacing.screen == 40)
         #expect(metrics.cornerRadius.control == 8)
         #expect(metrics.cornerRadius.surface == 16)
+        #if os(watchOS)
+        #expect(metrics.layout.readableContentWidth == 320)
+        #expect(metrics.layout.compactWidthThreshold == 300)
+        #expect(metrics.layout.screen.contentInsetHorizontal == 16)
+        #expect(metrics.layout.screen.contentInsetVertical == 20)
+        #expect(metrics.layout.screen.contentSpacing == 16)
+        #expect(metrics.layout.screen.compactContentInsetHorizontal == 10)
+        #expect(metrics.layout.screen.compactContentInsetVertical == 12)
+        #expect(metrics.layout.screen.compactContentSpacing == 12)
+        #expect(metrics.layout.surface.insetHorizontal == 12)
+        #expect(metrics.layout.surface.insetVertical == 12)
+        #expect(metrics.layout.surface.compactInsetHorizontal == 10)
+        #expect(metrics.layout.surface.compactInsetVertical == 10)
+        #else
         #expect(metrics.layout.readableContentWidth == 640)
         #expect(metrics.layout.compactWidthThreshold == 600)
         #expect(metrics.layout.screen.contentInsetHorizontal == 40)
@@ -25,7 +39,12 @@ struct MHDesignMetricsTests {
         #expect(metrics.layout.surface.insetVertical == 24)
         #expect(metrics.layout.surface.compactInsetHorizontal == 16)
         #expect(metrics.layout.surface.compactInsetVertical == 16)
+        #endif
+        #if os(macOS)
+        #expect(metrics.layout.control.minimumTouchTarget == 28)
+        #else
         #expect(metrics.layout.control.minimumTouchTarget == 44)
+        #endif
     }
 
     @Test
@@ -45,7 +64,7 @@ struct MHDesignMetricsTests {
     func layout_mode_switches_at_compact_threshold_boundary() {
         let metrics = MHDesignMetrics.standard
 
-        #expect(metrics.layout.mode(for: 599) == .compact)
-        #expect(metrics.layout.mode(for: 600) == .regular)
+        #expect(metrics.layout.mode(for: metrics.layout.compactWidthThreshold - 1) == .compact)
+        #expect(metrics.layout.mode(for: metrics.layout.compactWidthThreshold) == .regular)
     }
 }

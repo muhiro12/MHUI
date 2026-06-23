@@ -16,30 +16,84 @@ public extension MHDesignMetrics {
             surface: gridUnit * 2
         ),
         layout: .init(
-            readableContentWidth: gridUnit * 80,
-            compactWidthThreshold: gridUnit * 75,
-            screen: .init(
-                contentInsetHorizontal: gridUnit * 5,
-                contentInsetVertical: gridUnit * 9,
-                contentSpacing: gridUnit * 6,
-                compactContentInsetHorizontal: gridUnit * 2,
-                compactContentInsetVertical: gridUnit * 4,
-                compactContentSpacing: gridUnit * 3
-            ),
-            surface: .init(
-                insetHorizontal: gridUnit * 3,
-                insetVertical: gridUnit * 3,
-                compactInsetHorizontal: gridUnit * 2,
-                compactInsetVertical: gridUnit * 2
-            ),
+            readableContentWidth: platformReadableContentWidth,
+            compactWidthThreshold: platformCompactWidthThreshold,
+            screen: platformScreenLayout,
+            surface: platformSurfaceLayout,
             control: .init(
-                minimumTouchTarget: 44
+                minimumTouchTarget: platformMinimumControlTarget
             )
         )
     )
     // swiftlint:enable no_magic_numbers
 }
 
+// swiftlint:disable no_magic_numbers
 private extension MHDesignMetrics {
     static let gridUnit: CGFloat = 8
+
+    static var platformReadableContentWidth: CGFloat {
+        #if os(watchOS)
+        gridUnit * 40
+        #else
+        gridUnit * 80
+        #endif
+    }
+
+    static var platformCompactWidthThreshold: CGFloat {
+        #if os(watchOS)
+        gridUnit * 37.5
+        #else
+        gridUnit * 75
+        #endif
+    }
+
+    static var platformScreenLayout: MHScreenLayoutMetrics {
+        #if os(watchOS)
+        .init(
+            contentInsetHorizontal: gridUnit * 2,
+            contentInsetVertical: gridUnit * 2.5,
+            contentSpacing: gridUnit * 2,
+            compactContentInsetHorizontal: gridUnit * 1.25,
+            compactContentInsetVertical: gridUnit * 1.5,
+            compactContentSpacing: gridUnit * 1.5
+        )
+        #else
+        .init(
+            contentInsetHorizontal: gridUnit * 5,
+            contentInsetVertical: gridUnit * 9,
+            contentSpacing: gridUnit * 6,
+            compactContentInsetHorizontal: gridUnit * 2,
+            compactContentInsetVertical: gridUnit * 4,
+            compactContentSpacing: gridUnit * 3
+        )
+        #endif
+    }
+
+    static var platformSurfaceLayout: MHSurfaceLayoutMetrics {
+        #if os(watchOS)
+        .init(
+            insetHorizontal: gridUnit * 1.5,
+            insetVertical: gridUnit * 1.5,
+            compactInsetHorizontal: gridUnit * 1.25,
+            compactInsetVertical: gridUnit * 1.25
+        )
+        #else
+        .init(
+            insetHorizontal: gridUnit * 3,
+            insetVertical: gridUnit * 3,
+            compactInsetHorizontal: gridUnit * 2,
+            compactInsetVertical: gridUnit * 2
+        )
+        #endif
+    }
+
+    static var platformMinimumControlTarget: CGFloat {
+        #if os(macOS)
+        28
+        #else
+        44
+        #endif
+    }
 }
+// swiftlint:enable no_magic_numbers
