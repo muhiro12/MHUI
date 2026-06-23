@@ -3,6 +3,8 @@ import SwiftUI
 struct MHAdaptiveLayoutScope<Content: View>: View {
     @Environment(\.horizontalSizeClass)
     private var horizontalSizeClass
+    @Environment(\.dynamicTypeSize)
+    private var dynamicTypeSize
 
     let content: (MHAdaptiveLayoutContext) -> Content
 
@@ -10,7 +12,8 @@ struct MHAdaptiveLayoutScope<Content: View>: View {
         GeometryReader { geometry in
             let context = MHAdaptiveLayoutContext(
                 availableWidth: geometry.size.width,
-                horizontalSizeClass: horizontalSizeClass
+                horizontalSizeClass: horizontalSizeClass,
+                dynamicTypeSize: dynamicTypeSize
             )
 
             content(context)

@@ -16,6 +16,8 @@ public struct MHActionButtonStyle: ButtonStyle {
     private var isEnabled
     @Environment(\.horizontalSizeClass)
     private var horizontalSizeClass
+    @Environment(\.dynamicTypeSize)
+    private var dynamicTypeSize
     @Environment(\.accessibilityReduceTransparency)
     private var accessibilityReduceTransparency
 
@@ -32,6 +34,7 @@ public struct MHActionButtonStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         let context = adaptiveLayoutContext.resolved(
             with: horizontalSizeClass,
+            dynamicTypeSize: dynamicTypeSize,
             threshold: theme.layout.compactWidthThreshold
         )
         let style = theme.resolvedActionButtonStyle(

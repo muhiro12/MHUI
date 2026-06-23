@@ -9,12 +9,15 @@ struct MHGroupedRowsModifier: ViewModifier {
     private var colorScheme
     @Environment(\.horizontalSizeClass)
     private var horizontalSizeClass
+    @Environment(\.dynamicTypeSize)
+    private var dynamicTypeSize
 
     let showsDividers: Bool
 
     func body(content: Content) -> some View {
         let context = adaptiveLayoutContext.resolved(
             with: horizontalSizeClass,
+            dynamicTypeSize: dynamicTypeSize,
             threshold: theme.layout.compactWidthThreshold
         )
         let style = theme.resolvedGroupedRowsStyle(

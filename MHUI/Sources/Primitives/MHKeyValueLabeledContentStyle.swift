@@ -10,6 +10,8 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
     var colorScheme
     @Environment(\.horizontalSizeClass)
     var horizontalSizeClass
+    @Environment(\.dynamicTypeSize)
+    var dynamicTypeSize
     @Environment(\.mhKeyValueLayout)
     var keyValueLayout
 
@@ -20,6 +22,7 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
     public func makeBody(configuration: Configuration) -> some View {
         let context = adaptiveLayoutContext.resolved(
             with: horizontalSizeClass,
+            dynamicTypeSize: dynamicTypeSize,
             threshold: theme.layout.compactWidthThreshold
         )
         let style = theme.resolvedKeyValueStyle(for: context)

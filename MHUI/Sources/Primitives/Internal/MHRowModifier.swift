@@ -7,10 +7,13 @@ struct MHRowModifier: ViewModifier {
     private var adaptiveLayoutContext
     @Environment(\.horizontalSizeClass)
     private var horizontalSizeClass
+    @Environment(\.dynamicTypeSize)
+    private var dynamicTypeSize
 
     func body(content: Content) -> some View {
         let context = adaptiveLayoutContext.resolved(
             with: horizontalSizeClass,
+            dynamicTypeSize: dynamicTypeSize,
             threshold: theme.layout.compactWidthThreshold
         )
 

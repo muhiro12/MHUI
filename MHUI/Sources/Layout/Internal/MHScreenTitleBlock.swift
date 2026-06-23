@@ -7,6 +7,8 @@ struct MHScreenTitleBlock: View {
     private var adaptiveLayoutContext
     @Environment(\.horizontalSizeClass)
     private var horizontalSizeClass
+    @Environment(\.dynamicTypeSize)
+    private var dynamicTypeSize
 
     let title: Text?
     let subtitle: Text?
@@ -14,6 +16,7 @@ struct MHScreenTitleBlock: View {
     var body: some View {
         let context = adaptiveLayoutContext.resolved(
             with: horizontalSizeClass,
+            dynamicTypeSize: dynamicTypeSize,
             threshold: theme.layout.compactWidthThreshold
         )
         let style = theme.resolvedScreenChromeStyle(for: context)

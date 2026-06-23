@@ -8,6 +8,8 @@ public struct MHActionGroup<Content: View>: View {
     private var adaptiveLayoutContext
     @Environment(\.horizontalSizeClass)
     private var horizontalSizeClass
+    @Environment(\.dynamicTypeSize)
+    private var dynamicTypeSize
 
     private let layout: MHActionGroupLayout
     private let content: Content
@@ -15,6 +17,7 @@ public struct MHActionGroup<Content: View>: View {
     public var body: some View {
         let context = adaptiveLayoutContext.resolved(
             with: horizontalSizeClass,
+            dynamicTypeSize: dynamicTypeSize,
             threshold: theme.layout.compactWidthThreshold
         )
         let style = theme.resolvedActionGroupStyle(for: context)
