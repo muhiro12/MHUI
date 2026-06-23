@@ -1,7 +1,7 @@
 // swiftlint:disable closure_body_length no_magic_numbers type_body_length
 import SwiftUI
 
-struct MHColorAssetUsageExamples: View {
+struct MHColorRoleUsageExamples: View {
     @Environment(\.mhTheme)
     private var theme
     @Environment(\.colorScheme)
@@ -85,7 +85,7 @@ struct MHColorAssetUsageExamples: View {
                     actionCell(
                         tags: [
                             ("App tint", "accent fill"),
-                            (".onAccent", "asset-backed label")
+                            (".onAccent", "fallback label")
                         ]
                     ) {
                         Button("Primary") {
