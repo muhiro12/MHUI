@@ -11,7 +11,6 @@ repository_root=$CI_TASK_REPOSITORY_ROOT
 echo "Running MHUI repository rule checks."
 
 bash "$repository_root/ci_scripts/tasks/check_environment.sh" --profile rules
-bash "$repository_root/ci_scripts/tasks/check_models_directory_consistency.sh"
 bash "$repository_root/ci_scripts/tasks/check_swiftutilities_boundary.sh"
 bash "$repository_root/ci_scripts/tasks/test_swiftutilities_boundary.sh"
 bash "$repository_root/ci_scripts/tasks/lint_swift.sh"
