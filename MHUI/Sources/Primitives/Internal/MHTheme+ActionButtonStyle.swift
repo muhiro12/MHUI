@@ -49,17 +49,6 @@ extension MHTheme {
             )
         }
     }
-
-    func resolvedActionButtonStyle(
-        for role: MHButtonRole
-    ) -> MHResolvedActionButtonStyle {
-        resolvedActionButtonStyle(
-            for: role,
-            context: .init(),
-            glassPolicy: .automatic,
-            reduceTransparency: false
-        )
-    }
 }
 
 private extension MHTheme {

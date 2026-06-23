@@ -31,15 +31,6 @@ extension View {
     }
 
     func mhPreviewSurface(
-        _ context: MHPreviewContext
-    ) -> some View {
-        mhPreviewSurface(
-            context,
-            padding: MHTheme.standard.spacing.content
-        )
-    }
-
-    func mhPreviewSurface(
         padding: CGFloat
     ) -> some View {
         mhPreviewSurface(

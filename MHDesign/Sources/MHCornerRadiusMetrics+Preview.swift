@@ -3,7 +3,6 @@ import SwiftUI
 
 private struct MHCornerRadiusMetricsPreview: View {
     private enum PreviewStyle {
-        static let canvasSpacing: CGFloat = 24
         static let controlSize = CGSize(width: 120, height: 72)
         static let surfaceSize = CGSize(width: 180, height: 96)
         static let controlOpacity = 0.22

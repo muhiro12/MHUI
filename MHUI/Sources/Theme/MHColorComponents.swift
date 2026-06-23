@@ -2,8 +2,6 @@ import SwiftUI
 
 /// RGBA values used to build adaptive SwiftUI colors.
 struct MHColorComponents: Sendable, Equatable {
-    private static let opaqueOpacity = 1.0
-
     var red: Double
     var green: Double
     var blue: Double
@@ -31,19 +29,6 @@ struct MHColorComponents: Sendable, Equatable {
         self.opacity = opacity
     }
 
-    init(
-        red: Double,
-        green: Double,
-        blue: Double
-    ) {
-        self.init(
-            red: red,
-            green: green,
-            blue: blue,
-            opacity: Self.opaqueOpacity
-        )
-    }
-
     // swiftlint:disable no_magic_numbers
     /// Creates RGBA values from an `0xRRGGBB` color code.
     init(
@@ -58,13 +43,4 @@ struct MHColorComponents: Sendable, Equatable {
         )
     }
     // swiftlint:enable no_magic_numbers
-
-    init(
-        hex: UInt32
-    ) {
-        self.init(
-            hex: hex,
-            opacity: Self.opaqueOpacity
-        )
-    }
 }

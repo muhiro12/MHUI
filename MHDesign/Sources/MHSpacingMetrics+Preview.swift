@@ -3,7 +3,6 @@ import SwiftUI
 
 private struct MHSpacingMetricsPreview: View {
     private enum PreviewStyle {
-        static let canvasSpacing: CGFloat = 24
         static let markerSize: CGFloat = 18
     }
 

@@ -2,10 +2,6 @@
 import SwiftUI
 
 private struct MHDesignMetricsOverridePreview: View {
-    private enum PreviewLayout {
-        static let height: CGFloat = 1_260
-    }
-
     let title: String
     let metrics: MHDesignMetrics
 
