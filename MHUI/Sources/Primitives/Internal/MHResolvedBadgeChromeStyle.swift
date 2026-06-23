@@ -34,6 +34,7 @@ extension MHTheme {
         supportsGlass: Bool
     ) -> MHResolvedBadgeChromeStyle {
         let foregroundRole = badgeForegroundColorRole(for: style)
+        let markerRole = badgeMarkerColorRole(for: style)
         let fillOpacity = style == .neutral
             ? MHResolvedBadgeChromeStyle.neutralFillOpacity
             : MHResolvedBadgeChromeStyle.emphasizedFillOpacity
@@ -51,12 +52,12 @@ extension MHTheme {
             foregroundRole: foregroundRole,
             backgroundStyle: .init(
                 usesGlass: usesGlass,
-                fallbackFillRole: foregroundRole,
+                fallbackFillRole: markerRole,
                 fallbackFillOpacity: fillOpacity,
-                glassTintRole: usesGlass ? foregroundRole : nil,
+                glassTintRole: usesGlass ? markerRole : nil,
                 glassTintOpacity: usesGlass ? fillOpacity : 0,
                 isGlassInteractive: false,
-                borderRole: foregroundRole,
+                borderRole: markerRole,
                 borderOpacity: borderOpacity
             ),
             horizontalPadding: spacing.control,
@@ -65,6 +66,17 @@ extension MHTheme {
     }
 
     private func badgeForegroundColorRole(
+        for style: MHBadgeStyle
+    ) -> MHColorRole {
+        switch style {
+        case .neutral:
+            .secondaryText
+        case .accent, .warning, .destructive:
+            .primaryText
+        }
+    }
+
+    private func badgeMarkerColorRole(
         for style: MHBadgeStyle
     ) -> MHColorRole {
         switch style {
