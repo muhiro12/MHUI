@@ -2,166 +2,78 @@
 
 ## Overview
 
-MHUI is a narrow runtime presentation kit for calm, tool-like sibling apps.
-It is intentionally opinionated and intentionally small.
-The repository also exposes `MHDesign`, a smaller metrics layer for apps that need the shared spacing, corner radius, and generic screen or surface layout baseline without adopting MHUI chrome.
-`MHDesign` includes a SwiftUI environment bridge so apps and MHUI components can share one active metrics subtree.
-`MHUI` is the styled layer built on top of `MHDesign` and re-exports it for styled adopters.
-The Swift Package supports iOS 18+, macOS 15+, and watchOS 11+.
+MHUI is a narrow runtime presentation kit for calm, tool-like SwiftUI apps.
+It is intentionally opinionated, intentionally small, and biased toward shared
+visual language rather than product behavior.
 
-MHUI focuses on three layers:
+The package exposes two library products:
 
-- semantic visual tokens
-- styling primitives and modifiers
-- screen and native-container chrome with compact-width fallback behavior
+- `MHDesign` provides shared spacing, corner radius, generic layout metrics,
+  and the SwiftUI metrics environment bridge.
+- `MHUI` provides semantic themes, styled presentation primitives,
+  native-container chrome, compact-width fallback behavior, and the `MHDesign`
+  re-export.
 
-It does not own app business logic, app models, navigation meaning, logging, configuration, or infrastructure concerns.
-Those responsibilities stay outside the package.
+The package supports iOS 18+, macOS 15+, and watchOS 11+.
 
-## MHUI Owns
+## Responsibility Boundary
 
-- semantic theme application through `MHTheme.standard()` and `MHTheme.standard(accent:)`
+MHUI owns shared presentation rules that can apply across sibling apps:
+
+- semantic theme application through `MHTheme.standard(...)`
 - text, surface, row, section, screen, and native-container chrome
-- width-adaptive action presentation and action-group fallback
-- key-value row fallback behavior for narrow or constrained widths
-- package-owned preview infrastructure: colocated development previews plus validation catalogs and package tests that prove those shared rules
+- action, key-value, row, cue, and compact-width fallback behavior
+- package-owned color assets and validation previews
 
-## MHUI Does Not Own
+MHUI does not own host-app behavior:
 
-- art-direction presets or app branding systems
-- low-level glass choreography beyond `MHGlassPolicy` readability fallback
-- replacement controls for native SwiftUI views
-- generic SwiftUtilities presentation shortcuts such as dismiss buttons,
-  visibility helpers, text-line helpers, or arbitrary color adjustment helpers
-- feature-specific wrappers, domain models, or product-specific screen shells
-- preview-only abstractions that host apps would need to import
+- business logic, domain models, persistence, networking, or analytics
+- product-specific navigation meaning or screen shells
+- art-direction presets or branding systems
+- replacement controls that shadow native SwiftUI controls
+- generic Foundation, SwiftData, image, string, numeric, or utility helpers
+- low-level Liquid Glass choreography APIs
+
+See [Architecture Guide](Designs/Architecture/ARCHITECTURE_GUIDE.md) for the
+full package boundary, preview rules, modifier guidance, and SwiftUtilities
+boundary decisions.
 
 ## Repository Layout
 
-- `MHDesign/Sources` - shared spacing, corner-radius, and layout metrics for sibling apps
-- `MHDesign/Sources/PreviewSupport` - minimal preview helpers for MHDesign sidecar tuning previews
-- `MHUI/Sources` - shared styled presentation APIs built on `MHDesign`
-- `MHUI/Sources/PreviewSupport` - shared preview styling helpers and regression validation catalogs
-- `MHUI/Resources` - package-owned asset catalogs backing MHUI standard theme resources
-- `MHDesign/Tests` and `MHUI/Tests` - package verification surfaces
-- `ci_scripts/` - retained repository rules, SwiftLint helpers, and compatibility entrypoints
-- `Designs/` - architecture notes, current overview, and ADRs
-- `Example/` - optional macOS consumer app used only when present for integration review; watchOS support stays package-level
+- `MHDesign/Sources` - shared metrics and environment bridge
+- `MHDesign/Tests` - metrics and environment tests
+- `MHUI/Sources` - styled presentation APIs built on `MHDesign`
+- `MHUI/Resources` - package-owned assets for standard theme resources
+- `MHUI/Tests` - MHUI package tests
+- `ci_scripts/` - retained repository rules, SwiftLint helpers, and wrappers
+- `Designs/` - architecture guide, current overview, and ADRs
+- `Example/` - optional consumer app when present; not a source of package truth
 
-## Adoption Paths
+## Adoption
 
-- Metrics-only adopter: `import MHDesign`
-- Styled adopter: `import MHUI`
+Use `MHDesign` directly when an app wants shared spacing, corner radius, generic
+screen or surface layout, and the metrics environment bridge without MHUI chrome.
 
-Use `MHDesign` directly when an app wants to avoid MHUI chrome and only share spacing, corner radius, generic screen or surface layout, and the environment bridge.
-Use `MHUI` when an app wants the styled layer. `MHUI` re-exports `MHDesign`, so one import is enough for both the metrics layer and the styled APIs.
-Row chrome, action fallback, key-value fallback, and cue geometry stay MHUI-owned even when they are backed by shared package defaults.
-`Package.swift` keeps each package target scoped to `Sources`, excludes target-local `Tests` from library target discovery, and maps package tests through explicit test target paths.
-Package-owned color assets live in `MHUI/Resources/Assets.xcassets` and are
-resolved through MHUI-owned resource references so Xcode and SwiftPM consumers
-use the same package boundary.
+```swift
+import MHDesign
+import SwiftUI
 
-MHUI does not provide replacement APIs for earlier SwiftUtilities helpers.
-Apps that need local presentation shortcuts should implement them in the app,
-while durable cross-app non-UI utilities should be evaluated for a platform
-foundation instead.
+struct MetricsOnlyView: View {
+    @Environment(\.mhDesignMetrics)
+    private var metrics
 
-SwiftUtilities helper areas should not become MHUI APIs:
+    var body: some View {
+        VStack(spacing: metrics.spacing.content) {
+            Text("Metrics only")
+            Text("The host app owns the styling.")
+        }
+        .mhDesignMetrics(.standard)
+    }
+}
+```
 
-| Earlier helper area | MHUI decision |
-| --- | --- |
-| `CloseButton`, `hidden(_:)`, `singleLine()`, `twoLines()` | No MHUI replacement; apps can use native SwiftUI directly or keep app-local helpers. |
-| `Color.adjusted(by:)`, `Color.random()` | No MHUI replacement; shared UI should use semantic theme roles or host-owned colors. |
-| Raw `CGFloat` scale helpers | Use `MHDesignMetrics` for shared spacing, corner radius, and layout scale. |
-| `Image(data:)`, `UIImage.appIcon` | No MHUI replacement; image decoding and bundle introspection stay outside MHUI. |
-| Foundation and persistence helpers | Keep outside MHUI; evaluate for a platform foundation instead. |
-
-Representative non-MHUI helpers include `CGFloat.space(_:)`, `CGFloat.icon(_:)`,
-`CGFloat.component(_:)`, `Optional.orEmpty`, `Collection.isNotEmpty`,
-`StringProtocol.normalizedContains(_:)`, `ModelContext.fetchFirst(_:)`, and
-`PersistentIdentifier.base64Encoded()`.
-
-## Versioning Policy
-
-Versions in the `1.x` line, including `1.0`, `1.5`, and `1.5.1`, are beta releases.
-During `1.x`, MHUI and MHDesign may ship intentional breaking API changes when that keeps the package boundary or public surface clearer.
-During `1.x`, the package does not preserve backward compatibility for consuming apps through deprecated aliases, migration helpers, compatibility shims, or old-caller dual paths.
-Consuming apps are expected to update to the current package APIs when adopting a new `1.x` release.
-This policy applies to package API evolution, not to runtime UI behavior such as compact-width layout or readability fallback.
-
-## Design Direction
-
-MHUI aims for a quiet interface:
-
-- restrained color
-- generous spacing
-- low-noise surfaces
-- clear text hierarchy
-- stable composition rules
-
-The default theme uses system typography, but its distinctiveness comes from hierarchy, spacing, geometry, and surface language rather than from stock SwiftUI control styling.
-Apps can override the theme via `mhTheme(_:)`, but the customization surface is
-intentionally small: start from `MHTheme.standard(metrics:accent:)` when an app
-needs MHUI chrome on top of its own `MHDesignMetrics` baseline.
-MHUI should feel native first and refined second: interaction patterns stay close to SwiftUI defaults, while spacing, proportion, and surface treatment provide the package's personality.
-The standard theme is built from package-owned neutral color assets plus the host app's tint color.
-If a host app needs a fixed accent for a specific surface review, use `MHTheme.standard(accent: .fixed(...))`.
-Detached surfaces prefer Liquid Glass by default through `mhGlassPolicy(.automatic)`.
-That policy exists as a runtime readability switch, not as a low-level glass choreography API.
-MHUI uses SwiftUI `GlassEffectContainer` for grouped package chrome, passes
-semantic tint through SwiftUI `Glass` rather than custom blur layers, and only
-marks package-owned action chrome as interactive glass.
-Host apps should use native SwiftUI toolbar, button, and container glass
-behavior for app-specific controls instead of adding MHUI choreography hooks.
-Compact width tuning lives in the shared theme defaults and internal resolvers so host apps do not need local fallback workarounds for common rows and actions.
-Text and badge styling modifiers do not force runtime casing; pass the intended
-localized copy at the call site so each language can preserve its own case
-conventions.
-
-Its design attitude is informed by calm, functional retail and editorial environments.
-That influence is about atmosphere only: whitespace, calmer typography, subtle structural accent placement, and practical composition.
-MHUI must not copy their layouts, information architecture, or visual motifs directly.
-
-## Public Building Blocks
-
-- `MHDesignMetrics`, `MHSpacingMetrics`, `MHCornerRadiusMetrics`, `MHLayoutMetrics`
-- `MHScreenLayoutMetrics`, `MHSurfaceLayoutMetrics`, `MHControlLayoutMetrics`
-- `MHSpacingRole`, `MHCornerRadiusRole`, `MHLayoutMode`
-- `mhDesignMetrics(_:)` and `@Environment(\.mhDesignMetrics)`
-- `MHTheme`, `MHColorReference`, `MHTextRole`, `MHColorRole`
-- `mhTextStyle(_:colorRole:)`
-- `MHGlassPolicy`, `mhGlassPolicy(_:)`
-- `MHActionButtonStyle` and `ButtonStyle` sugar like `.mhPrimary`
-- `MHActionPresentation`, `mhActionPresentation(_:)`
-- `mhSurface(role:)` and `mhSurfaceInset()`
-- `mhInputChrome(state:)`
-- `mhBadge(style:)`
-- `mhRow()`, `mhRowOverline()`, `mhRowTitle()`, `mhRowSupporting()`, `mhRowValue()`
-- `MHKeyValueLayoutPolicy`, `mhKeyValueLayout(_:)`, `LabeledContentStyle.mhKeyValue`
-- `mhGroupedRows()`
-- `mhSectionHeader()`, `mhSectionHeaderTitle()`, `mhSectionHeaderSupporting()`, `mhSectionFooterText()`
-- `mhSection(...)`
-- `MHActionGroup`, `MHActionGroupLayout`
-- `mhScreen(...)`
-- `mhListChrome(...)`, `mhFormChrome(...)`
-- `mhEmptyStateLayout()`
-
-## Preview Model
-
-- Keep MHDesign tuning previews in `+Preview.swift` sidecar files beside the edited metrics type or environment bridge, with only minimal shared helpers in `MHDesign/Sources/PreviewSupport`.
-- Put the first MHUI development preview for a public primitive or layout API at the end of its implementation file under `// MARK: - Preview`.
-- Reserve `MHUI/Sources/PreviewSupport` for shared preview styling helpers such as `MHPreviewStyle`, `MHPreviewCatalog`, and fixed-width validation previews that compare multiple runtime scenarios.
-- Use `.mhPreviewSurface()` for component and chrome review.
-- Use `.mhPreviewTint()` for screen-level composition or previews that should not add an extra background surface.
-
-## Modifier Heuristics
-
-- Prefer a direct `View` extension when the API only writes environment values or adds a light styling chain that stays clearer without an extra type.
-- Keep a private `ViewModifier` when the implementation reads environment values, resolves adaptive layout, bundles multiple visual steps such as padding/background/overlay/animation, or is shared by multiple public entry points.
-- Canonical direct-extension examples: `mhTheme(_:)`, `mhGlassPolicy(_:)`, `mhActionPresentation(_:)`, `mhKeyValueLayout(_:)`.
-- Canonical `ViewModifier` examples: `mhSurface(role:)`, `mhTextStyle(_:colorRole:)`, `mhScreen(...)`, `mhSection(...)`, `mhGroupedRows()`, `mhInputChrome(state:)`, `mhBadge(style:)`.
-
-## Example
+Use `MHUI` when an app wants the styled layer. `MHUI` re-exports `MHDesign`, so
+one import is enough for both metrics and styled APIs.
 
 ```swift
 import MHUI
@@ -189,7 +101,7 @@ struct SettingsScreen: View {
                     }
                     .mhSectionHeader()
                 } footer: {
-                    Text("MHUI styles the layout, surfaces, and hierarchy around the controls.")
+                    Text("MHUI styles layout, surfaces, and hierarchy.")
                         .mhSectionFooterText()
                 }
             }
@@ -204,170 +116,66 @@ struct SettingsScreen: View {
 }
 ```
 
-If a sibling app does not want MHUI modifiers or chrome, import `MHDesign` directly and read `@Environment(\.mhDesignMetrics)`.
-If a sibling app wants MHUI styling, import `MHUI` and use both `MHTheme` and `MHDesign` APIs from that one module.
-Apply `.mhDesignMetrics(...)` when a subtree needs layout-only overrides. MHUI components follow the same active metrics automatically.
+Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from
+stacks and calm surfaces instead of a native `List` or `Form`.
 
-Metrics-only adopters can now define their own shared baseline directly:
+## Tuning
 
-```swift
-import MHDesign
-import SwiftUI
+Start with `MHDesignMetrics.standard` for shared spacing, corner radius, and
+layout changes. Use `MHTheme.standard(metrics:accent:)` when an app wants MHUI
+chrome on top of its own metrics baseline.
 
-let editorialMetrics = MHDesignMetrics(
-    spacing: .init(
-        inline: 8,
-        control: 16,
-        content: 24,
-        section: 32,
-        screen: 48
-    ),
-    cornerRadius: .init(
-        control: 8,
-        surface: 18
-    ),
-    layout: .init(
-        readableContentWidth: 680,
-        compactWidthThreshold: 600,
-        screen: .init(
-            contentInsetHorizontal: 48,
-            contentInsetVertical: 80,
-            contentSpacing: 56,
-            compactContentInsetHorizontal: 16,
-            compactContentInsetVertical: 32,
-            compactContentSpacing: 24
-        ),
-        surface: .init(
-            insetHorizontal: 24,
-            insetVertical: 24,
-            compactInsetHorizontal: 16,
-            compactInsetVertical: 16
-        ),
-        control: .init(
-            minimumTouchTarget: 44
-        )
-    )
-)
-```
+For visual review, start with the colocated preview beside the edited primitive
+or layout API. Use validation previews when a change affects shared behavior
+across widths, themes, or runtime contexts.
 
-Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from stacks and calm card-like surfaces instead of a native `List` or `Form`.
-
-## Where To Tune First
-
-Start in this order when adjusting appearance:
-
-1. `MHDesignMetrics.standard` when an app only needs shared spacing, corner radius, or layout numbers.
-   Or create a custom `MHDesignMetrics(...)` when the host app needs its own shared baseline without taking MHUI chrome.
-2. The MHDesign `+Preview.swift` sidecar beside the edited metrics file when tuning spacing, radius, layout, or environment overrides without MHUI chrome.
-3. `MHTheme.standard()` or `MHTheme.standard(accent:)` for default color, spacing, corner radius, layout, and surface recipes.
-4. The colocated preview at the end of the edited MHUI implementation file for fast local iteration.
-5. Validation previews at fixed widths `760`, `375`, and `320` when you need cross-scenario regression review.
-6. Internal shared resolvers for row chrome, surface fill, action fallback, and key-value fallback only when a shared token is not enough.
-
-The most useful previews to review first are `Screen Validation`, `Action Buttons Validation`, `Action Group Validation`, `Key Value Validation`, and `Native Container Validation`.
-
-## Intentional Boundaries
-
-MHUI does not currently provide:
-
-- replacement controls that shadow `Button`, `TextField`, `Toggle`, or `List`
-- navigation shells
-- validation engines
-- search components
-- async image components
-- art-direction preset collections
-- low-level glass choreography APIs
-- app-specific feature views
-
-Those can be added later only if they strengthen the shared visual language without turning MHUI into a generic mega framework.
+See [Shared Presentation Design](Designs/Architecture/shared-presentation-design.md)
+for design direction and detailed tuning rules.
 
 ## Requirements
 
-- Xcode with Swift 6.2 and the current iOS, macOS, and watchOS SDKs needed by
-  SwiftUI Liquid Glass symbols
-- iOS 18, macOS 15, and watchOS 11 remain the package deployment targets
-- `pre-commit` installed if you want `verify.sh` to execute repository hooks
+- Xcode with Swift 6.2 and the current Apple platform SDKs
+- iOS 18, macOS 15, and watchOS 11 deployment targets
+- `pre-commit` only if you want `verify.sh` to execute repository hooks
 
 ## Build and Test
 
-Use Xcode and XcodeBuildMCP for Apple build, test, run, Simulator, runtime log,
-screenshot, and UI snapshot verification.
+Use XcodeBuildMCP as the primary Apple build and test surface.
 
-For MHUI package compile checks, use XcodeBuildMCP `build_sim` with
-`.swiftpm/xcode/package.xcworkspace` and the `MHUI-Package` scheme. For package
-tests, use XcodeBuildMCP `test_sim` with the same workspace and scheme.
+For MHUI package compile checks, use XcodeBuildMCP `build_sim` with:
 
-The remaining helper scripts in `ci_scripts/` are retained for repository rules
-and compatibility wrappers that are not naturally covered by XcodeBuildMCP.
+- workspace: `.swiftpm/xcode/package.xcworkspace`
+- scheme: `MHUI-Package`
+- simulator: an available iPhone simulator
+
+For package tests, use XcodeBuildMCP `test_sim` with the same workspace and
+scheme.
 
 SwiftLint is resolved from the `SimplyDanny/SwiftLintPlugins` package declared
-in `Package.swift`. The repository scripts do not require a separately
-installed `swiftlint` binary on your `PATH`.
+in `Package.swift`; the scripts do not require a separately installed
+`swiftlint` binary on `PATH`.
 
-Before running retained script checks, diagnose local prerequisites:
-
-```sh
-bash ci_scripts/tasks/check_environment.sh --profile rules
-```
-
-For SwiftLint formatting before final verification:
-
-```sh
-bash ci_scripts/tasks/format_swift.sh
-```
-
-For retained repository rule checks:
+Run retained repository rule checks with:
 
 ```sh
 bash ci_scripts/tasks/check_repository_rules.sh
 ```
 
-For pre-commit plus retained repository rule checks:
+Format Swift files before final verification with:
+
+```sh
+bash ci_scripts/tasks/format_swift.sh
+```
+
+Run the compatibility pre-commit plus repository-rule wrapper with:
 
 ```sh
 bash ci_scripts/tasks/verify.sh
 ```
 
-If you only need the repository hooks:
-
-```sh
-bash ci_scripts/tasks/pre_commit.sh
-```
-
-If you only need strict SwiftLint:
-
-```sh
-bash ci_scripts/tasks/lint_swift.sh
-```
-
-The compatibility shell build and test wrappers are kept for cases where MCP is
-unavailable or the available MCP tool surface does not cover the check.
-
-For the compatibility package build, watchOS simulator compile-only check, and
-optional macOS example app build:
-
-```sh
-bash ci_scripts/tasks/build_app.sh
-```
-
-For compatibility Xcode package tests:
-
-```sh
-bash ci_scripts/tasks/test_shared_library.sh
-```
-
-If you only need the SwiftUtilities boundary guard self-test:
-
-```sh
-bash ci_scripts/tasks/test_swiftutilities_boundary.sh
-```
-
-### Script Cache Layout
-
-Compatibility shell build and test scripts may write generated artifacts under
-`.build/ci/shared/`.
-Shared caches and build state live under `cache/`, `DerivedData`, `tmp`, and
-`home`, with result bundles under `results` when a shell wrapper creates them.
+Compatibility shell build and test wrappers remain available for cases where
+MCP is unavailable or does not cover the check. They may write disposable cache
+and result data under `.build/ci/shared/`.
 
 ## Architecture Docs
 
