@@ -36,11 +36,11 @@ struct MHStyleResolutionTests {
         #expect(screenTitle.design == .default)
         #expect(screenTitle.tracking == 0)
         #expect(supporting.metrics.weight == .regular)
-        #expect(supporting.tracking == 0.1)
+        #expect(supporting.tracking == 0)
         #expect(metadata.metrics == theme.typography.metadata)
-        #expect(metadata.tracking == 0.18)
+        #expect(metadata.tracking == 0)
         #expect(caption.metrics.weight == .medium)
-        #expect(caption.tracking == 0.2)
+        #expect(caption.tracking == 0)
     }
 
     @Test
@@ -130,6 +130,25 @@ struct MHStyleResolutionTests {
     }
 
     @Test
+    func accessibility_type_size_uses_compact_fallbacks() {
+        let theme = MHTheme.standard
+        let accessibilityContext = MHAdaptiveLayoutContext(
+            availableWidth: 760,
+            horizontalSizeClass: .regular,
+            dynamicTypeSize: .accessibility1
+        )
+
+        let screen = theme.resolvedScreenChromeStyle(for: accessibilityContext)
+        let row = theme.resolvedRowChromeStyle(for: accessibilityContext)
+        let keyValue = theme.resolvedKeyValueStyle(for: accessibilityContext)
+
+        #expect(screen.readableContentWidth == nil)
+        #expect(screen.horizontalMargin == theme.layout.screen.compactContentInsetHorizontal)
+        #expect(row.horizontalInset == theme.presentation.compactRowHorizontalInset)
+        #expect(keyValue.minimumValueWidth == theme.presentation.compactKeyValueMinimumValueWidth)
+    }
+
+    @Test
     func compact_screen_chrome_uses_compact_metrics_without_a_narrow_fallback() {
         let theme = MHTheme.standard
         let compactContext = MHAdaptiveLayoutContext(
@@ -205,14 +224,14 @@ struct MHStyleResolutionTests {
         #expect(grouped.dividerThickness == theme.divider.thickness)
         #expect(grouped.dividerOpacity == theme.divider.opacity)
         #expect(grouped.spacerHeight == theme.presentation.rowVerticalPadding)
-        #expect(automaticSurface.usesGlass)
-        #expect(enabledSurface.usesGlass)
+        #expect(!automaticSurface.usesGlass)
+        #expect(!enabledSurface.usesGlass)
         #expect(!enabledSurface.isGlassInteractive)
         #expect(!disabledSurface.usesGlass)
         #expect(!unsupportedSurface.usesGlass)
         #expect(!reducedTransparencySurface.usesGlass)
         #expect(disabledSurface.fallbackFillRole == .surface)
-        #expect(enabledSurface.glassTintRole == .surface)
+        #expect(enabledSurface.glassTintRole == nil)
         #expect(canvas.fallbackFillRole == .background)
         #expect(!canvas.usesGlass)
     }

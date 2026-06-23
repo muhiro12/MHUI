@@ -1,11 +1,5 @@
 import SwiftUI
 
-private enum MHTextStyleDefaults {
-    static let supportingTracking: CGFloat = 0.1
-    static let metadataTracking: CGFloat = 0.18
-    static let captionTracking: CGFloat = 0.2
-}
-
 extension MHTheme {
     func resolvedTextStyle(
         for role: MHTextRole,
@@ -21,23 +15,11 @@ extension MHTheme {
         case .bodyStrong:
             resolvedStyle(for: .bodyStrong, colorRole: colorRole)
         case .supporting:
-            resolvedStyle(
-                for: .supporting,
-                colorRole: colorRole,
-                tracking: MHTextStyleDefaults.supportingTracking
-            )
+            resolvedStyle(for: .supporting, colorRole: colorRole)
         case .metadata:
-            resolvedStyle(
-                for: .metadata,
-                colorRole: colorRole,
-                tracking: MHTextStyleDefaults.metadataTracking
-            )
+            resolvedStyle(for: .metadata, colorRole: colorRole)
         case .caption:
-            resolvedStyle(
-                for: .caption,
-                colorRole: colorRole,
-                tracking: MHTextStyleDefaults.captionTracking
-            )
+            resolvedStyle(for: .caption, colorRole: colorRole)
         }
     }
 
