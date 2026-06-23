@@ -184,6 +184,11 @@ enum MHPreviewStyle {
                 context: context(isEnabled: false)
             ),
             .init(
+                name: "Glass Fallback Phone",
+                width: Widths.phone,
+                context: context(glassPolicy: .disabled)
+            ),
+            .init(
                 name: "Stress Phone",
                 width: Widths.stressPhone,
                 context: context(typeScale: .accessibility)
