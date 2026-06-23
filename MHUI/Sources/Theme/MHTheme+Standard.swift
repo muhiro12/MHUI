@@ -65,20 +65,20 @@ public extension MHTheme {
                 borderOpacity: 0
             ),
             standard: .init(
-                prefersGlass: true,
+                prefersGlass: false,
                 fallbackColorRole: .surface,
                 fallbackOpacity: 1,
-                glassTintColorRole: .surface,
-                glassTintOpacity: 0.12,
+                glassTintColorRole: nil,
+                glassTintOpacity: 0,
                 borderColorRole: .border,
                 borderOpacity: 0.24
             ),
             muted: .init(
-                prefersGlass: true,
+                prefersGlass: false,
                 fallbackColorRole: .surfaceMuted,
                 fallbackOpacity: 1,
-                glassTintColorRole: .surfaceMuted,
-                glassTintOpacity: 0.08,
+                glassTintColorRole: nil,
+                glassTintOpacity: 0,
                 borderColorRole: .border,
                 borderOpacity: 0.18
             )
