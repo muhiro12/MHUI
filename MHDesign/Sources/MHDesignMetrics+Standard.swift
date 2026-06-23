@@ -54,7 +54,7 @@ private extension MHDesignMetrics {
             contentInsetHorizontal: gridUnit * 2,
             contentInsetVertical: gridUnit * 2.5,
             contentSpacing: gridUnit * 2,
-            compactContentInsetHorizontal: gridUnit * 1.25,
+            compactContentInsetHorizontal: gridUnit * 1.5,
             compactContentInsetVertical: gridUnit * 1.5,
             compactContentSpacing: gridUnit * 1.5
         )
@@ -75,8 +75,8 @@ private extension MHDesignMetrics {
         .init(
             insetHorizontal: gridUnit * 1.5,
             insetVertical: gridUnit * 1.5,
-            compactInsetHorizontal: gridUnit * 1.25,
-            compactInsetVertical: gridUnit * 1.25
+            compactInsetHorizontal: gridUnit * 1.5,
+            compactInsetVertical: gridUnit * 1.5
         )
         #else
         .init(

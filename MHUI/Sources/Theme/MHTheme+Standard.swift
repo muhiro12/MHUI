@@ -42,7 +42,7 @@ public extension MHTheme {
     private static var standardDivider: Divider {
         .init(
             thickness: 1,
-            opacity: 0.72
+            opacity: 1
         )
     }
 
@@ -71,7 +71,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.34
+                borderOpacity: 0.5
             ),
             muted: .init(
                 prefersGlass: false,
@@ -80,7 +80,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.28
+                borderOpacity: 0.25
             )
         )
     }
