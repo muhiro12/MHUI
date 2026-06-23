@@ -56,7 +56,12 @@ public struct MHColorReference: Sendable, Equatable {
         case .tint:
             .accentColor
         case let .system(role):
-            role.color
+            switch colorScheme {
+            case .dark:
+                role.darkColor
+            default:
+                role.color
+            }
         case let .asset(resource):
             Color(resource)
         case let .fixed(light, dark):
@@ -73,14 +78,22 @@ public struct MHColorReference: Sendable, Equatable {
 // swiftlint:disable no_magic_numbers
 private extension MHSystemColorRole {
     var color: Color {
-        #if os(watchOS)
-        fallbackColor
-        #elseif canImport(UIKit)
+        #if canImport(UIKit) && !os(watchOS)
         Color(uiColor: uiColor)
         #elseif canImport(AppKit)
         Color(nsColor: nsColor)
         #else
-        fallbackColor
+        lightFallbackColor
+        #endif
+    }
+
+    var darkColor: Color {
+        #if canImport(UIKit) && !os(watchOS)
+        Color(uiColor: uiColor)
+        #elseif canImport(AppKit)
+        Color(nsColor: nsColor)
+        #else
+        darkFallbackColor
         #endif
     }
 
@@ -138,12 +151,16 @@ private extension MHSystemColorRole {
     }
     #endif
 
-    var fallbackColor: Color {
+    var lightFallbackColor: Color {
         switch self {
         case .background:
             Color(.sRGB, red: 0.99, green: 0.99, blue: 0.99)
-        case .surface, .surfaceElevated, .surfaceMuted:
-            Color(.sRGB, red: 0.95, green: 0.95, blue: 0.97)
+        case .surface:
+            Color(.sRGB, red: 0.94, green: 0.94, blue: 0.96)
+        case .surfaceElevated:
+            Color(.sRGB, red: 0.96, green: 0.96, blue: 0.96)
+        case .surfaceMuted:
+            Color(.sRGB, red: 0.92, green: 0.91, blue: 0.92)
         case .border:
             Color(.sRGB, red: 0.56, green: 0.56, blue: 0.56)
         case .primaryText:
@@ -153,9 +170,34 @@ private extension MHSystemColorRole {
         case .tertiaryText:
             Color(.sRGB, red: 0.40, green: 0.40, blue: 0.40)
         case .warning:
-            .orange
+            Color(.sRGB, red: 0.56, green: 0.41, blue: 0.11)
         case .destructive:
-            .red
+            Color(.sRGB, red: 0.73, green: 0.24, blue: 0.18)
+        }
+    }
+
+    var darkFallbackColor: Color {
+        switch self {
+        case .background:
+            Color(.sRGB, red: 0.06, green: 0.07, blue: 0.08)
+        case .surface:
+            Color(.sRGB, red: 0.09, green: 0.10, blue: 0.13)
+        case .surfaceElevated:
+            Color(.sRGB, red: 0.12, green: 0.14, blue: 0.17)
+        case .surfaceMuted:
+            Color(.sRGB, red: 0.15, green: 0.16, blue: 0.20)
+        case .border:
+            Color(.sRGB, red: 0.36, green: 0.39, blue: 0.45)
+        case .primaryText:
+            Color(.sRGB, red: 0.97, green: 0.98, blue: 0.99)
+        case .secondaryText:
+            Color(.sRGB, red: 0.72, green: 0.75, blue: 0.80)
+        case .tertiaryText:
+            Color(.sRGB, red: 0.49, green: 0.53, blue: 0.58)
+        case .warning:
+            Color(.sRGB, red: 1.00, green: 0.84, blue: 0.04)
+        case .destructive:
+            Color(.sRGB, red: 1.00, green: 0.27, blue: 0.23)
         }
     }
 }
