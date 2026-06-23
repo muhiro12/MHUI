@@ -20,7 +20,7 @@ private struct MHColorAssetUsagePreview: View {
 
     private var header: some View {
         HStack(alignment: .firstTextBaseline) {
-            Text("Color Asset Usage")
+            Text("Color Role Usage")
                 .mhTextStyle(.screenTitle)
 
             Spacer(minLength: MHTheme.standard.spacing.control)
@@ -31,7 +31,7 @@ private struct MHColorAssetUsagePreview: View {
     }
 }
 
-#Preview("Design System / 02 Color Asset Usage / Light") {
+#Preview("Design System / 02 Color Role Usage / Light") {
     MHColorAssetUsagePreview(
         context: MHPreviewStyle.context(
             colorMode: .light,
@@ -40,7 +40,7 @@ private struct MHColorAssetUsagePreview: View {
     )
 }
 
-#Preview("Design System / 02 Color Asset Usage / Dark") {
+#Preview("Design System / 02 Color Role Usage / Dark") {
     MHColorAssetUsagePreview(
         context: MHPreviewStyle.context(
             colorMode: .dark,

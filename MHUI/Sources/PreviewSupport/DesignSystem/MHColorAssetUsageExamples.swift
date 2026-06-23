@@ -21,7 +21,7 @@ struct MHColorAssetUsageExamples: View {
     private var surfaces: some View {
         usageGroup("Surfaces") {
             VStack(alignment: .leading, spacing: MHTheme.standard.spacing.content) {
-                usageTag(asset: "MHBackground", usage: "screen canvas")
+                usageTag(role: ".background", usage: "screen canvas")
                 standardSurfaceExample
                 elevatedSurfaceExample
                 mutedSurfaceExample
@@ -32,9 +32,9 @@ struct MHColorAssetUsageExamples: View {
     private var standardSurfaceExample: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
             HStack(alignment: .firstTextBaseline) {
-                usageTag(asset: "MHSurface", usage: "card fill")
+                usageTag(role: ".surface", usage: "card fill")
                 Spacer(minLength: MHTheme.standard.spacing.control)
-                usageTag(asset: "MHBorder", usage: "stroke")
+                usageTag(role: ".border", usage: "stroke")
             }
 
             Text("Standard surface")
@@ -50,7 +50,7 @@ struct MHColorAssetUsageExamples: View {
 
     private var elevatedSurfaceExample: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-            usageTag(asset: "MHSurfaceElevated", usage: "raised fill")
+            usageTag(role: ".surfaceElevated", usage: "raised fill")
             Text("Elevated surface token")
                 .mhTextStyle(.bodyStrong)
         }
@@ -61,7 +61,7 @@ struct MHColorAssetUsageExamples: View {
 
     private var mutedSurfaceExample: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-            usageTag(asset: "MHSurfaceMuted", usage: "muted fill")
+            usageTag(role: ".surfaceMuted", usage: "muted fill")
             Text("Muted surface")
                 .mhTextStyle(.bodyStrong)
         }
@@ -85,7 +85,7 @@ struct MHColorAssetUsageExamples: View {
                     actionCell(
                         tags: [
                             ("App tint", "accent fill"),
-                            ("MHOnAccent", "label")
+                            (".onAccent", "asset-backed label")
                         ]
                     ) {
                         Button("Primary") {
@@ -96,8 +96,8 @@ struct MHColorAssetUsageExamples: View {
 
                     actionCell(
                         tags: [
-                            ("MHSurface", "fill"),
-                            ("MHBorder", "stroke")
+                            (".surface", "fill"),
+                            (".border", "stroke")
                         ]
                     ) {
                         Button("Secondary") {
@@ -115,7 +115,7 @@ struct MHColorAssetUsageExamples: View {
                         .buttonStyle(.mhQuiet)
                     }
 
-                    actionCell(tags: [("MHDestructive", "delete")]) {
+                    actionCell(tags: [(".destructive", "delete")]) {
                         Button("Delete") {
                             // no-op
                         }
@@ -137,8 +137,8 @@ struct MHColorAssetUsageExamples: View {
                     inputExample(
                         value: "normal input",
                         tags: [
-                            ("MHSurface", "field fill"),
-                            ("MHBorder", "stroke")
+                            (".surface", "field fill"),
+                            (".border", "stroke")
                         ]
                     )
                     .mhInputChrome()
@@ -151,7 +151,7 @@ struct MHColorAssetUsageExamples: View {
 
                     inputExample(
                         value: "invalid input",
-                        tags: [("MHDestructive", "invalid")]
+                        tags: [(".destructive", "invalid")]
                     )
                     .mhInputChrome(state: .invalid)
                 }
@@ -161,13 +161,13 @@ struct MHColorAssetUsageExamples: View {
                 VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
                     Text("Primary content")
                         .mhTextStyle(.bodyStrong)
-                    usageTag(asset: "MHPrimaryText", usage: "main label")
+                    usageTag(role: ".primaryText", usage: "main label")
                     Text("Supporting metadata")
                         .mhTextStyle(.caption, colorRole: .secondaryText)
-                    usageTag(asset: "MHSecondaryText", usage: "secondary label")
+                    usageTag(role: ".secondaryText", usage: "secondary label")
                     Text("Low emphasis label")
                         .mhTextStyle(.caption, colorRole: .tertiaryText)
-                    usageTag(asset: "MHTertiaryText", usage: "low emphasis")
+                    usageTag(role: ".tertiaryText", usage: "low emphasis")
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -183,7 +183,7 @@ struct MHColorAssetUsageExamples: View {
                     statusCell(
                         "Neutral",
                         style: .neutral,
-                        tags: [("MHSecondaryText", "neutral label")]
+                        tags: [(".secondaryText", "neutral label")]
                     )
                     statusCell(
                         "Accent",
@@ -196,13 +196,13 @@ struct MHColorAssetUsageExamples: View {
                     statusCell(
                         "Warning",
                         style: .warning,
-                        tags: [("MHWarning", "warning status")]
+                        tags: [(".warning", "warning status")]
                     )
 
                     statusCell(
                         "Destructive",
                         style: .destructive,
-                        tags: [("MHDestructive", "status")]
+                        tags: [(".destructive", "status")]
                     )
                 }
             }
@@ -232,7 +232,7 @@ struct MHColorAssetUsageExamples: View {
 
     private func inputExample(
         value: String,
-        tags: [(asset: String, usage: String)]
+        tags: [(role: String, usage: String)]
     ) -> some View {
         HStack(spacing: MHTheme.standard.spacing.control) {
             Text(value)
@@ -242,7 +242,7 @@ struct MHColorAssetUsageExamples: View {
     }
 
     private func actionCell<Content: View>(
-        tags: [(asset: String, usage: String)],
+        tags: [(role: String, usage: String)],
         @ViewBuilder content: () -> Content
     ) -> some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
@@ -255,7 +255,7 @@ struct MHColorAssetUsageExamples: View {
     private func statusCell(
         _ title: String,
         style: MHBadgeStyle,
-        tags: [(asset: String, usage: String)]
+        tags: [(role: String, usage: String)]
     ) -> some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
             Text(title)
@@ -266,21 +266,21 @@ struct MHColorAssetUsageExamples: View {
     }
 
     private func usageTags(
-        _ tags: [(asset: String, usage: String)]
+        _ tags: [(role: String, usage: String)]
     ) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            ForEach(tags, id: \.asset) { tag in
-                usageTag(asset: tag.asset, usage: tag.usage)
+            ForEach(tags, id: \.role) { tag in
+                usageTag(role: tag.role, usage: tag.usage)
             }
         }
     }
 
     private func usageTag(
-        asset: String,
+        role: String,
         usage: String
     ) -> some View {
         HStack(spacing: MHTheme.standard.spacing.inline) {
-            Text(asset)
+            Text(role)
                 .mhTextStyle(.caption, colorRole: .primaryText)
                 .fontDesign(.monospaced)
                 .lineLimit(1)
