@@ -1,7 +1,7 @@
 #if canImport(AppKit)
 import AppKit
 #endif
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(watchOS)
 import UIKit
 #endif
 import SwiftUI
@@ -19,7 +19,7 @@ public struct MHColorReference: Sendable, Equatable {
 
     private let storage: Storage
 
-    public static func system(
+    static func system(
         _ role: MHSystemColorRole
     ) -> Self {
         Self(storage: .system(role))
@@ -73,7 +73,9 @@ public struct MHColorReference: Sendable, Equatable {
 // swiftlint:disable no_magic_numbers
 private extension MHSystemColorRole {
     var color: Color {
-        #if canImport(UIKit)
+        #if os(watchOS)
+        fallbackColor
+        #elseif canImport(UIKit)
         Color(uiColor: uiColor)
         #elseif canImport(AppKit)
         Color(nsColor: nsColor)
@@ -82,7 +84,7 @@ private extension MHSystemColorRole {
         #endif
     }
 
-    #if canImport(UIKit)
+    #if canImport(UIKit) && !os(watchOS)
     var uiColor: UIColor {
         switch self {
         case .background:

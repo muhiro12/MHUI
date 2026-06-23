@@ -1,5 +1,5 @@
-/// System semantic colors that can back MHUI color roles.
-public enum MHSystemColorRole: String, Sendable, CaseIterable {
+/// System semantic colors that can back MHUI standard theme roles.
+enum MHSystemColorRole: String, Sendable, CaseIterable {
     case background
     case surface
     case surfaceElevated

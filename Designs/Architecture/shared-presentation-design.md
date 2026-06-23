@@ -76,8 +76,9 @@ When several package-owned glass surfaces appear near each other, keep
 coordination inside MHUI-owned primitives so SwiftUI can coordinate effects and
 avoid unnecessary standalone glass rendering without exposing low-level glass
 choreography to adopters.
-Canvas backgrounds should stay solid by default; glass belongs on contained controls, rows,
-badges, inputs, and surfaces where the fallback remains equally usable.
+Canvas backgrounds and content surfaces should stay solid by default; glass
+eligibility belongs on contained controls, action groups, badges, and inputs
+where the fallback remains equally usable.
 
 ## Placement Rules
 
