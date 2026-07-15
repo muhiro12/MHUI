@@ -1,6 +1,6 @@
 # MHUI Current Repository Overview
 
-Current as of June 22, 2026.
+Current as of July 15, 2026.
 
 ## Purpose
 
@@ -56,10 +56,11 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 ## Verification Entry Points
 
-- XcodeBuildMCP `build_sim` with `.swiftpm/xcode/package.xcworkspace` and the
-  `MHUI-Package` scheme
-- XcodeBuildMCP `test_sim` with `.swiftpm/xcode/package.xcworkspace` and the
-  `MHUI-Package` scheme
+- Available Xcode-native build capability with
+  `.swiftpm/xcode/package.xcworkspace`, the `MHUI-Package` scheme, and a
+  discovered iPhone Simulator destination
+- Available Xcode-native test capability with the same workspace, scheme, and
+  destination family
 - `bash ci_scripts/tasks/format_swift.sh`
 - `bash ci_scripts/tasks/check_repository_rules.sh`
 - `bash ci_scripts/tasks/verify.sh`
@@ -67,8 +68,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 - `bash ci_scripts/tasks/lint_swift.sh`
 
 The shell build and test wrappers remain compatibility or fallback tools when
-MCP is unavailable or when the available MCP tool surface does not cover a
-check.
+the Xcode-native integration is unavailable or does not cover a check.
 
 ## Known Boundary Decisions
 
@@ -86,5 +86,5 @@ check.
 - Package-owned Liquid Glass behavior is limited to semantic tinting, grouped
   chrome containers, action interactivity, and accessibility/runtime fallback.
 - Runtime UI fallback remains package-owned behavior and is separate from consumer-update compatibility policy.
-- Verification should prefer documented XcodeBuildMCP checks and retained
+- Verification should prefer documented Xcode-native capabilities and retained
   `ci_scripts/tasks/*.sh` rule entrypoints over ad-hoc commands.

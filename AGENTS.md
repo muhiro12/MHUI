@@ -39,31 +39,41 @@ Repository-specific agent contract for MHUI.
 
 ## Build and Test Entry Point
 
-Agents MUST prefer XcodeBuildMCP for Apple build, test, run, Simulator,
-runtime log, screenshot, and UI snapshot verification.
+Agents MUST prefer the Xcode-native integration available in the current agent
+environment for workspace discovery, active scheme and destination selection,
+build, test, and Preview rendering. When a runnable consumer is available, use
+the same integration for bounded run, runtime-log, live UI, and screenshot
+evidence.
 
-For MHUI package compile checks, use XcodeBuildMCP `build_sim` with:
+Before changing Xcode's active selection, discover the open workspaces,
+schemes, and run destinations, identify
+`.swiftpm/xcode/package.xcworkspace`, and record the original active scheme
+and destination. Switch only to values returned by discovery. After
+verification, restore the original scheme first, rediscover its valid
+destinations, restore the original destination, and confirm the final
+selection. Report any selection that cannot be restored.
+
+For MHUI package compile checks, use the available Xcode-native build
+capability with:
 
 - Workspace: `.swiftpm/xcode/package.xcworkspace`
 - Scheme: `MHUI-Package`
-- Simulator: an available iPhone simulator
+- Destination: a discovered iPhone Simulator
 
-For package tests, use XcodeBuildMCP `test_sim` with the same workspace and
-scheme. Before the first MCP build or test call in a session, run XcodeBuildMCP
-`session_show_defaults`. If defaults do not point at MHUI, set them for the
-current session instead of relying on shell wrappers.
+For package tests, use the available Xcode-native test capability with the
+same workspace, scheme, and destination family.
 
-Treat package tests, retained consumer checks, preview-sensitive evidence, and
-runtime/UI evidence as separate verification capabilities. Choose the smallest
+Treat package tests, retained boundary checks, Preview evidence, and available
+consumer evidence as separate verification capabilities. Choose the smallest
 set that proves the current change, and prefer stronger evidence when public
 products, SwiftUI APIs, package boundaries, design tokens, visual treatments,
 previews, or adopter-facing behavior are affected.
 
 - For package source or product changes, use the package build/test checks above.
-- For consumer adoption or package-boundary changes, run the retained repository
-  rule checks below.
+- For package-boundary changes, run the retained repository rule checks below.
 - For SwiftUI visual primitives, preview behavior, or design-system treatment
-  changes, add targeted preview, sample, or runtime/UI evidence when available.
+  changes, add targeted Xcode-native Preview rendering. Add runtime-log, live
+  UI, or screenshot evidence only when a runnable consumer is available.
 
 When Swift files are edited, agents should run:
 
@@ -77,16 +87,16 @@ Agents should also run the retained repository rule checks:
 bash ci_scripts/tasks/check_repository_rules.sh
 ```
 
-`check_repository_rules.sh` runs SwiftLint, package boundary checks, consumer
-adoption checks, and static architecture checks that are not naturally covered
-by XcodeBuildMCP. SwiftLint is resolved from the `SimplyDanny/SwiftLintPlugins`
-package declared in `Package.swift`, not from a separately installed
-`swiftlint` binary.
+`check_repository_rules.sh` runs SwiftLint, the SwiftUtilities boundary
+check, and that check's self-test. These retained static rules are not
+naturally covered by the available Xcode-native integration.
+SwiftLint is resolved from the `SimplyDanny/SwiftLintPlugins` package declared
+in `Package.swift`, not from a separately installed `swiftlint` binary.
 
 `verify.sh` is retained as a pre-commit plus repository-rules compatibility
-wrapper. Direct shell build and test scripts are compatibility or fallback tools;
-do not treat them as the primary agent verification surface when MCP is
-available.
+wrapper. Direct shell build and test scripts are compatibility or fallback
+tools; do not treat them as the primary agent verification surface when the
+Xcode-native integration is available.
 
 Compatibility shell build and test scripts may write disposable cache data and
 result bundles under `.build/ci/shared/`.

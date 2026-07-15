@@ -115,7 +115,9 @@ Neither should become the place where new shared styling rules are invented befo
    Minimal plan:
    - Keep contributor workflow documented at the repository root.
    - Keep architecture intent in versioned docs under `Designs/`.
-   - Keep XcodeBuildMCP as the primary Apple build and test surface.
+   - Keep the available Xcode-native integration as the primary package build,
+     test, and Preview evidence surface. Add runtime or live UI evidence only
+     through an available consumer.
    - Keep shell scripts focused on retained rules, SwiftLint, and compatibility
      fallback checks.
 

@@ -140,16 +140,18 @@ for design direction and detailed tuning rules.
 
 ## Build and Test
 
-Use XcodeBuildMCP as the primary Apple build and test surface.
+Use the Xcode-native integration available in the agent environment as the
+primary Apple build and test surface. Follow the selection and restoration
+contract in `AGENTS.md`.
 
-For MHUI package compile checks, use XcodeBuildMCP `build_sim` with:
+For MHUI package compile checks, use its build capability with:
 
 - workspace: `.swiftpm/xcode/package.xcworkspace`
 - scheme: `MHUI-Package`
-- simulator: an available iPhone simulator
+- destination: a discovered iPhone Simulator
 
-For package tests, use XcodeBuildMCP `test_sim` with the same workspace and
-scheme.
+For package tests, use its test capability with the same workspace, scheme,
+and destination family.
 
 SwiftLint is resolved from the `SimplyDanny/SwiftLintPlugins` package declared
 in `Package.swift`; the scripts do not require a separately installed
@@ -174,8 +176,8 @@ bash ci_scripts/tasks/verify.sh
 ```
 
 Compatibility shell build and test wrappers remain available for cases where
-MCP is unavailable or does not cover the check. They may write disposable cache
-and result data under `.build/ci/shared/`.
+the Xcode-native integration is unavailable or does not cover the check. They
+may write disposable cache and result data under `.build/ci/shared/`.
 
 ## Architecture Docs
 
