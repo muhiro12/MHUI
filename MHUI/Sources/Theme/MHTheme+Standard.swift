@@ -8,17 +8,17 @@ public extension MHTheme {
 
     private static var standardTypography: Typography {
         .init(
-            screenTitle: .init(style: .title2, weight: .semibold),
-            sectionTitle: .init(style: .title3, weight: .semibold),
-            body: .init(style: .body, weight: .regular),
-            bodyStrong: .init(style: .body, weight: .medium),
-            supporting: .init(style: .subheadline, weight: .regular),
-            metadata: .init(style: .footnote, weight: .medium),
-            caption: .init(style: .footnote, weight: .medium)
+            screenTitle: .init(font: .title2, weight: .semibold),
+            sectionTitle: .init(font: .title3, weight: .semibold),
+            body: .init(font: .body, weight: .regular),
+            bodyStrong: .init(font: .body, weight: .medium),
+            supporting: .init(font: .subheadline, weight: .regular),
+            metadata: .init(font: .footnote, weight: .medium),
+            caption: .init(font: .footnote, weight: .medium)
         )
     }
 
-    private static var standardPresentation: MHPresentationMetrics {
+    private static var standardPresentation: Presentation {
         .init(
             rowHorizontalInset: 24,
             rowVerticalPadding: 16,

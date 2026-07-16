@@ -29,7 +29,7 @@ extension MHTheme {
         tracking: CGFloat = 0
     ) -> MHResolvedTextStyle {
         .init(
-            metrics: textMetrics(for: role),
+            textStyle: textStyle(for: role),
             colorRole: colorRole,
             design: .default,
             tracking: tracking

@@ -3,81 +3,59 @@ import SwiftUI
 
 /// Shared visual rules for calm, tool-like sibling apps.
 public struct MHTheme: Sendable, Equatable {
-    /// Semantic color references used by MHUI components.
-    struct Colors: Sendable, Equatable {
-        var background: MHColorReference
-        var surface: MHColorReference
-        var surfaceElevated: MHColorReference
-        var surfaceMuted: MHColorReference
-        var border: MHColorReference
-        var primaryText: MHColorReference
-        var secondaryText: MHColorReference
-        var tertiaryText: MHColorReference
-        var accent: MHColorReference
-        var onAccent: MHColorReference
-        var warning: MHColorReference
-        var destructive: MHColorReference
-    }
+    /// Semantic colors resolved by MHUI presentation primitives.
+    public var colors: Colors
 
-    /// Semantic typography tokens used by MHUI text roles.
-    struct Typography: Sendable, Equatable {
-        var screenTitle: MHTextMetrics
-        var sectionTitle: MHTextMetrics
-        var body: MHTextMetrics
-        var bodyStrong: MHTextMetrics
-        var supporting: MHTextMetrics
-        var metadata: MHTextMetrics
-        var caption: MHTextMetrics
-    }
+    /// Semantic text styles resolved by MHUI typography modifiers.
+    public var typography: Typography
 
-    /// Divider treatment for grouped rows and sections.
-    struct Divider: Sendable, Equatable {
-        var thickness: CGFloat
-        var opacity: Double
-    }
+    /// Shared spacing, corner-radius, and layout metrics.
+    public var metrics: MHDesignMetrics
 
-    /// Small motion values for pressed and focused state changes.
-    struct Motion: Sendable, Equatable {
-        var quick: Double
-        var regular: Double
-    }
+    /// Component layout values that only have meaning with MHUI chrome.
+    public var presentation: Presentation
 
-    /// Surface recipes used by calm containers and screen chrome.
-    struct SurfaceTreatment: Sendable, Equatable {
-        var prefersGlass: Bool
-        var fallbackColorRole: MHColorRole
-        var fallbackOpacity: Double
-        var glassTintColorRole: MHColorRole?
-        var glassTintOpacity: Double
-        var borderColorRole: MHColorRole
-        var borderOpacity: Double
-    }
+    /// Divider treatment used by grouped rows and surfaces.
+    public var divider: Divider
 
-    /// Shared surface tokens for the screen canvas and grouped content.
-    struct Surfaces: Sendable, Equatable {
-        var canvas: SurfaceTreatment
-        var standard: SurfaceTreatment
-        var muted: SurfaceTreatment
-    }
+    /// Motion durations used by package-owned state transitions.
+    public var motion: Motion
 
-    var colors: Colors
-    var typography: Typography
-    var metrics: MHDesignMetrics
-    var presentation: MHPresentationMetrics
-    var divider: Divider
-    var motion: Motion
-    var surfaces: Surfaces
+    /// Surface treatments used by screens and content containers.
+    public var surfaces: Surfaces
 
-    var spacing: MHSpacingMetrics {
+    /// The spacing scale carried by this theme.
+    public var spacing: MHSpacingMetrics {
         metrics.spacing
     }
 
-    var cornerRadius: MHCornerRadiusMetrics {
+    /// The corner-radius scale carried by this theme.
+    public var cornerRadius: MHCornerRadiusMetrics {
         metrics.cornerRadius
     }
 
-    var layout: MHLayoutMetrics {
+    /// The generic layout metrics carried by this theme.
+    public var layout: MHLayoutMetrics {
         metrics.layout
+    }
+
+    /// Creates a complete theme that can be applied at an app or subtree root.
+    public init(
+        colors: Colors,
+        typography: Typography,
+        metrics: MHDesignMetrics,
+        presentation: Presentation,
+        divider: Divider,
+        motion: Motion,
+        surfaces: Surfaces
+    ) {
+        self.colors = colors
+        self.typography = typography
+        self.metrics = metrics
+        self.presentation = presentation
+        self.divider = divider
+        self.motion = motion
+        self.surfaces = surfaces
     }
 
     // swiftlint:disable:next cyclomatic_complexity
@@ -117,7 +95,13 @@ public struct MHTheme: Sendable, Equatable {
         colorReference(for: role).resolve(for: colorScheme)
     }
 
-    internal func textMetrics(for role: MHTextRole) -> MHTextMetrics {
+    internal func nativeTintOverride(
+        in colorScheme: ColorScheme
+    ) -> Color? {
+        colors.accent.nativeTintOverride(for: colorScheme)
+    }
+
+    internal func textStyle(for role: MHTextRole) -> TextStyle {
         switch role {
         case .screenTitle:
             typography.screenTitle

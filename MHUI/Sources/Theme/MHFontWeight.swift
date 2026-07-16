@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Font weights used by MHUI typography tokens.
-enum MHFontWeight: String, Sendable, CaseIterable {
+public enum MHFontWeight: String, Sendable, CaseIterable {
     case regular
     case medium
     case semibold

@@ -29,17 +29,17 @@ struct MHStyleResolutionTests {
             colorRole: .secondaryText
         )
 
-        #expect(style.metrics == theme.typography.sectionTitle)
+        #expect(style.textStyle == theme.typography.sectionTitle)
         #expect(style.colorRole == .secondaryText)
         #expect(style.design == .default)
         #expect(style.tracking == 0)
         #expect(screenTitle.design == .default)
         #expect(screenTitle.tracking == 0)
-        #expect(supporting.metrics.weight == .regular)
+        #expect(supporting.textStyle.weight == .regular)
         #expect(supporting.tracking == 0)
-        #expect(metadata.metrics == theme.typography.metadata)
+        #expect(metadata.textStyle == theme.typography.metadata)
         #expect(metadata.tracking == 0)
-        #expect(caption.metrics.weight == .medium)
+        #expect(caption.textStyle.weight == .medium)
         #expect(caption.tracking == 0)
     }
 

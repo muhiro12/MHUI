@@ -15,6 +15,7 @@ public struct MHColorReference: Sendable, Equatable {
         case fixed(light: MHColorComponents, dark: MHColorComponents)
     }
 
+    /// Inherits the active SwiftUI tint instead of defining a concrete color.
     public static let tint = Self(storage: .tint)
 
     private let storage: Storage
@@ -71,6 +72,17 @@ public struct MHColorReference: Sendable, Equatable {
             default:
                 light.color
             }
+        }
+    }
+
+    internal func nativeTintOverride(
+        for colorScheme: ColorScheme
+    ) -> Color? {
+        switch storage {
+        case .tint:
+            nil
+        default:
+            resolve(for: colorScheme)
         }
     }
 }

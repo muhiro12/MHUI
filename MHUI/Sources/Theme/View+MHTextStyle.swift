@@ -17,8 +17,8 @@ private struct MHTextStyleModifier: ViewModifier {
 
         content
             .font(
-                style.metrics.style.font
-                    .weight(style.metrics.weight.fontWeight)
+                style.textStyle.font.font
+                    .weight(style.textStyle.weight.fontWeight)
             )
             .fontDesign(style.design)
             .tracking(style.tracking)

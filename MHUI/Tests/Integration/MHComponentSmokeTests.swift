@@ -106,6 +106,73 @@ struct MHComponentSmokeTests {
 
     @Test
     @MainActor
+    func public_theme_configuration_supports_root_and_local_overrides() {
+        var appTheme = MHTheme.standard(accent: .fixed(
+            lightHex: 0x2473E6,
+            darkHex: 0x73ADFF
+        ))
+        appTheme.colors.surface = .fixed(
+            lightHex: 0xF3F6FA,
+            darkHex: 0x18202B
+        )
+        appTheme.typography.bodyStrong = .init(
+            font: .title3,
+            weight: .bold
+        )
+        appTheme.presentation.rowVerticalPadding = 18
+        appTheme.divider = .init(thickness: 2, opacity: 0.75)
+        appTheme.motion = .init(quick: 0.1, regular: 0.2)
+        appTheme.surfaces.standard = .init(
+            prefersGlass: false,
+            fallbackColorRole: .surface,
+            fallbackOpacity: 0.9,
+            glassTintColorRole: nil,
+            glassTintOpacity: 0,
+            borderColorRole: .border,
+            borderOpacity: 0.4
+        )
+
+        let rebuiltTheme = MHTheme(
+            colors: appTheme.colors,
+            typography: appTheme.typography,
+            metrics: appTheme.metrics,
+            presentation: appTheme.presentation,
+            divider: appTheme.divider,
+            motion: appTheme.motion,
+            surfaces: appTheme.surfaces
+        )
+
+        var localTheme = rebuiltTheme
+        localTheme.colors.accent = .fixed(
+            lightHex: 0x8E44AD,
+            darkHex: 0xD2A6E8
+        )
+
+        let smokeView = AnyView(
+            VStack {
+                Button("App action") {
+                    // no-op
+                }
+                .buttonStyle(.mhPrimary)
+
+                Button("Local action") {
+                    // no-op
+                }
+                .buttonStyle(.mhPrimary)
+                .mhTheme(localTheme)
+            }
+            .mhTheme(rebuiltTheme)
+        )
+
+        #expect(rebuiltTheme == appTheme)
+        #expect(rebuiltTheme.typography.bodyStrong.font == .title3)
+        #expect(rebuiltTheme.presentation.rowVerticalPadding == 18)
+        #expect(localTheme.colors.accent != rebuiltTheme.colors.accent)
+        #expect(String(reflecting: type(of: smokeView)).contains("AnyView"))
+    }
+
+    @Test
+    @MainActor
     func native_container_chrome_and_section_primitives_instantiate() {
         let smokeView = AnyView(
             VStack(spacing: MHDesignMetrics.standard.spacing.section) {
