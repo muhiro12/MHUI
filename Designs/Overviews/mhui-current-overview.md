@@ -40,8 +40,10 @@ The repository is intentionally biased toward package-owned visual rules and awa
 - `MHDesignMetrics` and its spacing, corner-radius, and layout value groups
 - Root theme application through `mhTheme(_:)`, public `MHTheme` semantic
   groups, and explicit component roles
-- Text styling primitives such as `mhTextStyle(_:colorRole:)`
-- Surface, row, section, and grouped-layout modifiers
+- Text styling primitives such as `mhTextStyle(_:colorRole:)`, including system
+  font design and tracking tokens
+- Standard, elevated, and muted surface roles, row and section modifiers, and
+  the `MHGroupedRows` container
 - Screen-level chrome such as `mhScreen(...)`, `mhListChrome(...)`, and `mhFormChrome(...)`
 - Presentation helpers including action groups, badges, input chrome, and package-owned compact fallback behavior
 

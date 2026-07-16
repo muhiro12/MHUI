@@ -33,9 +33,9 @@ It explains where new code should live when the same visual rule or container pa
 - Styled app: `import MHUI`
 
 The styled path still conceptually uses both layers, but `MHUI` re-exports `MHDesign` so consuming apps do not need two explicit imports.
-Styled apps define one app-owned theme from `MHTheme.standard`, apply it near
-the app root with `mhTheme(_:)`, and use a narrower theme only for deliberate
-local exceptions.
+Styled apps can apply the opinionated `MHTheme.standard` baseline unchanged or
+derive one app-owned theme from it. They apply that theme near the app root with
+`mhTheme(_:)` and use a narrower theme only for deliberate local exceptions.
 
 ## Canonical Shared APIs
 
@@ -58,12 +58,15 @@ The following types and helpers are the current shared entry points for package-
 - `MHTheme.Presentation`
 - `MHTheme.Surfaces`
 - `MHColorReference`
+- `MHFontDesign`
+- `MHCuePlacement`
 - `MHTextRole`
 - `MHColorRole`
 - `mhTheme(_:)`
 - `mhTextStyle(_:colorRole:)`
 - `mhSurface(role:)`
 - `mhRow()`
+- `MHGroupedRows`
 - `MHActionPresentation`
 - `MHActionGroup`
 - `MHKeyValueLayoutPolicy`
@@ -114,11 +117,15 @@ where the fallback remains equally usable.
 
 - `MHDesignMetrics.standard` stays in the package because sibling apps need one shared baseline for spacing, corner radii, and generic screen or surface layout thresholds even when they do not adopt MHUI chrome.
 - Re-export of `MHDesign` in `MHUI` stays in the package because styled adopters should reach both layers through one import.
-- `MHTheme.standard()` and `MHTheme.standard(accent:)` stay in the package because they define a reusable semantic baseline rather than one app's branding system.
+- `MHTheme.standard()` and `MHTheme.standard(accent:)` stay in the package
+  because they define a reusable semantic baseline rather than one app's
+  branding system. The baseline uses package-owned semantic color assets,
+  system typography, low-radius surfaces, and leading heading cues.
 - Public theme groups let an app configure semantic values once without moving
   role selection or product meaning into the package.
-- A concrete theme accent also tints native controls in the same subtree;
-  `MHColorReference.tint` is the explicit opt-in to inherit SwiftUI tint.
+- The standard package accent and other concrete theme accents also tint native
+  controls in the same subtree; `MHColorReference.tint` is the explicit opt-in
+  to inherit SwiftUI tint.
 - Theme propagation does not remove explicit semantic role selection at the
   use site and does not globally replace native SwiftUI controls.
 - Row insets, compact action padding, key-value fallback widths, and cue geometry stay in `MHUI` because those values only make sense alongside MHUI presentation behavior.

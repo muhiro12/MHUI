@@ -3,8 +3,10 @@
 ## Overview
 
 MHUI is a narrow runtime presentation kit for calm, tool-like SwiftUI apps.
-It is intentionally opinionated, intentionally small, and biased toward shared
-visual language rather than product behavior.
+It is intentionally opinionated, intentionally small, and biased toward a
+shared visual language rather than product behavior. Its standard theme pairs
+system typography with warm neutral planes, precise rules, restrained geometry,
+and a deep green semantic accent.
 
 The package exposes two library products:
 
@@ -180,20 +182,25 @@ struct InspectorPane: View {
 
 ## Tuning
 
-Start with `MHTheme.standard` and customize its public semantic groups:
+`MHTheme.standard` is ready to use as a package-owned visual baseline. It keeps
+Apple's system type styles and native controls while giving apps a distinct
+palette, surface hierarchy, measured spacing, and leading-edge heading cues.
+
+Start with that baseline and customize its public semantic groups:
 
 - `colors` for semantic backgrounds, surfaces, text, accent, warning, and
   destructive colors
-- `typography` for Dynamic Type-compatible text roles; action buttons use
-  `bodyStrong`
+- `typography` for Dynamic Type-compatible system text roles and optional
+  system monospaced metadata; action buttons use `bodyStrong`
 - `metrics` for shared spacing, corner radius, and generic layout
-- `presentation` for MHUI row, action, key-value, and cue layout
+- `presentation` for MHUI row, action, key-value, and cue placement
 - `divider`, `motion`, and `surfaces` for package-owned treatments
 
 Use `MHTheme.standard(metrics:accent:)` when an app already has an
-`MHDesignMetrics` baseline. `MHColorReference.tint` deliberately inherits the
-active SwiftUI tint. A fixed accent makes the theme the source of truth for
-both MHUI colors and native-control tint.
+`MHDesignMetrics` baseline. The no-argument standard theme uses
+`MHColorReference.standardAccent`. Pass `MHColorReference.tint` explicitly when
+the theme should inherit the active SwiftUI tint. A concrete accent makes the
+theme the source of truth for both MHUI colors and native-control tint.
 
 Theme values propagate automatically, but semantic component selection stays
 explicit. Continue applying APIs such as `.buttonStyle(.mhPrimary)`,

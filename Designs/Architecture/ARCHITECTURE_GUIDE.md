@@ -100,7 +100,11 @@ Neither should become the place where new shared styling rules are invented befo
 - Prefer a direct `View` extension when an API only writes environment values or adds a light styling chain that stays clearer without an extra type.
 - Keep a private `ViewModifier` when the implementation reads environment values, resolves adaptive layout, bundles multiple visual steps such as padding, background, overlay, or animation, or is shared by multiple public entry points.
 - Canonical direct-extension examples are `mhGlassPolicy(_:)`, `mhActionPresentation(_:)`, and `mhKeyValueLayout(_:)`.
-- Canonical private-`ViewModifier` examples are `mhTheme(_:)`, `mhSurface(role:)`, `mhTextStyle(_:colorRole:)`, `mhScreen(...)`, `mhSection(...)`, `mhGroupedRows()`, `mhInputChrome(state:)`, and `mhBadge(style:)`.
+- `MHGroupedRows` is a container because it needs direct access to its row
+  subviews to place separators correctly.
+- Canonical private-`ViewModifier` examples are `mhTheme(_:)`,
+  `mhSurface(role:)`, `mhTextStyle(_:colorRole:)`, `mhScreen(...)`,
+  `mhSection(...)`, `mhInputChrome(state:)`, and `mhBadge(style:)`.
 
 ## Repository Structure Guidance
 
