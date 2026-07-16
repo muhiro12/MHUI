@@ -73,7 +73,55 @@ struct MetricsOnlyView: View {
 ```
 
 Use `MHUI` when an app wants the styled layer. `MHUI` re-exports `MHDesign`, so
-one import is enough for both metrics and styled APIs.
+one import is enough for both metrics and styled APIs. Define one app theme by
+starting from the standard semantic baseline and changing only the values the
+app owns.
+
+```swift
+import MHUI
+
+extension MHTheme {
+    static var app: Self {
+        var theme = standard(accent: .fixed(
+            lightHex: 0x2473E6,
+            darkHex: 0x73ADFF
+        ))
+        theme.colors.surface = .fixed(
+            lightHex: 0xF3F6FA,
+            darkHex: 0x18202B
+        )
+        theme.typography.bodyStrong = .init(
+            font: .title3,
+            weight: .bold
+        )
+        theme.presentation.rowVerticalPadding = 18
+        return theme
+    }
+}
+```
+
+Apply that theme once near the app root. It propagates through SwiftUI's
+environment to MHUI components and synchronizes the tint of native controls
+when the theme uses a concrete accent color.
+
+```swift
+import MHUI
+import SwiftUI
+
+@main
+struct WorkspaceApp: App {
+    var body: some Scene {
+        WindowGroup {
+            RootView()
+                .mhTheme(.app)
+        }
+    }
+}
+```
+
+Views still choose semantic intent explicitly. The theme decides what
+`bodyStrong`, `surface`, `primary`, or `destructive` looks like; it does not
+guess which role a screen element should use.
 
 ```swift
 import MHUI
@@ -110,8 +158,6 @@ struct SettingsScreen: View {
                 subtitle: "Shared rhythm and low-noise hierarchy."
             )
         }
-        .tint(.blue)
-        .mhTheme(MHTheme.standard())
     }
 }
 ```
@@ -119,11 +165,41 @@ struct SettingsScreen: View {
 Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from
 stacks and calm surfaces instead of a native `List` or `Form`.
 
+Apply another theme to a narrower subtree for an intentional exception. The
+override follows normal SwiftUI environment scoping and leaves sibling views
+on the app theme.
+
+```swift
+struct InspectorPane: View {
+    var body: some View {
+        InspectorContent()
+            .mhTheme(.inspector)
+    }
+}
+```
+
 ## Tuning
 
-Start with `MHDesignMetrics.standard` for shared spacing, corner radius, and
-layout changes. Use `MHTheme.standard(metrics:accent:)` when an app wants MHUI
-chrome on top of its own metrics baseline.
+Start with `MHTheme.standard` and customize its public semantic groups:
+
+- `colors` for semantic backgrounds, surfaces, text, accent, warning, and
+  destructive colors
+- `typography` for Dynamic Type-compatible text roles; action buttons use
+  `bodyStrong`
+- `metrics` for shared spacing, corner radius, and generic layout
+- `presentation` for MHUI row, action, key-value, and cue layout
+- `divider`, `motion`, and `surfaces` for package-owned treatments
+
+Use `MHTheme.standard(metrics:accent:)` when an app already has an
+`MHDesignMetrics` baseline. `MHColorReference.tint` deliberately inherits the
+active SwiftUI tint. A fixed accent makes the theme the source of truth for
+both MHUI colors and native-control tint.
+
+Theme values propagate automatically, but semantic component selection stays
+explicit. Continue applying APIs such as `.buttonStyle(.mhPrimary)`,
+`.mhRow()`, `.mhSurface()`, and `.labeledContentStyle(.mhKeyValue)` where their
+meaning is known. MHUI does not globally replace or restyle every native
+SwiftUI control.
 
 For visual review, start with the colocated preview beside the edited primitive
 or layout API. Use validation previews when a change affects shared behavior
@@ -189,3 +265,4 @@ may write disposable cache and result data under `.build/ci/shared/`.
 - [ADR 0003: Example integrations stay outside package](Designs/Decisions/0003-example-integrations-stay-outside-package.md)
 - [ADR 0004: Host screens own product meaning](Designs/Decisions/0004-host-screens-own-product-meaning.md)
 - [ADR 0005: SwiftUtilities presentation boundary](Designs/Decisions/0005-swiftutilities-presentation-boundary.md)
+- [ADR 0006: Root theme propagation](Designs/Decisions/0006-root-theme-propagation.md)

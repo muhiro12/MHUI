@@ -68,6 +68,21 @@ Styled adopter:
 
 The package should shape presentation and composition without becoming the owner of host application behavior.
 
+## Root Theme Contract
+
+- A styled adopter should define one app-owned `MHTheme` value, normally by
+  copying `MHTheme.standard` and changing the semantic values it owns.
+- The app applies that value once near its root with `mhTheme(_:)`.
+- `mhTheme(_:)` propagates the theme through SwiftUI's environment. A concrete
+  theme accent also becomes the native-control tint for the subtree, while
+  `MHColorReference.tint` preserves the active SwiftUI tint.
+- A narrower `mhTheme(_:)` call is the supported mechanism for an intentional
+  local exception.
+- Theme propagation supplies values. Views still select semantic intent with
+  APIs such as `mhTextStyle`, `mhSurface`, `mhRow`, and MHUI button styles.
+- MHUI must not infer roles from arbitrary native controls or install a blanket
+  style that replaces SwiftUI control behavior.
+
 ## Example and Preview Mapping
 
 Example projects, MHDesign sidecar previews, MHUI colocated development previews, and preview validation catalogs follow the same package-first path:
@@ -84,8 +99,8 @@ Neither should become the place where new shared styling rules are invented befo
 
 - Prefer a direct `View` extension when an API only writes environment values or adds a light styling chain that stays clearer without an extra type.
 - Keep a private `ViewModifier` when the implementation reads environment values, resolves adaptive layout, bundles multiple visual steps such as padding, background, overlay, or animation, or is shared by multiple public entry points.
-- Canonical direct-extension examples are `mhTheme(_:)`, `mhGlassPolicy(_:)`, `mhActionPresentation(_:)`, and `mhKeyValueLayout(_:)`.
-- Canonical private-`ViewModifier` examples are `mhSurface(role:)`, `mhTextStyle(_:colorRole:)`, `mhScreen(...)`, `mhSection(...)`, `mhGroupedRows()`, `mhInputChrome(state:)`, and `mhBadge(style:)`.
+- Canonical direct-extension examples are `mhGlassPolicy(_:)`, `mhActionPresentation(_:)`, and `mhKeyValueLayout(_:)`.
+- Canonical private-`ViewModifier` examples are `mhTheme(_:)`, `mhSurface(role:)`, `mhTextStyle(_:colorRole:)`, `mhScreen(...)`, `mhSection(...)`, `mhGroupedRows()`, `mhInputChrome(state:)`, and `mhBadge(style:)`.
 
 ## Repository Structure Guidance
 

@@ -33,6 +33,9 @@ It explains where new code should live when the same visual rule or container pa
 - Styled app: `import MHUI`
 
 The styled path still conceptually uses both layers, but `MHUI` re-exports `MHDesign` so consuming apps do not need two explicit imports.
+Styled apps define one app-owned theme from `MHTheme.standard`, apply it near
+the app root with `mhTheme(_:)`, and use a narrower theme only for deliberate
+local exceptions.
 
 ## Canonical Shared APIs
 
@@ -50,9 +53,14 @@ The following types and helpers are the current shared entry points for package-
 - `MHLayoutMode`
 - `mhDesignMetrics(_:)`
 - `MHTheme`
+- `MHTheme.Colors`
+- `MHTheme.Typography`
+- `MHTheme.Presentation`
+- `MHTheme.Surfaces`
 - `MHColorReference`
 - `MHTextRole`
 - `MHColorRole`
+- `mhTheme(_:)`
 - `mhTextStyle(_:colorRole:)`
 - `mhSurface(role:)`
 - `mhRow()`
@@ -107,6 +115,12 @@ where the fallback remains equally usable.
 - `MHDesignMetrics.standard` stays in the package because sibling apps need one shared baseline for spacing, corner radii, and generic screen or surface layout thresholds even when they do not adopt MHUI chrome.
 - Re-export of `MHDesign` in `MHUI` stays in the package because styled adopters should reach both layers through one import.
 - `MHTheme.standard()` and `MHTheme.standard(accent:)` stay in the package because they define a reusable semantic baseline rather than one app's branding system.
+- Public theme groups let an app configure semantic values once without moving
+  role selection or product meaning into the package.
+- A concrete theme accent also tints native controls in the same subtree;
+  `MHColorReference.tint` is the explicit opt-in to inherit SwiftUI tint.
+- Theme propagation does not remove explicit semantic role selection at the
+  use site and does not globally replace native SwiftUI controls.
 - Row insets, compact action padding, key-value fallback widths, and cue geometry stay in `MHUI` because those values only make sense alongside MHUI presentation behavior.
 - `mhListChrome(...)` and `mhFormChrome(...)` stay in the package because they shape container presentation without needing app-specific business state.
 - MHDesign tuning previews stay beside the metrics files they tune, with only minimal helper views in `MHDesign/Sources/PreviewSupport`.

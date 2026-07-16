@@ -1,6 +1,6 @@
 # MHUI Current Repository Overview
 
-Current as of July 15, 2026.
+Current as of July 16, 2026.
 
 ## Purpose
 
@@ -38,7 +38,8 @@ The repository is intentionally biased toward package-owned visual rules and awa
 ## Public API Areas
 
 - `MHDesignMetrics` and its spacing, corner-radius, and layout value groups
-- Theme application through `MHTheme.standard()` and related semantic roles
+- Root theme application through `mhTheme(_:)`, public `MHTheme` semantic
+  groups, and explicit component roles
 - Text styling primitives such as `mhTextStyle(_:colorRole:)`
 - Surface, row, section, and grouped-layout modifiers
 - Screen-level chrome such as `mhScreen(...)`, `mhListChrome(...)`, and `mhFormChrome(...)`
@@ -53,6 +54,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 - `Designs/Decisions/0003-example-integrations-stay-outside-package.md`
 - `Designs/Decisions/0004-host-screens-own-product-meaning.md`
 - `Designs/Decisions/0005-swiftutilities-presentation-boundary.md`
+- `Designs/Decisions/0006-root-theme-propagation.md`
 
 ## Verification Entry Points
 
@@ -83,6 +85,10 @@ the Xcode-native integration is unavailable or does not cover a check.
 - Verification guards the package boundary so MHUI and MHDesign sources do not
   depend on or import SwiftUtilities or SwiftData.
 - Art-direction presets and low-level glass choreography do not belong in this package.
+- A styled app defines one root theme, while narrower themes are reserved for
+  intentional subtree exceptions.
+- Theme propagation supplies semantic values but does not infer component roles
+  or replace native SwiftUI controls.
 - Package-owned Liquid Glass behavior is limited to semantic tinting, grouped
   chrome containers, action interactivity, and accessibility/runtime fallback.
 - Runtime UI fallback remains package-owned behavior and is separate from consumer-update compatibility policy.
