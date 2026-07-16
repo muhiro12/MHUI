@@ -10,21 +10,42 @@ struct MHCueBlock<Content: View>: View {
     let content: Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: style.spacing) {
-            Rectangle()
-                .fill(
-                    theme.resolvedColor(
-                        for: style.colorRole,
-                        in: colorScheme
-                    )
-                )
-                .frame(
-                    width: style.width,
-                    height: style.height
-                )
+        let cueColor = theme.resolvedColor(
+            for: style.colorRole,
+            in: colorScheme
+        )
 
+        switch style.placement {
+        case .top:
+            VStack(alignment: .leading, spacing: style.spacing) {
+                Rectangle()
+                    .fill(cueColor)
+                    .accessibilityHidden(true)
+                    .frame(
+                        width: style.length,
+                        height: style.thickness
+                    )
+
+                content
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        case .leading:
             content
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(
+                    maxWidth: .infinity,
+                    minHeight: style.length,
+                    alignment: .topLeading
+                )
+                .padding(
+                    .leading,
+                    style.thickness + style.spacing
+                )
+                .overlay(alignment: .leading) {
+                    Rectangle()
+                        .fill(cueColor)
+                        .accessibilityHidden(true)
+                        .frame(width: style.thickness)
+                }
         }
     }
 

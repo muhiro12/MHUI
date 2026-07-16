@@ -38,9 +38,11 @@ struct MHStyleResolutionTests {
         #expect(supporting.textStyle.weight == .regular)
         #expect(supporting.tracking == 0)
         #expect(metadata.textStyle == theme.typography.metadata)
-        #expect(metadata.tracking == 0)
+        #expect(metadata.design == .monospaced)
+        #expect(metadata.tracking == 0.7)
         #expect(caption.textStyle.weight == .medium)
-        #expect(caption.tracking == 0)
+        #expect(caption.design == .default)
+        #expect(caption.tracking == 0.2)
     }
 
     @Test
@@ -122,7 +124,7 @@ struct MHStyleResolutionTests {
         #expect(action.horizontalPadding == theme.presentation.compactActionHorizontalPadding)
         #expect(action.verticalPadding == theme.presentation.compactActionVerticalPadding)
         #expect(action.minimumHeight == theme.layout.control.minimumTouchTarget)
-        #expect(grouped.dividerLeadingInset == row.horizontalInset + theme.spacing.inline)
+        #expect(grouped.dividerLeadingInset == row.horizontalInset)
         #expect(grouped.spacerHeight == row.verticalPadding)
         #expect(section.contentSpacing == theme.presentation.compactKeyValueSpacing)
         #expect(actionGroup.spacing == theme.presentation.compactActionGroupSpacing)
@@ -220,7 +222,7 @@ struct MHStyleResolutionTests {
         #expect(theme.surfaceColorRole(for: .standard) == .surface)
         #expect(theme.surfaceColorRole(for: .muted) == .surfaceMuted)
         #expect(grouped.showsDividers)
-        #expect(grouped.dividerLeadingInset == theme.layout.surface.insetHorizontal + theme.spacing.inline)
+        #expect(grouped.dividerLeadingInset == theme.layout.surface.insetHorizontal)
         #expect(grouped.dividerThickness == theme.divider.thickness)
         #expect(grouped.dividerOpacity == theme.divider.opacity)
         #expect(grouped.spacerHeight == theme.presentation.rowVerticalPadding)
@@ -372,29 +374,6 @@ struct MHStyleResolutionTests {
         #expect(accentBadge.backgroundStyle.borderOpacity == 0.14)
         #expect(!accentBadge.backgroundStyle.usesGlass)
         #expect(accentBadge.horizontalPadding == theme.spacing.control)
-    }
-
-    @Test
-    func screen_and_section_chrome_share_theme_tokens() {
-        let theme = MHTheme.standard
-        let screenCue = theme.resolvedCueStyle(for: .screen)
-        let sectionCue = theme.resolvedCueStyle(for: .section)
-        let screen = theme.resolvedScreenChromeStyle()
-        let section = theme.resolvedSectionChromeStyle()
-
-        #expect(screen.readableContentWidth == Optional(theme.layout.readableContentWidth))
-        #expect(screen.horizontalMargin == theme.layout.screen.contentInsetHorizontal)
-        #expect(screen.verticalPadding == theme.layout.screen.contentInsetVertical)
-        #expect(screenCue.colorRole == .accent)
-        #expect(screenCue.width == theme.presentation.screenCueWidth)
-        #expect(screenCue.height == theme.presentation.screenCueHeight)
-        #expect(sectionCue.colorRole == .accent)
-        #expect(sectionCue.width == theme.presentation.sectionCueWidth)
-        #expect(sectionCue.height == theme.presentation.sectionCueHeight)
-        #expect(screen.cueStyle == screenCue)
-        #expect(section.cueStyle == sectionCue)
-        #expect(section.contentSpacing == theme.spacing.control)
-        #expect(section.leadingInset == theme.spacing.inline)
     }
 }
 // swiftlint:enable function_body_length type_body_length

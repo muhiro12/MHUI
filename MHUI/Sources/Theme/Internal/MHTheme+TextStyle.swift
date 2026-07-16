@@ -25,14 +25,15 @@ extension MHTheme {
 
     private func resolvedStyle(
         for role: MHTextRole,
-        colorRole: MHColorRole,
-        tracking: CGFloat = 0
+        colorRole: MHColorRole
     ) -> MHResolvedTextStyle {
-        .init(
-            textStyle: textStyle(for: role),
+        let semanticStyle = textStyle(for: role)
+
+        return .init(
+            textStyle: semanticStyle,
             colorRole: colorRole,
-            design: .default,
-            tracking: tracking
+            design: semanticStyle.design.fontDesign,
+            tracking: semanticStyle.tracking
         )
     }
 }

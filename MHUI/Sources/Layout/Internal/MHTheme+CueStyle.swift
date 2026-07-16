@@ -6,15 +6,17 @@ extension MHTheme {
         case .screen:
             .init(
                 colorRole: .accent,
-                width: presentation.screenCueWidth,
-                height: presentation.screenCueHeight,
+                placement: presentation.screenCuePlacement,
+                length: presentation.screenCueLength,
+                thickness: presentation.screenCueThickness,
                 spacing: spacing.control
             )
         case .section:
             .init(
                 colorRole: .accent,
-                width: presentation.sectionCueWidth,
-                height: presentation.sectionCueHeight,
+                placement: presentation.sectionCuePlacement,
+                length: presentation.sectionCueLength,
+                thickness: presentation.sectionCueThickness,
                 spacing: spacing.inline
             )
         }

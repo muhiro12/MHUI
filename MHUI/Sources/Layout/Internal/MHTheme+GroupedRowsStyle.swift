@@ -7,7 +7,7 @@ extension MHTheme {
 
         return .init(
             showsDividers: showsDividers,
-            dividerLeadingInset: rowChrome.horizontalInset + spacing.inline,
+            dividerLeadingInset: rowChrome.horizontalInset,
             dividerThickness: divider.thickness,
             dividerOpacity: divider.opacity,
             spacerHeight: rowChrome.verticalPadding

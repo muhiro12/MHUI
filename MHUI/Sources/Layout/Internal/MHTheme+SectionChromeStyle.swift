@@ -9,8 +9,9 @@ extension MHTheme {
 
         return .init(
             cueColorRole: cue.colorRole,
-            cueWidth: cue.width,
-            cueHeight: cue.height,
+            cuePlacement: cue.placement,
+            cueLength: cue.length,
+            cueThickness: cue.thickness,
             cueSpacing: cue.spacing,
             contentSpacing: isCompactWidth
                 ? presentation.compactKeyValueSpacing

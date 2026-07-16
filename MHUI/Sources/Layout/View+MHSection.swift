@@ -129,7 +129,7 @@ public extension View {
 // MARK: - Preview
 
 #Preview("Section", traits: .sizeThatFitsLayout) {
-    VStack(spacing: 0) {
+    MHGroupedRows {
         HStack(alignment: .top, spacing: MHTheme.standard.spacing.control) {
             VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
                 Text("Pattern")
@@ -146,7 +146,6 @@ public extension View {
         LabeledContent("Surface", value: "Styled")
             .labeledContentStyle(.mhKeyValue)
     }
-    .mhGroupedRows()
     .mhSection(
         "Rhythm",
         supporting: "Shared section framing without owning app workflow."

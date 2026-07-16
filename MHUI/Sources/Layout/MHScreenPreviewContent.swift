@@ -3,13 +3,12 @@ import SwiftUI
 private struct MHScreenPreviewContent: View {
     var body: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
-            VStack(spacing: .zero) {
+            MHGroupedRows {
                 LabeledContent("Atmosphere", value: "Calm")
                     .labeledContentStyle(.mhKeyValue)
                 LabeledContent("Approach", value: "Opinionated")
                     .labeledContentStyle(.mhKeyValue)
             }
-            .mhGroupedRows()
             .mhSection(
                 "Foundation",
                 supporting: "Tokens, styles, and composition helpers."

@@ -6,9 +6,9 @@ public extension View {
         modifier(MHRowModifier())
     }
 
-    /// Styles restrained row metadata shown above a row title.
+    /// Styles accented metadata shown above a row title.
     func mhRowOverline() -> some View {
-        mhTextStyle(.metadata, colorRole: .secondaryText)
+        mhTextStyle(.metadata, colorRole: .accent)
     }
 
     /// Styles a row title with quiet emphasis.

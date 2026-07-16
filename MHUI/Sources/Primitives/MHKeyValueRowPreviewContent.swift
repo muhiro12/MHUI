@@ -2,7 +2,7 @@ import SwiftUI
 
 private struct MHKeyValueRowPreviewContent: View {
     var body: some View {
-        VStack(spacing: .zero) {
+        MHGroupedRows {
             LabeledContent(
                 "Shared package responsibility for narrow rows",
                 value: """
@@ -20,7 +20,6 @@ private struct MHKeyValueRowPreviewContent: View {
             )
             .labeledContentStyle(.mhKeyValue)
         }
-        .mhGroupedRows()
         .mhSurfaceInset()
         .mhSurface()
     }

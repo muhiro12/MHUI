@@ -18,6 +18,9 @@ public struct MHColorReference: Sendable, Equatable {
     /// Inherits the active SwiftUI tint instead of defining a concrete color.
     public static let tint = Self(storage: .tint)
 
+    /// Uses the package-owned standard accent color.
+    public static let standardAccent = Self.asset(MHColorAsset.accent)
+
     private let storage: Storage
 
     static func system(

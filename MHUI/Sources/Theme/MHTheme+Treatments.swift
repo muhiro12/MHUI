@@ -63,18 +63,28 @@ public extension MHTheme {
 
     /// Surface treatments for the screen canvas and grouped content.
     struct Surfaces: Sendable, Equatable {
+        /// Treatment used behind screen content.
         public var canvas: SurfaceTreatment
+
+        /// Treatment used for default grouped content.
         public var standard: SurfaceTreatment
+
+        /// Treatment used for content raised above a standard surface.
+        public var elevated: SurfaceTreatment
+
+        /// Treatment used for subdued supporting content.
         public var muted: SurfaceTreatment
 
         /// Creates a complete surface configuration.
         public init(
             canvas: SurfaceTreatment,
             standard: SurfaceTreatment,
+            elevated: SurfaceTreatment,
             muted: SurfaceTreatment
         ) {
             self.canvas = canvas
             self.standard = standard
+            self.elevated = elevated
             self.muted = muted
         }
     }

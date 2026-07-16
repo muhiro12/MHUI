@@ -26,7 +26,7 @@ private struct MHScreenValidationContent: View {
                 .buttonStyle(.mhSecondary)
             }
 
-            VStack(spacing: 0) {
+            MHGroupedRows {
                 LabeledContent(
                     "Shared responsibility",
                     value: "Surface rhythm, action fallback, and width resilience should stay package-owned."
@@ -39,7 +39,6 @@ private struct MHScreenValidationContent: View {
                 )
                 .labeledContentStyle(.mhKeyValue)
             }
-            .mhGroupedRows()
             .mhSection(
                 "Compact Validation",
                 supporting: "Long labels, long values, and multiple actions should stay practical before visual polish."

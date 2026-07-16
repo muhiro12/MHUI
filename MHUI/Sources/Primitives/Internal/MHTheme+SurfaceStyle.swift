@@ -20,6 +20,8 @@ extension MHTheme {
         switch role {
         case .standard:
             .surface
+        case .elevated:
+            .surfaceElevated
         case .muted:
             .surfaceMuted
         }
@@ -82,6 +84,8 @@ extension MHTheme {
         switch role {
         case .standard:
             surfaces.standard
+        case .elevated:
+            surfaces.elevated
         case .muted:
             surfaces.muted
         }

@@ -21,8 +21,9 @@ extension MHTheme {
                 ? layout.screen.compactContentSpacing
                 : layout.screen.contentSpacing,
             cueColorRole: cue.colorRole,
-            cueWidth: cue.width,
-            cueHeight: cue.height,
+            cuePlacement: cue.placement,
+            cueLength: cue.length,
+            cueThickness: cue.thickness,
             cueSpacing: cue.spacing
         )
     }

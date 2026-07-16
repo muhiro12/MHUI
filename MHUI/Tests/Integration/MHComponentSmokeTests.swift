@@ -9,7 +9,7 @@ struct MHComponentSmokeTests {
     func package_owned_core_primitives_instantiate_together() {
         let smokeView = AnyView(
             VStack(alignment: .leading, spacing: MHDesignMetrics.standard.spacing.section) {
-                VStack(spacing: 0) {
+                MHGroupedRows {
                     HStack(alignment: .top, spacing: MHDesignMetrics.standard.spacing.control) {
                         VStack(alignment: .leading, spacing: MHDesignMetrics.standard.spacing.inline) {
                             Text("Foundation")
@@ -28,7 +28,6 @@ struct MHComponentSmokeTests {
                     LabeledContent("Theme", value: "Standard")
                         .labeledContentStyle(.mhKeyValue)
                 }
-                .mhGroupedRows()
                 .mhSection("Section")
 
                 HStack(spacing: MHDesignMetrics.standard.spacing.control) {

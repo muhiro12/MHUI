@@ -12,8 +12,8 @@ public extension MHDesignMetrics {
             screen: gridUnit * 5
         ),
         cornerRadius: .init(
-            control: gridUnit * 1,
-            surface: gridUnit * 2
+            control: gridUnit * 0.75,
+            surface: gridUnit * 1
         ),
         layout: .init(
             readableContentWidth: platformReadableContentWidth,
@@ -63,9 +63,9 @@ private extension MHDesignMetrics {
             contentInsetHorizontal: gridUnit * 5,
             contentInsetVertical: gridUnit * 9,
             contentSpacing: gridUnit * 6,
-            compactContentInsetHorizontal: gridUnit * 2,
+            compactContentInsetHorizontal: gridUnit * 2.5,
             compactContentInsetVertical: gridUnit * 4,
-            compactContentSpacing: gridUnit * 3
+            compactContentSpacing: gridUnit * 4
         )
         #endif
     }
@@ -82,7 +82,7 @@ private extension MHDesignMetrics {
         .init(
             insetHorizontal: gridUnit * 3,
             insetVertical: gridUnit * 3,
-            compactInsetHorizontal: gridUnit * 2,
+            compactInsetHorizontal: gridUnit * 2.5,
             compactInsetVertical: gridUnit * 2
         )
         #endif

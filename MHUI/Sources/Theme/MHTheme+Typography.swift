@@ -1,5 +1,7 @@
+import CoreGraphics
+
 public extension MHTheme {
-    /// A Dynamic Type-compatible font style and weight.
+    /// A Dynamic Type-compatible system font treatment.
     struct TextStyle: Sendable, Equatable {
         /// The semantic system font style.
         public var font: MHFontStyle
@@ -7,13 +9,24 @@ public extension MHTheme {
         /// The weight applied to the semantic font style.
         public var weight: MHFontWeight
 
+        /// The system font design applied to the semantic font style.
+        public var design: MHFontDesign
+
+        /// Additional spacing, in points, applied after each character cluster.
+        /// A value of zero preserves the system tracking.
+        public var tracking: CGFloat
+
         /// Creates a semantic text style.
         public init(
             font: MHFontStyle,
-            weight: MHFontWeight
+            weight: MHFontWeight,
+            design: MHFontDesign = .standard,
+            tracking: CGFloat = 0
         ) {
             self.font = font
             self.weight = weight
+            self.design = design
+            self.tracking = tracking
         }
     }
 

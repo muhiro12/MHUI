@@ -2,20 +2,36 @@ import MHDesign
 
 public extension MHTheme {
     // swiftlint:disable no_magic_numbers
-    /// The default calm theme used by MHUI components.
-    /// Tune default spacing, typography, and surface recipes here first.
+    /// The package-owned standard theme used by MHUI components.
     static let standard = standard()
 
     private static var standardTypography: Typography {
         .init(
-            screenTitle: .init(font: .title2, weight: .semibold),
+            screenTitle: standardScreenTitle,
             sectionTitle: .init(font: .title3, weight: .semibold),
             body: .init(font: .body, weight: .regular),
-            bodyStrong: .init(font: .body, weight: .medium),
+            bodyStrong: .init(font: .body, weight: .semibold),
             supporting: .init(font: .subheadline, weight: .regular),
-            metadata: .init(font: .footnote, weight: .medium),
-            caption: .init(font: .footnote, weight: .medium)
+            metadata: .init(
+                font: .footnote,
+                weight: .medium,
+                design: .monospaced,
+                tracking: 0.7
+            ),
+            caption: .init(
+                font: .caption,
+                weight: .medium,
+                tracking: 0.2
+            )
         )
+    }
+
+    private static var standardScreenTitle: TextStyle {
+        #if os(iOS)
+        .init(font: .largeTitle, weight: .bold)
+        #else
+        .init(font: .title2, weight: .bold)
+        #endif
     }
 
     private static var standardPresentation: Presentation {
@@ -23,26 +39,28 @@ public extension MHTheme {
             rowHorizontalInset: 24,
             rowVerticalPadding: 16,
             rowAccessorySpacing: 16,
-            compactRowHorizontalInset: 16,
-            compactRowVerticalPadding: 8,
-            compactRowAccessorySpacing: 8,
-            compactActionHorizontalPadding: 16,
-            compactActionVerticalPadding: 8,
+            compactRowHorizontalInset: 20,
+            compactRowVerticalPadding: 12,
+            compactRowAccessorySpacing: 12,
+            compactActionHorizontalPadding: 20,
+            compactActionVerticalPadding: 12,
             regularKeyValueMinimumValueWidth: 160,
             compactKeyValueMinimumValueWidth: 120,
             compactKeyValueSpacing: 8,
-            compactActionGroupSpacing: 8,
-            screenCueWidth: 24,
-            screenCueHeight: 2,
-            sectionCueWidth: 16,
-            sectionCueHeight: 2
+            compactActionGroupSpacing: 12,
+            screenCuePlacement: .leading,
+            screenCueLength: 72,
+            screenCueThickness: 2,
+            sectionCuePlacement: .leading,
+            sectionCueLength: 40,
+            sectionCueThickness: 2
         )
     }
 
     private static var standardDivider: Divider {
         .init(
             thickness: 1,
-            opacity: 1
+            opacity: 0.75
         )
     }
 
@@ -71,7 +89,16 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.5
+                borderOpacity: 0.65
+            ),
+            elevated: .init(
+                prefersGlass: false,
+                fallbackColorRole: .surfaceElevated,
+                fallbackOpacity: 1,
+                glassTintColorRole: nil,
+                glassTintOpacity: 0,
+                borderColorRole: .border,
+                borderOpacity: 0.8
             ),
             muted: .init(
                 prefersGlass: false,
@@ -80,15 +107,14 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.25
+                borderOpacity: 0.35
             )
         )
     }
 
-    /// Creates the standard neutral MHUI theme using the selected accent source.
-    /// Uses the default MHUI on-accent foreground asset.
+    /// Creates the standard MHUI theme using its package accent or an app-provided source.
     static func standard(
-        accent: MHColorReference = .tint
+        accent: MHColorReference = .standardAccent
     ) -> Self {
         standard(
             metrics: .standard,
@@ -97,21 +123,21 @@ public extension MHTheme {
         )
     }
 
-    /// Creates the standard neutral MHUI theme with an app-provided on-accent foreground.
+    /// Creates the standard MHUI theme with an app-provided on-accent foreground.
     static func standard(
         onAccent: MHColorReference
     ) -> Self {
         standard(
             metrics: .standard,
-            accent: .tint,
+            accent: .standardAccent,
             onAccent: onAccent
         )
     }
 
-    /// Creates the standard neutral MHUI theme with an app-provided metrics baseline.
+    /// Creates the standard MHUI theme with app-provided metrics and an optional accent source.
     static func standard(
         metrics: MHDesignMetrics,
-        accent: MHColorReference = .tint
+        accent: MHColorReference = .standardAccent
     ) -> Self {
         standard(
             metrics: metrics,
@@ -120,7 +146,7 @@ public extension MHTheme {
         )
     }
 
-    /// Creates the standard neutral MHUI theme with an app-provided on-accent foreground.
+    /// Creates the standard MHUI theme with an app-provided on-accent foreground.
     /// Use this when the app's accent color needs a foreground other than the MHUI default.
     static func standard(
         accent: MHColorReference,
@@ -133,7 +159,7 @@ public extension MHTheme {
         )
     }
 
-    /// Creates the standard neutral MHUI theme with app-provided metrics and colors.
+    /// Creates the standard MHUI theme with app-provided metrics and colors.
     /// Use this when an app wants MHUI chrome with its own shared layout baseline.
     static func standard(
         metrics: MHDesignMetrics,
@@ -159,14 +185,14 @@ public extension MHTheme {
         onAccent: MHColorReference
     ) -> Colors {
         .init(
-            background: .system(.background),
-            surface: .system(.surface),
-            surfaceElevated: .system(.surfaceElevated),
-            surfaceMuted: .system(.surfaceMuted),
-            border: .system(.border),
-            primaryText: .system(.primaryText),
-            secondaryText: .system(.secondaryText),
-            tertiaryText: .system(.tertiaryText),
+            background: .asset(MHColorAsset.background),
+            surface: .asset(MHColorAsset.surface),
+            surfaceElevated: .asset(MHColorAsset.surfaceElevated),
+            surfaceMuted: .asset(MHColorAsset.surfaceMuted),
+            border: .asset(MHColorAsset.border),
+            primaryText: .asset(MHColorAsset.primaryText),
+            secondaryText: .asset(MHColorAsset.secondaryText),
+            tertiaryText: .asset(MHColorAsset.tertiaryText),
             accent: accent,
             onAccent: onAccent,
             warning: .system(.warning),

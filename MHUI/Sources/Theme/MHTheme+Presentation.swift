@@ -15,10 +15,25 @@ public extension MHTheme {
         public var compactKeyValueMinimumValueWidth: CGFloat
         public var compactKeyValueSpacing: CGFloat
         public var compactActionGroupSpacing: CGFloat
-        public var screenCueWidth: CGFloat
-        public var screenCueHeight: CGFloat
-        public var sectionCueWidth: CGFloat
-        public var sectionCueHeight: CGFloat
+        /// The edge where the screen heading cue appears.
+        public var screenCuePlacement: MHCuePlacement
+
+        /// The screen heading cue's length along its primary axis.
+        /// A leading cue grows beyond this minimum to match its content height.
+        public var screenCueLength: CGFloat
+
+        /// The screen heading cue's thickness across its secondary axis.
+        public var screenCueThickness: CGFloat
+
+        /// The edge where section heading cues appear.
+        public var sectionCuePlacement: MHCuePlacement
+
+        /// A section heading cue's length along its primary axis.
+        /// A leading cue grows beyond this minimum to match its content height.
+        public var sectionCueLength: CGFloat
+
+        /// A section heading cue's thickness across its secondary axis.
+        public var sectionCueThickness: CGFloat
 
         /// Creates a complete MHUI presentation configuration.
         public init(
@@ -34,10 +49,12 @@ public extension MHTheme {
             compactKeyValueMinimumValueWidth: CGFloat,
             compactKeyValueSpacing: CGFloat,
             compactActionGroupSpacing: CGFloat,
-            screenCueWidth: CGFloat,
-            screenCueHeight: CGFloat,
-            sectionCueWidth: CGFloat,
-            sectionCueHeight: CGFloat
+            screenCuePlacement: MHCuePlacement,
+            screenCueLength: CGFloat,
+            screenCueThickness: CGFloat,
+            sectionCuePlacement: MHCuePlacement,
+            sectionCueLength: CGFloat,
+            sectionCueThickness: CGFloat
         ) {
             self.rowHorizontalInset = rowHorizontalInset
             self.rowVerticalPadding = rowVerticalPadding
@@ -51,10 +68,12 @@ public extension MHTheme {
             self.compactKeyValueMinimumValueWidth = compactKeyValueMinimumValueWidth
             self.compactKeyValueSpacing = compactKeyValueSpacing
             self.compactActionGroupSpacing = compactActionGroupSpacing
-            self.screenCueWidth = screenCueWidth
-            self.screenCueHeight = screenCueHeight
-            self.sectionCueWidth = sectionCueWidth
-            self.sectionCueHeight = sectionCueHeight
+            self.screenCuePlacement = screenCuePlacement
+            self.screenCueLength = screenCueLength
+            self.screenCueThickness = screenCueThickness
+            self.sectionCuePlacement = sectionCuePlacement
+            self.sectionCueLength = sectionCueLength
+            self.sectionCueThickness = sectionCueThickness
         }
     }
 }
