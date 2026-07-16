@@ -23,7 +23,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 - Shared design parameters live in `MHDesign/Sources`.
 - Shared presentation APIs live in `MHUI/Sources`, which re-exports `MHDesign`.
-- Standard MHUI color values live in `MHUI/Resources` and are reached through semantic roles in `MHUI/Sources`.
+- Standard low-chroma base colors live in `MHUI/Resources` and are reached through semantic roles in `MHUI/Sources`; the host app's `AccentColor` remains external.
 - Versions in the `1.x` line are beta and may include intentional breaking API changes.
 - The package does not keep deprecated aliases, migration helpers, or compatibility shims for consuming apps during `1.x`.
 - Product behavior stays outside the package.
@@ -89,6 +89,8 @@ the Xcode-native integration is unavailable or does not cover a check.
 - Art-direction presets and low-level glass choreography do not belong in this package.
 - A styled app defines one root theme, while narrower themes are reserved for
   intentional subtree exceptions.
+- The standard theme uses the host app's `AccentColor`. Apps that provide a
+  concrete accent also own and verify its `onAccent` foreground.
 - Theme propagation supplies semantic values but does not infer component roles
   or replace native SwiftUI controls.
 - Package-owned Liquid Glass behavior is limited to semantic tinting, grouped

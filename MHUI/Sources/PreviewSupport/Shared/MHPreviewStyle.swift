@@ -143,11 +143,26 @@ enum MHPreviewStyle {
         static let stressPhone: CGFloat = 320
     }
 
+    // swiftlint:disable no_magic_numbers
+    static let sampleHostAccent = MHColorReference.fixed(
+        lightHex: 0x244A3F,
+        darkHex: 0x8FB9A8
+    )
+
+    static let sampleHostOnAccent = MHColorReference.fixed(
+        lightHex: 0xFFFFFF,
+        darkHex: 0x111110
+    )
+    // swiftlint:enable no_magic_numbers
+
     static func theme(
         for context: MHPreviewContext
     ) -> MHTheme {
         _ = context
-        return MHTheme.standard
+        return MHTheme.standard(
+            accent: sampleHostAccent,
+            onAccent: sampleHostOnAccent
+        )
     }
 
     static func tintColor(

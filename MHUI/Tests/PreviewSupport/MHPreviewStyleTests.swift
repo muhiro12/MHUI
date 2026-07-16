@@ -4,13 +4,14 @@ import Testing
 
 struct MHPreviewStyleTests {
     @Test
-    func preview_default_context_matches_runtime_accent_baseline() {
+    func preview_default_context_supplies_a_host_accent_example() {
         let context = MHPreviewStyle.context()
         let theme = MHPreviewStyle.theme(for: context)
 
         #expect(context.glassPolicy == .automatic)
         #expect(context.title.contains("Glass Auto"))
-        #expect(theme.colors.accent == .standardAccent)
+        #expect(theme.colors.accent == MHPreviewStyle.sampleHostAccent)
+        #expect(theme.colors.onAccent == MHPreviewStyle.sampleHostOnAccent)
     }
 
     @Test
@@ -34,7 +35,8 @@ struct MHPreviewStyleTests {
     func preview_theme_stays_aligned_with_runtime_tokens() {
         let theme = MHPreviewStyle.theme(for: MHPreviewStyle.context())
 
-        #expect(theme.colors.accent == .standardAccent)
+        #expect(MHTheme.standard.colors.accent == .tint)
+        #expect(theme.colors.accent == MHPreviewStyle.sampleHostAccent)
         #expect(theme.spacing.control == MHTheme.standard.spacing.control)
         #expect(theme.layout.screen.contentInsetHorizontal == MHTheme.standard.layout.screen.contentInsetHorizontal)
         #expect(

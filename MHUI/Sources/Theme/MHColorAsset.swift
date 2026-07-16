@@ -41,11 +41,6 @@ enum MHColorAsset {
         bundle: .module
     )
 
-    static let accent = ColorResource(
-        name: "MHAccent",
-        bundle: .module
-    )
-
     static let onAccent = ColorResource(
         name: "MHOnAccent",
         bundle: .module

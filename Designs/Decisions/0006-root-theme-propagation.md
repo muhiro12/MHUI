@@ -1,6 +1,7 @@
 # ADR 0006: Root Theme Propagation
 
 - Date: 2026-07-16
+- Last updated: 2026-07-17
 - Status: Accepted
 
 ## Context
@@ -23,10 +24,10 @@ surface groups are public and mutable. Apps normally copy `MHTheme.standard`,
 change the values they own, and apply the result once near the app root with
 `mhTheme(_:)`.
 
-The modifier propagates the theme through SwiftUI's environment. A concrete
+The modifier propagates the theme through SwiftUI's environment. The standard
+theme uses `MHColorReference.tint`, which resolves the host app's `AccentColor`
+without installing a native tint override. An explicitly configured concrete
 accent also becomes the native-control tint within the same subtree.
-`MHColorReference.tint` remains the explicit choice for inheriting the active
-SwiftUI tint instead.
 
 A narrower `mhTheme(_:)` call provides an intentional local override. Views
 still select semantic intent explicitly through MHUI text, surface, row,
@@ -37,8 +38,11 @@ replace native controls, or install blanket styles for every SwiftUI control.
 
 - Adopters can keep the ordinary app theme in one source location and receive
   automatic subtree propagation.
+- Host apps keep ownership of their brand color when they use the standard
+  theme unchanged.
 - Concrete accent colors stay aligned between MHUI components and native
-  controls unless a narrower SwiftUI tint override is intentional.
+  controls unless a narrower SwiftUI tint override is intentional. Apps also
+  own contrast validation for the matching `onAccent` foreground.
 - Changing a theme role updates every MHUI primitive that consumes that role.
 - Exceptions use the same value type and normal SwiftUI environment scoping.
 - Semantic role selection remains visible at use sites, preserving meaning and

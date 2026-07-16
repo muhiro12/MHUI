@@ -7,7 +7,6 @@ struct MHThemeTests {
     @Test
     func standard_theme_uses_semantic_defaults() {
         let theme = MHTheme.standard
-        let tintTheme = MHTheme.standard(accent: .tint)
 
         #expect(theme.colors.background == .asset(MHColorAsset.background))
         #expect(theme.colors.surface == .asset(MHColorAsset.surface))
@@ -17,15 +16,13 @@ struct MHThemeTests {
         #expect(theme.colors.primaryText == .asset(MHColorAsset.primaryText))
         #expect(theme.colors.secondaryText == .asset(MHColorAsset.secondaryText))
         #expect(theme.colors.tertiaryText == .asset(MHColorAsset.tertiaryText))
-        #expect(theme.colors.accent == .standardAccent)
+        #expect(theme.colors.accent == .tint)
         #expect(theme.colors.onAccent == .asset(MHColorAsset.onAccent))
         #expect(theme.colors.warning == .system(.warning))
         #expect(theme.colors.destructive == .system(.destructive))
-        #expect(theme.nativeTintOverride(in: .light) != nil)
-        #expect(tintTheme.nativeTintOverride(in: .light) == nil)
+        #expect(theme.nativeTintOverride(in: .light) == nil)
         #expect(theme.metrics == MHDesignMetrics.standard)
         #expect(theme == MHTheme.standard())
-        #expect(theme != tintTheme)
         #expect(theme.spacing.inline == 8)
         #expect(theme.spacing.control == 16)
         #expect(theme.spacing.content == 24)
@@ -168,7 +165,7 @@ struct MHThemeTests {
 
         #expect(theme.colors.accent == accent)
         #expect(theme.colors.onAccent == onAccent)
-        #expect(standardTheme.colors.accent == .standardAccent)
+        #expect(standardTheme.colors.accent == .tint)
         #expect(standardTheme.colors.onAccent == onAccent)
     }
 

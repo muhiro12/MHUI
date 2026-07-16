@@ -9,7 +9,8 @@ It explains where new code should live when the same visual rule or container pa
 
 - `MHDesign/Sources` is the source of truth for shared spacing, corner radius, and generic screen or surface layout parameters that should work without MHUI chrome.
 - `MHUI/Sources` is the source of truth for shared presentation logic built on `MHDesign`.
-- `MHUI/Resources` is the source of truth for MHUI-owned standard theme assets that should remain package-owned but editable as resources.
+- `MHUI/Resources` is the source of truth for low-chroma standard base colors that should remain package-owned but editable as resources.
+- Host apps own their accent color; the standard theme resolves it from the app's `AccentColor` asset.
 - Host apps own product behavior, feature state, and navigation meaning.
 - Example apps and previews are consumers of package APIs, not a second design layer.
 - Views and modifiers in MHUI should stay domain neutral even when they feel screen-like.
@@ -22,7 +23,7 @@ It explains where new code should live when the same visual rule or container pa
 | --- | --- | --- |
 | Shared design parameters | `MHDesign/Sources` | `MHDesignMetrics`, spacing, corner radii, readable widths, generic screen or surface insets, compact thresholds, SwiftUI environment bridge |
 | Shared presentation logic | `MHUI/Sources` | `MHTheme`, semantic roles, text styles, row and action fallback, key-value fallback, cue geometry, surface chrome, grouped rows, section chrome, screen chrome, and re-export of `MHDesign` |
-| Package resource assets | `MHUI/Resources` | Standard theme color assets referenced by MHUI semantic roles |
+| Package resource assets | `MHUI/Resources` | Low-chroma background, surface, border, text, and fallback foreground assets referenced by MHUI semantic roles |
 | Package preview support | `MHDesign/Sources/PreviewSupport`, `MHUI/Sources/PreviewSupport`, plus local preview files beside the tuned API | minimal MHDesign preview helpers, `MHPreviewStyle`, `MHPreviewCatalog`, validation catalogs for compact width and native-container chrome, plus local previews kept beside the API they tune |
 | Host app composition | App repositories that consume MHUI | feature screens, navigation state, form state, domain-driven copy, feature-specific layouts |
 | Optional integration shell | `Example/` when present | package adoption checks, manual regression review, consumer-side examples |
@@ -36,6 +37,7 @@ The styled path still conceptually uses both layers, but `MHUI` re-exports `MHDe
 Styled apps can apply the opinionated `MHTheme.standard` baseline unchanged or
 derive one app-owned theme from it. They apply that theme near the app root with
 `mhTheme(_:)` and use a narrower theme only for deliberate local exceptions.
+The unchanged baseline uses the host app's `AccentColor` asset.
 
 ## Canonical Shared APIs
 
@@ -119,13 +121,15 @@ where the fallback remains equally usable.
 - Re-export of `MHDesign` in `MHUI` stays in the package because styled adopters should reach both layers through one import.
 - `MHTheme.standard()` and `MHTheme.standard(accent:)` stay in the package
   because they define a reusable semantic baseline rather than one app's
-  branding system. The baseline uses package-owned semantic color assets,
-  system typography, low-radius surfaces, and leading heading cues.
+  branding system. The baseline uses package-owned low-chroma base colors,
+  host-provided accent, system typography, low-radius surfaces, and leading
+  heading cues.
 - Public theme groups let an app configure semantic values once without moving
   role selection or product meaning into the package.
-- The standard package accent and other concrete theme accents also tint native
-  controls in the same subtree; `MHColorReference.tint` is the explicit opt-in
-  to inherit SwiftUI tint.
+- The standard theme uses the app's `AccentColor` without installing a tint
+  override. An app-provided concrete theme
+  accent also tints native controls in the same subtree and should be paired
+  with an app-tested `onAccent` foreground.
 - Theme propagation does not remove explicit semantic role selection at the
   use site and does not globally replace native SwiftUI controls.
 - Row insets, compact action padding, key-value fallback widths, and cue geometry stay in `MHUI` because those values only make sense alongside MHUI presentation behavior.

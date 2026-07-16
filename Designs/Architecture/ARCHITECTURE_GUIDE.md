@@ -74,8 +74,9 @@ The package should shape presentation and composition without becoming the owner
   copying `MHTheme.standard` and changing the semantic values it owns.
 - The app applies that value once near its root with `mhTheme(_:)`.
 - `mhTheme(_:)` propagates the theme through SwiftUI's environment. A concrete
-  theme accent also becomes the native-control tint for the subtree, while
-  `MHColorReference.tint` preserves the active SwiftUI tint.
+  theme accent also becomes the native-control tint for the subtree,
+  while the standard theme resolves semantic accent from the app's
+  `AccentColor` without installing a tint override.
 - A narrower `mhTheme(_:)` call is the supported mechanism for an intentional
   local exception.
 - Theme propagation supplies values. Views still select semantic intent with

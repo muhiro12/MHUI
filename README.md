@@ -5,8 +5,8 @@
 MHUI is a narrow runtime presentation kit for calm, tool-like SwiftUI apps.
 It is intentionally opinionated, intentionally small, and biased toward a
 shared visual language rather than product behavior. Its standard theme pairs
-system typography with warm neutral planes, precise rules, restrained geometry,
-and a deep green semantic accent.
+system typography with low-chroma neutral planes, precise rules, restrained
+geometry, and the host app's accent color.
 
 The package exposes two library products:
 
@@ -25,7 +25,7 @@ MHUI owns shared presentation rules that can apply across sibling apps:
 - semantic theme application through `MHTheme.standard(...)`
 - text, surface, row, section, screen, and native-container chrome
 - action, key-value, row, cue, and compact-width fallback behavior
-- package-owned color assets and validation previews
+- package-owned neutral color assets and validation previews
 
 MHUI does not own host-app behavior:
 
@@ -84,14 +84,7 @@ import MHUI
 
 extension MHTheme {
     static var app: Self {
-        var theme = standard(accent: .fixed(
-            lightHex: 0x2473E6,
-            darkHex: 0x73ADFF
-        ))
-        theme.colors.surface = .fixed(
-            lightHex: 0xF3F6FA,
-            darkHex: 0x18202B
-        )
+        var theme = standard
         theme.typography.bodyStrong = .init(
             font: .title3,
             weight: .bold
@@ -103,8 +96,11 @@ extension MHTheme {
 ```
 
 Apply that theme once near the app root. It propagates through SwiftUI's
-environment to MHUI components and synchronizes the tint of native controls
-when the theme uses a concrete accent color.
+environment to MHUI components. The standard theme inherits the app's active
+accent color, so the host can continue to own its brand through the app's
+`AccentColor` asset. For a code-defined or subtree-specific accent, pass the
+same concrete `accent` and `onAccent` pair into the theme instead of relying on
+`tint(_:)` alone.
 
 ```swift
 import MHUI
@@ -184,7 +180,7 @@ struct InspectorPane: View {
 
 `MHTheme.standard` is ready to use as a package-owned visual baseline. It keeps
 Apple's system type styles and native controls while giving apps a distinct
-palette, surface hierarchy, measured spacing, and leading-edge heading cues.
+low-chroma surface hierarchy, measured spacing, and leading-edge heading cues.
 
 Start with that baseline and customize its public semantic groups:
 
@@ -196,11 +192,14 @@ Start with that baseline and customize its public semantic groups:
 - `presentation` for MHUI row, action, key-value, and cue placement
 - `divider`, `motion`, and `surfaces` for package-owned treatments
 
-Use `MHTheme.standard(metrics:accent:)` when an app already has an
-`MHDesignMetrics` baseline. The no-argument standard theme uses
-`MHColorReference.standardAccent`. Pass `MHColorReference.tint` explicitly when
-the theme should inherit the active SwiftUI tint. A concrete accent makes the
-theme the source of truth for both MHUI colors and native-control tint.
+Use `MHTheme.standard(metrics:)` when an app already has an `MHDesignMetrics`
+baseline. The no-argument standard theme uses `MHColorReference.tint`, leaving
+the app's `AccentColor` asset under host-app control without installing a tint
+override. If an app intentionally stores a concrete accent in its theme, use
+`MHTheme.standard(accent:onAccent:)` and provide the foreground that remains
+legible on that accent. A concrete accent makes the theme the source of truth
+for both MHUI colors and native-control tint; the app must verify the accent
+and on-accent pair in light, dark, and Increase Contrast appearances.
 
 Theme values propagate automatically, but semantic component selection stays
 explicit. Continue applying APIs such as `.buttonStyle(.mhPrimary)`,

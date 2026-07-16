@@ -112,9 +112,12 @@ public extension MHTheme {
         )
     }
 
-    /// Creates the standard MHUI theme using its package accent or an app-provided source.
+    /// Creates the standard MHUI theme using the host app's accent by default.
+    ///
+    /// The package supplies a neutral on-accent fallback. Use the overload that
+    /// accepts `onAccent` when the app's accent needs another foreground.
     static func standard(
-        accent: MHColorReference = .standardAccent
+        accent: MHColorReference = .tint
     ) -> Self {
         standard(
             metrics: .standard,
@@ -129,15 +132,18 @@ public extension MHTheme {
     ) -> Self {
         standard(
             metrics: .standard,
-            accent: .standardAccent,
+            accent: .tint,
             onAccent: onAccent
         )
     }
 
     /// Creates the standard MHUI theme with app-provided metrics and an optional accent source.
+    ///
+    /// The package supplies a neutral on-accent fallback. Use the overload that
+    /// accepts both colors when the app's accent needs another foreground.
     static func standard(
         metrics: MHDesignMetrics,
-        accent: MHColorReference = .standardAccent
+        accent: MHColorReference = .tint
     ) -> Self {
         standard(
             metrics: metrics,
