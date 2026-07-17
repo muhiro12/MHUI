@@ -34,7 +34,7 @@ raw_color_matches=$(
     -name '*.swift' \
     -print0 |
     xargs -0 grep -nE \
-      'Color[[:space:]]*\([[:space:]]*(red|white|hue|displayP3Red)[[:space:]]*:|Color[[:space:]]*\([[:space:]]*\.sRGB|Color[[:space:]]*\([[:space:]]*(uiColor|nsColor)[[:space:]]*:|UIColor[[:space:]]*\([[:space:]]*(red|white|hue)[[:space:]]*:|NSColor[[:space:]]*\([[:space:]]*(calibratedRed|deviceRed|sRGBRed|white|hue)[[:space:]]*:|(lightHex|darkHex)[[:space:]]*:|#[[:xdigit:]]{6}([[:xdigit:]]{2})?' ||
+      'Color[[:space:]]*\([[:space:]]*(red|white|hue|displayP3Red)[[:space:]]*:|Color[[:space:]]*\([[:space:]]*\.sRGB|Color[[:space:]]*\([[:space:]]*(uiColor|nsColor)[[:space:]]*:|UIColor[[:space:]]*\([[:space:]]*(red|white|hue)[[:space:]]*:|NSColor[[:space:]]*\([[:space:]]*(calibratedRed|deviceRed|sRGBRed|white|hue)[[:space:]]*:|CGColor[[:space:]]*\([[:space:]]*(red|gray|colorSpace)[[:space:]]*:|CIColor[[:space:]]*\([[:space:]]*(red|white|hue)[[:space:]]*:|(lightHex|darkHex)[[:space:]]*:|#[[:xdigit:]]{6}([[:xdigit:]]{2})?' ||
     true
 )
 
