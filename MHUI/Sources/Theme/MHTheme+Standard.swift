@@ -8,6 +8,7 @@ public extension MHTheme {
     private static var standardTypography: Typography {
         .init(
             screenTitle: standardScreenTitle,
+            summaryTitle: standardSummaryTitle,
             sectionTitle: .init(font: .title3, weight: .semibold),
             body: .init(font: .body, weight: .regular),
             bodyStrong: .init(font: .body, weight: .semibold),
@@ -31,6 +32,14 @@ public extension MHTheme {
         .init(font: .largeTitle, weight: .bold)
         #else
         .init(font: .title2, weight: .bold)
+        #endif
+    }
+
+    private static var standardSummaryTitle: TextStyle {
+        #if os(iOS)
+        .init(font: .title2, weight: .bold)
+        #else
+        .init(font: .title3, weight: .semibold)
         #endif
     }
 

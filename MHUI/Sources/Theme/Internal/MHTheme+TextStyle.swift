@@ -8,6 +8,8 @@ extension MHTheme {
         switch role {
         case .screenTitle:
             resolvedStyle(for: .screenTitle, colorRole: colorRole)
+        case .summaryTitle:
+            resolvedStyle(for: .summaryTitle, colorRole: colorRole)
         case .sectionTitle:
             resolvedStyle(for: .sectionTitle, colorRole: colorRole)
         case .body:

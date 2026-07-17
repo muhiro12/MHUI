@@ -22,10 +22,11 @@ struct MHScreenTitleBlock: View {
         let style = theme.resolvedScreenChromeStyle(for: context)
 
         return MHCueBlock(style: style.cueStyle) {
-            VStack(alignment: .leading, spacing: theme.spacing.content) {
+            VStack(alignment: .leading, spacing: theme.spacing.control) {
                 if let title {
                     title
                         .mhTextStyle(.screenTitle)
+                        .accessibilityAddTraits(.isHeader)
                 }
                 if let subtitle {
                     subtitle

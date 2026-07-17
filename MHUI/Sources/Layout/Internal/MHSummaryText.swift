@@ -12,12 +12,12 @@ struct MHSummaryText: View {
         VStack(alignment: .leading, spacing: theme.spacing.control) {
             if let metadata {
                 metadata
-                    .mhTextStyle(.metadata, colorRole: .accent)
+                    .mhTextStyle(.metadata, colorRole: .secondaryText)
             }
 
             VStack(alignment: .leading, spacing: theme.spacing.inline) {
                 title
-                    .mhTextStyle(.sectionTitle)
+                    .mhTextStyle(.summaryTitle)
 
                 if let supporting {
                     supporting

@@ -5,7 +5,7 @@ extension MHTheme {
         switch kind {
         case .screen:
             .init(
-                colorRole: .accent,
+                colorRole: .primaryText,
                 placement: presentation.screenCuePlacement,
                 length: presentation.screenCueLength,
                 thickness: presentation.screenCueThickness,
@@ -13,7 +13,7 @@ extension MHTheme {
             )
         case .section:
             .init(
-                colorRole: .accent,
+                colorRole: .border,
                 placement: presentation.sectionCuePlacement,
                 length: presentation.sectionCueLength,
                 thickness: presentation.sectionCueThickness,

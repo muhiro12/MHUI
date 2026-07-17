@@ -33,6 +33,7 @@ public extension MHTheme {
     /// Semantic text styles used by MHUI text roles.
     struct Typography: Sendable, Equatable {
         public var screenTitle: TextStyle
+        public var summaryTitle: TextStyle
         public var sectionTitle: TextStyle
         public var body: TextStyle
         public var bodyStrong: TextStyle
@@ -43,6 +44,7 @@ public extension MHTheme {
         /// Creates a complete semantic typography configuration.
         public init(
             screenTitle: TextStyle,
+            summaryTitle: TextStyle? = nil,
             sectionTitle: TextStyle,
             body: TextStyle,
             bodyStrong: TextStyle,
@@ -51,6 +53,7 @@ public extension MHTheme {
             caption: TextStyle
         ) {
             self.screenTitle = screenTitle
+            self.summaryTitle = summaryTitle ?? sectionTitle
             self.sectionTitle = sectionTitle
             self.body = body
             self.bodyStrong = bodyStrong

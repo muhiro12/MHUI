@@ -105,6 +105,8 @@ public struct MHTheme: Sendable, Equatable {
         switch role {
         case .screenTitle:
             typography.screenTitle
+        case .summaryTitle:
+            typography.summaryTitle
         case .sectionTitle:
             typography.sectionTitle
         case .body:

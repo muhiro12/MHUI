@@ -16,6 +16,10 @@ struct MHStyleResolutionTests {
             for: .screenTitle,
             colorRole: .primaryText
         )
+        let summaryTitle = theme.resolvedTextStyle(
+            for: .summaryTitle,
+            colorRole: .primaryText
+        )
         let supporting = theme.resolvedTextStyle(
             for: .supporting,
             colorRole: .secondaryText
@@ -35,6 +39,9 @@ struct MHStyleResolutionTests {
         #expect(style.tracking == 0)
         #expect(screenTitle.design == .default)
         #expect(screenTitle.tracking == 0)
+        #expect(summaryTitle.textStyle == theme.typography.summaryTitle)
+        #expect(summaryTitle.design == .default)
+        #expect(summaryTitle.tracking == 0)
         #expect(supporting.textStyle.weight == .regular)
         #expect(supporting.tracking == 0)
         #expect(metadata.textStyle == theme.typography.metadata)

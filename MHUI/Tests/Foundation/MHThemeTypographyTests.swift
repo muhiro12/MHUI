@@ -12,6 +12,13 @@ struct MHThemeTypographyTests {
         #expect(typography.screenTitle.font == .title2)
         #endif
         #expect(typography.screenTitle.weight == .bold)
+        #if os(iOS)
+        #expect(typography.summaryTitle.font == .title2)
+        #expect(typography.summaryTitle.weight == .bold)
+        #else
+        #expect(typography.summaryTitle.font == .title3)
+        #expect(typography.summaryTitle.weight == .semibold)
+        #endif
         #expect(typography.sectionTitle.weight == .semibold)
         #expect(typography.bodyStrong.weight == .semibold)
         #expect(typography.supporting.weight == .regular)
