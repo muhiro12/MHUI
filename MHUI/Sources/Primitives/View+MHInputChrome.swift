@@ -56,7 +56,9 @@ private struct MHInputChromeModifier: ViewModifier {
 }
 
 public extension View {
-    /// Applies calm MHUI input chrome to text entry controls.
+    /// Applies calm MHUI input chrome to detached text entry controls.
+    ///
+    /// Native `Form` containers already supply platform-appropriate field grouping.
     func mhInputChrome(
         state: MHFieldState = .normal
     ) -> some View {

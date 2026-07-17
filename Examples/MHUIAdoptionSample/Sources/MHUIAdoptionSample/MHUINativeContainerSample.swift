@@ -7,19 +7,13 @@ public struct MHUINativeContainerSample: View {
     @State private var note = ""
 
     public var body: some View {
-        Form {
-            overviewSection
-            noteSection
-        }
-        .mhFormChrome(
-            "Settings",
-            subtitle: "Native container behavior with shared visual hierarchy."
-        ) {
-            MHSummary(
-                "Native first",
-                metadata: "FORM",
-                supporting: "The host app keeps Form semantics while MHUI supplies the surrounding chrome."
-            )
+        NavigationStack {
+            Form {
+                overviewSection
+                noteSection
+            }
+            .mhFormChrome()
+            .navigationTitle("Settings")
         }
         .mhTheme(MHUIAdoptionSampleTheme.standard)
     }
@@ -50,7 +44,6 @@ private extension MHUINativeContainerSample {
     var noteSection: some View {
         Section {
             TextField("Add a note", text: $note)
-                .mhInputChrome()
 
             MHActionGroup {
                 Button("Continue") {

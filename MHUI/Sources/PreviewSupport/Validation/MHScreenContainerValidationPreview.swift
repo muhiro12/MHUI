@@ -84,15 +84,11 @@ private struct MHNativeContainerValidationContent: View {
                 }
             }
             .frame(height: 360)
-            .mhListChrome(
-                "List",
-                subtitle: "Thin container chrome over native rows."
-            )
+            .mhListChrome()
 
             Form {
                 Section {
                     TextField("Workspace name", text: .constant("MHUI"))
-                        .mhInputChrome()
 
                     MHActionGroup {
                         Button("Save Current Workspace Settings") {
@@ -114,10 +110,7 @@ private struct MHNativeContainerValidationContent: View {
                 }
             }
             .frame(height: 430)
-            .mhFormChrome(
-                "Form",
-                subtitle: "Shared framing without wrapped controls."
-            )
+            .mhFormChrome()
         }
     }
 }

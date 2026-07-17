@@ -20,7 +20,5 @@ struct MHRowChromeModifier: ViewModifier {
                     trailing: style.horizontalInset
                 )
             )
-            .mhListRowSeparatorHidden()
-            .listRowBackground(Color.clear)
     }
 }

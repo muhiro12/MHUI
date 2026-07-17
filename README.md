@@ -190,8 +190,9 @@ surface.
 Do not place a `List` or `Form` inside `mhScreen`; each route already owns its
 screen-level scrolling and chrome.
 
-Use either the MHUI screen title or the host navigation title as the visible
-page heading instead of showing the same title twice.
+`mhScreen` can supply a page title for a stack-based composition. Native
+`List` and `Form` routes keep page titles and any screen-specific lead content
+in the host app so their scroll view remains edge to edge.
 
 For a native container, preserve its behavior and apply MHUI at the presentation
 seams:
@@ -221,10 +222,8 @@ struct SettingsScreen: View {
                     )
                 }
             }
-            .mhListChrome(
-                "Workspace",
-                subtitle: "Shared rhythm and low-noise hierarchy."
-            )
+            .mhListChrome()
+            .navigationTitle("Workspace")
         }
     }
 }

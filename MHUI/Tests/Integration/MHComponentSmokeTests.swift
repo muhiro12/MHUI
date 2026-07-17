@@ -199,15 +199,11 @@ struct MHComponentSmokeTests {
                     }
                 }
                 .frame(height: 260)
-                .mhListChrome(
-                    "List Chrome",
-                    subtitle: "Calmer spacing over native List."
-                )
+                .mhListChrome()
 
                 Form {
                     Section {
                         TextField("Workspace name", text: .constant("MHUI"))
-                            .mhInputChrome()
 
                         MHActionGroup {
                             Button("Save Current Workspace Settings") {
@@ -229,10 +225,7 @@ struct MHComponentSmokeTests {
                     }
                 }
                 .frame(height: 280)
-                .mhFormChrome(
-                    "Form Chrome",
-                    subtitle: "Shared layout without wrapped controls."
-                )
+                .mhFormChrome()
             }
         )
 

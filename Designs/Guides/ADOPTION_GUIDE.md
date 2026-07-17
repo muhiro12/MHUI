@@ -81,9 +81,10 @@ screen's existing structure.
 block. Do not place a `List`, `Form`, or another screen-level scrolling
 container inside it.
 
-`mhListChrome` and `mhFormChrome` preserve the native container's scrolling and
-control behavior while adding the shared canvas, readable width, margins, and
-title hierarchy.
+`mhListChrome` and `mhFormChrome` preserve the native container's edge-to-edge
+scrolling, platform-selected style, and control behavior while applying the
+shared canvas. Keep page titles and screen-specific lead content in the host
+app.
 
 Use either the MHUI screen title or the host navigation title as the visible
 page heading. Avoid presenting the same title in both places.
@@ -195,10 +196,8 @@ struct SettingsList: View {
                 )
             }
         }
-        .mhListChrome(
-            "Workspace",
-            subtitle: "Shared hierarchy around a native list."
-        )
+        .mhListChrome()
+        .navigationTitle("Workspace")
     }
 }
 ```
@@ -223,7 +222,6 @@ struct ProfileForm: View {
         Form {
             Section {
                 TextField("Name", text: $name)
-                    .mhInputChrome()
 
                 Toggle(
                     "Notifications",
@@ -241,16 +239,15 @@ struct ProfileForm: View {
                 )
             }
         }
-        .mhFormChrome(
-            "Account",
-            subtitle: "Calm chrome around native form behavior."
-        )
+        .mhFormChrome()
+        .navigationTitle("Account")
     }
 }
 ```
 
 Keep validation state, persistence, navigation, and side effects in the host
-app. MHUI only presents the semantic field state and shared chrome.
+app. Use native field styling inside `Form`; reserve `mhInputChrome` for
+detached inputs in stack-based or custom compositions.
 
 ## Component Defaults and Explicit Roles
 
@@ -303,6 +300,38 @@ Adopt one screen at a time in this order:
 
 Theme-only adoption is a valid intermediate compile step, but it is not the
 finished visual integration.
+
+## Migration from 1.11
+
+### Native Containers Keep Their Full Viewport
+
+`mhListChrome` and `mhFormChrome` no longer accept a title, subtitle, or header
+block. Those overloads wrapped and padded the complete native scroll view,
+which shortened its viewport and overrode platform list geometry.
+
+Move page titles to navigation and keep screen-specific lead content in the
+host composition:
+
+```swift
+List {
+    // Native sections and rows.
+}
+.mhListChrome()
+.navigationTitle("Workspace")
+```
+
+The modifiers no longer force the plain list style or clear native row
+backgrounds and separators. Remove app-local workarounds that attempted to
+restore grouped row shapes or extend the scroll view to the screen edges.
+
+### Native Forms Own Field Grouping
+
+Remove `mhInputChrome` from text fields inside `Form`. The form already
+provides platform-appropriate grouping, and adding detached input chrome
+creates a second visual frame.
+
+Continue using `mhInputChrome` for fields in `mhScreen` or another custom stack
+where the field does not already have container-owned chrome.
 
 ## Migration from 1.10
 
