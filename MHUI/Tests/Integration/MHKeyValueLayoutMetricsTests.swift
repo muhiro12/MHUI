@@ -3,7 +3,7 @@ import Testing
 
 struct MHKeyValueLayoutMetricsTests {
     @Test
-    func horizontal_measurement_keeps_a_stable_value_column() {
+    func horizontal_measurement_reserves_a_real_value_column() {
         #expect(
             MHKeyValueLayoutMetrics.requiredHorizontalWidth(
                 labelWidth: 110,
@@ -32,6 +32,10 @@ struct MHKeyValueLayoutMetricsTests {
                 proposedWidth: 240
             ) == 282
         )
+    }
+
+    @Test
+    func value_column_origin_stays_stable_for_mixed_content() {
         #expect(
             MHKeyValueLayoutMetrics.valueColumnWidth(
                 containerWidth: 360,
