@@ -5,8 +5,9 @@
 MHUI is a narrow runtime presentation kit for calm, tool-like SwiftUI apps.
 It is intentionally opinionated, intentionally small, and biased toward a
 shared visual language rather than product behavior. Its standard theme pairs
-system typography with low-chroma neutral planes, precise rules, restrained
-geometry, and the host app's accent color.
+system typography with fully achromatic, paper-like planes, dark-ink
+hierarchy, neutral rules, restrained geometry, and selective use of the host
+app's accent color.
 
 The package exposes two library products:
 
@@ -25,7 +26,7 @@ MHUI owns shared presentation rules that can apply across sibling apps:
 - semantic theme application through `MHTheme.standard(...)`
 - text, surface, row, section, screen, and native-container chrome
 - action, key-value, row, cue, and compact-width fallback behavior
-- package-owned neutral color assets and validation previews
+- package-owned achromatic color assets and validation previews
 
 MHUI does not own host-app behavior:
 
@@ -142,6 +143,7 @@ struct OverviewScreen: View {
 defaults unstyled buttons to the secondary role, so only primary, quiet, or
 destructive exceptions need an explicit button style. Treat each direct child
 of `MHGroupedRows` as one row; do not nest another row-styled view inside it.
+`MHSummary` is a ruled editorial lead rather than an elevated card.
 
 ### Root Configuration and App Accent
 
@@ -150,8 +152,8 @@ values to MHUI components; it is configuration, not a global skin for arbitrary
 SwiftUI content. Applying only `.mhTheme(.standard)` to an unchanged screen is
 therefore expected to produce little visible difference.
 
-The neutral base and system typography remain package-owned defaults. The host
-app continues to own its identity through its `AccentColor` asset.
+The achromatic base and system typography remain package-owned defaults. The
+host app continues to own its identity through its `AccentColor` asset.
 
 ```swift
 import MHUI
@@ -171,6 +173,11 @@ struct WorkspaceApp: App {
 For a code-defined accent, use
 `MHTheme.standard(accent:onAccent:)`. The app owns both colors and must verify
 their contrast in supported appearances.
+
+Decorative hierarchy stays achromatic: headings use dark ink and cues use
+neutral rules. Reserve the app accent for semantic status, focus, native
+controls, and the primary action instead of applying it to every heading or
+surface.
 
 ### Choose a Composition Route
 
@@ -233,14 +240,16 @@ Swift package and does not require an Xcode project.
 
 `MHTheme.standard` is ready to use as a package-owned visual baseline. It keeps
 Apple's system type styles and native controls while giving apps a distinct
-low-chroma surface hierarchy, measured spacing, and leading-edge heading cues.
+paper-like surface hierarchy, measured spacing, dark-ink headings, and neutral
+leading-edge rules.
 
 Start with that baseline and customize its public semantic groups:
 
 - `colors` for semantic backgrounds, surfaces, text, accent, warning, and
   destructive colors
-- `typography` for Dynamic Type-compatible system text roles and optional
-  system monospaced metadata; action buttons use `bodyStrong`
+- `typography` for Dynamic Type-compatible system text roles, the stronger
+  `summaryTitle` role, and optional system monospaced metadata; action buttons
+  use `bodyStrong`
 - `metrics` for shared spacing, corner radius, and generic layout
 - `presentation` for MHUI row, action, key-value, and cue placement
 - `divider`, `motion`, and `surfaces` for package-owned treatments

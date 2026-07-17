@@ -49,17 +49,22 @@ screen-level and component-level APIs described below.
 
 ### Keep the Accent App-Owned
 
-The standard theme uses low-chroma package-owned base colors and system
-typography. It resolves its accent from the host app's `AccentColor` asset, so
-each app can keep its own identity without changing the neutral canvas.
+The standard theme uses fully achromatic, paper-like package-owned base colors
+and system typography. It resolves its accent from the host app's `AccentColor`
+asset, so each app can keep its own identity without changing the neutral
+canvas.
+
+Dark-ink headings and neutral rules own the decorative hierarchy. Reserve the
+app accent for semantic status, focus, native controls, and the primary action.
+Do not use it as the default color for headings, metadata, rules, or surfaces.
 
 If an app must define the accent in code, use
 `MHTheme.standard(accent:onAccent:)`. The host app owns both values and must
 verify that the pair remains legible in light, dark, and Increase Contrast
 appearances.
 
-Start with the standard neutral surfaces and system fonts. Tune semantic theme
-values only after the complete composition is visible and reviewed.
+Start with the standard achromatic surfaces and system fonts. Tune semantic
+theme values only after the complete composition is visible and reviewed.
 
 ## Choose One Screen Route
 
@@ -147,9 +152,10 @@ This route gives each layer a distinct responsibility:
 
 - `mhScreen` owns screen scrolling, canvas treatment, readable width, and title
   rhythm.
-- `MHSummary` establishes a concise elevated context block.
-- `mhSection` owns its heading cue, supporting text, content surface, inset,
-  and optional footer.
+- `MHSummary` establishes a concise editorial context block with a precise top
+  rule rather than an elevated card.
+- `mhSection` owns its neutral heading cue, supporting text, content surface,
+  inset, and optional footer.
 - `MHGroupedRows` applies row chrome and separators to its direct children.
 - `mhInputChrome` gives native text-entry controls semantic input treatment.
 - `MHActionGroup` owns action spacing and horizontal-to-vertical fallback.
@@ -251,8 +257,8 @@ app. MHUI only presents the semantic field state and shared chrome.
 | API | Package-owned default | Adopter responsibility |
 | --- | --- | --- |
 | `mhTheme` | Supplies semantic values | Select the components and roles that use them |
-| `MHSummary` | Elevated summary surface and text hierarchy | Provide concise screen context and optional accessory |
-| `MHSectionHeader` | Section cue and hierarchy | Provide product wording and optional accessory |
+| `MHSummary` | Ruled editorial summary and stronger system title hierarchy | Provide concise screen context and optional accessory |
+| `MHSectionHeader` | Neutral section cue and hierarchy | Provide product wording and optional accessory |
 | `MHSectionFooter` | Quiet explanatory text | Provide concise supporting guidance |
 | `MHGroupedRows` | Direct-child row chrome and separators | Provide native controls or semantic row content |
 | `MHActionGroup` | Secondary style and adaptive layout | Mark primary, quiet, and destructive exceptions |
@@ -300,6 +306,33 @@ finished visual integration.
 
 ## Migration from 1.10
 
+### Standard Styling Is Achromatic
+
+The standard background, surface, border, and text assets now form a fully
+achromatic, paper-like palette. Screen-title cues use dark ink, and section
+cues use a neutral border color instead of the app accent.
+
+The app still owns `AccentColor`, but the standard composition uses it
+selectively for semantic status, focus, native controls, and primary actions.
+Review custom color overrides and visual snapshots that assumed warm surfaces
+or accent-colored decorative cues.
+
+### Summaries Use Editorial Hierarchy
+
+`MHSummary` now uses an inset editorial layout with a precise top rule instead
+of the elevated surface treatment. Its title uses the new
+`MHTextRole.summaryTitle` role, which is stronger than an ordinary section
+heading while remaining a Dynamic Type-compatible system style.
+
+Existing `MHTheme.Typography` initializers remain source compatible when
+`summaryTitle` is omitted; the role inherits `sectionTitle`. Add an explicit
+`summaryTitle` value when a custom theme needs a different hierarchy. Update
+exhaustive `MHTextRole` switches and assumptions based on
+`MHTextRole.allCases` for the new case.
+
+The standard screen title and subtitle also use tighter spacing. This is a
+visual change and does not require a source migration.
+
 ### Grouped Rows Own Row Chrome
 
 `MHGroupedRows` now applies row chrome to each direct child. Existing direct
@@ -340,9 +373,15 @@ on individual child buttons when their role differs from the group default.
 Before considering a screen adopted, verify all of the following:
 
 - The app applies one root theme and still owns its accent color.
+- Standard base planes remain achromatic unless the app deliberately overrides
+  a semantic color.
+- Decorative headings and rules do not use the app accent.
+- Accent appears selectively for semantic status, focus, native controls, and
+  the primary action.
 - The screen uses one screen-level route without nested scrolling containers.
 - Stack-based sections use `mhSection` and grouped content uses
   `MHGroupedRows`.
+- `MHSummary` reads as a ruled editorial block rather than an elevated card.
 - Native `List` and `Form` sections use the shared header and footer views where
   shared hierarchy is desired.
 - Standalone and native-container rows use `mhRow`; grouped-row direct children
