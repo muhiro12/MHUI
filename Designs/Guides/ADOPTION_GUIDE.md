@@ -49,8 +49,8 @@ screen-level and component-level APIs described below.
 
 ### Keep the Accent App-Owned
 
-The standard theme uses fully achromatic, paper-like package-owned base colors
-and system typography. It resolves its accent from the host app's `AccentColor`
+The standard theme uses bright, fully achromatic package-owned base colors and
+system typography. It resolves its accent from the host app's `AccentColor`
 asset, so each app can keep its own identity without changing the neutral
 canvas.
 
@@ -338,8 +338,8 @@ where the field does not already have container-owned chrome.
 ### Standard Styling Is Achromatic
 
 The standard background, surface, border, and text assets now form a fully
-achromatic, paper-like palette. Screen-title cues use dark ink, and section
-cues use a neutral border color instead of the app accent.
+achromatic palette. Screen-title cues use dark ink, and section cues use a
+neutral border color instead of the app accent.
 
 The app still owns `AccentColor`, but the standard composition uses it
 selectively for semantic status, focus, native controls, and primary actions.

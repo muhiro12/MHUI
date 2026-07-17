@@ -142,8 +142,8 @@ where the fallback remains equally usable.
 - Re-export of `MHDesign` in `MHUI` stays in the package because styled adopters should reach both layers through one import.
 - `MHTheme.standard()` and `MHTheme.standard(accent:)` stay in the package
   because they define a reusable semantic baseline rather than one app's
-  branding system. The baseline uses package-owned achromatic paper-like
-  planes, dark-ink hierarchy, neutral rules, host-provided accent, system
+  branding system. The baseline uses package-owned bright achromatic planes,
+  dark-ink hierarchy, neutral rules, host-provided accent, system
   typography, and restrained geometry.
 - Public theme groups let an app configure semantic values once without moving
   role selection or product meaning into the package.

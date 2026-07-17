@@ -5,9 +5,8 @@
 MHUI is a narrow runtime presentation kit for calm, tool-like SwiftUI apps.
 It is intentionally opinionated, intentionally small, and biased toward a
 shared visual language rather than product behavior. Its standard theme pairs
-system typography with fully achromatic, paper-like planes, dark-ink
-hierarchy, neutral rules, restrained geometry, and selective use of the host
-app's accent color.
+system typography with bright achromatic planes, dark-ink hierarchy, neutral
+rules, restrained geometry, and selective use of the host app's accent color.
 
 The package exposes two library products:
 
@@ -239,7 +238,7 @@ Swift package and does not require an Xcode project.
 
 `MHTheme.standard` is ready to use as a package-owned visual baseline. It keeps
 Apple's system type styles and native controls while giving apps a distinct
-paper-like surface hierarchy, measured spacing, dark-ink headings, and neutral
+bright surface hierarchy, measured spacing, dark-ink headings, and neutral
 leading-edge rules.
 
 Start with that baseline and customize its public semantic groups:
