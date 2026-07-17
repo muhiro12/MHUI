@@ -44,13 +44,13 @@ public extension MHTheme {
         /// Creates a complete semantic typography configuration.
         public init(
             screenTitle: TextStyle,
-            summaryTitle: TextStyle? = nil,
             sectionTitle: TextStyle,
             body: TextStyle,
             bodyStrong: TextStyle,
             supporting: TextStyle,
             metadata: TextStyle,
-            caption: TextStyle
+            caption: TextStyle,
+            summaryTitle: TextStyle? = nil
         ) {
             self.screenTitle = screenTitle
             self.summaryTitle = summaryTitle ?? sectionTitle

@@ -8,7 +8,6 @@ public extension MHTheme {
     private static var standardTypography: Typography {
         .init(
             screenTitle: standardScreenTitle,
-            summaryTitle: standardSummaryTitle,
             sectionTitle: .init(font: .title3, weight: .semibold),
             body: .init(font: .body, weight: .regular),
             bodyStrong: .init(font: .body, weight: .semibold),
@@ -23,7 +22,8 @@ public extension MHTheme {
                 font: .caption,
                 weight: .medium,
                 tracking: 0.2
-            )
+            ),
+            summaryTitle: standardSummaryTitle
         )
     }
 
