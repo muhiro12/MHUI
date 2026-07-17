@@ -344,6 +344,17 @@ Filled MHUI actions remain eligible interactive controls. Native navigation,
 toolbars, and other system controls continue to receive their platform
 treatment from SwiftUI.
 
+### Standard Surfaces Are Brighter and Rounder
+
+The standard light background changes from `#F2F2F2` to `#FAFAFA`, the
+standard surface changes from `#F9F9F9` to `#FFFFFF`, and the muted surface
+changes from `#E8E8E8` to `#F2F2F2`.
+
+The standard control corner radius changes from 6 points to 8 points, and the
+standard surface corner radius changes from 8 points to 12 points. Update
+visual snapshots and any layout assumptions that copied the previous standard
+values. Explicit app-owned color and metric overrides remain in control.
+
 ## Migration from 1.10
 
 ### Standard Styling Is Achromatic
