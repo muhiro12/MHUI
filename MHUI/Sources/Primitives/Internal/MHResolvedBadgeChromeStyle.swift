@@ -42,7 +42,7 @@ extension MHTheme {
             ? MHResolvedBadgeChromeStyle.neutralBorderOpacity
             : MHResolvedBadgeChromeStyle.emphasizedBorderOpacity
         let usesGlass = glassPolicy.resolvesUsesGlass(
-            prefersGlass: true,
+            prefersGlass: false,
             supportsGlass: supportsGlass,
             reduceTransparency: reduceTransparency
         )

@@ -333,6 +333,16 @@ creates a second visual frame.
 Continue using `mhInputChrome` for fields in `mhScreen` or another custom stack
 where the field does not already have container-owned chrome.
 
+### Content Chrome Stays Solid
+
+Metadata badges and detached input chrome no longer adopt Liquid Glass under
+the automatic or enabled policy. They belong to the content layer and now use
+their semantic solid fills consistently.
+
+Filled MHUI actions remain eligible interactive controls. Native navigation,
+toolbars, and other system controls continue to receive their platform
+treatment from SwiftUI.
+
 ## Migration from 1.10
 
 ### Standard Styling Is Achromatic

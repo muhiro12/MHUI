@@ -59,7 +59,7 @@ extension MHTheme {
         supportsGlass: Bool
     ) -> MHResolvedGlassBackgroundStyle {
         let usesGlass = glassPolicy.resolvesUsesGlass(
-            prefersGlass: true,
+            prefersGlass: false,
             supportsGlass: supportsGlass,
             reduceTransparency: reduceTransparency
         )
