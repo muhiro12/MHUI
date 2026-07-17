@@ -87,9 +87,10 @@ Agents should also run the retained repository rule checks:
 bash ci_scripts/tasks/check_repository_rules.sh
 ```
 
-`check_repository_rules.sh` runs SwiftLint, the SwiftUtilities boundary
-check, and that check's self-test. These retained static rules are not
-naturally covered by the available Xcode-native integration.
+`check_repository_rules.sh` builds the source-only public adoption sample,
+runs SwiftLint, and runs the SwiftUtilities boundary check plus its self-test.
+These retained public-boundary and static rules are not naturally covered by
+the available Xcode-native integration.
 SwiftLint is resolved from the `SimplyDanny/SwiftLintPlugins` package declared
 in `Package.swift`, not from a separately installed `swiftlint` binary.
 

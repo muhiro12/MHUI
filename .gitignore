@@ -4,6 +4,7 @@
 # SwiftPM and local CI artifacts
 .build/
 Package.resolved
+Examples/**/.swiftpm/
 
 # Xcode - User files
 xcuserdata/
