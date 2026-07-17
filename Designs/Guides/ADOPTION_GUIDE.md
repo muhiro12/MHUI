@@ -89,6 +89,18 @@ app.
 Use either the MHUI screen title or the host navigation title as the visible
 page heading. Avoid presenting the same title in both places.
 
+### Summary And Navigation Hierarchy
+
+`MHSummary` is an editorial lead, not a second page title. When native
+navigation already names the current item, use an `MHSummary` only when its
+title communicates a different result, status, or piece of context. Repeating
+the item name in both places adds hierarchy without adding information and
+becomes especially prominent at accessibility text sizes.
+
+If the screen has no distinct editorial lead, omit `MHSummary` and begin with
+the native-container content. The package primitive is optional; complete
+adoption does not require every screen to display one.
+
 ## Stack-Based Golden Path
 
 Use the stack route when the screen is composed from `VStack`, `LazyVStack`, or
@@ -261,6 +273,24 @@ detached inputs in stack-based or custom compositions.
 | `MHActionGroup` | Secondary style and adaptive layout | Mark primary, quiet, and destructive exceptions |
 | `mhRow` | Standalone or native-container row chrome | Apply it outside `MHGroupedRows` when needed |
 
+### Compact Metadata Badges
+
+`mhBadge` styles one metadata token. It intentionally does not choose which
+product facts belong in a compact row or arrange an arbitrary collection of
+badges. Those decisions remain in the host app.
+
+In `List` and `Form` rows, prioritize the signals people need to scan or
+interpret the row. Avoid keeping every flag visible by allowing an ordinary row
+to become a tall vertical badge list at standard text sizes. Move secondary
+facts to the detail screen, or use a concise text or symbol treatment with an
+explicit accessibility label.
+
+When several badges are essential, the host app owns the adaptive composition.
+Use a standard SwiftUI layout such as `ViewThatFits` or a product-appropriate
+custom `Layout`, then verify compact width, Dynamic Type, localization, and
+right-to-left layout. Promote a badge-group layout into MHUI only after the
+same domain-neutral behavior is demonstrated by multiple adopters.
+
 An unstyled button inside `MHActionGroup` uses `.mhSecondary`. Mark the single
 prominent action explicitly:
 
@@ -432,6 +462,7 @@ Before considering a screen adopted, verify all of the following:
 - Accent appears selectively for semantic status, focus, native controls, and
   the primary action.
 - The screen uses one screen-level route without nested scrolling containers.
+- An `MHSummary` title adds context instead of repeating the navigation title.
 - Stack-based sections use `mhSection` and grouped content uses
   `MHGroupedRows`.
 - `MHSummary` reads as a ruled editorial block rather than an elevated card.
@@ -443,6 +474,8 @@ Before considering a screen adopted, verify all of the following:
   another row-styled view.
 - The primary action is explicit and ordinary grouped actions use the secondary
   default.
+- Compact rows prioritize essential metadata instead of preserving every flag
+  as a tall badge stack.
 - Product behavior, validation, persistence, and navigation remain in the app.
 - System typography remains readable at accessibility Dynamic Type sizes.
 - The app accent is legible in light, dark, and Increase Contrast appearances.
