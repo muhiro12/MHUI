@@ -59,58 +59,72 @@ private struct MHScreenValidationContent: View {
     }
 }
 
+private struct MHNativeListValidationContent: View {
+    var body: some View {
+        List {
+            Section {
+                Toggle("Use iCloud Sync", isOn: .constant(true))
+                    .mhRow()
+
+                LabeledContent(
+                    "Workspace defaults",
+                    value: "Keep shared spacing and fallback behavior package-owned."
+                )
+                .labeledContentStyle(.mhKeyValue)
+            } header: {
+                MHSectionHeader(
+                    "Preferences",
+                    supporting: "Native list behavior stays intact while compact rhythm comes from MHUI."
+                )
+            } footer: {
+                MHSectionFooter(
+                    "This preview validates list chrome at phone width, not a product-specific layout."
+                )
+            }
+        }
+        .mhListChrome()
+        .navigationTitle("Preferences")
+    }
+}
+
+private struct MHNativeFormValidationContent: View {
+    var body: some View {
+        Form {
+            Section {
+                TextField("Workspace name", text: .constant("MHUI"))
+
+                MHActionGroup {
+                    Button("Save Current Workspace Settings") {
+                        // no-op
+                    }
+                    .buttonStyle(.mhPrimary)
+
+                    Button("Review Advanced Configuration Details") {
+                        // no-op
+                    }
+                }
+            } header: {
+                MHSectionHeader(
+                    "Workspace",
+                    supporting: "Form controls stay native while action fallback and spacing stay shared."
+                )
+            } footer: {
+                MHSectionFooter("Tint continues to come from the host app.")
+            }
+        }
+        .mhFormChrome()
+        .navigationTitle("Workspace")
+    }
+}
+
 private struct MHNativeContainerValidationContent: View {
     var body: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
-            List {
-                Section {
-                    Toggle("Use iCloud Sync", isOn: .constant(true))
-                        .mhRow()
+            MHNativeListValidationContent()
+                .frame(height: 360)
 
-                    LabeledContent(
-                        "Workspace defaults",
-                        value: "Keep shared spacing and fallback behavior package-owned."
-                    )
-                    .labeledContentStyle(.mhKeyValue)
-                } header: {
-                    MHSectionHeader(
-                        "Preferences",
-                        supporting: "Native list behavior stays intact while compact rhythm comes from MHUI."
-                    )
-                } footer: {
-                    MHSectionFooter(
-                        "This preview validates list chrome at phone width, not a product-specific layout."
-                    )
-                }
-            }
-            .frame(height: 360)
-            .mhListChrome()
-
-            Form {
-                Section {
-                    TextField("Workspace name", text: .constant("MHUI"))
-
-                    MHActionGroup {
-                        Button("Save Current Workspace Settings") {
-                            // no-op
-                        }
-                        .buttonStyle(.mhPrimary)
-
-                        Button("Review Advanced Configuration Details") {
-                            // no-op
-                        }
-                    }
-                } header: {
-                    MHSectionHeader(
-                        "Workspace",
-                        supporting: "Form controls stay native while action fallback and spacing stay shared."
-                    )
-                } footer: {
-                    MHSectionFooter("Tint continues to come from the host app.")
-                }
-            }
-            .frame(height: 430)
-            .mhFormChrome()
+            MHNativeFormValidationContent()
+                .frame(height: 430)
         }
     }
 }
@@ -136,5 +150,26 @@ private struct MHNativeContainerValidationContent: View {
         MHNativeContainerValidationContent()
             .mhPreviewTint(context)
     }
+}
+
+#Preview(
+    "Validation / Native List / Full Viewport",
+    traits: .fixedLayout(width: 390, height: 844)
+) {
+    NavigationStack {
+        MHNativeListValidationContent()
+    }
+    .mhPreviewTint()
+}
+
+#Preview(
+    "Validation / Native Form / Narrow Regular Viewport",
+    traits: .fixedLayout(width: 520, height: 760)
+) {
+    NavigationStack {
+        MHNativeFormValidationContent()
+    }
+    .environment(\.horizontalSizeClass, .regular)
+    .mhPreviewTint()
 }
 // swiftlint:enable closure_body_length file_types_order no_magic_numbers one_declaration_per_file

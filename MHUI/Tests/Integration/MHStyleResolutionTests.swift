@@ -172,6 +172,25 @@ struct MHStyleResolutionTests {
     }
 
     @Test
+    func narrow_regular_width_uses_compact_component_metrics() {
+        let theme = MHTheme.standard
+        let narrowRegularContext = MHAdaptiveLayoutContext(
+            availableWidth: 520,
+            horizontalSizeClass: .regular
+        )
+
+        let row = theme.resolvedRowChromeStyle(for: narrowRegularContext)
+        let action = theme.resolvedActionPresentation(
+            .automatic,
+            for: narrowRegularContext
+        )
+
+        #expect(row.horizontalInset == theme.presentation.compactRowHorizontalInset)
+        #expect(action.expandsHorizontally)
+        #expect(action.lineLimit == nil)
+    }
+
+    @Test
     @MainActor
     func button_style_static_members_resolve_roles() {
         let primary: MHActionButtonStyle = .mhPrimary

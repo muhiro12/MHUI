@@ -310,7 +310,8 @@ block. Those overloads wrapped and padded the complete native scroll view,
 which shortened its viewport and overrode platform list geometry.
 
 Move page titles to navigation and keep screen-specific lead content in the
-host composition:
+host composition. Apply `navigationTitle` inside the app-owned
+`NavigationStack`:
 
 ```swift
 List {
