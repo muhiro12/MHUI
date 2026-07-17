@@ -23,8 +23,8 @@ extension MHKeyValueLabeledContentStyle {
                         in: colorScheme
                     )
                 )
-                .multilineTextAlignment(.trailing)
-                .frame(maxWidth: .infinity, alignment: .trailing)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .mhRowChrome(style.rowChrome)
     }

@@ -16,7 +16,6 @@ extension MHTheme {
             contentSpacing: isCompactWidth
                 ? presentation.compactKeyValueSpacing
                 : spacing.control,
-            leadingInset: spacing.inline,
             footerTopSpacing: spacing.inline
         )
     }

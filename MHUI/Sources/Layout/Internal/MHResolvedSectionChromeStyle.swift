@@ -7,6 +7,5 @@ struct MHResolvedSectionChromeStyle: Sendable, Equatable {
     var cueThickness: CGFloat
     var cueSpacing: CGFloat
     var contentSpacing: CGFloat
-    var leadingInset: CGFloat
     var footerTopSpacing: CGFloat
 }

@@ -11,7 +11,7 @@ struct MHKeyValueInlineLayout: Layout {
     let minimumValueWidth: CGFloat
 
     func sizeThatFits(
-        proposal _: ProposedViewSize,
+        proposal: ProposedViewSize,
         subviews: Subviews,
         cache _: inout ()
     ) -> CGSize {
@@ -21,13 +21,17 @@ struct MHKeyValueInlineLayout: Layout {
 
         let labelSize = subviews[Slot.labelIndex].sizeThatFits(.unspecified)
         let valueSize = subviews[Slot.valueIndex].sizeThatFits(.unspecified)
+        let requiredWidth = MHKeyValueLayoutMetrics.requiredHorizontalWidth(
+            labelWidth: labelSize.width,
+            valueWidth: valueSize.width,
+            spacing: spacing,
+            minimumValueWidth: minimumValueWidth
+        )
 
         return .init(
-            width: MHKeyValueLayoutMetrics.requiredHorizontalWidth(
-                labelWidth: labelSize.width,
-                valueWidth: valueSize.width,
-                spacing: spacing,
-                minimumValueWidth: minimumValueWidth
+            width: MHKeyValueLayoutMetrics.resolvedHorizontalWidth(
+                requiredWidth: requiredWidth,
+                proposedWidth: proposal.width
             ),
             height: max(labelSize.height, valueSize.height)
         )
@@ -44,17 +48,29 @@ struct MHKeyValueInlineLayout: Layout {
         }
 
         let labelSize = subviews[Slot.labelIndex].sizeThatFits(.unspecified)
-        let contentX = min(
-            bounds.maxX,
-            bounds.minX + labelSize.width + spacing
+        let valueSize = subviews[Slot.valueIndex].sizeThatFits(.unspecified)
+        let valueColumnWidth = min(
+            bounds.width,
+            MHKeyValueLayoutMetrics.valueColumnWidth(
+                valueWidth: valueSize.width,
+                minimumValueWidth: minimumValueWidth
+            )
+        )
+        let contentX = MHKeyValueLayoutMetrics.valueColumnOrigin(
+            containerMaxX: bounds.maxX,
+            valueColumnWidth: valueColumnWidth
         )
         let contentWidth = max(.zero, bounds.maxX - contentX)
+        let labelWidth = min(
+            labelSize.width,
+            max(.zero, contentX - spacing - bounds.minX)
+        )
 
         subviews[Slot.labelIndex].place(
             at: bounds.origin,
             anchor: .topLeading,
             proposal: .init(
-                width: labelSize.width,
+                width: labelWidth,
                 height: bounds.height
             )
         )

@@ -24,7 +24,6 @@ struct MHChromeStyleResolutionTests {
         #expect(screen.cueStyle == screenCue)
         #expect(section.cueStyle == sectionCue)
         #expect(section.contentSpacing == theme.spacing.control)
-        #expect(section.leadingInset == theme.spacing.inline)
     }
 
     @Test

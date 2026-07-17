@@ -22,7 +22,6 @@ struct MHSectionHeaderModifier: ViewModifier {
             content
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.leading, style.leadingInset)
         .padding(.bottom, style.footerTopSpacing)
         .textCase(nil)
     }

@@ -341,6 +341,30 @@ struct MHStyleResolutionTests {
                 minimumValueWidth: 160
             ) == 282
         )
+        #expect(
+            MHKeyValueLayoutMetrics.resolvedHorizontalWidth(
+                requiredWidth: 282,
+                proposedWidth: 360
+            ) == 360
+        )
+        #expect(
+            MHKeyValueLayoutMetrics.resolvedHorizontalWidth(
+                requiredWidth: 282,
+                proposedWidth: 240
+            ) == 282
+        )
+        #expect(
+            MHKeyValueLayoutMetrics.valueColumnWidth(
+                valueWidth: 84,
+                minimumValueWidth: 160
+            ) == 160
+        )
+        #expect(
+            MHKeyValueLayoutMetrics.valueColumnOrigin(
+                containerMaxX: 360,
+                valueColumnWidth: 160
+            ) == 200
+        )
     }
 
     @Test
