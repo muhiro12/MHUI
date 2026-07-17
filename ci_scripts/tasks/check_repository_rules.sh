@@ -13,6 +13,8 @@ echo "Running MHUI repository rule checks."
 bash "$repository_root/ci_scripts/tasks/check_environment.sh" --profile rules
 bash "$repository_root/ci_scripts/tasks/check_swiftutilities_boundary.sh"
 bash "$repository_root/ci_scripts/tasks/test_swiftutilities_boundary.sh"
+bash "$repository_root/ci_scripts/tasks/check_resource_ownership.sh"
+bash "$repository_root/ci_scripts/tasks/test_resource_ownership.sh"
 bash "$repository_root/ci_scripts/tasks/test_mhui_consumer_adoption.sh"
 bash "$repository_root/ci_scripts/tasks/lint_swift.sh"
 

@@ -23,6 +23,11 @@ Repository-specific agent contract for MHUI.
   unless UI localization or legal content requires otherwise.
 - Follow existing architecture and source style; keep changes small and
   repository-local.
+- Keep concrete color and custom image resources in asset catalogs. Swift
+  source may map asset resources to semantic roles and derive treatments such
+  as opacity, but it must not define RGB, hexadecimal, or static palette base
+  colors. Keep SF Symbols in native `systemName` APIs so they retain platform
+  behavior.
 - Markdown must follow
   <https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md>.
 - Swift code must comply with the repository SwiftLint configuration.
@@ -88,9 +93,9 @@ bash ci_scripts/tasks/check_repository_rules.sh
 ```
 
 `check_repository_rules.sh` builds the source-only public adoption sample,
-runs SwiftLint, and runs the SwiftUtilities boundary check plus its self-test.
-These retained public-boundary and static rules are not naturally covered by
-the available Xcode-native integration.
+runs SwiftLint, guards asset resource ownership, and runs the SwiftUtilities
+boundary check plus its self-test. These retained public-boundary and static
+rules are not naturally covered by the available Xcode-native integration.
 SwiftLint is resolved from the `SimplyDanny/SwiftLintPlugins` package declared
 in `Package.swift`, not from a separately installed `swiftlint` binary.
 
