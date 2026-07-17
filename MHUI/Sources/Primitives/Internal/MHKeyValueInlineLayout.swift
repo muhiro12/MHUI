@@ -27,13 +27,29 @@ struct MHKeyValueInlineLayout: Layout {
             spacing: spacing,
             minimumValueWidth: minimumValueWidth
         )
+        let resolvedWidth = MHKeyValueLayoutMetrics.resolvedHorizontalWidth(
+            requiredWidth: requiredWidth,
+            proposedWidth: proposal.width
+        )
+        let valueColumnWidth = MHKeyValueLayoutMetrics.valueColumnWidth(
+            containerWidth: resolvedWidth,
+            minimumValueWidth: minimumValueWidth
+        )
+        let labelColumnWidth = MHKeyValueLayoutMetrics.labelColumnWidth(
+            containerWidth: resolvedWidth,
+            spacing: spacing,
+            valueColumnWidth: valueColumnWidth
+        )
+        let resolvedLabelSize = subviews[Slot.labelIndex].sizeThatFits(
+            .init(width: labelColumnWidth, height: nil)
+        )
+        let resolvedValueSize = subviews[Slot.valueIndex].sizeThatFits(
+            .init(width: valueColumnWidth, height: nil)
+        )
 
         return .init(
-            width: MHKeyValueLayoutMetrics.resolvedHorizontalWidth(
-                requiredWidth: requiredWidth,
-                proposedWidth: proposal.width
-            ),
-            height: max(labelSize.height, valueSize.height)
+            width: resolvedWidth,
+            height: max(resolvedLabelSize.height, resolvedValueSize.height)
         )
     }
 
@@ -47,30 +63,25 @@ struct MHKeyValueInlineLayout: Layout {
             return
         }
 
-        let labelSize = subviews[Slot.labelIndex].sizeThatFits(.unspecified)
-        let valueSize = subviews[Slot.valueIndex].sizeThatFits(.unspecified)
-        let valueColumnWidth = min(
-            bounds.width,
-            MHKeyValueLayoutMetrics.valueColumnWidth(
-                valueWidth: valueSize.width,
-                minimumValueWidth: minimumValueWidth
-            )
+        let valueColumnWidth = MHKeyValueLayoutMetrics.valueColumnWidth(
+            containerWidth: bounds.width,
+            minimumValueWidth: minimumValueWidth
+        )
+        let labelColumnWidth = MHKeyValueLayoutMetrics.labelColumnWidth(
+            containerWidth: bounds.width,
+            spacing: spacing,
+            valueColumnWidth: valueColumnWidth
         )
         let contentX = MHKeyValueLayoutMetrics.valueColumnOrigin(
             containerMaxX: bounds.maxX,
             valueColumnWidth: valueColumnWidth
-        )
-        let contentWidth = max(.zero, bounds.maxX - contentX)
-        let labelWidth = min(
-            labelSize.width,
-            max(.zero, contentX - spacing - bounds.minX)
         )
 
         subviews[Slot.labelIndex].place(
             at: bounds.origin,
             anchor: .topLeading,
             proposal: .init(
-                width: labelWidth,
+                width: labelColumnWidth,
                 height: bounds.height
             )
         )
@@ -81,7 +92,7 @@ struct MHKeyValueInlineLayout: Layout {
             ),
             anchor: .topLeading,
             proposal: .init(
-                width: contentWidth,
+                width: valueColumnWidth,
                 height: bounds.height
             )
         )

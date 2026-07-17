@@ -22,10 +22,24 @@ enum MHKeyValueLayoutMetrics {
     }
 
     static func valueColumnWidth(
-        valueWidth: CGFloat,
+        containerWidth: CGFloat,
         minimumValueWidth: CGFloat
     ) -> CGFloat {
-        max(valueWidth, minimumValueWidth)
+        min(
+            max(.zero, containerWidth),
+            max(.zero, minimumValueWidth)
+        )
+    }
+
+    static func labelColumnWidth(
+        containerWidth: CGFloat,
+        spacing: CGFloat,
+        valueColumnWidth: CGFloat
+    ) -> CGFloat {
+        max(
+            .zero,
+            containerWidth - spacing - valueColumnWidth
+        )
     }
 
     static func valueColumnOrigin(

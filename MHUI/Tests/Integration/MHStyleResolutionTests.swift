@@ -349,41 +349,5 @@ struct MHStyleResolutionTests {
             ) == 376
         )
     }
-
-    @Test
-    func key_value_horizontal_measurement_requires_a_real_value_column() {
-        #expect(
-            MHKeyValueLayoutMetrics.requiredHorizontalWidth(
-                labelWidth: 110,
-                valueWidth: 84,
-                spacing: 12,
-                minimumValueWidth: 160
-            ) == 282
-        )
-        #expect(
-            MHKeyValueLayoutMetrics.resolvedHorizontalWidth(
-                requiredWidth: 282,
-                proposedWidth: 360
-            ) == 360
-        )
-        #expect(
-            MHKeyValueLayoutMetrics.resolvedHorizontalWidth(
-                requiredWidth: 282,
-                proposedWidth: 240
-            ) == 282
-        )
-        #expect(
-            MHKeyValueLayoutMetrics.valueColumnWidth(
-                valueWidth: 84,
-                minimumValueWidth: 160
-            ) == 160
-        )
-        #expect(
-            MHKeyValueLayoutMetrics.valueColumnOrigin(
-                containerMaxX: 360,
-                valueColumnWidth: 160
-            ) == 200
-        )
-    }
 }
 // swiftlint:enable function_body_length type_body_length

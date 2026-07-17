@@ -2,41 +2,57 @@ import SwiftUI
 
 private struct MHKeyValueRowValidationPreview: View {
     var body: some View {
-        MHGroupedRows {
-            LabeledContent(
-                "Shared package responsibility for narrow rows",
-                value: """
-                    Automatic vertical stacking should keep long values readable
-                    before a host app writes local workarounds.
-                    """
-            )
-            .labeledContentStyle(.mhKeyValue)
+        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
+            MHGroupedRows {
+                LabeledContent(
+                    "Shared package responsibility for narrow rows",
+                    value: """
+                        Automatic vertical stacking should keep long values readable
+                        before a host app writes local workarounds.
+                        """
+                )
+                .labeledContentStyle(.mhKeyValue)
 
-            LabeledContent {
-                VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
-                    Text("Primary and supporting information")
-                    Text("Leading aligned when compact fallback is active.")
-                        .mhTextStyle(.caption, colorRole: .secondaryText)
+                LabeledContent {
+                    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+                        Text("Primary and supporting information")
+                        Text("Leading aligned when compact fallback is active.")
+                            .mhTextStyle(.caption, colorRole: .secondaryText)
+                    }
+                } label: {
+                    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+                        Text("Current package-level fallback")
+                        Text("Horizontal only when a real value column still fits.")
+                            .mhTextStyle(.caption, colorRole: .secondaryText)
+                    }
                 }
-            } label: {
-                VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
-                    Text("Current package-level fallback")
-                    Text("Horizontal only when a real value column still fits.")
-                        .mhTextStyle(.caption, colorRole: .secondaryText)
-                }
+                .labeledContentStyle(.mhKeyValue)
+
+                LabeledContent(
+                    "Validation target",
+                    value: """
+                        Long labels, long values, and accessibility type should remain practical at 375pt and 320pt widths.
+                        """
+                )
+                .labeledContentStyle(.mhKeyValue)
             }
-            .labeledContentStyle(.mhKeyValue)
+            .mhSurfaceInset()
+            .mhSurface()
 
-            LabeledContent(
-                "Validation target",
-                value: """
-                    Long labels, long values, and accessibility type should remain practical at 375pt and 320pt widths.
-                    """
-            )
-            .labeledContentStyle(.mhKeyValue)
+            MHGroupedRows {
+                LabeledContent("Status", value: "Ready")
+                    .labeledContentStyle(.mhKeyValue)
+
+                LabeledContent("Schedule", value: "Next Thursday after lunch")
+                    .labeledContentStyle(.mhKeyValue)
+
+                LabeledContent("Owner", value: "Review team")
+                    .labeledContentStyle(.mhKeyValue)
+            }
+            .mhKeyValueLayout(.horizontal)
+            .mhSurfaceInset()
+            .mhSurface()
         }
-        .mhSurfaceInset()
-        .mhSurface()
     }
 }
 
