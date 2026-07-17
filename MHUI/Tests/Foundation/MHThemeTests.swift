@@ -180,6 +180,8 @@ struct MHThemeTests {
         values.mhTheme = custom
 
         #expect(values.mhTheme == custom)
+        #expect(values.mhDesignMetrics == custom.metrics)
+        #expect(!values.mhHasExplicitDesignMetrics)
         #expect(values.mhTheme.spacing.screen == 44)
         #expect(values.mhTheme.layout.screen.contentInsetVertical == 80)
         #expect(values.mhTheme.layout.surface.insetHorizontal == 28)
@@ -208,6 +210,8 @@ struct MHThemeTests {
 
         values.mhDesignMetrics = otherMetrics
 
+        #expect(values.mhDesignMetrics == otherMetrics)
+        #expect(values.mhHasExplicitDesignMetrics)
         #expect(values.mhTheme.metrics == otherMetrics)
         #expect(values.mhTheme.presentation == customTheme.presentation)
         #expect(values.mhTheme.colors == customTheme.colors)
@@ -230,6 +234,12 @@ struct MHThemeTests {
         )
         #expect(values.mhTheme.layout.surface.insetHorizontal == 28)
         #expect(values.mhTheme.layout.control.minimumTouchTarget == 52)
+
+        values.mhTheme = customTheme
+
+        #expect(values.mhDesignMetrics == customTheme.metrics)
+        #expect(!values.mhHasExplicitDesignMetrics)
+        #expect(values.mhTheme == customTheme)
     }
 
     @Test

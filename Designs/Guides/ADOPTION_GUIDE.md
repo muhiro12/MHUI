@@ -23,7 +23,8 @@ Use `MHUI` when an app wants the package's visible presentation language.
 
 ## Understand the Root Theme
 
-Apply one theme near the app root:
+Apply one theme near the app root. This is the canonical MHUI styling entry
+point:
 
 ```swift
 import MHUI
@@ -40,14 +41,38 @@ struct WorkspaceApp: App {
 }
 ```
 
-The theme is semantic configuration rather than a global skin. It supplies
-colors, typography, metrics, and presentation values to MHUI components. It
-does not automatically restyle every native `List`, `Form`, `Section`, row, or
-button in its subtree.
+The call propagates colors, typography, metrics, presentation values, and
+surface treatments to every MHUI component in the subtree. It also synchronizes
+the `MHDesignMetrics` environment and, when the theme has a concrete
+asset-backed accent, native-control tint. A narrower `.mhTheme(...)` call
+overrides that baseline for one subtree through ordinary SwiftUI environment
+scoping.
 
-As a result, adding only `.mhTheme(.standard)` to an unchanged app can look
-almost identical to the original interface. Complete adoption requires the
-screen-level and component-level APIs described below.
+This is the maximum safe automatic application for arbitrary SwiftUI content.
+MHUI does not apply root-wide button, font, foreground, list, or form styles:
+those styles propagate into toolbars, menus, system presentations, and
+controls whose semantic role the root cannot know. It also cannot insert
+`mhScreen`, section hierarchy, or grouped-row structure around unknown
+descendants.
+
+Complete visible adoption therefore needs one explicit structural route at
+each screen boundary. Within package-owned containers, MHUI removes repetition
+where meaning is known: `MHGroupedRows` styles its direct children and
+`MHActionGroup` gives otherwise unstyled buttons the secondary role.
+
+### Make a Native Exception Locally
+
+Do not turn off the root theme for an entire app because one screen needs
+native presentation. Keep the specialized `List`, `Form`, or control subtree
+outside MHUI structural modifiers. It then retains its OS-selected container
+and control styles while still receiving the shared metrics and ordinary app
+tint.
+
+If the subtree intentionally needs a different theme, apply
+`.mhTheme(localTheme)` there. If only its native-control tint differs, apply a
+local `.tint(Color(.settingsAccent))` using another generated asset symbol.
+Inside an `MHActionGroup`, a button can likewise declare a deliberate native
+button style instead of inheriting the group's secondary default.
 
 ### Keep the Accent App-Owned
 
@@ -297,7 +322,7 @@ detached inputs in stack-based or custom compositions.
 
 | API | Package-owned default | Adopter responsibility |
 | --- | --- | --- |
-| `mhTheme` | Supplies semantic values | Select the components and roles that use them |
+| `mhTheme` | Propagates the complete theme, MHDesign metrics, and optional native tint | Select screen structure and roles that cannot be inferred |
 | `MHSummary` | Ruled editorial summary and stronger system title hierarchy | Provide concise screen context and optional accessory |
 | `MHSectionHeader` | Neutral section cue and hierarchy | Provide product wording and optional accessory |
 | `MHSectionFooter` | Quiet explanatory text | Provide concise supporting guidance |

@@ -1,6 +1,6 @@
 # MHUI Current Repository Overview
 
-Current as of July 17, 2026.
+Current as of July 18, 2026.
 
 ## Purpose
 
@@ -100,8 +100,10 @@ the Xcode-native integration is unavailable or does not cover a check.
   intentional subtree exceptions.
 - The standard theme uses the host app's `AccentColor`. Apps that provide an
   asset-backed accent also own and verify its `onAccent` foreground asset.
-- Theme propagation supplies semantic values but does not infer component roles
-  or replace native SwiftUI controls.
+- Root theme propagation supplies all inheritable semantic values, synchronizes
+  MHDesign metrics, and optionally applies native tint. Screen structure and
+  semantic control roles remain explicit because they cannot be inferred
+  safely from arbitrary SwiftUI descendants.
 - Signature composition is the primary visual adoption path for overview,
   dashboard, read-only detail, report, insight, and tool screens.
 - Native list and form chrome are secondary bridges for screens that materially

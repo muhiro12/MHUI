@@ -20,10 +20,13 @@ private struct MHThemeModifier: ViewModifier {
 }
 
 public extension View {
-    /// Applies an MHUI theme and matching native-control tint to this subtree.
+    /// Applies the complete inheritable MHUI styling baseline to this subtree.
     ///
-    /// Apply this once near the app's root. Apply it again to a narrower subtree
-    /// only when that part of the interface intentionally uses another theme.
+    /// Apply this once near the app's root. It propagates the theme, synchronizes
+    /// its MHDesign metrics, and applies an asset-backed native-control tint when
+    /// the theme supplies one. Apply it again only for an intentional local
+    /// theme exception. Screen structure and semantic control roles remain
+    /// explicit because a root modifier cannot infer them safely.
     func mhTheme(_ theme: MHTheme) -> some View {
         modifier(MHThemeModifier(theme: theme))
     }

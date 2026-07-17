@@ -47,15 +47,19 @@ Its decorative hierarchy remains achromatic: dark-ink headings and neutral
 rules distinguish content without borrowing the app's brand color. Accent is
 reserved for semantic status, focus, native controls, and primary actions.
 
-The root theme is configuration rather than a global skin. Styled adoption has
-an intentional hierarchy:
+The root theme is the canonical root-first styling entry point. It propagates
+the complete semantic theme, synchronizes MHDesign metrics, and applies a
+concrete asset accent to native-control tint. It is the maximum safe cascade
+for arbitrary SwiftUI content: blanket root button, font, foreground, list,
+and form styles are excluded because they would cross semantic and system
+presentation boundaries. Styled adoption has an intentional hierarchy:
 
 1. Signature composition is the primary path: `mhScreen`, `MHSummary`,
    `mhSection`, and `MHGroupedRows`.
 2. Native `List` and `Form` chrome are secondary bridges for screens that
    materially require native container semantics.
-3. Theme-only integration is configuration and does not constitute visible
-   adoption.
+3. Theme-only integration establishes the inherited baseline but does not
+   insert visible screen structure around arbitrary descendants.
 
 The host app chooses by screen purpose and required behavior, not by the
 existing container. Overview, dashboard, read-only detail, report, insight, and

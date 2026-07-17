@@ -150,10 +150,18 @@ arrangement.
 
 ### Root Configuration and App Accent
 
-Apply the standard theme once near the app root. The modifier supplies semantic
-values to MHUI components; it is configuration, not a global skin for arbitrary
-SwiftUI content. Applying only `.mhTheme(.standard)` to an unchanged screen is
-therefore expected to produce little visible difference.
+Apply the standard theme once near the app root. This is MHUI's canonical
+root-first styling entry point. It propagates the complete theme, synchronizes
+its `MHDesignMetrics`, and applies an explicitly configured asset accent to
+native-control tint. Every MHUI component in the subtree reads that baseline,
+and a narrower `.mhTheme(...)` call overrides it through normal SwiftUI
+environment scoping.
+
+The root call applies everything that SwiftUI can safely inherit without
+guessing product meaning. It does not install blanket button, font, foreground,
+list, or form styles. Those modifiers would also affect toolbars, menus, system
+presentations, and controls whose primary, secondary, or destructive role
+cannot be inferred at the root.
 
 The achromatic base and system typography remain package-owned defaults. The
 host app continues to own its identity through its `AccentColor` asset.
@@ -187,6 +195,12 @@ let appTheme = MHTheme.standard(
 The app owns both assets and must verify their contrast in supported
 appearances. MHUI does not accept RGB or hexadecimal color definitions in
 source.
+
+Visible MHUI structure requires one explicit route at the screen boundary.
+Use signature composition for the normal MHUI-forward route, and leave a
+specialized native subtree outside those structural modifiers when it must
+retain an OS-standard presentation. A local theme or asset-backed `.tint(...)`
+is available when that subtree also needs a deliberate color exception.
 
 Decorative hierarchy stays achromatic: headings use dark ink and cues use
 neutral rules. Reserve the app accent for semantic status, focus, native
@@ -287,12 +301,15 @@ legible on that accent. A concrete accent makes the theme the source of truth
 for both MHUI colors and native-control tint; the app must verify the accent
 and on-accent pair in light, dark, and Increase Contrast appearances.
 
-Theme values propagate automatically, but semantic component selection stays
-explicit. Continue applying APIs such as `.buttonStyle(.mhPrimary)`,
-`.mhRow()`, `.mhSurface()`, and `.labeledContentStyle(.mhKeyValue)` where their
-meaning is known. Direct children of `MHGroupedRows` receive row chrome from
-the container, and unstyled buttons in `MHActionGroup` receive the secondary
-role. MHUI does not globally replace or restyle every native SwiftUI control.
+Theme values and MHDesign metrics propagate automatically, but structural and
+semantic selection stays explicit. In practice, a styled screen adds one
+screen route such as `mhScreen`, then uses APIs such as
+`.buttonStyle(.mhPrimary)`, `.mhSurface()`, and
+`.labeledContentStyle(.mhKeyValue)` only where their meaning is known. Direct
+children of `MHGroupedRows` receive row chrome from the container, and unstyled
+buttons in `MHActionGroup` receive the secondary role. A specialized native
+subtree opts out by omitting the MHUI structural or semantic modifier; MHUI
+does not replace the native control itself.
 
 For visual review, start with the colocated preview beside the edited primitive
 or layout API. Use validation previews when a change affects shared behavior

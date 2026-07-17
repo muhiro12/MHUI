@@ -1,7 +1,7 @@
 # ADR 0006: Root Theme Propagation
 
 - Date: 2026-07-16
-- Last updated: 2026-07-17
+- Last updated: 2026-07-18
 - Status: Accepted
 
 ## Context
@@ -31,15 +31,24 @@ asset-backed accent also becomes the native-control tint within the same
 subtree. `MHColorReference` accepts asset resources rather than RGB or
 hexadecimal source values.
 
-A narrower `mhTheme(_:)` call provides an intentional local override. Views
-still select semantic intent explicitly through MHUI text, surface, row,
-button, and container APIs. MHUI does not infer roles from arbitrary content,
-replace native controls, or install blanket styles for every SwiftUI control.
+The root call is the maximum safe automatic styling application for arbitrary
+SwiftUI content. Writing `mhTheme(_:)` also synchronizes the theme's
+`MHDesignMetrics` with the lower-level metrics environment. A narrower
+`mhTheme(_:)` call provides an intentional local override.
+
+Views still select structural and semantic intent explicitly through MHUI text,
+surface, row, button, and container APIs. MHUI does not infer roles from
+arbitrary content, replace native controls, or install blanket root button,
+font, foreground, list, and form styles. Such styles propagate into toolbars,
+menus, system presentations, and controls whose meaning cannot be known at the
+app root. A root modifier also cannot rewrite an unknown descendant hierarchy
+to insert signature screen, section, or grouped-row structure.
 
 ## Consequences
 
 - Adopters can keep the ordinary app theme in one source location and receive
-  automatic subtree propagation.
+  automatic subtree propagation for all inheritable theme values, MHDesign
+  metrics, and optional native tint.
 - Host apps keep ownership of their brand color when they use the standard
   theme unchanged.
 - Asset-backed accent colors stay aligned between MHUI components and native
@@ -49,5 +58,8 @@ replace native controls, or install blanket styles for every SwiftUI control.
 - Exceptions use the same value type and normal SwiftUI environment scoping.
 - Semantic role selection remains visible at use sites, preserving meaning and
   native control behavior.
+- A screen makes one explicit structural route choice. Specialized native
+  subtrees opt out by omitting MHUI structure or semantic styles, while local
+  themes and asset-backed tints remain available for narrower exceptions.
 - Applying an asset-backed accent theme may change native control tint for existing
   adopters and must be called out in release migration notes.
