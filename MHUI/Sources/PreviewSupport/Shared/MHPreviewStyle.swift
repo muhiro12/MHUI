@@ -145,8 +145,8 @@ enum MHPreviewStyle {
 
     // swiftlint:disable no_magic_numbers
     static let sampleHostAccent = MHColorReference.fixed(
-        lightHex: 0x244A3F,
-        darkHex: 0x8FB9A8
+        lightHex: 0x315B85,
+        darkHex: 0x8EB3D8
     )
 
     static let sampleHostOnAccent = MHColorReference.fixed(

@@ -4,8 +4,8 @@ import SwiftUI
 private enum MHAdoptionComparisonTheme {
     static let standard = MHTheme.standard(
         accent: .fixed(
-            lightHex: 0x3E594F,
-            darkHex: 0xA7C2B6
+            lightHex: 0x315B85,
+            darkHex: 0x8EB3D8
         ),
         onAccent: .fixed(
             lightHex: 0xFFFFFF,

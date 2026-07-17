@@ -3,8 +3,9 @@ import SwiftUI
 
 private enum MHSignatureCompositionPreviewLayout {
     static let width: CGFloat = 390
+    static let compactWidth: CGFloat = 320
     static let height: CGFloat = 844
-    static let accessibilityHeight: CGFloat = 1_180
+    static let accessibilityHeight: CGFloat = 1_600
 }
 
 private struct MHSignatureCompositionPreview: View {
@@ -17,15 +18,20 @@ private struct MHSignatureCompositionPreview: View {
 }
 
 private struct MHSignatureCompositionContent: View {
+    @State private var isIncludedInReview = true
+    @State private var note = ""
+
     var body: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
             MHSignatureSummary()
-            MHSignatureCompositionSection()
-            MHSignatureActions()
+            MHSignatureCompositionSection(
+                isIncludedInReview: $isIncludedInReview
+            )
+            MHSignatureActions(note: $note)
         }
         .mhScreen(
             "Daily Edit",
-            subtitle: "A composed interface for focused work."
+            subtitle: "Four items in focus."
         )
     }
 }
@@ -33,39 +39,48 @@ private struct MHSignatureCompositionContent: View {
 private struct MHSignatureSummary: View {
     var body: some View {
         MHSummary(
-            "Quiet structure",
-            metadata: "ISSUE 04",
-            supporting: "Warm neutral planes and precise rules keep the content in focus."
+            "Ready for review",
+            metadata: "TODAY · 04",
+            supporting: "Three notes are complete. One item still needs attention."
         ) {
-            Text("Ready")
+            Text("Active")
                 .mhBadge(style: .accent)
         }
     }
 }
 
 private struct MHSignatureCompositionSection: View {
+    @Binding var isIncludedInReview: Bool
+
     var body: some View {
         MHGroupedRows {
-            LabeledContent("Type", value: "System")
+            LabeledContent("Status", value: "In progress")
                 .labeledContentStyle(.mhKeyValue)
 
-            LabeledContent("Rhythm", value: "Measured")
+            LabeledContent("Schedule", value: "Today")
                 .labeledContentStyle(.mhKeyValue)
 
-            Toggle("Native controls", isOn: .constant(true))
+            Toggle("Include in review", isOn: $isIncludedInReview)
         }
         .mhSection(
-            "Composition",
-            supporting: "System type, measured spacing, and semantic color."
+            "Details",
+            supporting: "A concise view of what still needs attention."
         )
     }
 }
 
 private struct MHSignatureActions: View {
+    @Binding var note: String
+
     var body: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-            TextField("Add a note", text: .constant(""))
-                .mhInputChrome()
+            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+                Text("Note")
+                    .mhTextStyle(.bodyStrong)
+
+                TextField("Add context", text: $note)
+                    .mhInputChrome()
+            }
 
             MHActionGroup {
                 Button("Continue") {
@@ -73,9 +88,10 @@ private struct MHSignatureActions: View {
                 }
                 .buttonStyle(.mhPrimary)
 
-                Button("Review") {
+                Button("Review later") {
                     // no-op
                 }
+                .buttonStyle(.mhQuiet)
             }
         }
     }
@@ -106,12 +122,12 @@ private struct MHSignatureActions: View {
 #Preview(
     "Design System / 00 Signature / Accessibility",
     traits: .fixedLayout(
-        width: MHSignatureCompositionPreviewLayout.width,
+        width: MHSignatureCompositionPreviewLayout.compactWidth,
         height: MHSignatureCompositionPreviewLayout.accessibilityHeight
     )
 ) {
     MHSignatureCompositionPreview(
-        context: MHPreviewStyle.context(typeScale: .accessibility)
+        context: MHPreviewStyle.context(typeScale: .largestAccessibility)
     )
 }
 
