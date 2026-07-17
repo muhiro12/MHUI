@@ -25,7 +25,9 @@ private extension MHDesignMetrics {
 private extension View {
     func mhDesignPreviewLabelStyle() -> some View {
         font(.subheadline.weight(.semibold))
-            .foregroundStyle(.secondary)
+            .foregroundStyle(
+                MHDesignPreviewColor.secondaryText
+            )
     }
 }
 

@@ -17,28 +17,7 @@ private struct MHSpacingMetricsPreview: View {
             VStack(alignment: .leading, spacing: metrics.section) {
                 VStack(alignment: .leading, spacing: metrics.control) {
                     ForEach(MHSpacingRole.allCases, id: \.self) { role in
-                        VStack(alignment: .leading, spacing: metrics.inline) {
-                            MHDesignPreviewSupport.MetricRow(
-                                label: MHDesignPreviewSupport.title(for: role),
-                                value: MHDesignPreviewSupport.formatted(metrics[role])
-                            )
-
-                            HStack(spacing: metrics[role]) {
-                                Circle()
-                                    .fill(Color.accentColor.opacity(0.28))
-                                    .frame(
-                                        width: PreviewStyle.markerSize,
-                                        height: PreviewStyle.markerSize
-                                    )
-
-                                Circle()
-                                    .fill(Color.accentColor.opacity(0.55))
-                                    .frame(
-                                        width: PreviewStyle.markerSize,
-                                        height: PreviewStyle.markerSize
-                                    )
-                            }
-                        }
+                        spacingRow(for: role)
                     }
                 }
 
@@ -48,6 +27,33 @@ private struct MHSpacingMetricsPreview: View {
                 }
             }
         }
+    }
+
+    private func spacingRow(
+        for role: MHSpacingRole
+    ) -> some View {
+        VStack(alignment: .leading, spacing: metrics.inline) {
+            MHDesignPreviewSupport.MetricRow(
+                label: MHDesignPreviewSupport.title(for: role),
+                value: MHDesignPreviewSupport.formatted(metrics[role])
+            )
+
+            HStack(spacing: metrics[role]) {
+                marker(opacity: 0.28)
+                marker(opacity: 0.55)
+            }
+        }
+    }
+
+    private func marker(
+        opacity: Double
+    ) -> some View {
+        Circle()
+            .fill(MHDesignPreviewColor.accent.opacity(opacity))
+            .frame(
+                width: PreviewStyle.markerSize,
+                height: PreviewStyle.markerSize
+            )
     }
 
     private func block(
@@ -61,7 +67,9 @@ private struct MHSpacingMetricsPreview: View {
                 Text("Control spacing keeps nearby elements connected.")
                 Text("Inline spacing stays tighter for grouped details.")
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(
+                        MHDesignPreviewColor.secondaryText
+                    )
             }
             .padding(.vertical, metrics.inline)
         }

@@ -50,7 +50,7 @@ private struct MHCornerRadiusMetricsPreview: View {
             style: .continuous
         )
         .fill(
-            Color.accentColor.opacity(
+            MHDesignPreviewColor.accent.opacity(
                 role == .control
                     ? PreviewStyle.controlOpacity
                     : PreviewStyle.surfaceOpacity

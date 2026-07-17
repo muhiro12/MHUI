@@ -84,7 +84,11 @@ private struct MHThemeOnlyAdoptionPreview: View {
                         .font(.headline)
                     Text("A focused hierarchy distinguishes the screen without replacing native controls.")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(
+                            Color(
+                                MHPreviewColorAsset.platformSecondaryText
+                            )
+                        )
                     Text("Ready")
                 }
             }

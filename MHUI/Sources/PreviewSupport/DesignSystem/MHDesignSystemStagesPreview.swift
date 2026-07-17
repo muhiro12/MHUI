@@ -143,7 +143,9 @@ private struct MHDesignSystemStageCard: View {
         if stage == .system {
             Text(stage.title)
                 .font(.body.weight(.semibold))
-                .foregroundStyle(.primary)
+                .foregroundStyle(
+                    Color(MHPreviewColorAsset.platformPrimaryText)
+                )
         } else {
             Text(stage.title)
                 .mhTextStyle(.bodyStrong)
@@ -155,7 +157,9 @@ private struct MHDesignSystemStageCard: View {
             Text(stage.rawValue)
                 .font(.footnote.weight(.medium))
                 .fontDesign(.monospaced)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(
+                    Color(MHPreviewColorAsset.platformSecondaryText)
+                )
         } else {
             Text(stage.rawValue)
                 .mhTextStyle(.caption, colorRole: .secondaryText)

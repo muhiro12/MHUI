@@ -110,7 +110,9 @@ extension MHDesignPreviewSupport {
                         if let supporting {
                             Text(supporting)
                                 .font(.subheadline)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(
+                                    MHDesignPreviewColor.secondaryText
+                                )
                         }
                     }
 
@@ -118,7 +120,9 @@ extension MHDesignPreviewSupport {
                 }
                 .padding(24)
             }
-            .background(Color.secondary.opacity(0.08))
+            .background(
+                MHDesignPreviewColor.secondaryText.opacity(0.08)
+            )
         }
     }
 
@@ -157,7 +161,9 @@ extension MHDesignPreviewSupport {
                     if let supporting {
                         Text(supporting)
                             .font(.footnote)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(
+                                MHDesignPreviewColor.secondaryText
+                            )
                     }
                 }
 
@@ -172,13 +178,16 @@ extension MHDesignPreviewSupport {
                 cornerRadius: 20,
                 style: .continuous
             )
-            .fill(Color.primary.opacity(0.05))
+            .fill(MHDesignPreviewColor.primaryText.opacity(0.05))
             .overlay {
                 RoundedRectangle(
                     cornerRadius: 20,
                     style: .continuous
                 )
-                .stroke(Color.primary.opacity(0.08), lineWidth: 1)
+                .stroke(
+                    MHDesignPreviewColor.primaryText.opacity(0.08),
+                    lineWidth: 1
+                )
             }
         }
     }
@@ -191,7 +200,9 @@ extension MHDesignPreviewSupport {
             HStack(alignment: .firstTextBaseline, spacing: 16) {
                 Text(label)
                     .font(.footnote.weight(.medium))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(
+                        MHDesignPreviewColor.secondaryText
+                    )
 
                 Spacer(minLength: 16)
 
@@ -343,13 +354,17 @@ extension MHDesignPreviewSupport {
                             .font(.headline)
                         Text("This padded content uses the current surface inset values.")
                             .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(
+                                MHDesignPreviewColor.secondaryText
+                            )
 
                         RoundedRectangle(
                             cornerRadius: metrics.cornerRadius.control,
                             style: .continuous
                         )
-                        .fill(Color.accentColor.opacity(0.18))
+                        .fill(
+                            MHDesignPreviewColor.accent.opacity(0.18)
+                        )
                         .frame(
                             minHeight: metrics.layout.control.minimumTouchTarget
                         )
@@ -384,12 +399,16 @@ extension MHDesignPreviewSupport {
 
                 Text(supporting)
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(
+                        MHDesignPreviewColor.secondaryText
+                    )
 
                 VStack(alignment: .leading, spacing: metrics.spacing.inline) {
                     Text("Inline spacing groups detail without collapsing the row.")
                     Text("Control spacing keeps nearby content distinct.")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(
+                            MHDesignPreviewColor.secondaryText
+                        )
                 }
                 .font(.footnote)
             }
@@ -400,13 +419,16 @@ extension MHDesignPreviewSupport {
                 cornerRadius: metrics.cornerRadius.surface,
                 style: .continuous
             )
-            .fill(Color.secondary.opacity(0.08))
+            .fill(MHDesignPreviewColor.secondaryText.opacity(0.08))
             .overlay {
                 RoundedRectangle(
                     cornerRadius: metrics.cornerRadius.surface,
                     style: .continuous
                 )
-                .stroke(Color.primary.opacity(0.08), lineWidth: 1)
+                .stroke(
+                    MHDesignPreviewColor.primaryText.opacity(0.08),
+                    lineWidth: 1
+                )
             }
         }
 
@@ -415,13 +437,16 @@ extension MHDesignPreviewSupport {
                 cornerRadius: metrics.cornerRadius.surface,
                 style: .continuous
             )
-            .fill(Color.primary.opacity(0.05))
+            .fill(MHDesignPreviewColor.primaryText.opacity(0.05))
             .overlay {
                 RoundedRectangle(
                     cornerRadius: metrics.cornerRadius.surface,
                     style: .continuous
                 )
-                .stroke(Color.primary.opacity(0.08), lineWidth: 1)
+                .stroke(
+                    MHDesignPreviewColor.primaryText.opacity(0.08),
+                    lineWidth: 1
+                )
             }
         }
 

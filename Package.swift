@@ -31,7 +31,10 @@ let package = Package(
             name: "MHDesign",
             path: "MHDesign",
             exclude: ["Tests"],
-            sources: ["Sources"]
+            sources: ["Sources"],
+            resources: [
+                .process("Resources")
+            ]
         ),
         .target(
             name: "MHUI",
