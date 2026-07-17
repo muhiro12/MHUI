@@ -49,6 +49,8 @@ The repository is intentionally biased toward package-owned visual rules and awa
   `MHSectionFooter`, `MHGroupedRows`, and `MHActionGroup`
 - Text styling primitives such as `mhTextStyle(_:colorRole:)`, including system
   font design and tracking tokens
+- Semantic color application for labels, symbols, shapes, and local control
+  tint through `mhForegroundStyle(_:)` and `mhTint(_:)`
 - Standard, elevated, and muted surface roles, row and section modifiers, and
   the `MHGroupedRows` container
 - Screen-level chrome such as `mhScreen(...)`, `mhListChrome(...)`, and `mhFormChrome(...)`

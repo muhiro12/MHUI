@@ -53,6 +53,15 @@ struct MHComponentSmokeTests {
                 TextField("Name", text: .constant(""))
                     .mhInputChrome(state: .focused)
 
+                Label(
+                    "Theme-owned warning",
+                    systemImage: "exclamationmark.triangle"
+                )
+                .mhForegroundStyle(.warning)
+
+                Toggle("Theme-owned tint", isOn: .constant(true))
+                    .mhTint(.accent)
+
                 MHActionGroup {
                     Button("Create Something New Without Local Workarounds") {
                         // no-op

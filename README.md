@@ -311,6 +311,12 @@ buttons in `MHActionGroup` receive the secondary role. A specialized native
 subtree opts out by omitting the MHUI structural or semantic modifier; MHUI
 does not replace the native control itself.
 
+For a standalone label, SF Symbol, or shape, use
+`.mhForegroundStyle(_:)` to resolve a semantic role from the active theme
+without also applying typography. Use `.mhTint(_:)` for a deliberate local
+native-control tint exception. Both modifiers keep the underlying colors in
+asset catalogs through the theme instead of defining a new color in source.
+
 For visual review, start with the colocated preview beside the edited primitive
 or layout API. Use validation previews when a change affects shared behavior
 across widths, themes, or runtime contexts.

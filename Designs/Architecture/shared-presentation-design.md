@@ -96,6 +96,8 @@ The following types and helpers are the current shared entry points for package-
 - `MHTextRole`
 - `MHColorRole`
 - `mhTheme(_:)`
+- `mhForegroundStyle(_:)`
+- `mhTint(_:)`
 - `mhTextStyle(_:colorRole:)`
 - `mhSurface(role:)`
 - `mhRow()`

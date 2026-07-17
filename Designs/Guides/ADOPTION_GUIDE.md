@@ -70,9 +70,12 @@ tint.
 
 If the subtree intentionally needs a different theme, apply
 `.mhTheme(localTheme)` there. If only its native-control tint differs, apply a
-local `.tint(Color(.settingsAccent))` using another generated asset symbol.
-Inside an `MHActionGroup`, a button can likewise declare a deliberate native
-button style instead of inheriting the group's secondary default.
+local `.mhTint(...)` for a theme-owned semantic color, or
+`.tint(Color(.settingsAccent))` using another generated app asset symbol.
+Use `.mhForegroundStyle(...)` for a standalone label, symbol, or shape that
+needs a semantic MHUI color without also taking an MHUI text style. Inside an
+`MHActionGroup`, a button can likewise declare a deliberate native button
+style instead of inheriting the group's secondary default.
 
 ### Keep the Accent App-Owned
 
