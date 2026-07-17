@@ -12,12 +12,11 @@ private struct MHActionGroupValidationPreview: View {
                 Button("Archive This Quietly After Reviewing Long Secondary Copy") {
                     // no-op
                 }
-                .buttonStyle(.mhSecondary)
 
                 Button("Review Package-Owned Compact Width Collapse Behavior") {
                     // no-op
                 }
-                .buttonStyle(.mhSecondary)
+                .buttonStyle(.mhQuiet)
             }
         }
         .mhScreen(

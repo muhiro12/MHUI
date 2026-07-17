@@ -6,6 +6,7 @@ extension MHTheme {
         let rowChrome = resolvedRowChromeStyle(for: context)
 
         return .init(
+            rowChrome: rowChrome,
             showsDividers: showsDividers,
             dividerLeadingInset: rowChrome.horizontalInset,
             dividerThickness: divider.thickness,

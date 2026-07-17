@@ -141,7 +141,6 @@ public extension View {
             }
             Spacer()
         }
-        .mhRow()
 
         LabeledContent("Surface", value: "Styled")
             .labeledContentStyle(.mhKeyValue)

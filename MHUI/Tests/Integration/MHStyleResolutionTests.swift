@@ -222,6 +222,7 @@ struct MHStyleResolutionTests {
         #expect(theme.surfaceColorRole(for: .standard) == .surface)
         #expect(theme.surfaceColorRole(for: .muted) == .surfaceMuted)
         #expect(grouped.showsDividers)
+        #expect(grouped.rowChrome == theme.resolvedRowChromeStyle())
         #expect(grouped.dividerLeadingInset == theme.layout.surface.insetHorizontal)
         #expect(grouped.dividerThickness == theme.divider.thickness)
         #expect(grouped.dividerOpacity == theme.divider.opacity)
@@ -253,6 +254,12 @@ struct MHStyleResolutionTests {
         #expect(style.rowChrome == rowChrome)
         #expect(style.minimumValueWidth == theme.presentation.regularKeyValueMinimumValueWidth)
         #expect(style.stackedSpacing == theme.presentation.compactKeyValueSpacing)
+
+        let groupedRowChrome = rowChrome.resolved(for: .grouped)
+        #expect(groupedRowChrome.verticalPadding == .zero)
+        #expect(groupedRowChrome.horizontalInset == .zero)
+        #expect(groupedRowChrome.accessorySpacing == rowChrome.accessorySpacing)
+        #expect(groupedRowChrome.minimumHeight == .zero)
     }
 
     @Test

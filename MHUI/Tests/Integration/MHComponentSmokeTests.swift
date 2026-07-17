@@ -23,7 +23,6 @@ struct MHComponentSmokeTests {
                         Text("Quiet")
                             .mhRowValue()
                     }
-                    .mhRow()
 
                     LabeledContent("Theme", value: "Standard")
                         .labeledContentStyle(.mhKeyValue)
@@ -63,7 +62,15 @@ struct MHComponentSmokeTests {
                     Button("Review Package-Level Compact Fallback Behavior") {
                         // no-op
                     }
-                    .buttonStyle(.mhSecondary)
+                }
+
+                MHSummary(
+                    "Focused work",
+                    metadata: "OVERVIEW",
+                    supporting: "Shared hierarchy without product-specific meaning."
+                ) {
+                    Text("Ready")
+                        .mhBadge(style: .accent)
                 }
 
                 HStack(spacing: MHDesignMetrics.standard.spacing.control) {
@@ -183,16 +190,12 @@ struct MHComponentSmokeTests {
                         LabeledContent("Theme", value: "System")
                             .labeledContentStyle(.mhKeyValue)
                     } header: {
-                        VStack(alignment: .leading, spacing: MHDesignMetrics.standard.spacing.control) {
-                            Text("Preferences")
-                                .mhSectionHeaderTitle()
-                            Text("Native list controls keep SwiftUI behavior.")
-                                .mhSectionHeaderSupporting()
-                        }
-                        .mhSectionHeader()
+                        MHSectionHeader(
+                            "Preferences",
+                            supporting: "Native list controls keep SwiftUI behavior."
+                        )
                     } footer: {
-                        Text("Rows use spacing and separator rules from MHUI.")
-                            .mhSectionFooterText()
+                        MHSectionFooter("Rows use spacing and separator rules from MHUI.")
                     }
                 }
                 .frame(height: 260)
@@ -204,7 +207,7 @@ struct MHComponentSmokeTests {
                 Form {
                     Section {
                         TextField("Workspace name", text: .constant("MHUI"))
-                            .mhRow()
+                            .mhInputChrome()
 
                         MHActionGroup {
                             Button("Save Current Workspace Settings") {
@@ -215,19 +218,14 @@ struct MHComponentSmokeTests {
                             Button("Review Advanced Configuration Details") {
                                 // no-op
                             }
-                            .buttonStyle(.mhSecondary)
                         }
                     } header: {
-                        VStack(alignment: .leading, spacing: MHDesignMetrics.standard.spacing.control) {
-                            Text("Workspace")
-                                .mhSectionHeaderTitle()
-                            Text("Form chrome should stay native, not custom.")
-                                .mhSectionHeaderSupporting()
-                        }
-                        .mhSectionHeader()
+                        MHSectionHeader(
+                            "Workspace",
+                            supporting: "Form chrome should stay native, not custom."
+                        )
                     } footer: {
-                        Text("Host apps supply tint, MHUI supplies rhythm.")
-                            .mhSectionFooterText()
+                        MHSectionFooter("Host apps supply tint, MHUI supplies rhythm.")
                     }
                 }
                 .frame(height: 280)

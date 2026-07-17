@@ -9,27 +9,13 @@ struct MHSectionModifier<Accessory: View, Footer: View>: ViewModifier {
     let accessory: Accessory?
     let footer: Footer?
 
-    private var headerBlock: some View {
-        VStack(alignment: .leading, spacing: theme.resolvedSectionChromeStyle().contentSpacing) {
-            HStack(alignment: .firstTextBaseline, spacing: theme.presentation.rowAccessorySpacing) {
-                title
-                    .mhSectionHeaderTitle()
-                Spacer(minLength: theme.presentation.rowAccessorySpacing)
-                if let accessory {
-                    accessory
-                }
-            }
-            if let supporting {
-                supporting
-                    .mhSectionHeaderSupporting()
-            }
-        }
-        .mhSectionHeader()
-    }
-
     func body(content: Content) -> some View {
         VStack(alignment: .leading, spacing: theme.spacing.content) {
-            headerBlock
+            MHSectionHeader(
+                title: title,
+                supporting: supporting,
+                accessory: accessory
+            )
 
             content
                 .mhSurfaceInset()

@@ -6,4 +6,20 @@ struct MHResolvedRowChromeStyle: Sendable, Equatable {
     var horizontalInset: CGFloat
     var accessorySpacing: CGFloat
     var minimumHeight: CGFloat
+
+    func resolved(
+        for scope: MHRowChromeScope
+    ) -> Self {
+        switch scope {
+        case .standalone:
+            self
+        case .grouped:
+            .init(
+                verticalPadding: .zero,
+                horizontalInset: .zero,
+                accessorySpacing: accessorySpacing,
+                minimumHeight: .zero
+            )
+        }
+    }
 }

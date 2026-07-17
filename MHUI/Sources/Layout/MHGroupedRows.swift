@@ -1,6 +1,10 @@
 import SwiftUI
 
-/// Arranges row content with theme-owned spacing and separators.
+/// Arranges direct child rows with theme-owned chrome and separators.
+///
+/// The container applies the standard row inset, vertical rhythm, and minimum
+/// height. Existing explicit `mhRow()` modifiers remain source-compatible and
+/// resolve without adding a second layer of row chrome.
 public struct MHGroupedRows<Content: View>: View {
     @Environment(\.mhTheme)
     private var theme
@@ -33,6 +37,8 @@ public struct MHGroupedRows<Content: View>: View {
                     ForEach(subviews.indices, id: \.self) { index in
                         subviews[index]
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .environment(\.mhRowChromeScope, .grouped)
+                            .mhRowChrome(style.rowChrome)
 
                         if index != lastIndex {
                             separator(style: style)
@@ -87,8 +93,6 @@ private extension MHGroupedRows {
             Text("Quiet")
                 .mhRowValue()
         }
-        .mhRow()
-
         LabeledContent("Readability", value: "Centered")
             .labeledContentStyle(.mhKeyValue)
 
@@ -101,7 +105,6 @@ private extension MHGroupedRows {
             }
             Spacer()
         }
-        .mhRow()
     }
     .mhSurfaceInset()
     .mhSurface()

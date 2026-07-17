@@ -4,6 +4,8 @@ import SwiftUI
 public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
     @Environment(\.mhTheme)
     var theme
+    @Environment(\.mhRowChromeScope)
+    var rowChromeScope
     @Environment(\.mhAdaptiveLayoutContext)
     var adaptiveLayoutContext
     @Environment(\.colorScheme)
@@ -25,7 +27,8 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
             dynamicTypeSize: dynamicTypeSize,
             threshold: theme.layout.compactWidthThreshold
         )
-        let style = theme.resolvedKeyValueStyle(for: context)
+        var style = theme.resolvedKeyValueStyle(for: context)
+        style.rowChrome = style.rowChrome.resolved(for: rowChromeScope)
 
         return Group {
             switch keyValueLayout {
@@ -52,5 +55,6 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
                 )
             }
         }
+        .environment(\.mhRowChromeScope, .standalone)
     }
 }

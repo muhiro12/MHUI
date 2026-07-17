@@ -3,6 +3,8 @@ import SwiftUI
 struct MHRowModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
+    @Environment(\.mhRowChromeScope)
+    private var rowChromeScope
     @Environment(\.mhAdaptiveLayoutContext)
     private var adaptiveLayoutContext
     @Environment(\.horizontalSizeClass)
@@ -17,7 +19,10 @@ struct MHRowModifier: ViewModifier {
             threshold: theme.layout.compactWidthThreshold
         )
 
+        let style = theme.resolvedRowChromeStyle(for: context)
+
         content
-            .mhRowChrome(theme.resolvedRowChromeStyle(for: context))
+            .environment(\.mhRowChromeScope, .standalone)
+            .mhRowChrome(style.resolved(for: rowChromeScope))
     }
 }

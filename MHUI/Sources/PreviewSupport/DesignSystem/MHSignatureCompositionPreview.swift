@@ -32,27 +32,14 @@ private struct MHSignatureCompositionContent: View {
 
 private struct MHSignatureSummary: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-            HStack(alignment: .firstTextBaseline) {
-                Text("ISSUE 04")
-                    .mhTextStyle(.metadata, colorRole: .accent)
-
-                Spacer(minLength: MHTheme.standard.spacing.control)
-
-                Text("Ready")
-                    .mhBadge(style: .accent)
-            }
-
-            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
-                Text("Quiet structure")
-                    .mhTextStyle(.sectionTitle)
-                Text("Warm neutral planes and precise rules keep the content in focus.")
-                    .mhTextStyle(.supporting, colorRole: .secondaryText)
-            }
+        MHSummary(
+            "Quiet structure",
+            metadata: "ISSUE 04",
+            supporting: "Warm neutral planes and precise rules keep the content in focus."
+        ) {
+            Text("Ready")
+                .mhBadge(style: .accent)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .mhSurfaceInset()
-        .mhSurface(role: .elevated)
     }
 }
 
@@ -66,7 +53,6 @@ private struct MHSignatureCompositionSection: View {
                 .labeledContentStyle(.mhKeyValue)
 
             Toggle("Native controls", isOn: .constant(true))
-                .mhRow()
         }
         .mhSection(
             "Composition",
@@ -90,7 +76,6 @@ private struct MHSignatureActions: View {
                 Button("Review") {
                     // no-op
                 }
-                .buttonStyle(.mhSecondary)
             }
         }
     }

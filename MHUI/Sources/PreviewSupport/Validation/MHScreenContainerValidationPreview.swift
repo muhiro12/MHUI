@@ -18,12 +18,11 @@ private struct MHScreenValidationContent: View {
                 Button("Open Current Archive and Review Long Secondary Copy") {
                     // no-op
                 }
-                .buttonStyle(.mhSecondary)
 
                 Button("Review Package-Level Compact Fallback Behavior") {
                     // no-op
                 }
-                .buttonStyle(.mhSecondary)
+                .buttonStyle(.mhQuiet)
             }
 
             MHGroupedRows {
@@ -74,16 +73,14 @@ private struct MHNativeContainerValidationContent: View {
                     )
                     .labeledContentStyle(.mhKeyValue)
                 } header: {
-                    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-                        Text("Preferences")
-                            .mhSectionHeaderTitle()
-                        Text("Native list behavior stays intact while compact rhythm comes from MHUI.")
-                            .mhSectionHeaderSupporting()
-                    }
-                    .mhSectionHeader()
+                    MHSectionHeader(
+                        "Preferences",
+                        supporting: "Native list behavior stays intact while compact rhythm comes from MHUI."
+                    )
                 } footer: {
-                    Text("This preview validates list chrome at phone width, not a product-specific layout.")
-                        .mhSectionFooterText()
+                    MHSectionFooter(
+                        "This preview validates list chrome at phone width, not a product-specific layout."
+                    )
                 }
             }
             .frame(height: 360)
@@ -95,7 +92,7 @@ private struct MHNativeContainerValidationContent: View {
             Form {
                 Section {
                     TextField("Workspace name", text: .constant("MHUI"))
-                        .mhRow()
+                        .mhInputChrome()
 
                     MHActionGroup {
                         Button("Save Current Workspace Settings") {
@@ -106,19 +103,14 @@ private struct MHNativeContainerValidationContent: View {
                         Button("Review Advanced Configuration Details") {
                             // no-op
                         }
-                        .buttonStyle(.mhSecondary)
                     }
                 } header: {
-                    VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-                        Text("Workspace")
-                            .mhSectionHeaderTitle()
-                        Text("Form controls stay native while action fallback and spacing stay shared.")
-                            .mhSectionHeaderSupporting()
-                    }
-                    .mhSectionHeader()
+                    MHSectionHeader(
+                        "Workspace",
+                        supporting: "Form controls stay native while action fallback and spacing stay shared."
+                    )
                 } footer: {
-                    Text("Tint continues to come from the host app.")
-                        .mhSectionFooterText()
+                    MHSectionFooter("Tint continues to come from the host app.")
                 }
             }
             .frame(height: 430)

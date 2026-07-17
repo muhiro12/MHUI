@@ -1,6 +1,11 @@
 import SwiftUI
 
-/// Groups actions with a shared horizontal-to-vertical fallback strategy.
+/// Groups actions with shared styling and a horizontal-to-vertical fallback.
+///
+/// Buttons use the secondary action treatment by default. Apply an explicit
+/// MHUI button style to a child button when it represents a primary, quiet, or
+/// destructive action. A native destructive button role does not select the
+/// MHUI destructive treatment automatically.
 public struct MHActionGroup<Content: View>: View {
     @Environment(\.mhTheme)
     private var theme
@@ -47,6 +52,7 @@ public struct MHActionGroup<Content: View>: View {
                 )
             }
         }
+        .buttonStyle(.mhSecondary)
     }
 
     public init(

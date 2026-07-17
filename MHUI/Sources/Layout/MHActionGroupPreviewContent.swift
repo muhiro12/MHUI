@@ -11,12 +11,11 @@ private struct MHActionGroupPreviewContent: View {
             Button("Archive This Quietly") {
                 // no-op
             }
-            .buttonStyle(.mhSecondary)
 
             Button("Review Compact Fallback") {
                 // no-op
             }
-            .buttonStyle(.mhSecondary)
+            .buttonStyle(.mhQuiet)
         }
     }
 }
