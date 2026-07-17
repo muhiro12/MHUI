@@ -70,9 +70,12 @@ Styled adopter:
 `Host app screen -> MHUI (re-exporting MHDesign) -> MHTheme, MHDesign metrics, native SwiftUI controls and package chrome`
 
 The package should shape presentation and composition without becoming the owner of host application behavior.
-A complete styled adoption combines root theme configuration with one screen
-route and the relevant semantic components. Theme-only adoption is an
-intermediate configuration step rather than the finished visual integration.
+The primary styled path combines root theme configuration with the signature
+composition: `mhScreen`, `MHSummary`, `mhSection`, and `MHGroupedRows`.
+Theme-only adoption is an intermediate configuration step. Native `List` and
+`Form` chrome are secondary bridges for screens that materially depend on those
+containers' behavior; they are not an equal substitute for signature
+composition across an MHUI-forward product.
 
 ## Root Theme Contract
 

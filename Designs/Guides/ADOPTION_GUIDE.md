@@ -4,7 +4,9 @@
 
 This guide turns an existing SwiftUI screen into a complete MHUI composition
 without replacing native controls or moving product behavior into the package.
-It covers both stack-based screens and native `List` or `Form` containers.
+It treats the package's signature composition as the primary styled path and
+native `List` or `Form` integration as a secondary bridge for screens that
+depend on those containers' behavior.
 
 The source-only
 [MHUI adoption sample](../../Examples/MHUIAdoptionSample/Package.swift)
@@ -66,16 +68,32 @@ appearances.
 Start with the standard achromatic surfaces and system fonts. Tune semantic
 theme values only after the complete composition is visible and reviewed.
 
-## Choose One Screen Route
+## Use Signature Composition by Default
 
-Do not combine the screen containers. Choose the route that matches the
-screen's existing structure.
+Choose a route from the screen's purpose and required interaction semantics,
+not from its current implementation. An existing `List` or `Form` is not by
+itself a reason to preserve that container.
 
-| Existing structure | Screen-level API | Section and row APIs |
+| Screen purpose | Route | Status |
 | --- | --- | --- |
-| Stack or custom layout | `mhScreen` | `mhSection`, `MHSummary`, `MHGroupedRows` |
-| `List` | `mhListChrome` | `MHSectionHeader`, `MHSectionFooter`, `mhRow` |
-| `Form` | `mhFormChrome` | `MHSectionHeader`, `MHSectionFooter`, `mhRow` |
+| Overview, dashboard, read-only detail, report, insight, or product tool | `mhScreen`, `mhSection`, `MHSummary`, `MHGroupedRows` | Primary signature composition |
+| Collection or hierarchy that materially needs selection, swipe actions, editing, reordering, or list navigation | `mhListChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | Secondary native bridge |
+| Data entry, settings, or inspector that materially benefits from native form grouping, focus, and control behavior | `mhFormChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | Secondary native bridge |
+
+The signature composition is the visible MHUI product. It should be the normal
+choice for MHUI-forward apps, including when the screen currently happens to
+use `List` as a generic scrolling layout.
+
+Signature composition does not imply replacement controls. Keep native
+buttons, toggles, pickers, text fields, navigation, toolbars, search, sheets,
+and system presentations, while MHUI owns the surrounding hierarchy, rhythm,
+surfaces, and semantic emphasis.
+
+Native bridges are supported exceptions. They intentionally retain more of the
+operating system's visual language in exchange for container-specific
+behavior. A product that uses native bridges for nearly every screen has
+configured MHUI, but has not made the package's signature composition its
+dominant visual language.
 
 `mhScreen` owns its `ScrollView`, canvas, readable width, margins, and title
 block. Do not place a `List`, `Form`, or another screen-level scrolling
@@ -98,13 +116,15 @@ the item name in both places adds hierarchy without adding information and
 becomes especially prominent at accessibility text sizes.
 
 If the screen has no distinct editorial lead, omit `MHSummary` and begin with
-the native-container content. The package primitive is optional; complete
-adoption does not require every screen to display one.
+the screen content. The package primitive is optional; complete adoption does
+not require every screen to display one.
 
-## Stack-Based Golden Path
+## Signature Composition
 
-Use the stack route when the screen is composed from `VStack`, `LazyVStack`, or
-other custom layout content.
+Use the signature route for screens whose main job is to present an overview,
+detail, report, insight, or product-specific tool. Migrating an existing
+`List` screen to this route is expected when the list is only providing generic
+scrolling and grouping.
 
 ```swift
 import MHUI
@@ -179,10 +199,11 @@ containers still use `.mhRow()` explicitly. Each direct child should represent
 one row; place additional rows as sibling children instead of nesting another
 row-styled view inside a composite child.
 
-## Native List Route
+## Native List Bridge
 
-Use `mhListChrome` when list behavior such as selection, swipe actions, or
-native list semantics should remain intact.
+Use `mhListChrome` when concrete list behavior such as selection, swipe
+actions, edit mode, reordering, or hierarchical list navigation must remain
+intact. Do not choose it only because the current screen already uses `List`.
 
 ```swift
 import MHUI
@@ -217,10 +238,11 @@ struct SettingsList: View {
 Use `.mhRow()` for ordinary native list rows. The `.mhKeyValue` labeled-content
 style already includes its own row behavior and compact-width fallback.
 
-## Native Form Route
+## Native Form Bridge
 
 Use `mhFormChrome` for data entry that benefits from native form grouping and
-control behavior.
+control behavior. It is not the default presentation route for read-only
+details, reports, dashboards, or tool screens.
 
 ```swift
 import MHUI
@@ -320,8 +342,9 @@ Adopt one screen at a time in this order:
 
 1. Apply `.mhTheme(.standard)` near the app root and keep the app-owned
    `AccentColor` asset.
-2. Choose exactly one screen route: stack, `List`, or `Form`.
-3. Add the screen-level chrome for that route.
+2. Classify the screen by purpose and required interaction semantics.
+3. Use the signature composition by default. Keep a native bridge only when a
+   concrete `List` or `Form` behavior is material to the screen.
 4. Replace ad hoc section headers, footers, rows, inputs, summaries, and action
    layouts with the matching semantic APIs.
 5. Remove redundant local backgrounds, corner radii, insets, and button layout
@@ -329,7 +352,9 @@ Adopt one screen at a time in this order:
 6. Review the complete screen before changing theme tokens.
 
 Theme-only adoption is a valid intermediate compile step, but it is not the
-finished visual integration.
+finished visual integration. Native bridges are valid finished implementations
+for their specialized screens, but they are not substitutes for signature
+composition across an MHUI-forward product.
 
 ## Migration from 1.11
 
@@ -462,6 +487,13 @@ Before considering a screen adopted, verify all of the following:
 - Accent appears selectively for semantic status, focus, native controls, and
   the primary action.
 - The screen uses one screen-level route without nested scrolling containers.
+- Overview, dashboard, read-only detail, report, insight, and tool screens use
+  signature composition unless a documented native-container behavior
+  justifies an exception.
+- Native list bridges provide material list semantics such as selection, swipe
+  actions, editing, reordering, or hierarchical navigation.
+- Native form bridges are used for data entry, settings, or inspectors rather
+  than as generic read-only layout containers.
 - An `MHSummary` title adds context instead of repeating the navigation title.
 - Stack-based sections use `mhSection` and grouped content uses
   `MHGroupedRows`.
@@ -482,10 +514,9 @@ Before considering a screen adopted, verify all of the following:
 - Layout remains usable at compact width and in right-to-left layout.
 - VoiceOver labels and native control behavior remain intact.
 
-Open the nested sample package and review its theme-only, composed, native
-container, dark, accessibility, and right-to-left previews. This makes the
-difference between configuration-only adoption and complete composition
-visible without maintaining an Xcode project.
+Open the nested sample package and review its theme-only, signature, native
+bridge, dark, accessibility, and right-to-left previews. This makes the
+adoption hierarchy visible without maintaining an Xcode project.
 
 Build that sample as an independent public API consumer with:
 

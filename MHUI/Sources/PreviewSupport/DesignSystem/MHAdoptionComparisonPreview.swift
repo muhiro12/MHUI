@@ -17,12 +17,16 @@ private enum MHAdoptionComparisonTheme {
 private struct MHAdoptionComparisonPreview: View {
     var body: some View {
         HStack(alignment: .top, spacing: MHTheme.standard.spacing.section) {
-            MHAdoptionPreviewPanel("Theme only") {
+            MHAdoptionPreviewPanel("Theme only — configuration") {
                 MHThemeOnlyAdoptionPreview()
             }
 
-            MHAdoptionPreviewPanel("Complete composition") {
-                MHComposedAdoptionPreview()
+            MHAdoptionPreviewPanel("Native bridge — secondary") {
+                MHNativeBridgeAdoptionPreview()
+            }
+
+            MHAdoptionPreviewPanel("Signature composition — primary") {
+                MHSignatureAdoptionPreview()
             }
         }
         .padding(MHTheme.standard.spacing.section)
@@ -106,7 +110,63 @@ private struct MHThemeOnlyAdoptionPreview: View {
     }
 }
 
-private struct MHComposedAdoptionPreview: View {
+private struct MHNativeBridgeAdoptionPreview: View {
+    @State private var isEnabled = true
+    @State private var note = ""
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    MHSummary(
+                        "Review settings",
+                        metadata: "OVERVIEW",
+                        supporting: "A focused hierarchy distinguishes the screen without replacing native controls."
+                    ) {
+                        Text("Ready")
+                            .mhBadge(style: .accent)
+                    }
+                    .mhRow()
+                }
+
+                Section {
+                    LabeledContent("Plan", value: "Personal")
+                        .labeledContentStyle(.mhKeyValue)
+
+                    Toggle("Daily reminder", isOn: $isEnabled)
+                        .mhRow()
+                } header: {
+                    MHSectionHeader(
+                        "Overview",
+                        supporting: "Use this route only when native container semantics are essential."
+                    )
+                }
+
+                Section {
+                    TextField("Add a note", text: $note)
+
+                    MHActionGroup {
+                        Button("Continue") {
+                            // no-op
+                        }
+                        .buttonStyle(.mhPrimary)
+
+                        Button("Review later") {
+                            // no-op
+                        }
+                    }
+                } header: {
+                    MHSectionHeader("Note")
+                }
+            }
+            .mhFormChrome()
+            .navigationTitle("Settings")
+        }
+        .mhTheme(MHAdoptionComparisonTheme.standard)
+    }
+}
+
+private struct MHSignatureAdoptionPreview: View {
     @Environment(\.mhTheme)
     private var theme
 
@@ -165,14 +225,14 @@ private struct MHComposedAdoptionPreview: View {
 
 #Preview(
     "Design System / Adoption Comparison / Light",
-    traits: .fixedLayout(width: 900, height: 960)
+    traits: .fixedLayout(width: 1_320, height: 960)
 ) {
     MHAdoptionComparisonPreview()
 }
 
 #Preview(
     "Design System / Adoption Comparison / Dark",
-    traits: .fixedLayout(width: 900, height: 960)
+    traits: .fixedLayout(width: 1_320, height: 960)
 ) {
     MHAdoptionComparisonPreview()
         .preferredColorScheme(.dark)
@@ -182,7 +242,7 @@ private struct MHComposedAdoptionPreview: View {
     "Design System / Adoption Comparison / Accessibility",
     traits: .fixedLayout(width: 390, height: 1_180)
 ) {
-    MHComposedAdoptionPreview()
+    MHSignatureAdoptionPreview()
         .environment(\.dynamicTypeSize, .accessibility3)
 }
 
@@ -190,7 +250,7 @@ private struct MHComposedAdoptionPreview: View {
     "Design System / Adoption Comparison / Right to Left",
     traits: .fixedLayout(width: 390, height: 844)
 ) {
-    MHComposedAdoptionPreview()
+    MHSignatureAdoptionPreview()
         .environment(\.layoutDirection, .rightToLeft)
 }
 // swiftlint:enable closure_body_length file_types_order no_magic_numbers one_declaration_per_file

@@ -1,7 +1,7 @@
 import MHUI
 import SwiftUI
 
-/// Shows MHUI chrome applied around a native `Form` without replacing its controls.
+/// Shows the secondary bridge for a screen that requires native `Form` semantics.
 public struct MHUINativeContainerSample: View {
     @State private var isEnabled = true
     @State private var note = ""
@@ -34,7 +34,7 @@ private extension MHUINativeContainerSample {
         } header: {
             MHSectionHeader(
                 "Overview",
-                supporting: "Section hierarchy stays consistent across native containers."
+                supporting: "Use the native bridge only when its container semantics matter."
             )
         } footer: {
             MHSectionFooter("The app continues to own its data and interaction behavior.")

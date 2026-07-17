@@ -43,15 +43,21 @@ Its decorative hierarchy remains achromatic: dark-ink headings and neutral
 rules distinguish content without borrowing the app's brand color. Accent is
 reserved for semantic status, focus, native controls, and primary actions.
 
-The root theme is configuration rather than a global skin. A complete visual
-adoption also selects one screen route and composes the relevant semantic
-components:
+The root theme is configuration rather than a global skin. Styled adoption has
+an intentional hierarchy:
 
-- Stack route: `mhScreen`, `MHSummary`, `mhSection`, and `MHGroupedRows`
-- Native list route: `mhListChrome`, `MHSectionHeader`, `MHSectionFooter`, and
-  `mhRow`
-- Native form route: `mhFormChrome`, `MHSectionHeader`, `MHSectionFooter`, and
-  `mhRow`
+1. Signature composition is the primary path: `mhScreen`, `MHSummary`,
+   `mhSection`, and `MHGroupedRows`.
+2. Native `List` and `Form` chrome are secondary bridges for screens that
+   materially require native container semantics.
+3. Theme-only integration is configuration and does not constitute visible
+   adoption.
+
+The host app chooses by screen purpose and required behavior, not by the
+existing container. Overview, dashboard, read-only detail, report, insight, and
+tool screens should normally use signature composition. Native list bridges
+use `mhListChrome`, `MHSectionHeader`, `MHSectionFooter`, and `mhRow`; native
+form bridges use the corresponding `mhFormChrome` path.
 
 `mhScreen` owns screen scrolling, so it must not wrap a native `List` or `Form`.
 The native-container routes preserve their container behavior.

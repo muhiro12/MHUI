@@ -9,14 +9,14 @@ import SwiftUI
 }
 
 #Preview(
-    "Adoption / Composed / Light",
+    "Adoption / Signature / Light",
     traits: .fixedLayout(width: 390, height: 844)
 ) {
     MHUIComposedScreenSample()
 }
 
 #Preview(
-    "Adoption / Composed / Dark",
+    "Adoption / Signature / Dark",
     traits: .fixedLayout(width: 390, height: 844)
 ) {
     MHUIComposedScreenSample()
@@ -24,7 +24,7 @@ import SwiftUI
 }
 
 #Preview(
-    "Adoption / Composed / Accessibility",
+    "Adoption / Signature / Accessibility",
     traits: .fixedLayout(width: 390, height: 1_180)
 ) {
     MHUIComposedScreenSample()
@@ -32,7 +32,7 @@ import SwiftUI
 }
 
 #Preview(
-    "Adoption / Composed / Right to Left",
+    "Adoption / Signature / Right to Left",
     traits: .fixedLayout(width: 390, height: 844)
 ) {
     MHUIComposedScreenSample()
@@ -40,14 +40,14 @@ import SwiftUI
 }
 
 #Preview(
-    "Adoption / Native Container / Light",
+    "Adoption / Native Bridge / Light",
     traits: .fixedLayout(width: 390, height: 1_000)
 ) {
     MHUINativeContainerSample()
 }
 
 #Preview(
-    "Adoption / Native Container / Dark",
+    "Adoption / Native Bridge / Dark",
     traits: .fixedLayout(width: 390, height: 1_000)
 ) {
     MHUINativeContainerSample()

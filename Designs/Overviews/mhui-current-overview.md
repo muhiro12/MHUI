@@ -98,8 +98,11 @@ the Xcode-native integration is unavailable or does not cover a check.
   concrete accent also own and verify its `onAccent` foreground.
 - Theme propagation supplies semantic values but does not infer component roles
   or replace native SwiftUI controls.
-- Complete visual adoption combines the root theme with one of the stack,
-  native list, or native form composition routes.
+- Signature composition is the primary visual adoption path for overview,
+  dashboard, read-only detail, report, insight, and tool screens.
+- Native list and form chrome are secondary bridges for screens that materially
+  require those containers' behavior, not equal substitutes for signature
+  composition across an MHUI-forward product.
 - `MHGroupedRows` owns direct-child row chrome, while standalone and ordinary
   native-container rows use `mhRow()` explicitly.
 - `MHActionGroup` gives unstyled child buttons the secondary role. Other action

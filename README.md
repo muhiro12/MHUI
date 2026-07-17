@@ -182,13 +182,24 @@ neutral rules. Reserve the app accent for semantic status, focus, native
 controls, and the primary action instead of applying it to every heading or
 surface.
 
-### Choose a Composition Route
+### Prefer the Signature Composition
 
-| Existing screen | MHUI route | Keep native |
+Choose from the screen's purpose, not its existing container.
+
+| Screen purpose | MHUI route | Role |
 | --- | --- | --- |
-| `VStack`, `LazyVStack`, or custom stack | `mhScreen`, `mhSection`, `MHSummary`, `MHGroupedRows` | Controls and navigation behavior |
-| `List` | `mhListChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | List semantics, selection, swipe actions |
-| `Form` | `mhFormChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | Form semantics and control behavior |
+| Overview, dashboard, read-only detail, report, insight, or product tool | `mhScreen`, `mhSection`, `MHSummary`, `MHGroupedRows` | Primary signature composition |
+| Collection or hierarchy that needs selection, swipe actions, editing, reordering, or list navigation | `mhListChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | Secondary native bridge |
+| Data entry, settings, or inspector that benefits from native form behavior | `mhFormChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | Secondary native bridge |
+
+An existing `List` or `Form` does not decide the route. The signature
+composition is the visible MHUI product and is the normal choice for
+MHUI-forward apps. Native bridges intentionally preserve more OS-standard
+appearance in exchange for concrete container behavior.
+
+Signature composition keeps native controls, navigation, toolbars, search,
+sheets, and system presentations. MHUI owns the surrounding hierarchy, rhythm,
+surfaces, and semantic emphasis instead of replacing those controls.
 
 Do not place a `List` or `Form` inside `mhScreen`; each route already owns its
 screen-level scrolling and chrome.
@@ -197,8 +208,8 @@ screen-level scrolling and chrome.
 `List` and `Form` routes keep page titles and any screen-specific lead content
 in the host app so their scroll view remains edge to edge.
 
-For a native container, preserve its behavior and apply MHUI at the presentation
-seams:
+When a screen materially depends on a native container, preserve its behavior
+and apply MHUI at the presentation seams:
 
 ```swift
 import MHUI

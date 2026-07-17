@@ -1,7 +1,7 @@
 import MHUI
 import SwiftUI
 
-/// Shows the package-owned composition path for a custom SwiftUI screen.
+/// Shows the primary signature composition for an MHUI-forward screen.
 public struct MHUIComposedScreenSample: View {
     @Environment(\.mhTheme)
     private var theme
@@ -17,7 +17,7 @@ public struct MHUIComposedScreenSample: View {
         }
         .mhScreen(
             "Settings",
-            subtitle: "Package composition with an app-owned accent."
+            subtitle: "The primary MHUI composition with an app-owned accent."
         )
         .mhTheme(MHUIAdoptionSampleTheme.standard)
     }
