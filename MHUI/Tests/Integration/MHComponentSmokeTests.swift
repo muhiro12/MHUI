@@ -96,14 +96,11 @@ struct MHComponentSmokeTests {
     @MainActor
     func standard_theme_factory_is_available_to_public_adopters() {
         let smokeView = AnyView(
-            Text("Fixed accent")
+            Text("Asset accent")
                 .mhTextStyle(.body, colorRole: .accent)
                 .mhTheme(.standard(
                     metrics: .standard,
-                    accent: .fixed(
-                        lightHex: 0x2473E6,
-                        darkHex: 0x73ADFF
-                    )
+                    accent: .asset(MHUITestColorAsset.accent)
                 ))
         )
 
@@ -113,13 +110,11 @@ struct MHComponentSmokeTests {
     @Test
     @MainActor
     func public_theme_configuration_supports_root_and_local_overrides() {
-        var appTheme = MHTheme.standard(accent: .fixed(
-            lightHex: 0x2473E6,
-            darkHex: 0x73ADFF
-        ))
-        appTheme.colors.surface = .fixed(
-            lightHex: 0xF3F6FA,
-            darkHex: 0x18202B
+        var appTheme = MHTheme.standard(
+            accent: .asset(MHUITestColorAsset.accent)
+        )
+        appTheme.colors.surface = .asset(
+            MHUITestColorAsset.surface
         )
         appTheme.typography.bodyStrong = .init(
             font: .title3,
@@ -149,9 +144,8 @@ struct MHComponentSmokeTests {
         )
 
         var localTheme = rebuiltTheme
-        localTheme.colors.accent = .fixed(
-            lightHex: 0x8E44AD,
-            darkHex: 0xD2A6E8
+        localTheme.colors.accent = .asset(
+            MHUITestColorAsset.localAccent
         )
 
         let smokeView = AnyView(

@@ -26,8 +26,10 @@ change the values they own, and apply the result once near the app root with
 
 The modifier propagates the theme through SwiftUI's environment. The standard
 theme uses `MHColorReference.tint`, which resolves the host app's `AccentColor`
-without installing a native tint override. An explicitly configured concrete
-accent also becomes the native-control tint within the same subtree.
+asset without installing a native tint override. An explicitly configured
+asset-backed accent also becomes the native-control tint within the same
+subtree. `MHColorReference` accepts asset resources rather than RGB or
+hexadecimal source values.
 
 A narrower `mhTheme(_:)` call provides an intentional local override. Views
 still select semantic intent explicitly through MHUI text, surface, row,
@@ -40,12 +42,12 @@ replace native controls, or install blanket styles for every SwiftUI control.
   automatic subtree propagation.
 - Host apps keep ownership of their brand color when they use the standard
   theme unchanged.
-- Concrete accent colors stay aligned between MHUI components and native
+- Asset-backed accent colors stay aligned between MHUI components and native
   controls unless a narrower SwiftUI tint override is intentional. Apps also
   own contrast validation for the matching `onAccent` foreground.
 - Changing a theme role updates every MHUI primitive that consumes that role.
 - Exceptions use the same value type and normal SwiftUI environment scoping.
 - Semantic role selection remains visible at use sites, preserving meaning and
   native control behavior.
-- Applying a concrete-accent theme may change native control tint for existing
+- Applying an asset-backed accent theme may change native control tint for existing
   adopters and must be called out in release migration notes.

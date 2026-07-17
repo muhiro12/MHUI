@@ -179,19 +179,19 @@ struct MHRoughTokenScreenStyle {
     var onAccent: Color
 
     static func system(
-        colorScheme: ColorScheme
+        colorScheme _: ColorScheme
     ) -> Self {
         .init(
             canvas: MHPlatformSystemColors.canvas,
             surface: MHPlatformSystemColors.surface,
             mutedSurface: MHPlatformSystemColors.mutedSurface,
             border: MHPlatformSystemColors.border,
-            primaryText: .primary,
-            secondaryText: .secondary,
-            accent: .accentColor,
-            warning: .yellow,
-            destructive: .red,
-            onAccent: colorScheme == .dark ? .black : .white
+            primaryText: MHPlatformSystemColors.primaryText,
+            secondaryText: MHPlatformSystemColors.secondaryText,
+            accent: Color(MHPreviewColorAsset.hostAccent),
+            warning: Color(MHColorAsset.warning),
+            destructive: Color(MHColorAsset.destructive),
+            onAccent: Color(MHPreviewColorAsset.hostOnAccent)
         )
     }
 
@@ -217,43 +217,27 @@ struct MHRoughTokenScreenStyle {
 
 enum MHPlatformSystemColors {
     static var canvas: Color {
-        #if os(iOS)
-        Color(uiColor: .systemGroupedBackground)
-        #elseif canImport(AppKit)
-        Color(nsColor: .windowBackgroundColor)
-        #else
-        Color.black
-        #endif
+        Color(MHPreviewColorAsset.platformCanvas)
     }
 
     static var surface: Color {
-        #if os(iOS)
-        Color(uiColor: .secondarySystemGroupedBackground)
-        #elseif canImport(AppKit)
-        Color(nsColor: .controlBackgroundColor)
-        #else
-        Color.primary
-        #endif
+        Color(MHPreviewColorAsset.platformSurface)
     }
 
     static var mutedSurface: Color {
-        #if os(iOS)
-        Color(uiColor: .tertiarySystemGroupedBackground)
-        #elseif canImport(AppKit)
-        Color(nsColor: .underPageBackgroundColor)
-        #else
-        Color.secondary
-        #endif
+        Color(MHPreviewColorAsset.platformMutedSurface)
     }
 
     static var border: Color {
-        #if os(iOS)
-        Color(uiColor: .separator)
-        #elseif canImport(AppKit)
-        Color(nsColor: .separatorColor)
-        #else
-        Color.secondary
-        #endif
+        Color(MHPreviewColorAsset.platformBorder)
+    }
+
+    static var primaryText: Color {
+        Color(MHPreviewColorAsset.platformPrimaryText)
+    }
+
+    static var secondaryText: Color {
+        Color(MHPreviewColorAsset.platformSecondaryText)
     }
 }
 // swiftlint:enable file_types_order one_declaration_per_file

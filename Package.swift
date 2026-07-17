@@ -51,7 +51,10 @@ let package = Package(
         .testTarget(
             name: "MHUITests",
             dependencies: ["MHUI"],
-            path: "MHUI/Tests"
+            path: "MHUI/Tests",
+            resources: [
+                .process("Resources")
+            ]
         )
     ]
 )

@@ -45,4 +45,14 @@ enum MHColorAsset {
         name: "MHOnAccent",
         bundle: .module
     )
+
+    static let warning = ColorResource(
+        name: "MHWarning",
+        bundle: .module
+    )
+
+    static let destructive = ColorResource(
+        name: "MHDestructive",
+        bundle: .module
+    )
 }

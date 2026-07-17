@@ -1,4 +1,4 @@
-// swiftlint:disable file_types_order no_magic_numbers one_declaration_per_file
+// swiftlint:disable file_types_order one_declaration_per_file
 import SwiftUI
 
 private enum MHColorAccentVariantsPreviewLayout {
@@ -25,14 +25,12 @@ private struct MHAccentPreviewColor: Identifiable {
 }
 
 private enum MHAccentPreviewForeground {
-    static let dark = MHColorReference.fixed(
-        lightHex: 0x000000,
-        darkHex: 0x000000
+    static let dark = MHColorReference.asset(
+        MHPreviewColorAsset.foregroundDark
     )
 
-    static let light = MHColorReference.fixed(
-        lightHex: 0xFFFFFF,
-        darkHex: 0xFFFFFF
+    static let light = MHColorReference.asset(
+        MHPreviewColorAsset.foregroundLight
     )
 }
 
@@ -40,67 +38,67 @@ private struct MHColorAccentVariantsPreview: View {
     private let accentColors: [MHAccentPreviewColor] = [
         .init(
             name: "Red",
-            accent: .fixed(lightHex: 0xFF3B30, darkHex: 0xFF453A),
+            accent: .asset(MHPreviewColorAsset.red),
             onAccent: MHAccentPreviewForeground.dark
         ),
         .init(
             name: "Orange",
-            accent: .fixed(lightHex: 0xFF9500, darkHex: 0xFF9F0A),
+            accent: .asset(MHPreviewColorAsset.orange),
             onAccent: MHAccentPreviewForeground.dark
         ),
         .init(
             name: "Yellow",
-            accent: .fixed(lightHex: 0xFFCC00, darkHex: 0xFFD60A),
+            accent: .asset(MHPreviewColorAsset.yellow),
             onAccent: MHAccentPreviewForeground.dark
         ),
         .init(
             name: "Green",
-            accent: .fixed(lightHex: 0x34C759, darkHex: 0x30D158),
+            accent: .asset(MHPreviewColorAsset.green),
             onAccent: MHAccentPreviewForeground.dark
         ),
         .init(
             name: "Mint",
-            accent: .fixed(lightHex: 0x00C7BE, darkHex: 0x66D4CF),
+            accent: .asset(MHPreviewColorAsset.mint),
             onAccent: MHAccentPreviewForeground.dark
         ),
         .init(
             name: "Teal",
-            accent: .fixed(lightHex: 0x30B0C7, darkHex: 0x40C8E0),
+            accent: .asset(MHPreviewColorAsset.teal),
             onAccent: MHAccentPreviewForeground.dark
         ),
         .init(
             name: "Cyan",
-            accent: .fixed(lightHex: 0x32ADE6, darkHex: 0x64D2FF),
+            accent: .asset(MHPreviewColorAsset.cyan),
             onAccent: MHAccentPreviewForeground.dark
         ),
         .init(
             name: "Blue",
-            accent: .fixed(lightHex: 0x007AFF, darkHex: 0x0A84FF),
+            accent: .asset(MHPreviewColorAsset.blue),
             onAccent: MHAccentPreviewForeground.dark
         ),
         .init(
             name: "Indigo",
-            accent: .fixed(lightHex: 0x5856D6, darkHex: 0x5E5CE6),
+            accent: .asset(MHPreviewColorAsset.indigo),
             onAccent: MHAccentPreviewForeground.light
         ),
         .init(
             name: "Purple",
-            accent: .fixed(lightHex: 0xAF52DE, darkHex: 0xBF5AF2),
+            accent: .asset(MHPreviewColorAsset.purple),
             onAccent: MHAccentPreviewForeground.dark
         ),
         .init(
             name: "Pink",
-            accent: .fixed(lightHex: 0xFF2D55, darkHex: 0xFF375F),
+            accent: .asset(MHPreviewColorAsset.pink),
             onAccent: MHAccentPreviewForeground.dark
         ),
         .init(
             name: "Brown",
-            accent: .fixed(lightHex: 0xA2845E, darkHex: 0xAC8E68),
+            accent: .asset(MHPreviewColorAsset.brown),
             onAccent: MHAccentPreviewForeground.dark
         ),
         .init(
             name: "Gray",
-            accent: .fixed(lightHex: 0x8E8E93, darkHex: 0x8E8E93),
+            accent: .asset(MHPreviewColorAsset.gray),
             onAccent: MHAccentPreviewForeground.dark
         )
     ]
@@ -264,4 +262,4 @@ private struct MHColorAccentVariantInput: View {
 ) {
     MHColorAccentVariantsPreview(colorMode: .dark)
 }
-// swiftlint:enable file_types_order no_magic_numbers one_declaration_per_file
+// swiftlint:enable file_types_order one_declaration_per_file

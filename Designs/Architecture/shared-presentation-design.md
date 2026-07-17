@@ -9,8 +9,12 @@ It explains where new code should live when the same visual rule or container pa
 
 - `MHDesign/Sources` is the source of truth for shared spacing, corner radius, and generic screen or surface layout parameters that should work without MHUI chrome.
 - `MHUI/Sources` is the source of truth for shared presentation logic built on `MHDesign`.
-- `MHUI/Resources` is the source of truth for fully achromatic, paper-like standard base colors that should remain package-owned but editable as resources.
+- `MHUI/Resources` is the source of truth for package-owned color and image
+  resources, including fully achromatic, paper-like standard base colors.
 - Host apps own their accent color; the standard theme resolves it from the app's `AccentColor` asset and uses it selectively for semantic emphasis.
+- Durable color and image values live in asset catalogs. Source code may map
+  assets to semantic roles and derive treatment properties such as opacity,
+  but it does not define RGB or hexadecimal base colors.
 - Host apps own product behavior, feature state, and navigation meaning.
 - The adoption sample and previews are consumers of package APIs, not a second
   design layer.
@@ -24,7 +28,7 @@ It explains where new code should live when the same visual rule or container pa
 | --- | --- | --- |
 | Shared design parameters | `MHDesign/Sources` | `MHDesignMetrics`, spacing, corner radii, readable widths, generic screen or surface insets, compact thresholds, SwiftUI environment bridge |
 | Shared presentation logic | `MHUI/Sources` | `MHTheme`, semantic roles, text styles, row and action fallback, key-value fallback, cue geometry, surface chrome, grouped rows, section chrome, screen chrome, and re-export of `MHDesign` |
-| Package resource assets | `MHUI/Resources` | Achromatic background, surface, border, dark-ink text, and fallback foreground assets referenced by MHUI semantic roles |
+| Package resource assets | `MHUI/Resources` | Achromatic background, surface, border, dark-ink text, status, fallback foreground, and preview assets referenced by semantic roles |
 | Package preview support | `MHDesign/Sources/PreviewSupport`, `MHUI/Sources/PreviewSupport`, plus local preview files beside the tuned API | minimal MHDesign preview helpers, `MHPreviewStyle`, `MHPreviewCatalog`, validation catalogs for compact width and native-container chrome, plus local previews kept beside the API they tune |
 | Host app composition | App repositories that consume MHUI | feature screens, navigation state, form state, domain-driven copy, feature-specific layouts |
 | Public adoption sample | `Examples/MHUIAdoptionSample` | independent public API build, comparison previews, consumer-side examples |

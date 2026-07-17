@@ -210,8 +210,8 @@ public extension MHTheme {
             tertiaryText: .asset(MHColorAsset.tertiaryText),
             accent: accent,
             onAccent: onAccent,
-            warning: .system(.warning),
-            destructive: .system(.destructive)
+            warning: .asset(MHColorAsset.warning),
+            destructive: .asset(MHColorAsset.destructive)
         )
     }
 

@@ -60,10 +60,20 @@ Dark-ink headings and neutral rules own the decorative hierarchy. Reserve the
 app accent for semantic status, focus, native controls, and the primary action.
 Do not use it as the default color for headings, metadata, rules, or surfaces.
 
-If an app must define the accent in code, use
-`MHTheme.standard(accent:onAccent:)`. The host app owns both values and must
-verify that the pair remains legible in light, dark, and Increase Contrast
-appearances.
+If an app needs a dedicated accent pair, define both colors in its asset
+catalog and pass the generated resource symbols to
+`MHTheme.standard(accent:onAccent:)`:
+
+```swift
+let appTheme = MHTheme.standard(
+    accent: .asset(.actionAccent),
+    onAccent: .asset(.actionOnAccent)
+)
+```
+
+The host app owns both assets and must verify that the pair remains legible in
+light, dark, and Increase Contrast appearances. Do not define RGB or
+hexadecimal colors in Swift source.
 
 Start with the standard achromatic surfaces and system fonts. Tune semantic
 theme values only after the complete composition is visible and reviewed.
@@ -401,9 +411,9 @@ treatment from SwiftUI.
 
 ### Standard Surfaces Are Brighter and Rounder
 
-The standard light background changes from `#F2F2F2` to `#FAFAFA`, the
-standard surface changes from `#F9F9F9` to `#FFFFFF`, and the muted surface
-changes from `#E8E8E8` to `#F2F2F2`.
+The `MHBackground`, `MHSurface`, and `MHSurfaceMuted` assets use brighter
+standard light appearances. Treat the asset catalog as the source of truth for
+their concrete values.
 
 The standard control corner radius changes from 6 points to 8 points, and the
 standard surface corner radius changes from 8 points to 12 points. Update

@@ -173,9 +173,20 @@ struct WorkspaceApp: App {
 }
 ```
 
-For a code-defined accent, use
-`MHTheme.standard(accent:onAccent:)`. The app owns both colors and must verify
-their contrast in supported appearances.
+For an app-specific accent pair, keep both colors in the app's asset catalog
+and pass their generated resource symbols to
+`MHTheme.standard(accent:onAccent:)`:
+
+```swift
+let appTheme = MHTheme.standard(
+    accent: .asset(.actionAccent),
+    onAccent: .asset(.actionOnAccent)
+)
+```
+
+The app owns both assets and must verify their contrast in supported
+appearances. MHUI does not accept RGB or hexadecimal color definitions in
+source.
 
 Decorative hierarchy stays achromatic: headings use dark ink and cues use
 neutral rules. Reserve the app accent for semantic status, focus, native

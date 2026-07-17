@@ -26,6 +26,9 @@ let package = Package(
                     name: "MHUI",
                     package: "MHUI"
                 )
+            ],
+            resources: [
+                .process("Resources")
             ]
         )
     ]

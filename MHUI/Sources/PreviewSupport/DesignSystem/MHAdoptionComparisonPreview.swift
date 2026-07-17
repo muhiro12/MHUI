@@ -3,14 +3,8 @@ import SwiftUI
 
 private enum MHAdoptionComparisonTheme {
     static let standard = MHTheme.standard(
-        accent: .fixed(
-            lightHex: 0x315B85,
-            darkHex: 0x8EB3D8
-        ),
-        onAccent: .fixed(
-            lightHex: 0xFFFFFF,
-            darkHex: 0x17211E
-        )
+        accent: MHPreviewStyle.sampleHostAccent,
+        onAccent: MHPreviewStyle.sampleHostOnAccent
     )
 }
 
@@ -30,7 +24,10 @@ private struct MHAdoptionComparisonPreview: View {
             }
         }
         .padding(MHTheme.standard.spacing.section)
-        .background(Color.primary.opacity(0.04))
+        .background(
+            Color(MHPreviewColorAsset.platformPrimaryText)
+                .opacity(0.04)
+        )
     }
 }
 
@@ -56,7 +53,10 @@ private struct MHAdoptionPreviewPanel<Content: View>: View {
                         cornerRadius: MHTheme.standard.cornerRadius.surface,
                         style: .continuous
                     )
-                    .stroke(.secondary.opacity(0.25))
+                    .stroke(
+                        Color(MHPreviewColorAsset.platformSecondaryText)
+                            .opacity(0.25)
+                    )
                 }
         }
     }

@@ -18,8 +18,8 @@ struct MHThemeTests {
         #expect(theme.colors.tertiaryText == .asset(MHColorAsset.tertiaryText))
         #expect(theme.colors.accent == .tint)
         #expect(theme.colors.onAccent == .asset(MHColorAsset.onAccent))
-        #expect(theme.colors.warning == .system(.warning))
-        #expect(theme.colors.destructive == .system(.destructive))
+        #expect(theme.colors.warning == .asset(MHColorAsset.warning))
+        #expect(theme.colors.destructive == .asset(MHColorAsset.destructive))
         #expect(theme.nativeTintOverride(in: .light) == nil)
         #expect(theme.metrics == MHDesignMetrics.standard)
         #expect(theme == MHTheme.standard())
@@ -109,10 +109,9 @@ struct MHThemeTests {
     }
 
     @Test
-    func standard_theme_accepts_fixed_accent_sources() {
-        let accent = MHColorReference.fixed(
-            lightHex: 0x2473E6,
-            darkHex: 0x73ADFF
+    func standard_theme_accepts_asset_accent_sources() {
+        let accent = MHColorReference.asset(
+            MHColorAsset.warning
         )
         let theme = MHTheme.standard(accent: accent)
 
@@ -129,9 +128,8 @@ struct MHThemeTests {
             surfaceContentInsetHorizontal: 30,
             minimumTouchTarget: 48
         )
-        let accent = MHColorReference.fixed(
-            lightHex: 0x2473E6,
-            darkHex: 0x73ADFF
+        let accent = MHColorReference.asset(
+            MHColorAsset.warning
         )
         let theme = MHTheme.standard(
             metrics: metrics,
@@ -149,13 +147,11 @@ struct MHThemeTests {
 
     @Test
     func standard_theme_accepts_on_accent_overrides() {
-        let accent = MHColorReference.fixed(
-            lightHex: 0xF4C430,
-            darkHex: 0xFFD85A
+        let accent = MHColorReference.asset(
+            MHColorAsset.warning
         )
-        let onAccent = MHColorReference.fixed(
-            lightHex: 0x111111,
-            darkHex: 0x111111
+        let onAccent = MHColorReference.asset(
+            MHColorAsset.primaryText
         )
         let theme = MHTheme.standard(
             accent: accent,
@@ -194,10 +190,9 @@ struct MHThemeTests {
     @Test
     func environment_values_resolve_theme_with_design_metrics_precedence() {
         var values = EnvironmentValues()
-        let customTheme = MHTheme.standard(accent: .fixed(
-            lightHex: 0x2473E6,
-            darkHex: 0x73ADFF
-        ))
+        let customTheme = MHTheme.standard(
+            accent: .asset(MHColorAsset.warning)
+        )
         let otherMetrics = customDesignMetrics(
             spacingScreen: 44,
             screenContentInsetVertical: 80,

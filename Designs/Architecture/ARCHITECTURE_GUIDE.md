@@ -31,7 +31,10 @@ Allowed in the package:
 - Reusable spacing, corner radius, and generic screen or surface layout metrics in `MHDesign`
 - Sidecar tuning previews and minimal preview helpers for MHDesign metrics and environment overrides
 - Reusable typography, color, and surface tokens in `MHUI`
-- Package-owned color assets in `MHUI/Resources` when source APIs continue to expose semantic roles
+- Package-owned color and image assets in `MHUI/Resources` when source APIs
+  continue to expose semantic roles
+- Asset-backed app color inputs through `ColorResource`; RGB and hexadecimal
+  color construction does not belong in public or package source
 - Domain-neutral modifiers and container chrome
 - Domain-neutral compositions such as summaries, section hierarchy, grouped
   rows, and action groups
@@ -135,6 +138,9 @@ Neither should become the place where new shared styling rules are invented befo
 - Keep package color assets in `MHUI/Resources/Assets.xcassets` and resolve them
   through package-owned resource references so Xcode and SwiftPM consumers share
   the same boundary.
+- Keep durable image resources in asset catalogs as well. SF Symbols requested
+  through native system APIs remain platform symbols rather than package-owned
+  image files.
 - Keep package verification in `MHDesign/Tests` and `MHUI/Tests`.
 - Scope library targets to `Sources`, exclude target-local `Tests` from library target discovery, and expose package tests through explicit SwiftPM test targets.
 - Keep retained repository-rule scripts, SwiftLint helpers, and compatibility

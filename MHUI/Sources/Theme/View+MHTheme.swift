@@ -35,19 +35,17 @@ public extension View {
 #Preview("Root Theme and Local Override", traits: .sizeThatFitsLayout) {
     @Previewable @State var isEnabled = true
 
-    var appTheme = MHTheme.standard(accent: .fixed(
-        lightHex: 0x2473E6,
-        darkHex: 0x73ADFF
-    ))
+    var appTheme = MHTheme.standard(
+        accent: .asset(MHPreviewColorAsset.hostAccent)
+    )
     appTheme.typography.bodyStrong = .init(
         font: .title3,
         weight: .bold
     )
 
     var localTheme = appTheme
-    localTheme.colors.accent = .fixed(
-        lightHex: 0x8E44AD,
-        darkHex: 0xD2A6E8
+    localTheme.colors.accent = .asset(
+        MHPreviewColorAsset.purple
     )
 
     return VStack(alignment: .leading, spacing: appTheme.spacing.content) {
