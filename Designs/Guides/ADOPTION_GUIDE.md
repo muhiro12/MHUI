@@ -317,12 +317,14 @@ selectively for semantic status, focus, native controls, and primary actions.
 Review custom color overrides and visual snapshots that assumed warm surfaces
 or accent-colored decorative cues.
 
-### Summaries Use Editorial Hierarchy
+### Editorial Summaries Are New
 
-`MHSummary` now uses an inset editorial layout with a precise top rule instead
-of the elevated surface treatment. Its title uses the new
-`MHTextRole.summaryTitle` role, which is stronger than an ordinary section
-heading while remaining a Dynamic Type-compatible system style.
+MHUI now includes `MHSummary`, an inset editorial summary with a precise top
+rule rather than an elevated card. This primitive was not part of 1.10, so
+existing consumers do not need to remove a previous summary treatment. Its
+title uses the new `MHTextRole.summaryTitle` role, which is stronger than an
+ordinary section heading while remaining a Dynamic Type-compatible system
+style.
 
 Existing `MHTheme.Typography` initializers remain source compatible when
 `summaryTitle` is omitted; the role inherits `sectionTitle`. Add an explicit
