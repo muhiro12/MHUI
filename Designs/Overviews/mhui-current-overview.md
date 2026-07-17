@@ -1,6 +1,6 @@
 # MHUI Current Repository Overview
 
-Current as of July 16, 2026.
+Current as of July 17, 2026.
 
 ## Purpose
 
@@ -17,7 +17,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 | `MHDesign/Tests`, `MHUI/Tests` | Package verification | Validate the shared package surfaces through Swift package tests |
 | `ci_scripts` | Workflow layer | Retained repository rules, SwiftLint helpers, and compatibility entrypoints |
 | `Designs` | Architecture documentation | Current overview, architecture guide, and ADR history |
-| `Example/` | Optional consumer app | Review package integration in a host-app context when the example project exists |
+| `Examples/MHUIAdoptionSample` | Source-only public consumer | Compile public API adoption and review comparison previews without an Xcode project |
 
 ## Current Repository Rules
 
@@ -27,7 +27,8 @@ The repository is intentionally biased toward package-owned visual rules and awa
 - Versions in the `1.x` line are beta and may include intentional breaking API changes.
 - The package does not keep deprecated aliases, migration helpers, or compatibility shims for consuming apps during `1.x`.
 - Product behavior stays outside the package.
-- The example app, when present, is a consumer of the package rather than a second source of truth.
+- The nested adoption sample is a consumer of the package rather than a second
+  source of truth.
 - Compatibility shell build and test scripts may write disposable artifacts
   under `.build/ci/shared/`.
 - MHDesign tuning previews live in same-directory `+Preview.swift` files, with minimal shared helpers under `MHDesign/Sources/PreviewSupport`.
@@ -40,6 +41,8 @@ The repository is intentionally biased toward package-owned visual rules and awa
 - `MHDesignMetrics` and its spacing, corner-radius, and layout value groups
 - Root theme application through `mhTheme(_:)`, public `MHTheme` semantic
   groups, and explicit component roles
+- Composed hierarchy through `MHSummary`, `MHSectionHeader`,
+  `MHSectionFooter`, `MHGroupedRows`, and `MHActionGroup`
 - Text styling primitives such as `mhTextStyle(_:colorRole:)`, including system
   font design and tracking tokens
 - Standard, elevated, and muted surface roles, row and section modifiers, and
@@ -49,6 +52,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 ## Architecture References
 
+- `Designs/Guides/ADOPTION_GUIDE.md`
 - `Designs/Architecture/ARCHITECTURE_GUIDE.md`
 - `Designs/Architecture/shared-presentation-design.md`
 - `Designs/Decisions/0001-shared-package-source-of-truth.md`
@@ -67,6 +71,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
   destination family
 - `bash ci_scripts/tasks/format_swift.sh`
 - `bash ci_scripts/tasks/check_repository_rules.sh`
+- `bash ci_scripts/tasks/test_mhui_consumer_adoption.sh`
 - `bash ci_scripts/tasks/verify.sh`
 - `bash ci_scripts/tasks/pre_commit.sh`
 - `bash ci_scripts/tasks/lint_swift.sh`
@@ -93,6 +98,14 @@ the Xcode-native integration is unavailable or does not cover a check.
   concrete accent also own and verify its `onAccent` foreground.
 - Theme propagation supplies semantic values but does not infer component roles
   or replace native SwiftUI controls.
+- Complete visual adoption combines the root theme with one of the stack,
+  native list, or native form composition routes.
+- `MHGroupedRows` owns direct-child row chrome, while standalone and ordinary
+  native-container rows use `mhRow()` explicitly.
+- `MHActionGroup` gives unstyled child buttons the secondary role. Other action
+  roles remain explicit.
+- The source-only adoption sample remains outside the root package targets and
+  requires no Xcode project.
 - Package-owned Liquid Glass behavior is limited to semantic tinting, grouped
   chrome containers, action interactivity, and accessibility/runtime fallback.
 - Runtime UI fallback remains package-owned behavior and is separate from consumer-update compatibility policy.

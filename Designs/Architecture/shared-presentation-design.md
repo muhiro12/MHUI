@@ -12,7 +12,8 @@ It explains where new code should live when the same visual rule or container pa
 - `MHUI/Resources` is the source of truth for low-chroma standard base colors that should remain package-owned but editable as resources.
 - Host apps own their accent color; the standard theme resolves it from the app's `AccentColor` asset.
 - Host apps own product behavior, feature state, and navigation meaning.
-- Example apps and previews are consumers of package APIs, not a second design layer.
+- The adoption sample and previews are consumers of package APIs, not a second
+  design layer.
 - Views and modifiers in MHUI should stay domain neutral even when they feel screen-like.
 - MHUI remains a single package target unless there is a stronger reason than file organization alone.
 - Releases in the `1.x` line are beta, so package API clarity takes precedence over backward compatibility for consuming apps.
@@ -26,7 +27,7 @@ It explains where new code should live when the same visual rule or container pa
 | Package resource assets | `MHUI/Resources` | Low-chroma background, surface, border, text, and fallback foreground assets referenced by MHUI semantic roles |
 | Package preview support | `MHDesign/Sources/PreviewSupport`, `MHUI/Sources/PreviewSupport`, plus local preview files beside the tuned API | minimal MHDesign preview helpers, `MHPreviewStyle`, `MHPreviewCatalog`, validation catalogs for compact width and native-container chrome, plus local previews kept beside the API they tune |
 | Host app composition | App repositories that consume MHUI | feature screens, navigation state, form state, domain-driven copy, feature-specific layouts |
-| Optional integration shell | `Example/` when present | package adoption checks, manual regression review, consumer-side examples |
+| Public adoption sample | `Examples/MHUIAdoptionSample` | independent public API build, comparison previews, consumer-side examples |
 
 ## Adoption Model
 
@@ -38,6 +39,19 @@ Styled apps can apply the opinionated `MHTheme.standard` baseline unchanged or
 derive one app-owned theme from it. They apply that theme near the app root with
 `mhTheme(_:)` and use a narrower theme only for deliberate local exceptions.
 The unchanged baseline uses the host app's `AccentColor` asset.
+
+The root theme is configuration rather than a global skin. A complete visual
+adoption also selects one screen route and composes the relevant semantic
+components:
+
+- Stack route: `mhScreen`, `MHSummary`, `mhSection`, and `MHGroupedRows`
+- Native list route: `mhListChrome`, `MHSectionHeader`, `MHSectionFooter`, and
+  `mhRow`
+- Native form route: `mhFormChrome`, `MHSectionHeader`, `MHSectionFooter`, and
+  `mhRow`
+
+`mhScreen` owns screen scrolling, so it must not wrap a native `List` or `Form`.
+The native-container routes preserve their container behavior.
 
 ## Canonical Shared APIs
 
@@ -69,6 +83,9 @@ The following types and helpers are the current shared entry points for package-
 - `mhSurface(role:)`
 - `mhRow()`
 - `MHGroupedRows`
+- `MHSummary`
+- `MHSectionHeader`
+- `MHSectionFooter`
 - `MHActionPresentation`
 - `MHActionGroup`
 - `MHKeyValueLayoutPolicy`
@@ -76,6 +93,7 @@ The following types and helpers are the current shared entry points for package-
 - `mhScreen(...)`
 - `mhListChrome(...)`
 - `mhFormChrome(...)`
+- `mhInputChrome(state:)`
 - `mhEmptyStateLayout()`
 
 ## Liquid Glass Policy
@@ -132,12 +150,23 @@ where the fallback remains equally usable.
   with an app-tested `onAccent` foreground.
 - Theme propagation does not remove explicit semantic role selection at the
   use site and does not globally replace native SwiftUI controls.
+- `MHSummary` and `mhSection(...)` stay in the package because they establish a
+  reusable hierarchy and surface composition without owning screen meaning.
+- `MHSectionHeader` and `MHSectionFooter` stay in the package because native
+  `List` and `Form` sections need the same hierarchy without replacing native
+  container behavior.
+- `MHGroupedRows` owns direct-child row chrome and separator placement.
+- `MHActionGroup` owns adaptive layout and treats unstyled child buttons as
+  secondary actions. Primary, quiet, and destructive roles remain explicit at
+  the call site.
 - Row insets, compact action padding, key-value fallback widths, and cue geometry stay in `MHUI` because those values only make sense alongside MHUI presentation behavior.
 - `mhListChrome(...)` and `mhFormChrome(...)` stay in the package because they shape container presentation without needing app-specific business state.
 - MHDesign tuning previews stay beside the metrics files they tune, with only minimal helper views in `MHDesign/Sources/PreviewSupport`.
 - Single-feature previews stay next to the implementation file so day-to-day tuning starts from the edited API instead of a detached preview index.
 - Preview validation catalogs remain package-owned in `MHUI/Sources/PreviewSupport` because they verify shared compact-width and container behavior directly against the canonical APIs.
-- Example app code, when present, should show integration but should not hide canonical styling logic outside `MHUI/Sources`.
+- `Examples/MHUIAdoptionSample` stays outside the root package targets. It
+  demonstrates public integration and previews but does not hide canonical
+  styling logic outside `MHUI/Sources`.
 
 ## Refactoring Heuristic
 

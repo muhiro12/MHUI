@@ -6,6 +6,7 @@ This guide defines the strict `shared-visual-language-in-package, product-behavi
 
 Related documents:
 
+- [ADOPTION_GUIDE.md](../Guides/ADOPTION_GUIDE.md)
 - [mhui-current-overview.md](../Overviews/mhui-current-overview.md)
 - [shared-presentation-design.md](./shared-presentation-design.md)
 - [0001-shared-package-source-of-truth.md](../Decisions/0001-shared-package-source-of-truth.md)
@@ -21,7 +22,7 @@ Related documents:
 | `MHDesign` (`MHDesign/Sources`) | Shared spacing, corner-radius, generic screen or surface layout metrics, the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome, and sidecar tuning previews backed by minimal preview helpers | Product copy, business rules, navigation meaning, view-specific styling behavior, or MHUI-owned component chrome |
 | `MHUI` (`MHUI/Sources`, `MHUI/Resources`) | Semantic theme application, standard theme assets, styling modifiers, layout primitives, row and action fallback rules, key-value fallback, cue geometry, screen chrome, colocated development previews, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets, generic Foundation or SwiftData utilities |
 | Host app or sibling app | Feature state, domain rules, platform integrations, app-specific navigation, product composition | Rebuilding shared MHUI primitives as local forks |
-| Example app (`Example/` when present) | Integration review, manual regression checks, sample usage of package APIs | Becoming the source of truth for shared package APIs or hiding canonical styling outside `MHUI/Sources` |
+| Source-only adoption sample (`Examples/MHUIAdoptionSample`) | Public API compile checks, previews, and sample usage | Becoming the source of truth or hiding canonical styling outside `MHUI/Sources` |
 
 ## Package Rules
 
@@ -32,6 +33,8 @@ Allowed in the package:
 - Reusable typography, color, and surface tokens in `MHUI`
 - Package-owned color assets in `MHUI/Resources` when source APIs continue to expose semantic roles
 - Domain-neutral modifiers and container chrome
+- Domain-neutral compositions such as summaries, section hierarchy, grouped
+  rows, and action groups
 - Width-aware fallback behavior for actions, grouped actions, and key-value rows
 - Colocated development previews for public primitives and layout APIs
 - Validation scaffolding in `MHUI/Sources/PreviewSupport` that proves package behavior across fixed-width scenarios
@@ -67,12 +70,17 @@ Styled adopter:
 `Host app screen -> MHUI (re-exporting MHDesign) -> MHTheme, MHDesign metrics, native SwiftUI controls and package chrome`
 
 The package should shape presentation and composition without becoming the owner of host application behavior.
+A complete styled adoption combines root theme configuration with one screen
+route and the relevant semantic components. Theme-only adoption is an
+intermediate configuration step rather than the finished visual integration.
 
 ## Root Theme Contract
 
 - A styled adopter should define one app-owned `MHTheme` value, normally by
   copying `MHTheme.standard` and changing the semantic values it owns.
 - The app applies that value once near its root with `mhTheme(_:)`.
+- `mhTheme(_:)` is environment configuration, not a global skin. Applying it
+  alone must not replace or infer styles for arbitrary native content.
 - `mhTheme(_:)` propagates the theme through SwiftUI's environment. A concrete
   theme accent also becomes the native-control tint for the subtree,
   while the standard theme resolves semantic accent from the app's
@@ -86,9 +94,15 @@ The package should shape presentation and composition without becoming the owner
 
 ## Example and Preview Mapping
 
-Example projects, MHDesign sidecar previews, MHUI colocated development previews, and preview validation catalogs follow the same package-first path:
+The source-only adoption sample, MHDesign sidecar previews, MHUI colocated
+development previews, and preview validation catalogs follow the same
+package-first path:
 
 `Host example or preview -> MHUI public APIs -> package-owned tokens and layout primitives`
+
+`Examples/MHUIAdoptionSample` is a nested Swift package that depends on the
+repository root. It demonstrates only public APIs, compiles independently, and
+does not require an Xcode project.
 
 MHDesign tuning previews should live in same-directory sidecar files so metrics types stay focused on values while still keeping the first review surface nearby.
 MHUI development previews should live inside the edited implementation file so the styled API and its first review surface stay together.
@@ -102,7 +116,9 @@ Neither should become the place where new shared styling rules are invented befo
 - Keep a private `ViewModifier` when the implementation reads environment values, resolves adaptive layout, bundles multiple visual steps such as padding, background, overlay, or animation, or is shared by multiple public entry points.
 - Canonical direct-extension examples are `mhGlassPolicy(_:)`, `mhActionPresentation(_:)`, and `mhKeyValueLayout(_:)`.
 - `MHGroupedRows` is a container because it needs direct access to its row
-  subviews to place separators correctly.
+  subviews to apply direct-child row chrome and place separators correctly.
+- `MHActionGroup` is a container because it resolves adaptive action layout and
+  supplies the secondary style as the default for unstyled child buttons.
 - Canonical private-`ViewModifier` examples are `mhTheme(_:)`,
   `mhSurface(role:)`, `mhTextStyle(_:colorRole:)`, `mhScreen(...)`,
   `mhSection(...)`, `mhInputChrome(state:)`, and `mhBadge(style:)`.
@@ -121,7 +137,8 @@ Neither should become the place where new shared styling rules are invented befo
 - Keep retained repository-rule scripts, SwiftLint helpers, and compatibility
   entrypoints in `ci_scripts/tasks/`.
 - Keep architectural intent in `Designs/`.
-- Treat `Example/` as optional and adapter-like when it exists.
+- Keep `Examples/MHUIAdoptionSample` source-only and outside the root package
+  targets. It remains a public consumer rather than an architectural peer.
 
 ## Current Hotspots and Minimal Plans
 
@@ -141,16 +158,18 @@ Neither should become the place where new shared styling rules are invented befo
    - Keep shell scripts focused on retained rules, SwiftLint, and compatibility
      fallback checks.
 
-2. Example app integration should remain optional and thin.
+2. Public adoption evidence should remain independent and thin.
 
    Files:
-   - `ci_scripts/tasks/build_app.sh`
-   - `Example/` when present
+   - `Examples/MHUIAdoptionSample/`
+   - `ci_scripts/tasks/test_mhui_consumer_adoption.sh`
 
    Minimal plan:
-   - Build the example app only as a consumer of the package.
-   - Do not move shared primitives out of `MHUI/Sources` to satisfy example-only needs.
-   - Skip example app build work entirely when the directory is absent.
+   - Build the nested package as an independent consumer of public MHUI APIs.
+   - Keep comparison and accessibility previews in the sample package.
+   - Do not move shared primitives out of `MHUI/Sources` to satisfy sample-only
+     needs.
+   - Do not add an Xcode project solely to host sample previews.
 
 3. Product-specific meaning should stay in host screens.
 

@@ -49,7 +49,7 @@ boundary decisions.
 - `MHUI/Tests` - MHUI package tests
 - `ci_scripts/` - retained repository rules, SwiftLint helpers, and wrappers
 - `Designs/` - architecture guide, current overview, and ADRs
-- `Example/` - optional consumer app when present; not a source of package truth
+- `Examples/MHUIAdoptionSample` - source-only public API adoption sample
 
 ## Adoption
 
@@ -75,32 +75,83 @@ struct MetricsOnlyView: View {
 ```
 
 Use `MHUI` when an app wants the styled layer. `MHUI` re-exports `MHDesign`, so
-one import is enough for both metrics and styled APIs. Define one app theme by
-starting from the standard semantic baseline and changing only the values the
-app owns.
+one import is enough for both metrics and styled APIs.
+
+### Styled Golden Path
+
+The visible MHUI language comes from composing its semantic screen, section,
+row, input, summary, and action treatments. Start with that complete path before
+tuning individual tokens.
 
 ```swift
 import MHUI
+import SwiftUI
 
-extension MHTheme {
-    static var app: Self {
-        var theme = standard
-        theme.typography.bodyStrong = .init(
-            font: .title3,
-            weight: .bold
+struct OverviewScreen: View {
+    @Environment(\.mhTheme)
+    private var theme
+
+    var body: some View {
+        VStack(
+            alignment: .leading,
+            spacing: theme.spacing.section
+        ) {
+            MHSummary(
+                "Focused work",
+                metadata: "OVERVIEW",
+                supporting: "A concise hierarchy for the current context."
+            ) {
+                Text("Ready")
+                    .mhBadge(style: .accent)
+            }
+
+            MHGroupedRows {
+                LabeledContent("Type", value: "System")
+                    .labeledContentStyle(.mhKeyValue)
+
+                Toggle("Native controls", isOn: .constant(true))
+            }
+            .mhSection(
+                "Composition",
+                supporting: "Shared rhythm without replacing native controls."
+            )
+
+            TextField("Add a note", text: .constant(""))
+                .mhInputChrome()
+
+            MHActionGroup {
+                Button("Continue") {
+                    // Perform the primary action.
+                }
+                .buttonStyle(.mhPrimary)
+
+                Button("Review") {
+                    // Perform the secondary action.
+                }
+            }
+        }
+        .mhScreen(
+            "Workspace",
+            subtitle: "Measured spacing and low-noise hierarchy."
         )
-        theme.presentation.rowVerticalPadding = 18
-        return theme
     }
 }
 ```
 
-Apply that theme once near the app root. It propagates through SwiftUI's
-environment to MHUI components. The standard theme inherits the app's active
-accent color, so the host can continue to own its brand through the app's
-`AccentColor` asset. For a code-defined or subtree-specific accent, pass the
-same concrete `accent` and `onAccent` pair into the theme instead of relying on
-`tint(_:)` alone.
+`MHGroupedRows` applies row chrome to its direct children. `MHActionGroup`
+defaults unstyled buttons to the secondary role, so only primary, quiet, or
+destructive exceptions need an explicit button style. Treat each direct child
+of `MHGroupedRows` as one row; do not nest another row-styled view inside it.
+
+### Root Configuration and App Accent
+
+Apply the standard theme once near the app root. The modifier supplies semantic
+values to MHUI components; it is configuration, not a global skin for arbitrary
+SwiftUI content. Applying only `.mhTheme(.standard)` to an unchanged screen is
+therefore expected to produce little visible difference.
+
+The neutral base and system typography remain package-owned defaults. The host
+app continues to own its identity through its `AccentColor` asset.
 
 ```swift
 import MHUI
@@ -110,25 +161,39 @@ import SwiftUI
 struct WorkspaceApp: App {
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .mhTheme(.app)
+            OverviewScreen()
+                .mhTheme(.standard)
         }
     }
 }
 ```
 
-Views still choose semantic intent explicitly. The theme decides what
-`bodyStrong`, `surface`, `primary`, or `destructive` looks like; it does not
-guess which role a screen element should use.
+For a code-defined accent, use
+`MHTheme.standard(accent:onAccent:)`. The app owns both colors and must verify
+their contrast in supported appearances.
+
+### Choose a Composition Route
+
+| Existing screen | MHUI route | Keep native |
+| --- | --- | --- |
+| `VStack`, `LazyVStack`, or custom stack | `mhScreen`, `mhSection`, `MHSummary`, `MHGroupedRows` | Controls and navigation behavior |
+| `List` | `mhListChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | List semantics, selection, swipe actions |
+| `Form` | `mhFormChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | Form semantics and control behavior |
+
+Do not place a `List` or `Form` inside `mhScreen`; each route already owns its
+screen-level scrolling and chrome.
+
+Use either the MHUI screen title or the host navigation title as the visible
+page heading instead of showing the same title twice.
+
+For a native container, preserve its behavior and apply MHUI at the presentation
+seams:
 
 ```swift
 import MHUI
 import SwiftUI
 
 struct SettingsScreen: View {
-    @Environment(\.mhDesignMetrics)
-    private var metrics
-
     var body: some View {
         NavigationStack {
             List {
@@ -139,16 +204,14 @@ struct SettingsScreen: View {
                     LabeledContent("Theme", value: "System")
                         .labeledContentStyle(.mhKeyValue)
                 } header: {
-                    VStack(alignment: .leading, spacing: metrics.spacing.control) {
-                        Text("Preferences")
-                            .mhSectionHeaderTitle()
-                        Text("Standard controls keep their native behavior.")
-                            .mhSectionHeaderSupporting()
-                    }
-                    .mhSectionHeader()
+                    MHSectionHeader(
+                        "Preferences",
+                        supporting: "Native controls keep their behavior."
+                    )
                 } footer: {
-                    Text("MHUI styles layout, surfaces, and hierarchy.")
-                        .mhSectionFooterText()
+                    MHSectionFooter(
+                        "MHUI styles layout, surfaces, and hierarchy."
+                    )
                 }
             }
             .mhListChrome(
@@ -160,21 +223,11 @@ struct SettingsScreen: View {
 }
 ```
 
-Use `mhScreen(...)` and `mhSection(...)` when a screen should be composed from
-stacks and calm surfaces instead of a native `List` or `Form`.
-
-Apply another theme to a narrower subtree for an intentional exception. The
-override follows normal SwiftUI environment scoping and leaves sibling views
-on the app theme.
-
-```swift
-struct InspectorPane: View {
-    var body: some View {
-        InspectorContent()
-            .mhTheme(.inspector)
-    }
-}
-```
+See the [Adoption Guide](Designs/Guides/ADOPTION_GUIDE.md) for staged migration,
+the `Form` route, component ownership, migration notes, and the review
+checklist. The source-only
+[adoption sample](Examples/MHUIAdoptionSample/Package.swift) can be opened as a
+Swift package and does not require an Xcode project.
 
 ## Tuning
 
@@ -204,8 +257,9 @@ and on-accent pair in light, dark, and Increase Contrast appearances.
 Theme values propagate automatically, but semantic component selection stays
 explicit. Continue applying APIs such as `.buttonStyle(.mhPrimary)`,
 `.mhRow()`, `.mhSurface()`, and `.labeledContentStyle(.mhKeyValue)` where their
-meaning is known. MHUI does not globally replace or restyle every native
-SwiftUI control.
+meaning is known. Direct children of `MHGroupedRows` receive row chrome from
+the container, and unstyled buttons in `MHActionGroup` receive the secondary
+role. MHUI does not globally replace or restyle every native SwiftUI control.
 
 For visual review, start with the colocated preview beside the edited primitive
 or layout API. Use validation previews when a change affects shared behavior
@@ -245,6 +299,12 @@ Run retained repository rule checks with:
 bash ci_scripts/tasks/check_repository_rules.sh
 ```
 
+Build the nested public API adoption sample directly with:
+
+```sh
+bash ci_scripts/tasks/test_mhui_consumer_adoption.sh
+```
+
 Format Swift files before final verification with:
 
 ```sh
@@ -263,6 +323,7 @@ may write disposable cache and result data under `.build/ci/shared/`.
 
 ## Architecture Docs
 
+- [Adoption guide](Designs/Guides/ADOPTION_GUIDE.md)
 - [Current repository overview](Designs/Overviews/mhui-current-overview.md)
 - [Architecture guide](Designs/Architecture/ARCHITECTURE_GUIDE.md)
 - [Shared presentation design](Designs/Architecture/shared-presentation-design.md)
