@@ -2,8 +2,31 @@
   "colors" : [
     {
       "color" : {
-        "platform" : "universal",
-        "reference" : "secondarySystemBackgroundColor"
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0xF7",
+          "green" : "0xF2",
+          "red" : "0xF2"
+        }
+      },
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0x1E",
+          "green" : "0x1C",
+          "red" : "0x1C"
+        }
       },
       "idiom" : "universal"
     }
