@@ -2,7 +2,6 @@ import SwiftUI
 
 struct MHBadgeModifier: ViewModifier {
     private static let standardLineLimit = 1
-    private static let accessibilityLineLimit = 2
 
     @Environment(\.mhTheme)
     private var theme
@@ -18,9 +17,9 @@ struct MHBadgeModifier: ViewModifier {
     let style: MHBadgeStyle
     let accessibilityLabel: Text?
 
-    private var lineLimit: Int {
+    private var lineLimit: Int? {
         dynamicTypeSize.isAccessibilitySize
-            ? Self.accessibilityLineLimit
+            ? nil
             : Self.standardLineLimit
     }
 
