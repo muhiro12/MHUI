@@ -5,9 +5,6 @@ public enum MHFontDesign: String, Sendable, Equatable, CaseIterable {
     /// The platform's standard system font design.
     case standard
 
-    /// The platform's serif system font design.
-    case serif
-
     /// The platform's monospaced system font design.
     case monospaced
 
@@ -15,8 +12,6 @@ public enum MHFontDesign: String, Sendable, Equatable, CaseIterable {
         switch self {
         case .standard:
             .default
-        case .serif:
-            .serif
         case .monospaced:
             .monospaced
         }
