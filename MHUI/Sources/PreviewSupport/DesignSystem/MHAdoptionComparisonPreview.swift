@@ -11,15 +11,15 @@ private enum MHAdoptionComparisonTheme {
 private struct MHAdoptionComparisonPreview: View {
     var body: some View {
         HStack(alignment: .top, spacing: MHTheme.standard.spacing.section) {
-            MHAdoptionPreviewPanel("Theme only — configuration") {
+            MHAdoptionPreviewPanel("Theme only - native settings") {
                 MHThemeOnlyAdoptionPreview()
             }
 
-            MHAdoptionPreviewPanel("Native bridge — secondary") {
+            MHAdoptionPreviewPanel("Native bridge - form chrome") {
                 MHNativeBridgeAdoptionPreview()
             }
 
-            MHAdoptionPreviewPanel("Signature composition — primary") {
+            MHAdoptionPreviewPanel("Signature composition - review issue") {
                 MHSignatureAdoptionPreview()
             }
         }
@@ -78,9 +78,9 @@ private struct MHThemeOnlyAdoptionPreview: View {
         Form {
             Section("Summary") {
                 VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
-                    Text("OVERVIEW")
+                    Text("ISSUE 04")
                         .font(.caption)
-                    Text("Review settings")
+                    Text("Review board")
                         .font(.headline)
                     Text("A focused hierarchy distinguishes the screen without replacing native controls.")
                         .font(.subheadline)
@@ -123,8 +123,8 @@ private struct MHNativeBridgeAdoptionPreview: View {
             Form {
                 Section {
                     MHSummary(
-                        "Review settings",
-                        metadata: "OVERVIEW",
+                        "Review board",
+                        metadata: "ISSUE 04",
                         supporting: "A focused hierarchy distinguishes the screen without replacing native controls."
                     ) {
                         Text("Ready")
@@ -164,7 +164,7 @@ private struct MHNativeBridgeAdoptionPreview: View {
                 }
             }
             .mhFormChrome()
-            .navigationTitle("Settings")
+            .navigationTitle("Review")
         }
         .mhTheme(MHAdoptionComparisonTheme.standard)
     }
@@ -174,56 +174,142 @@ private struct MHSignatureAdoptionPreview: View {
     @Environment(\.mhTheme)
     private var theme
 
-    @State private var isEnabled = true
-    @State private var note = ""
-
     var body: some View {
         VStack(alignment: .leading, spacing: theme.spacing.section) {
             MHSummary(
-                "Review settings",
-                metadata: "OVERVIEW",
-                supporting: "A focused hierarchy distinguishes the screen without replacing native controls."
+                "Review issue",
+                metadata: "ISSUE 04",
+                supporting: "A calm index for comparing visual treatments, notes, and next actions."
             ) {
-                Text("Ready")
+                Text("Draft")
                     .mhBadge(style: .accent)
             }
 
+            MHEditorialGridPreview()
+                .mhSection(
+                    "Index",
+                    supporting: "Cards keep native text, restrained rules, and host-owned accent color."
+                )
+
             MHGroupedRows {
-                LabeledContent("Plan", value: "Personal")
+                LabeledContent("Rhythm", value: "Open")
                     .labeledContentStyle(.mhKeyValue)
 
-                Toggle("Daily reminder", isOn: $isEnabled)
-            }
-            .mhSection(
-                "Overview",
-                supporting: "Grouped rows own their shared rhythm and separators."
-            )
+                LabeledContent("Surface", value: "Quiet")
+                    .labeledContentStyle(.mhKeyValue)
 
-            VStack(alignment: .leading, spacing: theme.spacing.control) {
-                TextField("Add a note", text: $note)
-                    .mhInputChrome()
-
-                MHActionGroup {
-                    Button("Continue") {
-                        // no-op
+                HStack {
+                    VStack(alignment: .leading, spacing: theme.spacing.inline) {
+                        Text("Adoption")
+                            .mhRowTitle()
+                        Text("Package primitives define chrome. Apps keep product meaning.")
+                            .mhRowSupporting()
                     }
-                    .buttonStyle(.mhPrimary)
-
-                    Button("Review later") {
-                        // no-op
-                    }
+                    Spacer(minLength: theme.spacing.control)
                 }
             }
             .mhSection(
-                "Note",
-                supporting: "Explicit primary emphasis pairs with the group's secondary default."
+                "Notes",
+                supporting: "The package supplies the frame; adopters bring content and navigation."
             )
+
+            MHActionGroup {
+                Button("Apply") {
+                    // no-op
+                }
+                .buttonStyle(.mhPrimary)
+
+                Button("Compare") {
+                    // no-op
+                }
+                .buttonStyle(.mhSecondary)
+            }
         }
         .mhScreen(
-            "Settings",
+            "Review",
             subtitle: "Package composition with an app-owned accent."
         )
         .mhTheme(MHAdoptionComparisonTheme.standard)
+    }
+}
+
+private struct MHEditorialGridPreview: View {
+    @Environment(\.mhTheme)
+    private var theme
+
+    private let items = [
+        MHEditorialGridItem(
+            number: "01",
+            title: "Canvas",
+            color: Color(MHPreviewColorAsset.teal)
+        ),
+        MHEditorialGridItem(
+            number: "02",
+            title: "Rows",
+            color: Color(MHPreviewColorAsset.blue)
+        ),
+        MHEditorialGridItem(
+            number: "03",
+            title: "Actions",
+            color: Color(MHPreviewColorAsset.orange)
+        ),
+        MHEditorialGridItem(
+            number: "04",
+            title: "Cue",
+            color: Color(MHPreviewColorAsset.mint)
+        )
+    ]
+
+    var body: some View {
+        LazyVGrid(
+            columns: [
+                GridItem(.flexible(), spacing: theme.spacing.control),
+                GridItem(.flexible(), spacing: theme.spacing.control)
+            ],
+            spacing: theme.spacing.control
+        ) {
+            ForEach(items.indices, id: \.self) { index in
+                MHEditorialTilePreview(item: items[index])
+            }
+        }
+    }
+}
+
+private struct MHEditorialGridItem {
+    let number: String
+    let title: String
+    let color: Color
+}
+
+private struct MHEditorialTilePreview: View {
+    @Environment(\.mhTheme)
+    private var theme
+
+    let item: MHEditorialGridItem
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: theme.spacing.control) {
+            ZStack(alignment: .topLeading) {
+                item.color
+                    .opacity(0.78)
+                    .aspectRatio(1, contentMode: .fit)
+
+                Text(item.number)
+                    .font(.system(.title2, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Color(MHPreviewColorAsset.foregroundLight).opacity(0.72))
+                    .padding(theme.spacing.control)
+            }
+
+            VStack(alignment: .leading, spacing: theme.spacing.inline) {
+                Text(item.title)
+                    .mhTextStyle(.bodyStrong)
+                Text("Shared chrome")
+                    .mhTextStyle(.caption, colorRole: .secondaryText)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .mhSurfaceInset()
+        .mhSurface(role: .muted)
     }
 }
 
