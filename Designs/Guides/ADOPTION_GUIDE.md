@@ -114,7 +114,7 @@ itself a reason to preserve that container.
 
 | Screen purpose | Route | Status |
 | --- | --- | --- |
-| Overview, dashboard, read-only detail, report, insight, or product tool | `mhScreen`, `mhSection`, `MHSummary`, `MHGroupedRows` | Primary signature composition |
+| Overview, dashboard, read-only detail, report, insight, or product tool | `mhScreen`, `mhSection`, `MHSummary`, `MHFeatureGrid`, `MHGroupedRows` | Primary signature composition |
 | Collection or hierarchy that materially needs selection, swipe actions, editing, reordering, or list navigation | `mhListChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | Secondary native bridge |
 | Data entry, settings, or inspector that materially benefits from native form grouping, focus, and control behavior | `mhFormChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | Secondary native bridge |
 
@@ -156,6 +156,28 @@ becomes especially prominent at accessibility text sizes.
 If the screen has no distinct editorial lead, omit `MHSummary` and begin with
 the screen content. The package primitive is optional; complete adoption does
 not require every screen to display one.
+
+### Adaptive Feature Hierarchy
+
+Use `MHFeatureGrid` when a screen has one primary feature and a small set of
+supporting content. The package preserves that hierarchy with a split layout at
+regular widths, up to two supporting columns at compact widths, and one column
+at accessibility text sizes.
+
+```swift
+MHFeatureGrid {
+    FeatureTile(feature: primaryFeature)
+} supporting: {
+    ForEach(supportingFeatures) { feature in
+        FeatureTile(feature: feature)
+    }
+}
+```
+
+`FeatureTile` and the feature models in this example remain app-owned. The
+container does not infer product priority, navigation, interaction, surface
+role, or wording. Keep the supporting set concise; use a native `List` when the
+content is an open-ended collection that needs list behavior.
 
 ## Signature Composition
 
@@ -225,6 +247,8 @@ This route gives each layer a distinct responsibility:
   rhythm.
 - `MHSummary` establishes a concise editorial context block with a precise top
   rule rather than an elevated card.
+- `MHFeatureGrid` preserves one leading feature and a concise supporting set
+  across regular width, compact width, and accessibility text sizes.
 - `mhSection` owns its neutral heading cue, supporting text, content surface,
   inset, and optional footer.
 - `MHGroupedRows` applies row chrome and separators to its direct children.
@@ -327,6 +351,7 @@ detached inputs in stack-based or custom compositions.
 | --- | --- | --- |
 | `mhTheme` | Propagates the complete theme, MHDesign metrics, and optional native tint | Select screen structure and roles that cannot be inferred |
 | `MHSummary` | Ruled editorial summary and stronger system title hierarchy | Provide concise screen context and optional accessory |
+| `MHFeatureGrid` | Adaptive leading-feature and supporting-content hierarchy | Select the primary feature, supporting set, and semantic treatments |
 | `MHSectionHeader` | Neutral section cue and hierarchy | Provide product wording and optional accessory |
 | `MHSectionFooter` | Quiet explanatory text | Provide concise supporting guidance |
 | `MHGroupedRows` | Direct-child row chrome and separators | Provide native controls or semantic row content |

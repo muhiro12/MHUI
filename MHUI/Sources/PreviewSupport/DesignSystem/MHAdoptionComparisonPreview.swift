@@ -234,43 +234,34 @@ private struct MHSignatureAdoptionPreview: View {
 }
 
 private struct MHEditorialGridPreview: View {
-    @Environment(\.mhTheme)
-    private var theme
-
-    private let items = [
-        MHEditorialGridItem(
-            number: "01",
-            title: "Canvas",
-            color: Color(MHPreviewColorAsset.teal)
-        ),
-        MHEditorialGridItem(
-            number: "02",
-            title: "Rows",
-            color: Color(MHPreviewColorAsset.blue)
-        ),
-        MHEditorialGridItem(
-            number: "03",
-            title: "Actions",
-            color: Color(MHPreviewColorAsset.orange)
-        ),
-        MHEditorialGridItem(
-            number: "04",
-            title: "Cue",
-            color: Color(MHPreviewColorAsset.mint)
-        )
-    ]
-
     var body: some View {
-        LazyVGrid(
-            columns: [
-                GridItem(.flexible(), spacing: theme.spacing.control),
-                GridItem(.flexible(), spacing: theme.spacing.control)
-            ],
-            spacing: theme.spacing.control
-        ) {
-            ForEach(items.indices, id: \.self) { index in
-                MHEditorialTilePreview(item: items[index])
-            }
+        MHFeatureGrid {
+            MHEditorialTilePreview(
+                item: .init(
+                    number: "01",
+                    title: "Canvas",
+                    color: Color(MHPreviewColorAsset.teal),
+                    aspectRatio: 1.6
+                )
+            )
+        } supporting: {
+            MHEditorialTilePreview(
+                item: .init(
+                    number: "02",
+                    title: "Rows",
+                    color: Color(MHPreviewColorAsset.blue),
+                    aspectRatio: 1
+                )
+            )
+
+            MHEditorialTilePreview(
+                item: .init(
+                    number: "03",
+                    title: "Actions",
+                    color: Color(MHPreviewColorAsset.orange),
+                    aspectRatio: 1
+                )
+            )
         }
     }
 }
@@ -279,6 +270,7 @@ private struct MHEditorialGridItem {
     let number: String
     let title: String
     let color: Color
+    let aspectRatio: CGFloat
 }
 
 private struct MHEditorialTilePreview: View {
@@ -292,7 +284,7 @@ private struct MHEditorialTilePreview: View {
             ZStack(alignment: .topLeading) {
                 item.color
                     .opacity(0.78)
-                    .aspectRatio(1, contentMode: .fit)
+                    .aspectRatio(item.aspectRatio, contentMode: .fit)
 
                 Text(item.number)
                     .font(.system(.title2, design: .rounded, weight: .semibold))
@@ -309,7 +301,6 @@ private struct MHEditorialTilePreview: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .mhSurfaceInset()
-        .mhSurface(role: .muted)
     }
 }
 

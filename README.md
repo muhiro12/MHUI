@@ -149,6 +149,13 @@ summary when it would only repeat the current item name. `mhBadge` styles one
 metadata token, while the host app owns metadata priority and adaptive badge
 arrangement.
 
+Use `MHFeatureGrid` when one piece of content needs to remain visually primary
+beside a small supporting set. It uses a split composition at regular widths,
+stacks the leading feature above up to two supporting columns in compact layouts,
+and uses one supporting column at accessibility text sizes. The container owns
+only hierarchy, spacing, and fallback; adopters still provide semantic content
+and choose any surface or control treatment explicitly.
+
 ### Root Configuration and App Accent
 
 Apply the standard theme once near the app root. This is MHUI's canonical
@@ -214,7 +221,7 @@ Choose from the screen's purpose, not its existing container.
 
 | Screen purpose | MHUI route | Role |
 | --- | --- | --- |
-| Overview, dashboard, read-only detail, report, insight, or product tool | `mhScreen`, `mhSection`, `MHSummary`, `MHGroupedRows` | Primary signature composition |
+| Overview, dashboard, read-only detail, report, insight, or product tool | `mhScreen`, `mhSection`, `MHSummary`, `MHFeatureGrid`, `MHGroupedRows` | Primary signature composition |
 | Collection or hierarchy that needs selection, swipe actions, editing, reordering, or list navigation | `mhListChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | Secondary native bridge |
 | Data entry, settings, or inspector that benefits from native form behavior | `mhFormChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | Secondary native bridge |
 

@@ -8,7 +8,7 @@ private enum MHSignatureCompositionPreviewLayout {
     static let accessibilityHeight: CGFloat = 1_600
     static let metadataSpacingDivisor: CGFloat = 2
     static let standardPlateAspectRatio: CGFloat = 1
-    static let largePlateAspectRatio: CGFloat = 0.78
+    static let largePlateAspectRatio: CGFloat = 1.25
     static let widePlateAspectRatio: CGFloat = 1.45
     static let standardRuleWidth: CGFloat = 24
     static let largeRuleWidth: CGFloat = 40
@@ -56,26 +56,39 @@ private struct MHSignatureSummary: View {
 }
 
 private struct MHSignaturePlateGrid: View {
-    private let rows: [[MHSignaturePlateItem]] = [
-        [
-            .init(id: "lead", title: "Lead", metadata: "01", prominence: .large),
-            .init(id: "palette", title: "Palette", metadata: "02", prominence: .standard)
-        ],
-        [
-            .init(id: "detail", title: "Detail", metadata: "03", prominence: .standard),
-            .init(id: "action", title: "Action", metadata: "04", prominence: .wide)
-        ]
-    ]
-
     var body: some View {
-        VStack(spacing: MHTheme.standard.divider.thickness) {
-            ForEach(rows.indices, id: \.self) { rowIndex in
-                HStack(alignment: .top, spacing: MHTheme.standard.divider.thickness) {
-                    ForEach(rows[rowIndex]) { item in
-                        MHSignaturePlate(item: item)
-                    }
-                }
-            }
+        MHFeatureGrid {
+            MHSignaturePlate(
+                item: .init(
+                    title: "Lead",
+                    metadata: "01",
+                    prominence: .large
+                )
+            )
+        } supporting: {
+            MHSignaturePlate(
+                item: .init(
+                    title: "Palette",
+                    metadata: "02",
+                    prominence: .standard
+                )
+            )
+
+            MHSignaturePlate(
+                item: .init(
+                    title: "Detail",
+                    metadata: "03",
+                    prominence: .standard
+                )
+            )
+
+            MHSignaturePlate(
+                item: .init(
+                    title: "Action",
+                    metadata: "04",
+                    prominence: .wide
+                )
+            )
         }
         .mhSurface()
     }
@@ -146,8 +159,7 @@ private struct MHSignaturePlate: View {
     }
 }
 
-private struct MHSignaturePlateItem: Identifiable {
-    let id: String
+private struct MHSignaturePlateItem {
     let title: LocalizedStringKey
     let metadata: LocalizedStringKey
     let prominence: MHSignaturePlateProminence

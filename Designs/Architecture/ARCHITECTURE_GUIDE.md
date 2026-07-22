@@ -36,8 +36,8 @@ Allowed in the package:
 - Asset-backed app color inputs through `ColorResource`; RGB and hexadecimal
   color construction does not belong in public or package source
 - Domain-neutral modifiers and container chrome
-- Domain-neutral compositions such as summaries, section hierarchy, grouped
-  rows, and action groups
+- Domain-neutral compositions such as summaries, feature grids, section
+  hierarchy, grouped rows, and action groups
 - Width-aware fallback behavior for actions, grouped actions, and key-value rows
 - Colocated development previews for public primitives and layout APIs
 - Validation scaffolding in `MHUI/Sources/PreviewSupport` that proves package behavior across fixed-width scenarios
@@ -74,7 +74,8 @@ Styled adopter:
 
 The package should shape presentation and composition without becoming the owner of host application behavior.
 The primary styled path combines root theme configuration with the signature
-composition: `mhScreen`, `MHSummary`, `mhSection`, and `MHGroupedRows`.
+composition: `mhScreen`, `MHSummary`, `MHFeatureGrid`, `mhSection`, and
+`MHGroupedRows`.
 Theme-only adoption is an intermediate configuration step. Native `List` and
 `Form` chrome are secondary bridges for screens that materially depend on those
 containers' behavior; they are not an equal substitute for signature
@@ -125,6 +126,8 @@ Neither should become the place where new shared styling rules are invented befo
   subviews to apply direct-child row chrome and place separators correctly.
 - `MHActionGroup` is a container because it resolves adaptive action layout and
   supplies the secondary style as the default for unstyled child buttons.
+- `MHFeatureGrid` is a container because it preserves leading-feature hierarchy
+  and resolves supporting columns across width and Dynamic Type changes.
 - Canonical private-`ViewModifier` examples are `mhTheme(_:)`,
   `mhSurface(role:)`, `mhTextStyle(_:colorRole:)`, `mhScreen(...)`,
   `mhSection(...)`, `mhInputChrome(state:)`, and `mhBadge(style:)`.

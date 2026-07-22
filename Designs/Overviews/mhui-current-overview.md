@@ -45,7 +45,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 - `MHDesignMetrics` and its spacing, corner-radius, and layout value groups
 - Root theme application through `mhTheme(_:)`, public `MHTheme` semantic
   groups, and explicit component roles
-- Composed hierarchy through `MHSummary`, `MHSectionHeader`,
+- Composed hierarchy through `MHSummary`, `MHFeatureGrid`, `MHSectionHeader`,
   `MHSectionFooter`, `MHGroupedRows`, and `MHActionGroup`
 - Text styling primitives such as `mhTextStyle(_:colorRole:)`, including system
   font design and tracking tokens
@@ -108,6 +108,8 @@ the Xcode-native integration is unavailable or does not cover a check.
   safely from arbitrary SwiftUI descendants.
 - Signature composition is the primary visual adoption path for overview,
   dashboard, read-only detail, report, insight, and tool screens.
+- `MHFeatureGrid` provides the optional leading-feature hierarchy for concise
+  visual sets and owns compact-width and accessibility fallback behavior.
 - Native list and form chrome are secondary bridges for screens that materially
   require those containers' behavior, not equal substitutes for signature
   composition across an MHUI-forward product.
