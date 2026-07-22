@@ -78,7 +78,7 @@ private struct MHNativeListValidationContent: View {
                 )
             } footer: {
                 MHSectionFooter(
-                    "This preview validates list chrome at phone width, not a product-specific layout."
+                    "This preview validates native list chrome without product-specific layout constraints."
                 )
             }
         }
@@ -163,8 +163,30 @@ private struct MHNativeContainerValidationContent: View {
 }
 
 #Preview(
+    "Validation / Native List / iPad Viewport",
+    traits: .fixedLayout(width: 1_024, height: 768)
+) {
+    NavigationStack {
+        MHNativeListValidationContent()
+    }
+    .environment(\.horizontalSizeClass, .regular)
+    .mhPreviewTint()
+}
+
+#Preview(
     "Validation / Native Form / Narrow Regular Viewport",
     traits: .fixedLayout(width: 520, height: 760)
+) {
+    NavigationStack {
+        MHNativeFormValidationContent()
+    }
+    .environment(\.horizontalSizeClass, .regular)
+    .mhPreviewTint()
+}
+
+#Preview(
+    "Validation / Native Form / iPad Viewport",
+    traits: .fixedLayout(width: 1_024, height: 768)
 ) {
     NavigationStack {
         MHNativeFormValidationContent()
