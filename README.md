@@ -38,7 +38,8 @@ MHUI does not own host-app behavior:
 
 See [Architecture Guide](Designs/Architecture/ARCHITECTURE_GUIDE.md) for the
 full package boundary, preview rules, modifier guidance, and SwiftUtilities
-boundary decisions.
+boundary decisions. See [Beta Release Notes](Designs/Guides/BETA_RELEASE_NOTES.md)
+for current beta changes and migration notes.
 
 ## Repository Layout
 
