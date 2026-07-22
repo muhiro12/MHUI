@@ -14,14 +14,15 @@ public extension MHTheme {
             supporting: .init(font: .subheadline, weight: .regular),
             metadata: .init(
                 font: .footnote,
-                weight: .medium,
+                weight: .semibold,
                 design: .monospaced,
-                tracking: 0.7
+                tracking: 0.9
             ),
             caption: .init(
                 font: .caption,
                 weight: .medium,
-                tracking: 0.2
+                design: .monospaced,
+                tracking: 0.3
             ),
             summaryTitle: standardSummaryTitle
         )
@@ -29,17 +30,17 @@ public extension MHTheme {
 
     private static var standardScreenTitle: TextStyle {
         #if os(iOS)
-        .init(font: .largeTitle, weight: .bold)
+        .init(font: .largeTitle, weight: .semibold, design: .serif)
         #else
-        .init(font: .title2, weight: .bold)
+        .init(font: .title2, weight: .semibold, design: .serif)
         #endif
     }
 
     private static var standardSummaryTitle: TextStyle {
         #if os(iOS)
-        .init(font: .title2, weight: .bold)
+        .init(font: .title2, weight: .semibold, design: .serif)
         #else
-        .init(font: .title3, weight: .semibold)
+        .init(font: .title3, weight: .semibold, design: .serif)
         #endif
     }
 
@@ -57,19 +58,19 @@ public extension MHTheme {
             compactKeyValueMinimumValueWidth: 120,
             compactKeyValueSpacing: 8,
             compactActionGroupSpacing: 12,
-            screenCuePlacement: .leading,
-            screenCueLength: 72,
-            screenCueThickness: 2,
-            sectionCuePlacement: .leading,
-            sectionCueLength: 40,
-            sectionCueThickness: 2
+            screenCuePlacement: .top,
+            screenCueLength: 96,
+            screenCueThickness: 1,
+            sectionCuePlacement: .top,
+            sectionCueLength: 48,
+            sectionCueThickness: 1
         )
     }
 
     private static var standardDivider: Divider {
         .init(
             thickness: 1,
-            opacity: 0.75
+            opacity: 0.55
         )
     }
 

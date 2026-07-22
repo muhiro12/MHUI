@@ -13,7 +13,7 @@ public extension MHDesignMetrics {
         ),
         cornerRadius: .init(
             control: gridUnit * 1,
-            surface: gridUnit * 1.5
+            surface: gridUnit * 1
         ),
         layout: .init(
             readableContentWidth: platformReadableContentWidth,
