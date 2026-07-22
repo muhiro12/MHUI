@@ -82,6 +82,20 @@ struct MHComponentSmokeTests {
                         .mhBadge(style: .accent)
                 }
 
+                MHFeatureGrid {
+                    Text("Primary feature")
+                        .mhSurfaceInset()
+                        .mhSurface()
+                } supporting: {
+                    Text("Supporting context")
+                        .mhSurfaceInset()
+                        .mhSurface(role: .muted)
+
+                    Text("Supporting action")
+                        .mhSurfaceInset()
+                        .mhSurface(role: .muted)
+                }
+
                 HStack(spacing: MHDesignMetrics.standard.spacing.control) {
                     Text("Coordinated")
                         .mhBadge(style: .accent)

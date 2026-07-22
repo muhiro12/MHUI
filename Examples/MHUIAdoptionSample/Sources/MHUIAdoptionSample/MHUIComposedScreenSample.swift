@@ -12,6 +12,7 @@ public struct MHUIComposedScreenSample: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: theme.spacing.section) {
             summary
+            featureGrid
             overviewSection
             noteSection
         }
@@ -49,6 +50,32 @@ private extension MHUIComposedScreenSample {
         .mhSection(
             "Overview",
             supporting: "Grouped rows own their shared rhythm and separators."
+        )
+    }
+
+    var featureGrid: some View {
+        MHFeatureGrid {
+            MHUIFeatureSample(
+                metadata: "01",
+                title: "Overview",
+                supporting: "The leading feature establishes the screen's primary context."
+            )
+        } supporting: {
+            MHUIFeatureSample(
+                metadata: "02",
+                title: "Status",
+                supporting: "Supporting content stays concise."
+            )
+
+            MHUIFeatureSample(
+                metadata: "03",
+                title: "Actions",
+                supporting: "Native controls keep their platform behavior."
+            )
+        }
+        .mhSection(
+            "Highlights",
+            supporting: "A leading feature and supporting content adapt as one composition."
         )
     }
 
