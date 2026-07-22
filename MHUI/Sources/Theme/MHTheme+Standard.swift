@@ -8,7 +8,7 @@ public extension MHTheme {
     private static var standardTypography: Typography {
         .init(
             screenTitle: standardScreenTitle,
-            sectionTitle: .init(font: .title3, weight: .semibold),
+            sectionTitle: .init(font: .subheadline, weight: .semibold),
             body: .init(font: .body, weight: .regular),
             bodyStrong: .init(font: .body, weight: .semibold),
             supporting: .init(font: .subheadline, weight: .regular),
@@ -46,23 +46,23 @@ public extension MHTheme {
 
     private static var standardPresentation: Presentation {
         .init(
-            rowHorizontalInset: 24,
-            rowVerticalPadding: 16,
+            rowHorizontalInset: 28,
+            rowVerticalPadding: 18,
             rowAccessorySpacing: 16,
             compactRowHorizontalInset: 20,
-            compactRowVerticalPadding: 12,
+            compactRowVerticalPadding: 14,
             compactRowAccessorySpacing: 12,
-            compactActionHorizontalPadding: 20,
+            compactActionHorizontalPadding: 22,
             compactActionVerticalPadding: 12,
             regularKeyValueMinimumValueWidth: 160,
             compactKeyValueMinimumValueWidth: 120,
             compactKeyValueSpacing: 8,
             compactActionGroupSpacing: 12,
             screenCuePlacement: .top,
-            screenCueLength: 96,
+            screenCueLength: 128,
             screenCueThickness: 1,
             sectionCuePlacement: .top,
-            sectionCueLength: 48,
+            sectionCueLength: 64,
             sectionCueThickness: 1
         )
     }
@@ -70,7 +70,7 @@ public extension MHTheme {
     private static var standardDivider: Divider {
         .init(
             thickness: 1,
-            opacity: 0.55
+            opacity: 0.45
         )
     }
 
@@ -99,7 +99,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.65
+                borderOpacity: 0.5
             ),
             elevated: .init(
                 prefersGlass: false,
@@ -108,7 +108,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.8
+                borderOpacity: 0.65
             ),
             muted: .init(
                 prefersGlass: false,
@@ -117,7 +117,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.35
+                borderOpacity: 0.28
             )
         )
     }

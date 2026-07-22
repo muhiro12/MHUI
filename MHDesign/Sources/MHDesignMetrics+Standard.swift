@@ -8,12 +8,12 @@ public extension MHDesignMetrics {
             inline: gridUnit * 1,
             control: gridUnit * 2,
             content: gridUnit * 3,
-            section: gridUnit * 4,
-            screen: gridUnit * 5
+            section: gridUnit * 5,
+            screen: gridUnit * 7
         ),
         cornerRadius: .init(
             control: gridUnit * 1,
-            surface: gridUnit * 1
+            surface: gridUnit * 0.75
         ),
         layout: .init(
             readableContentWidth: platformReadableContentWidth,
@@ -36,7 +36,7 @@ private extension MHDesignMetrics {
         #if os(watchOS)
         gridUnit * 40
         #else
-        gridUnit * 80
+        gridUnit * 90
         #endif
     }
 
@@ -44,7 +44,7 @@ private extension MHDesignMetrics {
         #if os(watchOS)
         gridUnit * 37.5
         #else
-        gridUnit * 75
+        gridUnit * 80
         #endif
     }
 
@@ -60,12 +60,12 @@ private extension MHDesignMetrics {
         )
         #else
         .init(
-            contentInsetHorizontal: gridUnit * 5,
-            contentInsetVertical: gridUnit * 9,
-            contentSpacing: gridUnit * 6,
-            compactContentInsetHorizontal: gridUnit * 2.5,
-            compactContentInsetVertical: gridUnit * 4,
-            compactContentSpacing: gridUnit * 4
+            contentInsetHorizontal: gridUnit * 7,
+            contentInsetVertical: gridUnit * 8,
+            contentSpacing: gridUnit * 7,
+            compactContentInsetHorizontal: gridUnit * 3,
+            compactContentInsetVertical: gridUnit * 5,
+            compactContentSpacing: gridUnit * 4.5
         )
         #endif
     }
@@ -80,10 +80,10 @@ private extension MHDesignMetrics {
         )
         #else
         .init(
-            insetHorizontal: gridUnit * 3,
+            insetHorizontal: gridUnit * 3.5,
             insetVertical: gridUnit * 3,
             compactInsetHorizontal: gridUnit * 2.5,
-            compactInsetVertical: gridUnit * 2
+            compactInsetVertical: gridUnit * 2.25
         )
         #endif
     }
