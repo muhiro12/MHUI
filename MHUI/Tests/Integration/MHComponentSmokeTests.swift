@@ -103,6 +103,22 @@ struct MHComponentSmokeTests {
 
     @Test
     @MainActor
+    func accessibility_badges_allow_long_metadata_to_adapt() {
+        let smokeView = AnyView(
+            Text("Long localized status metadata")
+                .mhBadge(
+                    style: .accent,
+                    accessibilityLabel: Text("Long localized status metadata")
+                )
+                .frame(width: 160, alignment: .leading)
+                .dynamicTypeSize(.accessibility3)
+        )
+
+        #expect(String(reflecting: type(of: smokeView)).contains("AnyView"))
+    }
+
+    @Test
+    @MainActor
     func standard_theme_factory_is_available_to_public_adopters() {
         let smokeView = AnyView(
             Text("Asset accent")

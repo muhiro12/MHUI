@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct MHBadgeModifier: ViewModifier {
+    private static let standardLineLimit = 1
+    private static let accessibilityLineLimit = 2
+
     @Environment(\.mhTheme)
     private var theme
     @Environment(\.mhGlassPolicy)
@@ -9,9 +12,17 @@ struct MHBadgeModifier: ViewModifier {
     private var colorScheme
     @Environment(\.accessibilityReduceTransparency)
     private var accessibilityReduceTransparency
+    @Environment(\.dynamicTypeSize)
+    private var dynamicTypeSize
 
     let style: MHBadgeStyle
     let accessibilityLabel: Text?
+
+    private var lineLimit: Int {
+        dynamicTypeSize.isAccessibilitySize
+            ? Self.accessibilityLineLimit
+            : Self.standardLineLimit
+    }
 
     func body(content: Content) -> some View {
         let chromeStyle = theme.resolvedBadgeChromeStyle(
@@ -26,9 +37,12 @@ struct MHBadgeModifier: ViewModifier {
 
         let styledContent = content
             .mhTextStyle(chromeStyle.textRole, colorRole: chromeStyle.foregroundRole)
-            .lineLimit(1)
+            .lineLimit(lineLimit)
             .allowsTightening(true)
-            .fixedSize(horizontal: true, vertical: false)
+            .fixedSize(
+                horizontal: !dynamicTypeSize.isAccessibilitySize,
+                vertical: false
+            )
             .padding(.horizontal, chromeStyle.horizontalPadding)
             .padding(.vertical, chromeStyle.verticalPadding)
             .background {
