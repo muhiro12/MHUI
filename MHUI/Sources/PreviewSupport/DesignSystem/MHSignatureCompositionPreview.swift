@@ -25,19 +25,19 @@ private struct MHSignatureCompositionPreview: View {
 }
 
 private struct MHSignatureCompositionContent: View {
-    @State private var isPinned = true
+    @State private var keepsFocus = true
     @State private var note = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
             MHSignatureSummary()
             MHSignaturePlateGrid()
-            MHSignatureCompositionSection(isPinned: $isPinned)
+            MHSignatureCompositionSection(keepsFocus: $keepsFocus)
             MHSignatureActions(note: $note)
         }
         .mhScreen(
-            "Summer Index",
-            subtitle: "Twelve plates curated for review."
+            "Review Index",
+            subtitle: "System type, measured grids, and quiet controls."
         )
     }
 }
@@ -45,11 +45,11 @@ private struct MHSignatureCompositionContent: View {
 private struct MHSignatureSummary: View {
     var body: some View {
         MHSummary(
-            "Editorial set is ready",
-            metadata: "ISSUE 07 / 08",
-            supporting: "A focused arrangement of notes, imagery, and actions for compact review."
+            "Editorial review is ready",
+            metadata: "SET 07 / 08",
+            supporting: "A compact arrangement of content, metadata, and actions for one review pass."
         ) {
-            Text("Pinned")
+            Text("Ready")
                 .mhBadge(style: .accent)
         }
     }
@@ -58,12 +58,12 @@ private struct MHSignatureSummary: View {
 private struct MHSignaturePlateGrid: View {
     private let rows: [[MHSignaturePlateItem]] = [
         [
-            .init(id: "field", title: "Field", metadata: "01", prominence: .large),
+            .init(id: "lead", title: "Lead", metadata: "01", prominence: .large),
             .init(id: "palette", title: "Palette", metadata: "02", prominence: .standard)
         ],
         [
-            .init(id: "objects", title: "Objects", metadata: "03", prominence: .standard),
-            .init(id: "notes", title: "Notes", metadata: "04", prominence: .wide)
+            .init(id: "detail", title: "Detail", metadata: "03", prominence: .standard),
+            .init(id: "action", title: "Action", metadata: "04", prominence: .wide)
         ]
     ]
 
@@ -182,21 +182,21 @@ private enum MHSignaturePlateProminence: Equatable {
 }
 
 private struct MHSignatureCompositionSection: View {
-    @Binding var isPinned: Bool
+    @Binding var keepsFocus: Bool
 
     var body: some View {
         MHGroupedRows {
-            LabeledContent("Status", value: "In review")
+            LabeledContent("Status", value: "Ready")
                 .labeledContentStyle(.mhKeyValue)
 
-            LabeledContent("Layout", value: "Mixed grid")
+            LabeledContent("Layout", value: "Editorial grid")
                 .labeledContentStyle(.mhKeyValue)
 
-            Toggle("Pin to top", isOn: $isPinned)
+            Toggle("Keep focus", isOn: $keepsFocus)
         }
         .mhSection(
             "Details",
-            supporting: "Small metadata, restrained rules, and adaptive surfaces stay reusable."
+            supporting: "System type, restrained rules, and semantic surfaces stay reusable."
         )
     }
 }
@@ -210,7 +210,7 @@ private struct MHSignatureActions: View {
                 Text("Note")
                     .mhTextStyle(.bodyStrong)
 
-                TextField("Add context", text: $note)
+                TextField("Capture direction", text: $note)
                     .mhInputChrome()
             }
 
