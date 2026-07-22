@@ -32,6 +32,11 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
 
         return Group {
             switch keyValueLayout {
+            case .automatic where dynamicTypeSize.isAccessibilitySize:
+                verticalContent(
+                    configuration: configuration,
+                    style: style
+                )
             case .automatic:
                 ViewThatFits(in: .horizontal) {
                     horizontalContent(
