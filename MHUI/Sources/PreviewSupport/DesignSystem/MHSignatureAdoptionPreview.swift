@@ -1,73 +1,11 @@
 // swiftlint:disable closure_body_length file_types_order no_magic_numbers one_declaration_per_file
 import SwiftUI
 
-private enum MHAdoptionComparisonTheme {
+private enum MHAdoptionPreviewTheme {
     static let standard = MHTheme.standard(
         accent: MHPreviewStyle.sampleHostAccent,
         onAccent: MHPreviewStyle.sampleHostOnAccent
     )
-}
-
-private struct MHAdoptionComparisonPreview: View {
-    var body: some View {
-        HStack(alignment: .top, spacing: MHTheme.standard.spacing.section) {
-            MHAdoptionPreviewPanel("Theme only - native settings") {
-                MHThemeOnlyAdoptionPreview()
-            }
-
-            MHAdoptionPreviewPanel("Native bridge - form chrome") {
-                MHNativeBridgeAdoptionPreview()
-            }
-
-            MHAdoptionPreviewPanel("Signature composition - review issue") {
-                MHSignatureAdoptionPreview()
-            }
-        }
-        .padding(MHTheme.standard.spacing.section)
-        .background(
-            Color(MHPreviewColorAsset.platformPrimaryText)
-                .opacity(0.04)
-        )
-    }
-}
-
-private struct MHAdoptionPreviewPanel<Content: View>: View {
-    private let title: LocalizedStringKey
-    private let content: Content
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-            Text(title)
-                .font(.headline)
-
-            content
-                .frame(width: 390, height: 844)
-                .clipShape(
-                    RoundedRectangle(
-                        cornerRadius: MHTheme.standard.cornerRadius.surface,
-                        style: .continuous
-                    )
-                )
-                .overlay {
-                    RoundedRectangle(
-                        cornerRadius: MHTheme.standard.cornerRadius.surface,
-                        style: .continuous
-                    )
-                    .stroke(
-                        Color(MHPreviewColorAsset.platformSecondaryText)
-                            .opacity(0.25)
-                    )
-                }
-        }
-    }
-
-    init(
-        _ title: LocalizedStringKey,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.title = title
-        self.content = content()
-    }
 }
 
 private struct MHThemeOnlyAdoptionPreview: View {
@@ -110,7 +48,7 @@ private struct MHThemeOnlyAdoptionPreview: View {
                 }
             }
         }
-        .mhTheme(MHAdoptionComparisonTheme.standard)
+        .mhTheme(MHAdoptionPreviewTheme.standard)
     }
 }
 
@@ -121,52 +59,55 @@ private struct MHNativeBridgeAdoptionPreview: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section {
-                    MHSummary(
-                        "Review board",
-                        metadata: "ISSUE 04",
-                        supporting: "A focused hierarchy distinguishes the screen without replacing native controls."
-                    ) {
+                Section("Current review") {
+                    MHNativeBridgeSummary()
+
+                    LabeledContent("Status") {
                         Text("Ready")
                             .mhBadge(style: .accent)
                     }
-                    .mhRow()
                 }
 
-                Section {
+                Section("Overview") {
                     LabeledContent("Plan", value: "Personal")
-                        .labeledContentStyle(.mhKeyValue)
-
                     Toggle("Daily reminder", isOn: $isEnabled)
-                        .mhRow()
-                } header: {
-                    MHSectionHeader(
-                        "Overview",
-                        supporting: "Use this route only when native container semantics are essential."
-                    )
                 }
 
-                Section {
+                Section("Note") {
                     TextField("Add a note", text: $note)
 
-                    MHActionGroup {
-                        Button("Continue") {
-                            // no-op
-                        }
-                        .buttonStyle(.mhPrimary)
-
-                        Button("Review later") {
-                            // no-op
-                        }
+                    Button("Continue") {
+                        // no-op
                     }
-                } header: {
-                    MHSectionHeader("Note")
+
+                    Button("Review later") {
+                        // no-op
+                    }
                 }
             }
             .mhFormChrome()
             .navigationTitle("Review")
         }
-        .mhTheme(MHAdoptionComparisonTheme.standard)
+        .mhTheme(MHAdoptionPreviewTheme.standard)
+    }
+}
+
+private struct MHNativeBridgeSummary: View {
+    @Environment(\.mhTheme)
+    private var theme
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: theme.spacing.inline) {
+            Text("ISSUE 04")
+                .mhTextStyle(.metadata, colorRole: .secondaryText)
+
+            Text("Review board")
+                .mhTextStyle(.bodyStrong)
+
+            Text("A focused hierarchy distinguishes the screen without replacing native controls.")
+                .mhTextStyle(.supporting, colorRole: .secondaryText)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -229,7 +170,7 @@ private struct MHSignatureAdoptionPreview: View {
             "Review",
             subtitle: "Package composition with an app-owned accent."
         )
-        .mhTheme(MHAdoptionComparisonTheme.standard)
+        .mhTheme(MHAdoptionPreviewTheme.standard)
     }
 }
 
@@ -305,22 +246,22 @@ private struct MHEditorialTilePreview: View {
 }
 
 #Preview(
-    "Design System / Adoption Comparison / Light",
-    traits: .fixedLayout(width: 1_320, height: 960)
+    "Design System / Adoption / 01 Preferred Composition / Light",
+    traits: .fixedLayout(width: 390, height: 844)
 ) {
-    MHAdoptionComparisonPreview()
+    MHSignatureAdoptionPreview()
 }
 
 #Preview(
-    "Design System / Adoption Comparison / Dark",
-    traits: .fixedLayout(width: 1_320, height: 960)
+    "Design System / Adoption / 01 Preferred Composition / Dark",
+    traits: .fixedLayout(width: 390, height: 844)
 ) {
-    MHAdoptionComparisonPreview()
+    MHSignatureAdoptionPreview()
         .preferredColorScheme(.dark)
 }
 
 #Preview(
-    "Design System / Adoption Comparison / Accessibility",
+    "Design System / Adoption / 01 Preferred Composition / Accessibility",
     traits: .fixedLayout(width: 390, height: 1_180)
 ) {
     MHSignatureAdoptionPreview()
@@ -328,10 +269,40 @@ private struct MHEditorialTilePreview: View {
 }
 
 #Preview(
-    "Design System / Adoption Comparison / Right to Left",
+    "Design System / Adoption / 01 Preferred Composition / Right to Left",
     traits: .fixedLayout(width: 390, height: 844)
 ) {
     MHSignatureAdoptionPreview()
         .environment(\.layoutDirection, .rightToLeft)
+}
+
+#Preview(
+    "Design System / Adoption / 02 Theme Baseline / Light",
+    traits: .fixedLayout(width: 390, height: 844)
+) {
+    MHThemeOnlyAdoptionPreview()
+}
+
+#Preview(
+    "Design System / Adoption / 03 Native Form Bridge / Light",
+    traits: .fixedLayout(width: 390, height: 844)
+) {
+    MHNativeBridgeAdoptionPreview()
+}
+
+#Preview(
+    "Design System / Adoption / 03 Native Form Bridge / Dark",
+    traits: .fixedLayout(width: 390, height: 844)
+) {
+    MHNativeBridgeAdoptionPreview()
+        .preferredColorScheme(.dark)
+}
+
+#Preview(
+    "Design System / Adoption / 03 Native Form Bridge / Accessibility",
+    traits: .fixedLayout(width: 390, height: 1_180)
+) {
+    MHNativeBridgeAdoptionPreview()
+        .environment(\.dynamicTypeSize, .accessibility3)
 }
 // swiftlint:enable closure_body_length file_types_order no_magic_numbers one_declaration_per_file
