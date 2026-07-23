@@ -70,6 +70,13 @@ struct MHStyleResolutionTests {
             reduceTransparency: false,
             supportsGlass: true
         )
+        let secondary = theme.resolvedActionButtonStyle(
+            for: .secondary,
+            context: .init(),
+            glassPolicy: .enabled,
+            reduceTransparency: false,
+            supportsGlass: true
+        )
         let destructive = theme.resolvedActionButtonStyle(
             for: .destructive,
             context: .init(),
@@ -77,18 +84,30 @@ struct MHStyleResolutionTests {
             reduceTransparency: false,
             supportsGlass: true
         )
+        let fallbackSecondary = theme.resolvedActionButtonStyle(
+            for: .secondary,
+            context: .init(),
+            glassPolicy: .disabled,
+            reduceTransparency: false,
+            supportsGlass: true
+        )
 
         #expect(primary.backgroundStyle?.usesGlass == true)
         #expect(primary.backgroundStyle?.isGlassInteractive == true)
         #expect(primary.backgroundStyle?.fallbackFillRole == .accent)
-        #expect(primary.backgroundStyle?.borderRole == .accent)
+        #expect(primary.backgroundStyle?.borderRole == nil)
         #expect(primary.foregroundRole == .primaryText)
+        #expect(secondary.backgroundStyle?.usesGlass == true)
+        #expect(secondary.backgroundStyle?.glassTintRole == nil)
+        #expect(secondary.backgroundStyle?.borderRole == nil)
         #expect(quiet.backgroundStyle == nil)
         #expect(quiet.foregroundRole == .accent)
         #expect(quiet.pressedOpacity == 0.72)
         #expect(quiet.disabledOpacity == 0.50)
         #expect(destructive.foregroundRole == .destructive)
-        #expect(destructive.backgroundStyle?.borderRole == .destructive)
+        #expect(destructive.backgroundStyle?.borderRole == nil)
+        #expect(fallbackSecondary.backgroundStyle?.borderRole == .border)
+        #expect(fallbackSecondary.backgroundStyle?.borderOpacity == 0.24)
         #expect(primary.horizontalPadding == theme.spacing.content)
         #expect(primary.minimumHeight == theme.layout.control.minimumTouchTarget)
         #expect(quiet.verticalPadding < primary.verticalPadding)

@@ -182,8 +182,10 @@ private extension MHTheme {
                 ? recipe.glassTintOpacity
                 : MHActionButtonConstants.noOpacity,
             isGlassInteractive: usesGlass,
-            borderRole: recipe.borderRole,
-            borderOpacity: recipe.borderOpacity
+            borderRole: usesGlass ? nil : recipe.borderRole,
+            borderOpacity: usesGlass
+                ? MHActionButtonConstants.noOpacity
+                : recipe.borderOpacity
         )
     }
 }
@@ -201,8 +203,8 @@ private extension MHButtonBackgroundRecipe {
     static let secondary = Self(
         fallbackFillRole: .surface,
         fallbackFillOpacity: MHActionButtonConstants.opaque,
-        glassTintRole: .surface,
-        glassTintOpacity: MHActionButtonConstants.secondaryGlassTintOpacity,
+        glassTintRole: nil,
+        glassTintOpacity: MHActionButtonConstants.noOpacity,
         borderRole: .border,
         borderOpacity: MHActionButtonConstants.secondaryBorderOpacity
     )

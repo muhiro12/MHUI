@@ -27,32 +27,34 @@ public struct MHActionGroup<Content: View>: View {
         )
         let style = theme.resolvedActionGroupStyle(for: context)
 
-        return Group(subviews: content) { subviews in
-            switch layout {
-            case .automatic:
-                ViewThatFits(in: .horizontal) {
+        return MHActionGlassContainer(spacing: style.spacing) {
+            Group(subviews: content) { subviews in
+                switch layout {
+                case .automatic:
+                    ViewThatFits(in: .horizontal) {
+                        horizontalActions(
+                            subviews: subviews,
+                            spacing: style.spacing
+                        )
+                        verticalActions(
+                            subviews: subviews,
+                            spacing: style.spacing
+                        )
+                    }
+                case .horizontal:
                     horizontalActions(
                         subviews: subviews,
                         spacing: style.spacing
                     )
+                case .vertical:
                     verticalActions(
                         subviews: subviews,
                         spacing: style.spacing
                     )
                 }
-            case .horizontal:
-                horizontalActions(
-                    subviews: subviews,
-                    spacing: style.spacing
-                )
-            case .vertical:
-                verticalActions(
-                    subviews: subviews,
-                    spacing: style.spacing
-                )
             }
+            .buttonStyle(.mhSecondary)
         }
-        .buttonStyle(.mhSecondary)
     }
 
     public init(
