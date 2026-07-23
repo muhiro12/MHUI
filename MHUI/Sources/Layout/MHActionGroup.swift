@@ -27,34 +27,34 @@ public struct MHActionGroup<Content: View>: View {
         )
         let style = theme.resolvedActionGroupStyle(for: context)
 
-        return MHActionGlassContainer(spacing: style.spacing) {
-            Group(subviews: content) { subviews in
-                switch layout {
-                case .automatic:
-                    ViewThatFits(in: .horizontal) {
-                        horizontalActions(
-                            subviews: subviews,
-                            spacing: style.spacing
-                        )
-                        verticalActions(
-                            subviews: subviews,
-                            spacing: style.spacing
-                        )
-                    }
-                case .horizontal:
+        // Keep custom glass backgrounds independent. A shared glass container
+        // can apply the material's vibrancy treatment to enabled labels.
+        return Group(subviews: content) { subviews in
+            switch layout {
+            case .automatic:
+                ViewThatFits(in: .horizontal) {
                     horizontalActions(
                         subviews: subviews,
                         spacing: style.spacing
                     )
-                case .vertical:
                     verticalActions(
                         subviews: subviews,
                         spacing: style.spacing
                     )
                 }
+            case .horizontal:
+                horizontalActions(
+                    subviews: subviews,
+                    spacing: style.spacing
+                )
+            case .vertical:
+                verticalActions(
+                    subviews: subviews,
+                    spacing: style.spacing
+                )
             }
-            .buttonStyle(.mhSecondary)
         }
+        .buttonStyle(.mhSecondary)
     }
 
     public init(
