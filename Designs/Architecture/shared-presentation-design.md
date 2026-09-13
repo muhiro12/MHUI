@@ -52,20 +52,21 @@ the complete semantic theme, synchronizes MHDesign metrics, and applies a
 concrete asset accent to native-control tint. It is the maximum safe cascade
 for arbitrary SwiftUI content: blanket root button, font, foreground, list,
 and form styles are excluded because they would cross semantic and system
-presentation boundaries. Styled adoption has an intentional hierarchy:
+presentation boundaries. Styled adoption supports three complementary routes:
 
-1. Signature composition is the primary path: `mhScreen`, `MHSummary`,
-   `mhSection`, and `MHGroupedRows`.
-2. Native `List` and `Form` chrome are secondary bridges for screens that
-   materially require native container semantics.
-3. Theme-only integration establishes the inherited baseline but does not
-   insert visible screen structure around arbitrary descendants.
+1. Native `List` and `Form` integration preserves platform grouping, scrolling,
+   controls, and navigation conventions with `mhListChrome` or `mhFormChrome`.
+2. Stack-based composition uses `mhScreen`, `MHSummary`, `mhSection`, and
+   `MHGroupedRows` when content needs a deliberate editorial layout.
+3. Theme-only integration establishes the inherited baseline without inserting
+   visible screen structure around arbitrary descendants.
 
-The host app chooses by screen purpose and required behavior, not by the
-existing container. Overview, dashboard, read-only detail, report, insight, and
-tool screens should normally use signature composition. Native list bridges
-use `mhListChrome`, `MHSectionHeader`, `MHSectionFooter`, and `mhRow`; native
-form bridges use the corresponding `mhFormChrome` path.
+The host app chooses by screen purpose, content hierarchy, and required
+behavior. Read-only detail screens can use native grouped lists; they do not
+need custom composition merely to demonstrate MHUI adoption. Shared headers,
+footers, and row treatments are optional when native sections already provide
+the intended hierarchy. Preserve MHUI's quiet semantic palette and rhythm
+without requiring every screen to repeat its rules or surface frames.
 
 `mhScreen` owns screen scrolling, so it must not wrap a native `List` or `Form`.
 The native-container routes preserve their container behavior.
@@ -126,9 +127,22 @@ When several package-owned glass surfaces appear near each other, keep
 coordination inside MHUI-owned primitives so SwiftUI can coordinate effects and
 avoid unnecessary standalone glass rendering without exposing low-level glass
 choreography to adopters.
-Canvas backgrounds, content surfaces, metadata badges, and inputs stay solid.
-Glass eligibility belongs only on contained interactive controls such as
-filled actions where the fallback remains equally usable.
+Use depth to express hierarchy: content provides a stable reading plane, while
+navigation and controls can occupy the system's floating interactive layer.
+Prefer native controls and their system-provided glass treatment. Package-owned
+filled actions apply glass to the complete padded label in a capsule so the
+foreground and interactive effect share one surface. Their opaque fallback
+continues to use the theme's control radius and semantic fills.
+
+Canvas backgrounds, content surfaces, metadata badges, and inputs currently
+use solid fills. Do not spread Liquid Glass across the content layer or add
+decorative shadows to every surface. Native grouping, shape, spacing, and
+semantic contrast can establish depth while preserving a quiet palette.
+Any new content material needs a concrete content role and separate visual
+review; it is not implied by enabling the glass policy.
+
+Directional previews are review material, not accepted appearance baselines.
+Changes to MHUI treatments do not imply changes to MHDesign's standard metrics.
 
 ## Placement Rules
 

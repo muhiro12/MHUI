@@ -106,13 +106,12 @@ the Xcode-native integration is unavailable or does not cover a check.
   MHDesign metrics, and optionally applies native tint. Screen structure and
   semantic control roles remain explicit because they cannot be inferred
   safely from arbitrary SwiftUI descendants.
-- Signature composition is the primary visual adoption path for overview,
-  dashboard, read-only detail, report, insight, and tool screens.
+- Native containers and stack-based composition are complete visual adoption
+  paths chosen by content hierarchy and required behavior.
 - `MHFeatureGrid` provides the optional leading-feature hierarchy for concise
   visual sets and owns compact-width and accessibility fallback behavior.
-- Native list and form chrome are secondary bridges for screens that materially
-  require those containers' behavior, not equal substitutes for signature
-  composition across an MHUI-forward product.
+- Native list and form chrome preserve platform grouping and control behavior,
+  including native grouped lists for read-only detail screens.
 - `MHGroupedRows` owns direct-child row chrome, while standalone and ordinary
   native-container rows use `mhRow()` explicitly.
 - `MHActionGroup` gives unstyled child buttons the secondary role. Other action
