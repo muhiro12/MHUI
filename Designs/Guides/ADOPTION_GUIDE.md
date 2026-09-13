@@ -261,9 +261,9 @@ row-styled view inside a composite child.
 
 ## Native List Bridge
 
-Use `mhListChrome` when concrete list behavior such as selection, swipe
-actions, edit mode, reordering, or hierarchical list navigation must remain
-intact. Do not choose it only because the current screen already uses `List`.
+Use `mhListChrome` for native grouping, including read-only details, or when
+selection, swipe actions, editing, reordering, and list navigation fit the
+screen. Choose it by the content and behavior the screen needs.
 
 ```swift
 import MHUI
@@ -295,8 +295,16 @@ struct SettingsList: View {
 }
 ```
 
-Use `.mhRow()` for ordinary native list rows. The `.mhKeyValue` labeled-content
-style already includes its own row behavior and compact-width fallback.
+Use `.mhRow()` only when a native row needs MHUI's explicit row treatment.
+Native sections and controls can keep their platform-owned insets and styling.
+The `.mhKeyValue` labeled-content style already includes its own row behavior
+and compact-width fallback; do not add another row treatment around it.
+
+For custom floating actions on iOS 26 and later, apply `safeAreaBar` directly
+to the `List` before `mhListChrome`. Place any `scrollEdgeEffectStyle` modifier
+on that same list. This keeps the scroll view and its bar inside MHUI's adaptive
+layout scope, allowing the native scroll edge effect to separate reading
+content from the fixed controls. The host app owns the actions and bar layout.
 
 ## Native Form Bridge
 
