@@ -13,7 +13,7 @@ struct MHSurfaceFill<ShapeType: Shape>: View {
                 shape
                     .fill(.clear)
                     .glassEffect(
-                        resolvedGlass,
+                        style.glass(theme: theme, colorScheme: colorScheme, isEnabled: true),
                         in: shape
                     )
             } else {
@@ -22,30 +22,6 @@ struct MHSurfaceFill<ShapeType: Shape>: View {
         } else {
             fallbackFill
         }
-    }
-
-    @available(iOS 26, macOS 26, watchOS 26, *)
-    private var resolvedGlass: Glass {
-        let glass = resolvedTintedGlass
-
-        return style.isGlassInteractive
-            ? glass.interactive()
-            : glass
-    }
-
-    @available(iOS 26, macOS 26, watchOS 26, *)
-    private var resolvedTintedGlass: Glass {
-        guard let glassTintRole = style.glassTintRole else {
-            return .regular
-        }
-
-        return .regular.tint(
-            theme.resolvedColor(
-                for: glassTintRole,
-                in: colorScheme
-            )
-            .opacity(style.glassTintOpacity)
-        )
     }
 
     @ViewBuilder private var fallbackFill: some View {

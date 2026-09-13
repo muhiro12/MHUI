@@ -27,8 +27,8 @@ public struct MHActionGroup<Content: View>: View {
         )
         let style = theme.resolvedActionGroupStyle(for: context)
 
-        // Keep custom glass backgrounds independent. A shared glass container
-        // can apply the material's vibrancy treatment to enabled labels.
+        // Keep action glass effects independent. A shared glass container
+        // previously reduced enabled-label contrast in this composition.
         return Group(subviews: content) { subviews in
             switch layout {
             case .automatic:

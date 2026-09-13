@@ -15,11 +15,42 @@ struct MHActionButtonChromeModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        content
+        let label = content
             .mhTextStyle(.bodyStrong, colorRole: style.foregroundRole)
             .padding(.horizontal, style.horizontalPadding)
             .padding(.vertical, style.verticalPadding)
             .frame(minHeight: style.minimumHeight)
+
+        return actionSurface(label: label)
+            .opacity(isEnabled ? 1 : style.disabledOpacity)
+    }
+
+    @ViewBuilder
+    private func actionSurface(label: some View) -> some View {
+        if let backgroundStyle = style.backgroundStyle,
+           backgroundStyle.usesGlass,
+           #available(iOS 26, macOS 26, watchOS 26, *) {
+            // Include the label in the native effect so its foreground and
+            // interactive response belong to the same surface as the glass.
+            label
+                .glassEffect(
+                    backgroundStyle.glass(
+                        theme: theme,
+                        colorScheme: colorScheme,
+                        isEnabled: isEnabled
+                    ),
+                    in: .capsule
+                )
+                .contentShape(.capsule)
+        } else {
+            fallbackSurface(label: label)
+                .contentShape(shape)
+                .opacity(isPressed ? style.pressedOpacity : 1)
+        }
+    }
+
+    private func fallbackSurface(label: some View) -> some View {
+        label
             .background {
                 if let backgroundStyle = style.backgroundStyle {
                     MHSurfaceFill(
@@ -44,8 +75,5 @@ struct MHActionButtonChromeModifier: ViewModifier {
                         )
                 }
             }
-            .contentShape(shape)
-            .opacity(isEnabled ? 1 : style.disabledOpacity)
-            .opacity(isPressed ? style.pressedOpacity : 1)
     }
 }
