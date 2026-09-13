@@ -112,8 +112,8 @@ the Xcode-native integration is unavailable or does not cover a check.
   visual sets and owns compact-width and accessibility fallback behavior.
 - Native list and form chrome preserve platform grouping and control behavior,
   including native grouped lists for read-only detail screens.
-- `MHGroupedRows` owns direct-child row chrome, while standalone and ordinary
-  native-container rows use `mhRow()` explicitly.
+- `MHGroupedRows` owns direct-child row chrome. Standalone and native-container
+  rows can use `mhRow()` when explicit MHUI treatment is needed.
 - `MHActionGroup` gives unstyled child buttons the secondary role. Other action
   roles remain explicit.
 - The source-only adoption sample remains outside the root package targets and

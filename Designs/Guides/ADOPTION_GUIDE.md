@@ -255,9 +255,9 @@ This route gives each layer a distinct responsibility:
 
 Do not add `.mhRow()` to every direct child of `MHGroupedRows`. The container
 already applies the row treatment. Standalone rows and rows in native
-containers still use `.mhRow()` explicitly. Each direct child should represent
-one row; place additional rows as sibling children instead of nesting another
-row-styled view inside a composite child.
+containers can use `.mhRow()` when they need that explicit treatment. Each
+direct child should represent one row; place additional rows as sibling
+children instead of nesting another row-styled view inside a composite child.
 
 ## Native List Bridge
 
@@ -535,8 +535,8 @@ MHGroupedRows {
 }
 ```
 
-Continue using `.mhRow()` for standalone rows and ordinary rows inside a native
-`List` or `Form`.
+Use `.mhRow()` for standalone rows and native `List` or `Form` rows only when
+they need MHUI's explicit treatment. Native rows can retain platform styling.
 
 ### Action Groups Default to Secondary
 
@@ -567,8 +567,8 @@ Before considering a screen adopted, verify all of the following:
 - `MHSummary` reads as a ruled editorial block rather than an elevated card.
 - Native `List` and `Form` sections use the shared header and footer views where
   shared hierarchy is desired.
-- Standalone and native-container rows use `mhRow`; grouped-row direct children
-  do not require it.
+- Standalone and native-container rows use `mhRow` only when its treatment is
+  needed; grouped-row direct children do not require it.
 - Every direct child of `MHGroupedRows` represents one row and does not contain
   another row-styled view.
 - The primary action is explicit and ordinary grouped actions use the secondary
