@@ -11,26 +11,26 @@ struct MHThemeTypographyTests {
         #else
         #expect(typography.screenTitle.font == .title2)
         #endif
-        #expect(typography.screenTitle.weight == .semibold)
+        #expect(typography.screenTitle.weight == .medium)
         #expect(typography.screenTitle.design == .standard)
         #if os(iOS)
         #expect(typography.summaryTitle.font == .title2)
-        #expect(typography.summaryTitle.weight == .semibold)
+        #expect(typography.summaryTitle.weight == .medium)
         #else
         #expect(typography.summaryTitle.font == .title3)
-        #expect(typography.summaryTitle.weight == .semibold)
+        #expect(typography.summaryTitle.weight == .medium)
         #endif
         #expect(typography.summaryTitle.design == .standard)
         #expect(typography.sectionTitle.font == .subheadline)
-        #expect(typography.sectionTitle.weight == .semibold)
+        #expect(typography.sectionTitle.weight == .medium)
         #expect(typography.bodyStrong.weight == .semibold)
         #expect(typography.supporting.weight == .regular)
-        #expect(typography.metadata.weight == .semibold)
+        #expect(typography.metadata.weight == .medium)
         #expect(typography.metadata.design == .monospaced)
-        #expect(typography.metadata.tracking == 0.9)
+        #expect(typography.metadata.tracking == 0.6)
         #expect(typography.caption.font == .caption)
-        #expect(typography.caption.weight == .medium)
+        #expect(typography.caption.weight == .regular)
         #expect(typography.caption.design == .monospaced)
-        #expect(typography.caption.tracking == 0.3)
+        #expect(typography.caption.tracking == 0.2)
     }
 }

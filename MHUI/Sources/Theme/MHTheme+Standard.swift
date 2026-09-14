@@ -8,21 +8,21 @@ public extension MHTheme {
     private static var standardTypography: Typography {
         .init(
             screenTitle: standardScreenTitle,
-            sectionTitle: .init(font: .subheadline, weight: .semibold),
+            sectionTitle: .init(font: .subheadline, weight: .medium),
             body: .init(font: .body, weight: .regular),
             bodyStrong: .init(font: .body, weight: .semibold),
             supporting: .init(font: .subheadline, weight: .regular),
             metadata: .init(
                 font: .footnote,
-                weight: .semibold,
+                weight: .medium,
                 design: .monospaced,
-                tracking: 0.9
+                tracking: 0.6
             ),
             caption: .init(
                 font: .caption,
-                weight: .medium,
+                weight: .regular,
                 design: .monospaced,
-                tracking: 0.3
+                tracking: 0.2
             ),
             summaryTitle: standardSummaryTitle
         )
@@ -30,17 +30,17 @@ public extension MHTheme {
 
     private static var standardScreenTitle: TextStyle {
         #if os(iOS)
-        .init(font: .largeTitle, weight: .semibold)
+        .init(font: .largeTitle, weight: .medium)
         #else
-        .init(font: .title2, weight: .semibold)
+        .init(font: .title2, weight: .medium)
         #endif
     }
 
     private static var standardSummaryTitle: TextStyle {
         #if os(iOS)
-        .init(font: .title2, weight: .semibold)
+        .init(font: .title2, weight: .medium)
         #else
-        .init(font: .title3, weight: .semibold)
+        .init(font: .title3, weight: .medium)
         #endif
     }
 
@@ -59,10 +59,10 @@ public extension MHTheme {
             compactKeyValueSpacing: 8,
             compactActionGroupSpacing: 12,
             screenCuePlacement: .top,
-            screenCueLength: 128,
+            screenCueLength: 72,
             screenCueThickness: 1,
             sectionCuePlacement: .top,
-            sectionCueLength: 64,
+            sectionCueLength: 32,
             sectionCueThickness: 1
         )
     }
@@ -70,14 +70,14 @@ public extension MHTheme {
     private static var standardDivider: Divider {
         .init(
             thickness: 1,
-            opacity: 0.45
+            opacity: 0.32
         )
     }
 
     private static var standardMotion: Motion {
         .init(
-            quick: 0.14,
-            regular: 0.22
+            quick: 0.18,
+            regular: 0.30
         )
     }
 
@@ -99,7 +99,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.5
+                borderOpacity: 0.35
             ),
             elevated: .init(
                 prefersGlass: false,
@@ -108,7 +108,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.65
+                borderOpacity: 0.48
             ),
             muted: .init(
                 prefersGlass: false,
@@ -117,7 +117,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.28
+                borderOpacity: 0.22
             )
         )
     }

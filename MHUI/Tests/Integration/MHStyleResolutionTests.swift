@@ -46,10 +46,10 @@ struct MHStyleResolutionTests {
         #expect(supporting.tracking == 0)
         #expect(metadata.textStyle == theme.typography.metadata)
         #expect(metadata.design == .monospaced)
-        #expect(metadata.tracking == 0.9)
-        #expect(caption.textStyle.weight == .medium)
+        #expect(metadata.tracking == 0.6)
+        #expect(caption.textStyle.weight == .regular)
         #expect(caption.design == .monospaced)
-        #expect(caption.tracking == 0.3)
+        #expect(caption.tracking == 0.2)
     }
 
     @Test
