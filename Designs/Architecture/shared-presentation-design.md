@@ -183,9 +183,9 @@ Changes to MHUI treatments do not imply changes to MHDesign's standard metrics.
   with an app-tested `onAccent` foreground.
 - Theme propagation does not remove explicit semantic role selection at the
   use site and does not globally replace native SwiftUI controls.
-- `MHSummary` stays in the package because its stronger system title role,
-  inset rhythm, and precise top rule form a reusable editorial summary without
-  presenting the content as an elevated card.
+- `MHSummary` stays in the package because its stronger system title role and
+  inset rhythm form a reusable editorial summary without presenting the
+  content as an elevated card.
 - `mhSection(...)` stays in the package because it establishes reusable
   hierarchy and surface composition without owning screen meaning.
 - `MHSectionHeader` and `MHSectionFooter` stay in the package because native

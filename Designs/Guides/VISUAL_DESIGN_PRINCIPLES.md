@@ -8,8 +8,8 @@ accessibility, hierarchy, and adaptation before adding an MHUI treatment.
 ## A Quiet Content Plane
 
 Content should feel stable, spacious, and easy to read. The standard theme uses
-luminous, low-chroma planes, dark text hierarchy, restrained geometry, and fine
-boundaries. It avoids decorative shadows, stacked frames, and color that does
+luminous, low-chroma planes, dark text hierarchy, restrained geometry, and
+generous whitespace. It avoids decorative shadows, stacked frames, and color that does
 not communicate meaning.
 
 Most screens should remain visually quiet. A surface earns distinction through
@@ -44,6 +44,10 @@ The content and functional layers should feel connected by light rather than by
 repeated decoration. Prefer softly differentiated planes, quiet boundaries,
 measured motion, and enough surrounding space for translucent controls to read
 as part of the environment.
+
+This continuity is MHUI's primary visual signature. Rules and outlines are
+structural aids, not identity marks: use them only where separation would
+otherwise be unclear, and let spacing, alignment, and tonal depth lead first.
 
 Color remains sparse. The host accent identifies primary action, focus, status,
 and native control state. Large areas of saturated color belong to meaningful

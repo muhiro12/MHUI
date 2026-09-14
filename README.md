@@ -144,7 +144,7 @@ struct OverviewScreen: View {
 defaults unstyled buttons to the secondary role, so only primary, quiet, or
 destructive exceptions need an explicit button style. Treat each direct child
 of `MHGroupedRows` as one row; do not nest another row-styled view inside it.
-`MHSummary` is a ruled editorial lead rather than an elevated card.
+`MHSummary` is a spacious editorial lead rather than an elevated card.
 Use its title for context that differs from the navigation title; omit the
 summary when it would only repeat the current item name. `mhBadge` styles one
 metadata token, while the host app owns metadata priority and adaptive badge

@@ -45,7 +45,7 @@ private struct MHGlassHarmonyPreview: View {
                     }
                 }
             }
-            .safeAreaInset(edge: .bottom) {
+            .mhPreviewActionBar {
                 MHActionGroup(layout: .vertical) {
                     Button {
                         isMarked.toggle()
@@ -65,6 +65,31 @@ private struct MHGlassHarmonyPreview: View {
                 .padding(.vertical, 12)
             }
         }
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func mhPreviewActionBar<Bar: View>(
+        @ViewBuilder content: () -> Bar
+    ) -> some View {
+        let bar = content()
+
+        #if os(iOS)
+        if #available(iOS 26, *) {
+            safeAreaBar(edge: .bottom) {
+                bar
+            }
+        } else {
+            safeAreaInset(edge: .bottom) {
+                bar
+            }
+        }
+        #else
+        safeAreaInset(edge: .bottom) {
+            bar
+        }
+        #endif
     }
 }
 
@@ -121,27 +146,27 @@ private struct MHGlassHarmonyFormPreview: View {
     }
 }
 
-#Preview("Direction / Glass Harmony / Detail / Light", traits: .fixedLayout(width: 390, height: 844)) {
+#Preview("Direction / Atmospheric Continuity / Detail / Light", traits: .fixedLayout(width: 390, height: 844)) {
     MHGlassHarmonyPreview()
         .mhPreviewTint()
 }
 
-#Preview("Direction / Glass Harmony / Detail / Dark", traits: .fixedLayout(width: 390, height: 844)) {
+#Preview("Direction / Atmospheric Continuity / Detail / Dark", traits: .fixedLayout(width: 390, height: 844)) {
     MHGlassHarmonyPreview()
         .mhPreviewTint(MHPreviewStyle.context(colorMode: .dark))
 }
 
-#Preview("Direction / Glass Harmony / Native Form", traits: .fixedLayout(width: 390, height: 844)) {
+#Preview("Direction / Atmospheric Continuity / Native Form", traits: .fixedLayout(width: 390, height: 844)) {
     MHGlassHarmonyFormPreview()
         .mhPreviewTint()
 }
 
-#Preview("Direction / Glass Harmony / Detail / Accessibility", traits: .fixedLayout(width: 390, height: 1_180)) {
+#Preview("Direction / Atmospheric Continuity / Accessibility", traits: .fixedLayout(width: 390, height: 1_180)) {
     MHGlassHarmonyPreview()
         .mhPreviewTint(MHPreviewStyle.context(typeScale: .accessibility))
 }
 
-#Preview("Direction / Glass Harmony / Detail / Opaque Fallback", traits: .fixedLayout(width: 390, height: 844)) {
+#Preview("Direction / Atmospheric Continuity / Fallback", traits: .fixedLayout(width: 390, height: 844)) {
     MHGlassHarmonyPreview()
         .mhPreviewTint(MHPreviewStyle.context(glassPolicy: .disabled))
 }
