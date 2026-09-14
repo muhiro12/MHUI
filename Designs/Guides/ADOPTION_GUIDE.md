@@ -407,6 +407,18 @@ treatment. Apply `.buttonStyle(.mhDestructive)` explicitly inside an
 
 ## Staged Adoption
 
+Before choosing a component route, separate the stable content plane from the
+floating functional layer. Routine collections and forms normally keep native
+container presentation. Use the signature composition when a concise overview,
+summary, leading visual, or insight genuinely benefits from deliberate
+proportion and whitespace.
+
+Liquid Glass belongs to navigation and important interactive chrome. Do not use
+it as a content background or apply it to rows, metadata, and static surfaces to
+make a screen feel more styled. Let low-chroma content planes provide continuity
+under native translucent controls, and reserve the host accent for semantic
+state, focus, and the primary action.
+
 Adopt one screen at a time in this order:
 
 1. Apply `.mhTheme(.standard)` near the app root and keep the app-owned

@@ -5,6 +5,7 @@ enum MHPreviewColorAsset {
     static let hostOnAccent = resource(named: "MHPreviewHostOnAccent")
     static let foregroundDark = resource(named: "MHPreviewForegroundDark")
     static let foregroundLight = resource(named: "MHPreviewForegroundLight")
+    static let atmosphericMedia = resource(named: "MHPreviewAtmosphericMedia")
 
     static let red = resource(named: "MHPreviewAccentRed")
     static let orange = resource(named: "MHPreviewAccentOrange")

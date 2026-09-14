@@ -10,11 +10,11 @@ private struct MHGlassHarmonyPreview: View {
             List {
                 Section {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Clothing")
+                        Text("Archive")
                             .mhTextStyle(.supporting, colorRole: .secondaryText)
                         Text(isMarked ? "Marked Today" : "Not marked")
                             .mhTextStyle(.summaryTitle)
-                        Text("The one I reach for on cold mornings.")
+                        Text("A quiet record held in changing light.")
                             .mhTextStyle(.supporting, colorRole: .secondaryText)
                     }
                     .padding(.vertical, 8)
@@ -31,7 +31,7 @@ private struct MHGlassHarmonyPreview: View {
                 }
             }
             .mhListChrome()
-            .navigationTitle("Black Wool Coat")
+            .navigationTitle("Field Note")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
@@ -70,18 +70,19 @@ private struct MHGlassHarmonyPreview: View {
 
 private struct MHGlassHarmonyPhotoPreview: View {
     var body: some View {
-        Image(systemName: "tshirt.fill")
-            .font(.system(size: 72))
-            .foregroundStyle(Color(MHPreviewColorAsset.foregroundLight))
+        Image(systemName: "photo.on.rectangle.angled")
+            .font(.system(size: 64, weight: .light))
+            .mhForegroundStyle(.primaryText)
+            .opacity(0.64)
             .frame(maxWidth: .infinity)
             .frame(height: 230)
-            .background(Color(MHPreviewColorAsset.teal))
-            .accessibilityLabel("Sample clothing image")
+            .background(Color(MHPreviewColorAsset.atmosphericMedia))
+            .accessibilityLabel("Sample archive image")
     }
 }
 
 private struct MHGlassHarmonyFormPreview: View {
-    @State private var name = "Black Wool Coat"
+    @State private var name = "Field Note"
     @State private var reminderEnabled = true
     @State private var reviewAfterDays = 14
 
@@ -90,7 +91,7 @@ private struct MHGlassHarmonyFormPreview: View {
             Form {
                 Section("Item") {
                     TextField("Name", text: $name)
-                    LabeledContent("Category", value: "Clothing")
+                    LabeledContent("Category", value: "Archive")
                 }
 
                 Section {
