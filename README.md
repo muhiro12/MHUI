@@ -5,8 +5,8 @@
 MHUI is a narrow runtime presentation kit for calm, tool-like SwiftUI apps.
 It is intentionally opinionated, intentionally small, and biased toward a
 shared visual language rather than product behavior. Its standard theme pairs
-system typography with bright achromatic planes, dark-ink hierarchy, neutral
-rules, restrained geometry, and selective use of the host app's accent color.
+system typography with luminous low-chroma planes, dark-ink hierarchy, quiet
+boundaries, restrained geometry, and selective use of the host app's accent color.
 
 The package exposes two library products:
 
@@ -25,7 +25,7 @@ MHUI owns shared presentation rules that can apply across sibling apps:
 - semantic theme application through `MHTheme.standard(...)`
 - text, surface, row, section, screen, and native-container chrome
 - action, key-value, row, cue, and compact-width fallback behavior
-- package-owned achromatic color assets and validation previews
+- package-owned low-chroma color assets and validation previews
 
 MHUI does not own host-app behavior:
 
@@ -36,10 +36,11 @@ MHUI does not own host-app behavior:
 - generic Foundation, SwiftData, image, string, numeric, or utility helpers
 - low-level Liquid Glass choreography APIs
 
-See [Architecture Guide](Designs/Architecture/ARCHITECTURE_GUIDE.md) for the
-full package boundary, preview rules, modifier guidance, and SwiftUtilities
-boundary decisions. See [Beta Release Notes](Designs/Guides/BETA_RELEASE_NOTES.md)
-for current beta changes and migration notes.
+See [Visual Design Principles](Designs/Guides/VISUAL_DESIGN_PRINCIPLES.md) for
+the presentation direction. See
+[Architecture Guide](Designs/Architecture/ARCHITECTURE_GUIDE.md) for the full
+package boundary, preview rules, modifier guidance, and SwiftUtilities boundary
+decisions.
 
 ## Repository Layout
 
@@ -171,7 +172,7 @@ list, or form styles. Those modifiers would also affect toolbars, menus, system
 presentations, and controls whose primary, secondary, or destructive role
 cannot be inferred at the root.
 
-The achromatic base and system typography remain package-owned defaults. The
+The low-chroma base and system typography remain package-owned defaults. The
 host app continues to own its identity through its `AccentColor` asset.
 
 ```swift
@@ -210,8 +211,8 @@ specialized native subtree outside those structural modifiers when it must
 retain an OS-standard presentation. A local theme or asset-backed `.tint(...)`
 is available when that subtree also needs a deliberate color exception.
 
-Decorative hierarchy stays achromatic: headings use dark ink and cues use
-neutral rules. Reserve the app accent for semantic status, focus, native
+Decorative hierarchy stays low-chroma: headings use dark ink and cues use quiet
+boundaries. Reserve the app accent for semantic status, focus, native
 controls, and the primary action instead of applying it to every heading or
 surface.
 
@@ -388,6 +389,7 @@ may write disposable cache and result data under `.build/ci/shared/`.
 ## Architecture Docs
 
 - [Adoption guide](Designs/Guides/ADOPTION_GUIDE.md)
+- [Visual design principles](Designs/Guides/VISUAL_DESIGN_PRINCIPLES.md)
 - [Current repository overview](Designs/Overviews/mhui-current-overview.md)
 - [Architecture guide](Designs/Architecture/ARCHITECTURE_GUIDE.md)
 - [Shared presentation design](Designs/Architecture/shared-presentation-design.md)

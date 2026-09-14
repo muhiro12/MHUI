@@ -59,6 +59,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 ## Architecture References
 
 - `Designs/Guides/ADOPTION_GUIDE.md`
+- `Designs/Guides/VISUAL_DESIGN_PRINCIPLES.md`
 - `Designs/Architecture/ARCHITECTURE_GUIDE.md`
 - `Designs/Architecture/shared-presentation-design.md`
 - `Designs/Decisions/0001-shared-package-source-of-truth.md`

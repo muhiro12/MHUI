@@ -10,7 +10,7 @@ It explains where new code should live when the same visual rule or container pa
 - `MHDesign/Sources` is the source of truth for shared spacing, corner radius, and generic screen or surface layout parameters that should work without MHUI chrome.
 - `MHUI/Sources` is the source of truth for shared presentation logic built on `MHDesign`.
 - `MHUI/Resources` is the source of truth for package-owned color and image
-  resources, including fully achromatic, paper-like standard base colors.
+  resources, including luminous, low-chroma standard base colors.
 - Host apps own their accent color; the standard theme resolves it from the app's `AccentColor` asset and uses it selectively for semantic emphasis.
 - Durable color and image values live in asset catalogs. Source code may map
   assets to semantic roles and derive treatment properties such as opacity,
@@ -43,8 +43,8 @@ Styled apps can apply the opinionated `MHTheme.standard` baseline unchanged or
 derive one app-owned theme from it. They apply that theme near the app root with
 `mhTheme(_:)` and use a narrower theme only for deliberate local exceptions.
 The unchanged baseline uses the host app's `AccentColor` asset.
-Its decorative hierarchy remains achromatic: dark-ink headings and neutral
-rules distinguish content without borrowing the app's brand color. Accent is
+Its decorative hierarchy remains low-chroma: dark-ink headings and quiet
+boundaries distinguish content without borrowing the app's brand color. Accent is
 reserved for semantic status, focus, native controls, and primary actions.
 
 The root theme is the canonical root-first styling entry point. It propagates
@@ -172,8 +172,8 @@ Changes to MHUI treatments do not imply changes to MHDesign's standard metrics.
 - Re-export of `MHDesign` in `MHUI` stays in the package because styled adopters should reach both layers through one import.
 - `MHTheme.standard()` and `MHTheme.standard(accent:)` stay in the package
   because they define a reusable semantic baseline rather than one app's
-  branding system. The baseline uses package-owned bright achromatic planes,
-  dark-ink hierarchy, neutral rules, host-provided accent, system
+  branding system. The baseline uses package-owned luminous low-chroma planes,
+  dark-ink hierarchy, quiet boundaries, host-provided accent, system
   typography, and restrained geometry.
 - Public theme groups let an app configure semantic values once without moving
   role selection or product meaning into the package.
