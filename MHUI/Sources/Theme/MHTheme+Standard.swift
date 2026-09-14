@@ -99,7 +99,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.35
+                borderOpacity: 0.14
             ),
             elevated: .init(
                 prefersGlass: false,
@@ -108,7 +108,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.48
+                borderOpacity: 0.24
             ),
             muted: .init(
                 prefersGlass: false,
@@ -117,7 +117,7 @@ public extension MHTheme {
                 glassTintColorRole: nil,
                 glassTintOpacity: 0,
                 borderColorRole: .border,
-                borderOpacity: 0.22
+                borderOpacity: 0
             )
         )
     }

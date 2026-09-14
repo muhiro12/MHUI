@@ -91,10 +91,10 @@ struct MHThemeTests {
         #expect(theme.surfaces.elevated.fallbackColorRole == .surfaceElevated)
         #expect(theme.surfaces.muted.fallbackColorRole == .surfaceMuted)
         #expect(theme.surfaces.standard.glassTintColorRole == nil)
-        #expect(theme.surfaces.standard.borderOpacity == 0.35)
-        #expect(theme.surfaces.elevated.borderOpacity == 0.48)
+        #expect(theme.surfaces.standard.borderOpacity == 0.14)
+        #expect(theme.surfaces.elevated.borderOpacity == 0.24)
         #expect(theme.surfaces.muted.glassTintColorRole == nil)
-        #expect(theme.surfaces.muted.borderOpacity == 0.22)
+        #expect(theme.surfaces.muted.borderOpacity == 0)
         let primary = theme.resolvedActionButtonStyle(
             for: .primary,
             context: .init(),

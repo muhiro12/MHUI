@@ -1,12 +1,7 @@
 import SwiftUI
 
-/// Presents a concise screen summary with editorial hierarchy and a precise rule.
+/// Presents a concise screen summary with editorial hierarchy and generous spacing.
 public struct MHSummary<Accessory: View>: View {
-    @Environment(\.mhTheme)
-    private var theme
-    @Environment(\.colorScheme)
-    private var colorScheme
-
     private let metadata: Text?
     private let title: Text
     private let supporting: Text?
@@ -21,17 +16,6 @@ public struct MHSummary<Accessory: View>: View {
         )
         .frame(maxWidth: .infinity, alignment: .leading)
         .mhSurfaceInset()
-        .overlay(alignment: .top) {
-            Rectangle()
-                .fill(
-                    theme.resolvedColor(
-                        for: .primaryText,
-                        in: colorScheme
-                    )
-                )
-                .frame(height: theme.divider.thickness)
-                .accessibilityHidden(true)
-        }
     }
 
     /// Creates a summary with an accessory such as a status badge or compact control.
