@@ -2,7 +2,7 @@
 import SwiftUI
 
 // Directional studies, not accepted snapshots or app-owned screen components.
-private struct MHGlassHarmonyPreview: View {
+private struct MHAtmosphericContinuityPreview: View {
     @State private var isMarked = false
 
     var body: some View {
@@ -21,7 +21,7 @@ private struct MHGlassHarmonyPreview: View {
                 }
 
                 Section {
-                    MHGlassHarmonyPhotoPreview()
+                    MHAtmosphericMediaPreview()
                         .listRowInsets(EdgeInsets())
                 }
 
@@ -93,7 +93,7 @@ private extension View {
     }
 }
 
-private struct MHGlassHarmonyPhotoPreview: View {
+private struct MHAtmosphericMediaPreview: View {
     var body: some View {
         Image(systemName: "photo.on.rectangle.angled")
             .font(.system(size: 64, weight: .light))
@@ -106,7 +106,7 @@ private struct MHGlassHarmonyPhotoPreview: View {
     }
 }
 
-private struct MHGlassHarmonyFormPreview: View {
+private struct MHAtmosphericContinuityFormPreview: View {
     @State private var name = "Field Note"
     @State private var reminderEnabled = true
     @State private var reviewAfterDays = 14
@@ -147,27 +147,37 @@ private struct MHGlassHarmonyFormPreview: View {
 }
 
 #Preview("Direction / Atmospheric Continuity / Detail / Light", traits: .fixedLayout(width: 390, height: 844)) {
-    MHGlassHarmonyPreview()
+    MHAtmosphericContinuityPreview()
         .mhPreviewTint()
 }
 
 #Preview("Direction / Atmospheric Continuity / Detail / Dark", traits: .fixedLayout(width: 390, height: 844)) {
-    MHGlassHarmonyPreview()
+    MHAtmosphericContinuityPreview()
         .mhPreviewTint(MHPreviewStyle.context(colorMode: .dark))
 }
 
 #Preview("Direction / Atmospheric Continuity / Native Form", traits: .fixedLayout(width: 390, height: 844)) {
-    MHGlassHarmonyFormPreview()
+    MHAtmosphericContinuityFormPreview()
         .mhPreviewTint()
 }
 
 #Preview("Direction / Atmospheric Continuity / Accessibility", traits: .fixedLayout(width: 390, height: 1_180)) {
-    MHGlassHarmonyPreview()
+    MHAtmosphericContinuityPreview()
         .mhPreviewTint(MHPreviewStyle.context(typeScale: .accessibility))
 }
 
 #Preview("Direction / Atmospheric Continuity / Fallback", traits: .fixedLayout(width: 390, height: 844)) {
-    MHGlassHarmonyPreview()
+    MHAtmosphericContinuityPreview()
         .mhPreviewTint(MHPreviewStyle.context(glassPolicy: .disabled))
+}
+
+#Preview("Direction / Atmospheric Continuity / Dark Fallback", traits: .fixedLayout(width: 390, height: 844)) {
+    MHAtmosphericContinuityPreview()
+        .mhPreviewTint(
+            MHPreviewStyle.context(
+                colorMode: .dark,
+                glassPolicy: .disabled
+            )
+        )
 }
 // swiftlint:enable closure_body_length file_types_order no_magic_numbers one_declaration_per_file
