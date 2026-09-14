@@ -20,7 +20,7 @@ Related documents:
 | Layer | Owns | Must not own |
 | --- | --- | --- |
 | `MHDesign` (`MHDesign/Sources`) | Shared spacing, corner-radius, generic screen or surface layout metrics, the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome, and sidecar tuning previews backed by minimal preview helpers | Product copy, business rules, navigation meaning, view-specific styling behavior, or MHUI-owned component chrome |
-| `MHUI` (`MHUI/Sources`, `MHUI/Resources`) | Semantic theme application, standard theme assets, styling modifiers, layout primitives, row and action fallback rules, key-value fallback, cue geometry, screen chrome, colocated development previews, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets, generic Foundation or SwiftData utilities |
+| `MHUI` (`MHUI/Sources`, `MHUI/Resources`) | Semantic theme application, standard theme assets, styling modifiers, layout primitives, row and action fallback rules, key-value fallback, screen chrome, colocated development previews, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets, generic Foundation or SwiftData utilities |
 | Host app or sibling app | Feature state, domain rules, platform integrations, app-specific navigation, product composition | Rebuilding shared MHUI primitives as local forks |
 | Source-only adoption sample (`Examples/MHUIAdoptionSample`) | Public API compile checks, previews, and sample usage | Becoming the source of truth or hiding canonical styling outside `MHUI/Sources` |
 
@@ -191,7 +191,7 @@ Neither should become the place where new shared styling rules are invented befo
 
    Minimal plan:
    - Keep raw shared metrics in `MHDesign` when they should work without MHUI chrome.
-   - Keep row, action, key-value, and cue tuning in `MHUI` even when the implementation is numeric.
+   - Keep row, action, and key-value tuning in `MHUI` even when the implementation is numeric.
    - Keep MHUI APIs generic enough to compose multiple sibling products and re-export `MHDesign` for styled adopters.
    - Keep feature labels, app navigation meaning, and business-state branching outside the package.
    - Keep Liquid Glass use to package-owned chrome: grouped glass containers,

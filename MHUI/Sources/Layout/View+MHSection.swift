@@ -1,7 +1,7 @@
 import SwiftUI
 
 public extension View {
-    /// Wraps content in an MHUI section with heading cue and calm surface treatment.
+    /// Wraps content in an MHUI section with calm hierarchy and surface treatment.
     func mhSection(
         title: Text,
         supporting: Text? = nil
@@ -16,7 +16,7 @@ public extension View {
         )
     }
 
-    /// Wraps content in an MHUI section with heading cue and accessory content.
+    /// Wraps content in an MHUI section with accessory content.
     func mhSection<Accessory: View>(
         title: Text,
         supporting: Text? = nil,
@@ -32,7 +32,7 @@ public extension View {
         )
     }
 
-    /// Wraps content in an MHUI section with heading cue and footer content.
+    /// Wraps content in an MHUI section with footer content.
     func mhSection<Footer: View>(
         title: Text,
         supporting: Text? = nil,
@@ -48,7 +48,7 @@ public extension View {
         )
     }
 
-    /// Wraps content in an MHUI section with heading cue, accessory, and footer content.
+    /// Wraps content in an MHUI section with accessory and footer content.
     func mhSection<Accessory: View, Footer: View>(
         title: Text,
         supporting: Text? = nil,

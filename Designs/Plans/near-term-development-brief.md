@@ -25,7 +25,7 @@ MHDesign consumers safe.
    - technical: clipping, adaptation, Dynamic Type, appearance, contrast,
      accessibility, input, and native container behavior;
    - visual: information hierarchy, density, spacing rhythm, typography,
-     surfaces, cues, actions, native character, and room for app identity.
+     surfaces, actions, native character, and room for app identity.
 3. Describe the desired output and acceptance criteria through explicit visual
    review. Do not treat the current standard theme as correct merely because it
    compiles or passes structural tests.

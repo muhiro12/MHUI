@@ -27,7 +27,7 @@ It explains where new code should live when the same visual rule or container pa
 | Concern | Lives in | Examples |
 | --- | --- | --- |
 | Shared design parameters | `MHDesign/Sources` | `MHDesignMetrics`, spacing, corner radii, readable widths, generic screen or surface insets, compact thresholds, SwiftUI environment bridge |
-| Shared presentation logic | `MHUI/Sources` | `MHTheme`, semantic roles, text styles, row and action fallback, key-value fallback, cue geometry, surface chrome, grouped rows, section chrome, screen chrome, and re-export of `MHDesign` |
+| Shared presentation logic | `MHUI/Sources` | `MHTheme`, semantic roles, text styles, row and action fallback, key-value fallback, surface chrome, grouped rows, section chrome, screen chrome, and re-export of `MHDesign` |
 | Package resource assets | `MHUI/Resources` | Achromatic background, surface, border, dark-ink text, status, fallback foreground, and preview assets referenced by semantic roles |
 | Package preview support | `MHDesign/Sources/PreviewSupport`, `MHUI/Sources/PreviewSupport`, plus local preview files beside the tuned API | minimal MHDesign preview helpers, `MHPreviewStyle`, `MHPreviewCatalog`, validation catalogs for compact width and native-container chrome, plus local previews kept beside the API they tune |
 | Host app composition | App repositories that consume MHUI | feature screens, navigation state, form state, domain-driven copy, feature-specific layouts |
@@ -93,7 +93,6 @@ The following types and helpers are the current shared entry points for package-
 - `MHTheme.Surfaces`
 - `MHColorReference`
 - `MHFontDesign`
-- `MHCuePlacement`
 - `MHTextRole`
 - `MHColorRole`
 - `mhTheme(_:)`
@@ -195,7 +194,9 @@ Changes to MHUI treatments do not imply changes to MHDesign's standard metrics.
 - `MHActionGroup` owns adaptive layout and treats unstyled child buttons as
   secondary actions. Primary, quiet, and destructive roles remain explicit at
   the call site.
-- Row insets, compact action padding, key-value fallback widths, and cue geometry stay in `MHUI` because those values only make sense alongside MHUI presentation behavior.
+- Row insets, compact action padding, and key-value fallback widths stay in
+  `MHUI` because those values only make sense alongside MHUI presentation
+  behavior.
 - `mhListChrome(...)` and `mhFormChrome(...)` stay in the package because they shape container presentation without needing app-specific business state.
 - MHDesign tuning previews stay beside the metrics files they tune, with only minimal helper views in `MHDesign/Sources/PreviewSupport`.
 - Single-feature previews stay next to the implementation file so day-to-day tuning starts from the edited API instead of a detached preview index.

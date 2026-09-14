@@ -77,12 +77,6 @@ struct MHThemeTests {
         #expect(theme.presentation.compactKeyValueMinimumValueWidth == 120)
         #expect(theme.presentation.compactKeyValueSpacing == 8)
         #expect(theme.presentation.compactActionGroupSpacing == 12)
-        #expect(theme.presentation.screenCuePlacement == .top)
-        #expect(theme.presentation.screenCueLength == 0)
-        #expect(theme.presentation.screenCueThickness == 1)
-        #expect(theme.presentation.sectionCuePlacement == .top)
-        #expect(theme.presentation.sectionCueLength == 0)
-        #expect(theme.presentation.sectionCueThickness == 1)
         #expect(!theme.surfaces.canvas.prefersGlass)
         #expect(!theme.surfaces.standard.prefersGlass)
         #expect(!theme.surfaces.elevated.prefersGlass)
@@ -227,10 +221,6 @@ struct MHThemeTests {
         #expect(
             values.mhTheme.resolvedActionGroupStyle(for: compactContext).spacing
                 == customTheme.presentation.compactActionGroupSpacing
-        )
-        #expect(
-            values.mhTheme.resolvedCueStyle(for: .screen).length
-                == customTheme.presentation.screenCueLength
         )
         #expect(values.mhTheme.layout.surface.insetHorizontal == 28)
         #expect(values.mhTheme.layout.control.minimumTouchTarget == 52)

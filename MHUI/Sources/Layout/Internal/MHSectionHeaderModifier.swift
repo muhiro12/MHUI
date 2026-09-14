@@ -3,26 +3,11 @@ import SwiftUI
 struct MHSectionHeaderModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.mhAdaptiveLayoutContext)
-    private var adaptiveLayoutContext
-    @Environment(\.horizontalSizeClass)
-    private var horizontalSizeClass
-    @Environment(\.dynamicTypeSize)
-    private var dynamicTypeSize
 
     func body(content: Content) -> some View {
-        let context = adaptiveLayoutContext.resolved(
-            with: horizontalSizeClass,
-            dynamicTypeSize: dynamicTypeSize,
-            threshold: theme.layout.compactWidthThreshold
-        )
-        let style = theme.resolvedSectionChromeStyle(for: context)
-
-        return MHCueBlock(style: style.cueStyle) {
-            content
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(.bottom, style.footerTopSpacing)
-        .textCase(nil)
+        content
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.bottom, theme.spacing.inline)
+            .textCase(nil)
     }
 }

@@ -84,9 +84,10 @@ system typography. It resolves its accent from the host app's `AccentColor`
 asset, so each app can keep its own identity without changing the neutral
 canvas.
 
-Dark-ink headings and neutral rules own the decorative hierarchy. Reserve the
-app accent for semantic status, focus, native controls, and the primary action.
-Do not use it as the default color for headings, metadata, rules, or surfaces.
+Dark-ink headings, proportion, whitespace, and tonal depth establish the
+hierarchy. Reserve the app accent for semantic status, focus, native controls,
+and the primary action. Do not use it as the default color for headings,
+metadata, rules, or surfaces.
 
 If an app needs a dedicated accent pair, define both colors in its asset
 catalog and pass the generated resource symbols to
@@ -119,7 +120,7 @@ not from a requirement to display custom package chrome.
 
 Native containers are complete styled adoption paths. Add shared section
 headers, footers, and row treatments only where they improve hierarchy;
-native sections do not need duplicate cues or frames.
+native sections do not need duplicate decoration or frames.
 
 Signature composition does not imply replacement controls. Keep native
 buttons, toggles, pickers, text fields, navigation, toolbars, search, sheets,
@@ -247,8 +248,7 @@ This route gives each layer a distinct responsibility:
   whitespace rather than an elevated card.
 - `MHFeatureGrid` preserves one leading feature and a concise supporting set
   across regular width, compact width, and accessibility text sizes.
-- `mhSection` owns supporting text, content surface, inset, optional footer,
-  and an opt-in heading cue.
+- `mhSection` owns supporting text, content surface, inset, and optional footer.
 - `MHGroupedRows` applies row chrome and separators to its direct children.
 - `mhInputChrome` gives native text-entry controls semantic input treatment.
 - `MHActionGroup` owns action spacing and horizontal-to-vertical fallback.
@@ -358,7 +358,7 @@ detached inputs in stack-based or custom compositions.
 | `mhTheme` | Propagates the complete theme, MHDesign metrics, and optional native tint | Select screen structure and roles that cannot be inferred |
 | `MHSummary` | Spacious editorial summary and stronger system title hierarchy | Provide concise screen context and optional accessory |
 | `MHFeatureGrid` | Adaptive leading-feature and supporting-content hierarchy | Select the primary feature, supporting set, and semantic treatments |
-| `MHSectionHeader` | System hierarchy with an opt-in section cue | Provide product wording and optional accessory |
+| `MHSectionHeader` | System hierarchy for native sections | Provide product wording and optional accessory |
 | `MHSectionFooter` | Quiet explanatory text | Provide concise supporting guidance |
 | `MHGroupedRows` | Direct-child row chrome and separators | Provide native controls or semantic row content |
 | `MHActionGroup` | Secondary style and adaptive layout | Mark primary, quiet, and destructive exceptions |
@@ -439,6 +439,14 @@ golden baselines merely because they compile or render successfully.
 
 ## Migration from 1.11
 
+### Heading Cues Are Removed
+
+MHUI no longer draws decorative rules around screen and section headings.
+Remove `MHCuePlacement` and the `screenCue*` and `sectionCue*` arguments from
+custom `MHTheme.Presentation` values. Use spacing, type hierarchy, and semantic
+surface roles for shared structure; keep any content-specific divider in the
+host composition where its meaning is clear.
+
 ### Native Containers Keep Their Full Viewport
 
 `mhListChrome` and `mhFormChrome` no longer accept a title, subtitle, or header
@@ -496,13 +504,13 @@ values. Explicit app-owned color and metric overrides remain in control.
 ### Standard Styling Is Achromatic
 
 The standard background, surface, border, and text assets form a restrained
-palette. Optional screen and section cues use semantic neutral colors instead
-of the app accent.
+palette. Layout hierarchy uses proportion, whitespace, and tonal depth instead
+of decorative heading marks.
 
 The app still owns `AccentColor`, but the standard composition uses it
 selectively for semantic status, focus, native controls, and primary actions.
 Review custom color overrides and visual snapshots that assumed warm surfaces
-or accent-colored decorative cues.
+or accent-colored decoration.
 
 ### Editorial Summaries Are New
 
@@ -564,7 +572,7 @@ Before considering a screen adopted, verify all of the following:
 - The app applies one root theme and still owns its accent color.
 - Standard base planes remain low-chroma unless the app deliberately overrides
   a semantic color.
-- Optional decorative cues and structural rules do not use the app accent.
+- Structural rules do not use the app accent.
 - Accent appears selectively for semantic status, focus, native controls, and
   the primary action.
 - The screen uses one screen-level route without nested scrolling containers.

@@ -2,7 +2,6 @@ extension MHTheme {
     func resolvedScreenChromeStyle(
         for context: MHAdaptiveLayoutContext
     ) -> MHResolvedScreenChromeStyle {
-        let cue = resolvedCueStyle(for: .screen)
         let isCompactWidth = context.isCompactWidth(
             threshold: layout.compactWidthThreshold
         )
@@ -19,12 +18,7 @@ extension MHTheme {
                 : layout.screen.contentInsetVertical,
             contentSpacing: isCompactWidth
                 ? layout.screen.compactContentSpacing
-                : layout.screen.contentSpacing,
-            cueColorRole: cue.colorRole,
-            cuePlacement: cue.placement,
-            cueLength: cue.length,
-            cueThickness: cue.thickness,
-            cueSpacing: cue.spacing
+                : layout.screen.contentSpacing
         )
     }
 

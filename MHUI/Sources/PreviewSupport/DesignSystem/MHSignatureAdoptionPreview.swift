@@ -129,7 +129,7 @@ private struct MHSignatureAdoptionPreview: View {
             MHEditorialGridPreview()
                 .mhSection(
                     "Index",
-                    supporting: "Cards keep native text, restrained rules, and host-owned accent color."
+                    supporting: "Cards keep native text, quiet depth, and host-owned accent color."
                 )
 
             MHGroupedRows {

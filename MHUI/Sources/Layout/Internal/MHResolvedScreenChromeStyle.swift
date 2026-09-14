@@ -5,9 +5,4 @@ struct MHResolvedScreenChromeStyle: Sendable, Equatable {
     var horizontalMargin: CGFloat
     var verticalPadding: CGFloat
     var contentSpacing: CGFloat
-    var cueColorRole: MHColorRole
-    var cuePlacement: MHCuePlacement
-    var cueLength: CGFloat
-    var cueThickness: CGFloat
-    var cueSpacing: CGFloat
 }

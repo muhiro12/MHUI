@@ -1,7 +1,7 @@
 import CoreGraphics
 
 public extension MHTheme {
-    /// Layout values for rows, actions, key-value fallback, and visual cues.
+    /// Layout values for rows, actions, and key-value fallback behavior.
     struct Presentation: Sendable, Equatable {
         public var rowHorizontalInset: CGFloat
         public var rowVerticalPadding: CGFloat
@@ -15,26 +15,6 @@ public extension MHTheme {
         public var compactKeyValueMinimumValueWidth: CGFloat
         public var compactKeyValueSpacing: CGFloat
         public var compactActionGroupSpacing: CGFloat
-        /// The edge where the screen heading cue appears.
-        public var screenCuePlacement: MHCuePlacement
-
-        /// The screen heading cue's length along its primary axis. Set to zero to hide it.
-        /// A leading cue grows beyond this minimum to match its content height.
-        public var screenCueLength: CGFloat
-
-        /// The screen heading cue's thickness across its secondary axis.
-        public var screenCueThickness: CGFloat
-
-        /// The edge where section heading cues appear.
-        public var sectionCuePlacement: MHCuePlacement
-
-        /// A section heading cue's length along its primary axis. Set to zero to hide it.
-        /// A leading cue grows beyond this minimum to match its content height.
-        public var sectionCueLength: CGFloat
-
-        /// A section heading cue's thickness across its secondary axis.
-        public var sectionCueThickness: CGFloat
-
         /// Creates a complete MHUI presentation configuration.
         public init(
             rowHorizontalInset: CGFloat,
@@ -48,13 +28,7 @@ public extension MHTheme {
             regularKeyValueMinimumValueWidth: CGFloat,
             compactKeyValueMinimumValueWidth: CGFloat,
             compactKeyValueSpacing: CGFloat,
-            compactActionGroupSpacing: CGFloat,
-            screenCuePlacement: MHCuePlacement,
-            screenCueLength: CGFloat,
-            screenCueThickness: CGFloat,
-            sectionCuePlacement: MHCuePlacement,
-            sectionCueLength: CGFloat,
-            sectionCueThickness: CGFloat
+            compactActionGroupSpacing: CGFloat
         ) {
             self.rowHorizontalInset = rowHorizontalInset
             self.rowVerticalPadding = rowVerticalPadding
@@ -68,12 +42,6 @@ public extension MHTheme {
             self.compactKeyValueMinimumValueWidth = compactKeyValueMinimumValueWidth
             self.compactKeyValueSpacing = compactKeyValueSpacing
             self.compactActionGroupSpacing = compactActionGroupSpacing
-            self.screenCuePlacement = screenCuePlacement
-            self.screenCueLength = screenCueLength
-            self.screenCueThickness = screenCueThickness
-            self.sectionCuePlacement = sectionCuePlacement
-            self.sectionCueLength = sectionCueLength
-            self.sectionCueThickness = sectionCueThickness
         }
     }
 }

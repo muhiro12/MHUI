@@ -24,7 +24,7 @@ MHUI owns shared presentation rules that can apply across sibling apps:
 
 - semantic theme application through `MHTheme.standard(...)`
 - text, surface, row, section, screen, and native-container chrome
-- action, key-value, row, cue, and compact-width fallback behavior
+- action, key-value, row, and compact-width fallback behavior
 - package-owned low-chroma color assets and validation previews
 
 MHUI does not own host-app behavior:
@@ -211,8 +211,8 @@ specialized native subtree outside those structural modifiers when it must
 retain an OS-standard presentation. A local theme or asset-backed `.tint(...)`
 is available when that subtree also needs a deliberate color exception.
 
-Decorative hierarchy stays low-chroma: headings use dark ink and cues use quiet
-boundaries. Reserve the app accent for semantic status, focus, native
+Decorative hierarchy stays low-chroma and relies on proportion, whitespace,
+and tonal depth. Reserve the app accent for semantic status, focus, native
 controls, and the primary action instead of applying it to every heading or
 surface.
 
@@ -287,8 +287,7 @@ Swift package and does not require an Xcode project.
 
 `MHTheme.standard` is ready to use as a package-owned visual baseline. It keeps
 Apple's system type styles and native controls while giving apps a distinct
-bright surface hierarchy, measured spacing, dark-ink headings, and neutral
-leading-edge rules.
+luminous surface hierarchy, measured spacing, and dark-ink headings.
 
 Start with that baseline and customize its public semantic groups:
 
@@ -298,7 +297,7 @@ Start with that baseline and customize its public semantic groups:
   `summaryTitle` role, and optional system monospaced metadata; action buttons
   use `bodyStrong`
 - `metrics` for shared spacing, corner radius, and generic layout
-- `presentation` for MHUI row, action, key-value, and cue placement
+- `presentation` for MHUI row, action, and key-value fallback behavior
 - `divider`, `motion`, and `surfaces` for package-owned treatments
 
 Use `MHTheme.standard(metrics:)` when an app already has an `MHDesignMetrics`

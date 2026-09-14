@@ -10,9 +10,6 @@ private enum MHSignatureCompositionPreviewLayout {
     static let standardPlateAspectRatio: CGFloat = 1
     static let largePlateAspectRatio: CGFloat = 1.25
     static let widePlateAspectRatio: CGFloat = 1.45
-    static let standardRuleWidth: CGFloat = 24
-    static let largeRuleWidth: CGFloat = 40
-    static let wideRuleWidth: CGFloat = 64
 }
 
 private struct MHSignatureCompositionPreview: View {
@@ -111,13 +108,6 @@ private struct MHSignaturePlate: View {
                         .stroke(borderColor, lineWidth: theme.divider.thickness)
                         .accessibilityHidden(true)
                 }
-                .overlay(alignment: .bottomLeading) {
-                    Rectangle()
-                        .fill(accentColor)
-                        .frame(width: item.ruleWidth, height: theme.divider.thickness)
-                        .padding(theme.spacing.control)
-                        .accessibilityHidden(true)
-                }
                 .aspectRatio(item.aspectRatio, contentMode: .fit)
 
             VStack(
@@ -139,13 +129,6 @@ private struct MHSignaturePlate: View {
     private var fillColor: Color {
         theme.resolvedColor(
             for: item.prominence == .large ? .surfaceMuted : .surfaceElevated,
-            in: colorScheme
-        )
-    }
-
-    private var accentColor: Color {
-        theme.resolvedColor(
-            for: item.prominence == .wide ? .accent : .border,
             in: colorScheme
         )
     }
@@ -174,17 +157,6 @@ private struct MHSignaturePlateItem {
             MHSignatureCompositionPreviewLayout.widePlateAspectRatio
         }
     }
-
-    var ruleWidth: CGFloat {
-        switch prominence {
-        case .standard:
-            MHSignatureCompositionPreviewLayout.standardRuleWidth
-        case .large:
-            MHSignatureCompositionPreviewLayout.largeRuleWidth
-        case .wide:
-            MHSignatureCompositionPreviewLayout.wideRuleWidth
-        }
-    }
 }
 
 private enum MHSignaturePlateProminence: Equatable {
@@ -208,7 +180,7 @@ private struct MHSignatureCompositionSection: View {
         }
         .mhSection(
             "Details",
-            supporting: "System type, restrained rules, and semantic surfaces stay reusable."
+            supporting: "System type, measured spacing, and semantic surfaces stay reusable."
         )
     }
 }

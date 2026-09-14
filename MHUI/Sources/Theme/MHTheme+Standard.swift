@@ -57,13 +57,7 @@ public extension MHTheme {
             regularKeyValueMinimumValueWidth: 160,
             compactKeyValueMinimumValueWidth: 120,
             compactKeyValueSpacing: 8,
-            compactActionGroupSpacing: 12,
-            screenCuePlacement: .top,
-            screenCueLength: 0,
-            screenCueThickness: 1,
-            sectionCuePlacement: .top,
-            sectionCueLength: 0,
-            sectionCueThickness: 1
+            compactActionGroupSpacing: 12
         )
     }
 
