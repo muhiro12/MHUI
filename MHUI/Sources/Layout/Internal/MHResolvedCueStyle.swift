@@ -6,4 +6,8 @@ struct MHResolvedCueStyle: Sendable, Equatable {
     var length: CGFloat
     var thickness: CGFloat
     var spacing: CGFloat
+
+    var isVisible: Bool {
+        length > 0 && thickness > 0
+    }
 }

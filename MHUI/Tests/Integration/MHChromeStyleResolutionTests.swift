@@ -18,18 +18,20 @@ struct MHChromeStyleResolutionTests {
         #expect(screenCue.placement == theme.presentation.screenCuePlacement)
         #expect(screenCue.length == theme.presentation.screenCueLength)
         #expect(screenCue.thickness == theme.presentation.screenCueThickness)
+        #expect(!screenCue.isVisible)
         #expect(sectionCue.colorRole == .border)
         #expect(sectionCue.placement == .top)
         #expect(sectionCue.placement == theme.presentation.sectionCuePlacement)
         #expect(sectionCue.length == theme.presentation.sectionCueLength)
         #expect(sectionCue.thickness == theme.presentation.sectionCueThickness)
+        #expect(!sectionCue.isVisible)
         #expect(screen.cueStyle == screenCue)
         #expect(section.cueStyle == sectionCue)
         #expect(section.contentSpacing == theme.spacing.control)
     }
 
     @Test
-    func top_cue_configuration_preserves_legacy_geometry_intent() {
+    func custom_top_cue_configuration_remains_available() {
         var theme = MHTheme.standard
         theme.presentation.screenCuePlacement = .top
         theme.presentation.screenCueLength = 24
@@ -40,5 +42,6 @@ struct MHChromeStyleResolutionTests {
         #expect(cue.placement == .top)
         #expect(cue.length == 24)
         #expect(cue.thickness == 3)
+        #expect(cue.isVisible)
     }
 }

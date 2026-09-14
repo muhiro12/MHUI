@@ -10,6 +10,15 @@ struct MHCueBlock<Content: View>: View {
     let content: Content
 
     var body: some View {
+        if style.isVisible {
+            cueContent
+        } else {
+            content
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    @ViewBuilder private var cueContent: some View {
         let cueColor = theme.resolvedColor(
             for: style.colorRole,
             in: colorScheme

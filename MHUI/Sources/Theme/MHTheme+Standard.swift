@@ -59,10 +59,10 @@ public extension MHTheme {
             compactKeyValueSpacing: 8,
             compactActionGroupSpacing: 12,
             screenCuePlacement: .top,
-            screenCueLength: 72,
+            screenCueLength: 0,
             screenCueThickness: 1,
             sectionCuePlacement: .top,
-            sectionCueLength: 32,
+            sectionCueLength: 0,
             sectionCueThickness: 1
         )
     }

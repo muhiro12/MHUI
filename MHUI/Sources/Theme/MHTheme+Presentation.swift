@@ -18,7 +18,7 @@ public extension MHTheme {
         /// The edge where the screen heading cue appears.
         public var screenCuePlacement: MHCuePlacement
 
-        /// The screen heading cue's length along its primary axis.
+        /// The screen heading cue's length along its primary axis. Set to zero to hide it.
         /// A leading cue grows beyond this minimum to match its content height.
         public var screenCueLength: CGFloat
 
@@ -28,7 +28,7 @@ public extension MHTheme {
         /// The edge where section heading cues appear.
         public var sectionCuePlacement: MHCuePlacement
 
-        /// A section heading cue's length along its primary axis.
+        /// A section heading cue's length along its primary axis. Set to zero to hide it.
         /// A leading cue grows beyond this minimum to match its content height.
         public var sectionCueLength: CGFloat
 
