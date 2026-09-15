@@ -180,4 +180,5 @@ private struct MHAtmosphericContinuityFormPreview: View {
             )
         )
 }
+
 // swiftlint:enable closure_body_length file_types_order no_magic_numbers one_declaration_per_file

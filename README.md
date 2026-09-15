@@ -61,7 +61,9 @@ For the overall MHUI direction, open
 `MHUI/Sources/PreviewSupport/DesignReview/MHSignatureCompositionPreview.swift`.
 Its `START HERE` previews are the canonical visual review surface. Preview files
 under `Diagnostics` compare specific conditions and are not competing design
-directions.
+directions. Use the Canvas environment overrides for Increase Contrast and
+Reduce Transparency; these system accessibility values are read-only in app
+code.
 
 To review app-like navigation using only public APIs, open
 `Examples/MHUIAdoptionSample/Sources/MHUIAdoptionSample/MHUIDesignReviewPreview.swift`.

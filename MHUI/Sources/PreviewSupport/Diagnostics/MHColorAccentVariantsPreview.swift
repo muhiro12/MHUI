@@ -104,6 +104,7 @@ private struct MHColorAccentVariantsPreview: View {
     ]
 
     let colorMode: MHPreviewColorMode
+    let glassPolicy: MHGlassPolicy
 
     var body: some View {
         ZStack {
@@ -111,10 +112,14 @@ private struct MHColorAccentVariantsPreview: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
-                    MHColorAccentVariantsHeader(colorMode: colorMode)
+                    MHColorAccentVariantsHeader(
+                        colorMode: colorMode,
+                        glassPolicy: glassPolicy
+                    )
                     MHColorAccentVariantsGrid(
                         accentColors: accentColors,
-                        colorMode: colorMode
+                        colorMode: colorMode,
+                        glassPolicy: glassPolicy
                     )
                 }
                 .padding(MHTheme.standard.spacing.screen)
@@ -123,7 +128,7 @@ private struct MHColorAccentVariantsPreview: View {
         .mhPreviewTint(
             MHPreviewStyle.context(
                 colorMode: colorMode,
-                glassPolicy: .disabled
+                glassPolicy: glassPolicy
             )
         )
     }
@@ -131,6 +136,7 @@ private struct MHColorAccentVariantsPreview: View {
 
 private struct MHColorAccentVariantsHeader: View {
     let colorMode: MHPreviewColorMode
+    let glassPolicy: MHGlassPolicy
 
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
@@ -139,7 +145,7 @@ private struct MHColorAccentVariantsHeader: View {
 
             Spacer(minLength: MHTheme.standard.spacing.control)
 
-            Text(colorMode.title)
+            Text("\(colorMode.title) · \(glassPolicy.rawValue.capitalized)")
                 .mhTextStyle(.metadata, colorRole: .secondaryText)
         }
     }
@@ -148,6 +154,7 @@ private struct MHColorAccentVariantsHeader: View {
 private struct MHColorAccentVariantsGrid: View {
     let accentColors: [MHAccentPreviewColor]
     let colorMode: MHPreviewColorMode
+    let glassPolicy: MHGlassPolicy
 
     private let columns = [
         GridItem(
@@ -165,7 +172,8 @@ private struct MHColorAccentVariantsGrid: View {
             ForEach(accentColors) { accentColor in
                 MHColorAccentVariantCard(
                     accentColor: accentColor,
-                    colorMode: colorMode
+                    colorMode: colorMode,
+                    glassPolicy: glassPolicy
                 )
             }
         }
@@ -175,6 +183,7 @@ private struct MHColorAccentVariantsGrid: View {
 private struct MHColorAccentVariantCard: View {
     let accentColor: MHAccentPreviewColor
     let colorMode: MHPreviewColorMode
+    let glassPolicy: MHGlassPolicy
 
     var body: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.content) {
@@ -195,7 +204,7 @@ private struct MHColorAccentVariantCard: View {
             accent: accentColor.accent,
             onAccent: accentColor.onAccent
         ))
-        .mhGlassPolicy(.disabled)
+        .mhGlassPolicy(glassPolicy)
         .environment(\.colorScheme, colorMode.colorScheme)
         .preferredColorScheme(colorMode.colorScheme)
     }
@@ -244,22 +253,54 @@ private struct MHColorAccentVariantInput: View {
 }
 
 #Preview(
-    "Diagnostics / App Tint Variants / Light",
+    "Diagnostics / App Tint Variants / Light Fallback",
     traits: .fixedLayout(
         width: MHColorAccentVariantsPreviewLayout.previewWidth,
         height: MHColorAccentVariantsPreviewLayout.previewHeight
     )
 ) {
-    MHColorAccentVariantsPreview(colorMode: .light)
+    MHColorAccentVariantsPreview(
+        colorMode: .light,
+        glassPolicy: .disabled
+    )
 }
 
 #Preview(
-    "Diagnostics / App Tint Variants / Dark",
+    "Diagnostics / App Tint Variants / Dark Fallback",
     traits: .fixedLayout(
         width: MHColorAccentVariantsPreviewLayout.previewWidth,
         height: MHColorAccentVariantsPreviewLayout.previewHeight
     )
 ) {
-    MHColorAccentVariantsPreview(colorMode: .dark)
+    MHColorAccentVariantsPreview(
+        colorMode: .dark,
+        glassPolicy: .disabled
+    )
+}
+
+#Preview(
+    "Diagnostics / App Tint Variants / Light Glass",
+    traits: .fixedLayout(
+        width: MHColorAccentVariantsPreviewLayout.previewWidth,
+        height: MHColorAccentVariantsPreviewLayout.previewHeight
+    )
+) {
+    MHColorAccentVariantsPreview(
+        colorMode: .light,
+        glassPolicy: .enabled
+    )
+}
+
+#Preview(
+    "Diagnostics / App Tint Variants / Dark Glass",
+    traits: .fixedLayout(
+        width: MHColorAccentVariantsPreviewLayout.previewWidth,
+        height: MHColorAccentVariantsPreviewLayout.previewHeight
+    )
+) {
+    MHColorAccentVariantsPreview(
+        colorMode: .dark,
+        glassPolicy: .enabled
+    )
 }
 // swiftlint:enable file_types_order one_declaration_per_file
