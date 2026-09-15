@@ -1,6 +1,6 @@
 # Near-Term Development Brief
 
-> Status: Temporary execution brief, current as of August 22, 2026. Use it
+> Status: Temporary execution brief, reviewed September 15, 2026. Use it
 > until the visual direction is accepted in Stally and ready for Cookle's first
 > post-iOS 27 adoption, then replace it with durable package decisions.
 
@@ -37,6 +37,26 @@ MHDesign consumers safe.
    baseline.
 6. Apply the accepted direction to Cookle's first post-iOS 27 full-MHUI
    adoption. Cookle controls its migration scope and app-owned composition.
+
+## Repository-Local Progress
+
+The package repository now provides the evidence it can own independently:
+
+- One canonical full-system review file under `PreviewSupport/DesignReview`,
+  with Light, Dark, accessibility text, and right-to-left variants.
+- Focused diagnostics separated from the canonical direction, including
+  native-to-MHUI stages, atmospheric continuity, fallback behavior, semantic
+  color roles, and app tint coverage with and without Liquid Glass.
+- One source-only public consumer root with native tab and navigation behavior.
+  Its deterministic routes cover overview, reading, native Form, empty, and
+  action-heavy states without requiring an app project.
+- Automated coverage for public adoption, availability fallbacks, Reduce
+  Transparency resolution, compact layout, Dynamic Type, and package rules.
+
+The remaining acceptance work requires adopter repositories or human visual
+judgment. It consists of Stally before-and-after runtime evidence, approval of
+the visual direction on real content, and the later Cookle adoption. Do not add
+parallel package demos to simulate that external evidence.
 
 ## MHDesign Boundary
 
