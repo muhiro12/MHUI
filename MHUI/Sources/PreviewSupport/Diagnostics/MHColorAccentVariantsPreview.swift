@@ -244,7 +244,7 @@ private struct MHColorAccentVariantInput: View {
 }
 
 #Preview(
-    "Design System / 03 App Tint Variants / Light",
+    "Diagnostics / App Tint Variants / Light",
     traits: .fixedLayout(
         width: MHColorAccentVariantsPreviewLayout.previewWidth,
         height: MHColorAccentVariantsPreviewLayout.previewHeight
@@ -254,7 +254,7 @@ private struct MHColorAccentVariantInput: View {
 }
 
 #Preview(
-    "Design System / 03 App Tint Variants / Dark",
+    "Diagnostics / App Tint Variants / Dark",
     traits: .fixedLayout(
         width: MHColorAccentVariantsPreviewLayout.previewWidth,
         height: MHColorAccentVariantsPreviewLayout.previewHeight

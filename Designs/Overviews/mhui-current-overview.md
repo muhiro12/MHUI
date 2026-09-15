@@ -17,7 +17,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 | `MHDesign/Tests`, `MHUI/Tests` | Package verification | Validate the shared package surfaces through Swift package tests |
 | `ci_scripts` | Workflow layer | Retained repository rules, SwiftLint helpers, and compatibility entrypoints |
 | `Designs` | Architecture documentation | Current overview, architecture guide, and ADR history |
-| `Examples/MHUIAdoptionSample` | Source-only public consumer | Compile public API adoption and review comparison previews without an Xcode project |
+| `Examples/MHUIAdoptionSample` | Source-only public consumer | Compile public API adoption and review app-like navigation from one Preview without an Xcode project |
 
 ## Current Repository Rules
 

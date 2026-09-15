@@ -146,32 +146,32 @@ private struct MHAtmosphericContinuityFormPreview: View {
     }
 }
 
-#Preview("Direction / Atmospheric Continuity / Detail / Light", traits: .fixedLayout(width: 390, height: 844)) {
+#Preview("Diagnostics / Atmosphere / Detail / Light", traits: .fixedLayout(width: 390, height: 844)) {
     MHAtmosphericContinuityPreview()
         .mhPreviewTint()
 }
 
-#Preview("Direction / Atmospheric Continuity / Detail / Dark", traits: .fixedLayout(width: 390, height: 844)) {
+#Preview("Diagnostics / Atmosphere / Detail / Dark", traits: .fixedLayout(width: 390, height: 844)) {
     MHAtmosphericContinuityPreview()
         .mhPreviewTint(MHPreviewStyle.context(colorMode: .dark))
 }
 
-#Preview("Direction / Atmospheric Continuity / Native Form", traits: .fixedLayout(width: 390, height: 844)) {
+#Preview("Diagnostics / Atmosphere / Native Form", traits: .fixedLayout(width: 390, height: 844)) {
     MHAtmosphericContinuityFormPreview()
         .mhPreviewTint()
 }
 
-#Preview("Direction / Atmospheric Continuity / Accessibility", traits: .fixedLayout(width: 390, height: 1_180)) {
+#Preview("Diagnostics / Atmosphere / Accessibility", traits: .fixedLayout(width: 390, height: 1_180)) {
     MHAtmosphericContinuityPreview()
         .mhPreviewTint(MHPreviewStyle.context(typeScale: .accessibility))
 }
 
-#Preview("Direction / Atmospheric Continuity / Fallback", traits: .fixedLayout(width: 390, height: 844)) {
+#Preview("Diagnostics / Atmosphere / Fallback", traits: .fixedLayout(width: 390, height: 844)) {
     MHAtmosphericContinuityPreview()
         .mhPreviewTint(MHPreviewStyle.context(glassPolicy: .disabled))
 }
 
-#Preview("Direction / Atmospheric Continuity / Dark Fallback", traits: .fixedLayout(width: 390, height: 844)) {
+#Preview("Diagnostics / Atmosphere / Dark Fallback", traits: .fixedLayout(width: 390, height: 844)) {
     MHAtmosphericContinuityPreview()
         .mhPreviewTint(
             MHPreviewStyle.context(

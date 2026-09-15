@@ -49,9 +49,24 @@ decisions.
 - `MHUI/Sources` - styled presentation APIs built on `MHDesign`
 - `MHUI/Resources` - package-owned assets for standard theme resources
 - `MHUI/Tests` - MHUI package tests
+- `MHUI/Sources/PreviewSupport/DesignReview` - the single design-system review entry point
+- `MHUI/Sources/PreviewSupport/Diagnostics` - focused comparison and regression previews
 - `ci_scripts/` - retained repository rules, SwiftLint helpers, and wrappers
 - `Designs/` - architecture guide, current overview, and ADRs
 - `Examples/MHUIAdoptionSample` - source-only public API adoption sample
+
+## Design Review
+
+For the overall MHUI direction, open
+`MHUI/Sources/PreviewSupport/DesignReview/MHSignatureCompositionPreview.swift`.
+Its `START HERE` previews are the canonical visual review surface. Preview files
+under `Diagnostics` compare specific conditions and are not competing design
+directions.
+
+To review app-like navigation using only public APIs, open
+`Examples/MHUIAdoptionSample/Sources/MHUIAdoptionSample/MHUIDesignReviewPreview.swift`.
+`MHUIDesignReviewRoot` provides one tab-based entry point for the preferred
+composition, the native Form bridge, and the unstyled theme baseline.
 
 ## Adoption
 

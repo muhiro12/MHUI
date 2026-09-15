@@ -164,7 +164,7 @@ private struct MHAdoptionRouteCard: View {
 }
 
 #Preview(
-    "Design System / Adoption / 00 Hierarchy / Light",
+    "Diagnostics / Adoption Hierarchy / Light",
     traits: .fixedLayout(width: 980, height: 900)
 ) {
     MHAdoptionRouteGuidePreview()
@@ -175,7 +175,7 @@ private struct MHAdoptionRouteCard: View {
 }
 
 #Preview(
-    "Design System / Adoption / 00 Hierarchy / Dark",
+    "Diagnostics / Adoption Hierarchy / Dark",
     traits: .fixedLayout(width: 980, height: 900)
 ) {
     MHAdoptionRouteGuidePreview()

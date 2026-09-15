@@ -20,7 +20,6 @@ public struct MHUIComposedScreenSample: View {
             "Settings",
             subtitle: "The primary MHUI composition with an app-owned accent."
         )
-        .mhTheme(MHUIAdoptionSampleTheme.standard)
     }
 
     public init() {

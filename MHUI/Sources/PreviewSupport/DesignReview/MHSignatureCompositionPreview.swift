@@ -214,7 +214,7 @@ private struct MHSignatureActions: View {
 }
 
 #Preview(
-    "Design System / 00 Signature / Light",
+    "START HERE / Design System / Light",
     traits: .fixedLayout(
         width: MHSignatureCompositionPreviewLayout.width,
         height: MHSignatureCompositionPreviewLayout.height
@@ -224,7 +224,7 @@ private struct MHSignatureActions: View {
 }
 
 #Preview(
-    "Design System / 00 Signature / Dark",
+    "START HERE / Design System / Dark",
     traits: .fixedLayout(
         width: MHSignatureCompositionPreviewLayout.width,
         height: MHSignatureCompositionPreviewLayout.height
@@ -236,7 +236,7 @@ private struct MHSignatureActions: View {
 }
 
 #Preview(
-    "Design System / 00 Signature / Accessibility",
+    "START HERE / Design System / Accessibility",
     traits: .fixedLayout(
         width: MHSignatureCompositionPreviewLayout.compactWidth,
         height: MHSignatureCompositionPreviewLayout.accessibilityHeight
@@ -248,7 +248,7 @@ private struct MHSignatureActions: View {
 }
 
 #Preview(
-    "Design System / 00 Signature / Right to Left",
+    "START HERE / Design System / Right to Left",
     traits: .fixedLayout(
         width: MHSignatureCompositionPreviewLayout.width,
         height: MHSignatureCompositionPreviewLayout.height

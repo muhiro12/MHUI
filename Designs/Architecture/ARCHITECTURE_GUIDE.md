@@ -22,7 +22,7 @@ Related documents:
 | `MHDesign` (`MHDesign/Sources`) | Shared spacing, corner-radius, generic screen or surface layout metrics, the SwiftUI environment bridge that sibling apps can adopt without MHUI chrome, and sidecar tuning previews backed by minimal preview helpers | Product copy, business rules, navigation meaning, view-specific styling behavior, or MHUI-owned component chrome |
 | `MHUI` (`MHUI/Sources`, `MHUI/Resources`) | Semantic theme application, standard theme assets, styling modifiers, layout primitives, row and action fallback rules, key-value fallback, screen chrome, colocated development previews, package-owned validation previews, and re-export of `MHDesign` for styled adopters | App models, persistence, logging, networking, analytics, remote config, product-specific navigation, art-direction presets, generic Foundation or SwiftData utilities |
 | Host app or sibling app | Feature state, domain rules, platform integrations, app-specific navigation, product composition | Rebuilding shared MHUI primitives as local forks |
-| Source-only adoption sample (`Examples/MHUIAdoptionSample`) | Public API compile checks, previews, and sample usage | Becoming the source of truth or hiding canonical styling outside `MHUI/Sources` |
+| Source-only adoption sample (`Examples/MHUIAdoptionSample`) | Public API compile checks and one app-like design review Preview | Becoming the source of truth or hiding canonical styling outside `MHUI/Sources` |
 
 ## Package Rules
 
@@ -100,9 +100,9 @@ supplies the inherited baseline without prescribing screen structure.
 
 ## Example and Preview Mapping
 
-The source-only adoption sample, MHDesign sidecar previews, MHUI colocated
-development previews, and preview validation catalogs follow the same
-package-first path:
+The source-only adoption sample, the single MHUI design review entry point,
+MHDesign sidecar previews, colocated component previews, and diagnostic
+catalogs follow the same package-first path:
 
 `Host example or preview -> MHUI public APIs -> package-owned tokens and layout primitives`
 
@@ -110,10 +110,14 @@ package-first path:
 repository root. It demonstrates only public APIs, compiles independently, and
 does not require an Xcode project.
 
+Use `MHUIDesignReviewRoot` as its only app-like review entry point. Add routes
+there instead of creating parallel full-screen host previews.
+
 MHDesign tuning previews should live in same-directory sidecar files so metrics types stay focused on values while still keeping the first review surface nearby.
 MHUI development previews should live inside the edited implementation file so the styled API and its first review surface stay together.
 `MHDesign/Sources/PreviewSupport` is reserved for minimal helper views shared by MHDesign sidecar previews.
-`MHUI/Sources/PreviewSupport` is reserved for validation helpers and regression catalogs that compare multiple runtime contexts.
+`MHUI/Sources/PreviewSupport/DesignReview` contains the one canonical full-system review surface.
+`MHUI/Sources/PreviewSupport/Diagnostics` and `Validation` contain focused comparisons and regression catalogs; they are not alternative design directions.
 Neither should become the place where new shared styling rules are invented before the canonical package API exists.
 
 ## Modifier Structure Guidance

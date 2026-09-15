@@ -193,7 +193,7 @@ private struct MHDesignSystemStageCard: View {
 }
 
 #Preview(
-    "Design System / 01 Stages / Light",
+    "Diagnostics / System-to-MHUI Stages / Light",
     traits: .fixedLayout(
         width: MHDesignSystemStagesPreviewLayout.previewWidth,
         height: MHDesignSystemStagesPreviewLayout.previewHeight
@@ -203,7 +203,7 @@ private struct MHDesignSystemStageCard: View {
 }
 
 #Preview(
-    "Design System / 01 Stages / Dark",
+    "Diagnostics / System-to-MHUI Stages / Dark",
     traits: .fixedLayout(
         width: MHDesignSystemStagesPreviewLayout.previewWidth,
         height: MHDesignSystemStagesPreviewLayout.previewHeight

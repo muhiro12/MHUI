@@ -31,7 +31,7 @@ private struct MHColorRoleUsagePreview: View {
     }
 }
 
-#Preview("Design System / 02 Color Role Usage / Light") {
+#Preview("Diagnostics / Color Roles / Light") {
     MHColorRoleUsagePreview(
         context: MHPreviewStyle.context(
             colorMode: .light,
@@ -40,7 +40,7 @@ private struct MHColorRoleUsagePreview: View {
     )
 }
 
-#Preview("Design System / 02 Color Role Usage / Dark") {
+#Preview("Diagnostics / Color Roles / Dark") {
     MHColorRoleUsagePreview(
         context: MHPreviewStyle.context(
             colorMode: .dark,

@@ -12,7 +12,6 @@ public struct MHUIThemeOnlySample: View {
             noteSection
             actionsSection
         }
-        .mhTheme(MHUIAdoptionSampleTheme.standard)
     }
 
     public init() {

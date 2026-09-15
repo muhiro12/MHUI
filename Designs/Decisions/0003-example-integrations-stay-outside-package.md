@@ -14,8 +14,9 @@ Those examples are useful, but they can become a shadow design layer if package 
 Keep example integration code outside the public package targets.
 Maintain `Examples/MHUIAdoptionSample` as a nested, source-only Swift package
 that depends on the repository root and imports only the public `MHUI` product.
-It may demonstrate integration patterns and host previews, but shared styling
-behavior must still be defined in `MHUI/Sources`.
+It provides one app-like `MHUIDesignReviewRoot` and one canonical host Preview.
+The root may demonstrate navigation and integration patterns, but shared styling
+behavior and the canonical visual direction must still be defined in `MHUI/Sources`.
 
 Do not add an Xcode project solely to host the sample. Opening the nested Swift
 package is sufficient for build and Preview review.
@@ -29,3 +30,4 @@ package is sufficient for build and Preview review.
   adoption drift.
 - The repository remains buildable and testable without an app project.
 - Preview and example scaffolding should prove package behavior, not replace package-owned APIs.
+- Avoid parallel full-screen host previews; add review routes to `MHUIDesignReviewRoot` instead.

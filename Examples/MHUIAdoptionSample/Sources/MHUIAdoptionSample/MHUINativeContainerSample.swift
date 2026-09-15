@@ -15,7 +15,6 @@ public struct MHUINativeContainerSample: View {
             .mhFormChrome()
             .navigationTitle("Settings")
         }
-        .mhTheme(MHUIAdoptionSampleTheme.standard)
     }
 
     public init() {

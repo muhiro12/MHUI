@@ -31,7 +31,7 @@ It explains where new code should live when the same visual rule or container pa
 | Package resource assets | `MHUI/Resources` | Achromatic background, surface, border, dark-ink text, status, fallback foreground, and preview assets referenced by semantic roles |
 | Package preview support | `MHDesign/Sources/PreviewSupport`, `MHUI/Sources/PreviewSupport`, plus local preview files beside the tuned API | minimal MHDesign preview helpers, `MHPreviewStyle`, `MHPreviewCatalog`, validation catalogs for compact width and native-container chrome, plus local previews kept beside the API they tune |
 | Host app composition | App repositories that consume MHUI | feature screens, navigation state, form state, domain-driven copy, feature-specific layouts |
-| Public adoption sample | `Examples/MHUIAdoptionSample` | independent public API build, comparison previews, consumer-side examples |
+| Public adoption sample | `Examples/MHUIAdoptionSample` | independent public API build and one app-like consumer review Preview |
 
 ## Adoption Model
 
