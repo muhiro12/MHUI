@@ -12,18 +12,17 @@ public struct MHUIDesignReviewRoot: View {
                 Label("Composition", systemImage: "rectangle.3.group")
             }
 
+            NavigationStack {
+                MHUIDesignReviewIndex()
+            }
+            .tabItem {
+                Label("States", systemImage: "square.grid.2x2")
+            }
+
             MHUINativeContainerSample()
                 .tabItem {
                     Label("Native Form", systemImage: "list.bullet.rectangle")
                 }
-
-            NavigationStack {
-                MHUIThemeOnlySample()
-                    .navigationTitle("Theme Baseline")
-            }
-            .tabItem {
-                Label("Baseline", systemImage: "circle.lefthalf.filled")
-            }
         }
         .mhTheme(MHUIAdoptionSampleTheme.standard)
     }

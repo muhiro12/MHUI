@@ -12,7 +12,8 @@ The source-only
 [MHUI adoption sample](../../Examples/MHUIAdoptionSample/Package.swift)
 contains theme-only, stack-based, and native-container routes under one
 `MHUIDesignReviewRoot`. It is a nested Swift package, so no Xcode project is
-required.
+required. Its deterministic reading, empty, and action-heavy routes provide
+broader visual review without becoming package-owned product screens.
 
 ## Choose the Package Product
 

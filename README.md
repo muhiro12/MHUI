@@ -66,7 +66,8 @@ directions.
 To review app-like navigation using only public APIs, open
 `Examples/MHUIAdoptionSample/Sources/MHUIAdoptionSample/MHUIDesignReviewPreview.swift`.
 `MHUIDesignReviewRoot` provides one tab-based entry point for the preferred
-composition, the native Form bridge, and the unstyled theme baseline.
+composition, representative reading, empty, and action-heavy states, the native
+Form bridge, and the unstyled theme baseline.
 
 ## Adoption
 
