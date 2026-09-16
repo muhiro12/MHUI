@@ -2,6 +2,34 @@
 import Testing
 
 struct MHGlassPolicyResolutionTests {
+    @Test(arguments: [MHButtonRole.primary, .secondary, .destructive])
+    func action_buttons_require_explicit_glass_opt_in(role: MHButtonRole) {
+        let theme = MHTheme.standard
+        for policy in MHGlassPolicy.allCases {
+            for supportsGlass in [false, true] {
+                for reduceTransparency in [false, true] {
+                    let style = theme.resolvedActionButtonStyle(
+                        for: role,
+                        context: .init(),
+                        glassPolicy: policy,
+                        reduceTransparency: reduceTransparency,
+                        supportsGlass: supportsGlass
+                    )
+                    let usesGlass = policy == .enabled && supportsGlass && !reduceTransparency
+
+                    #expect(style.backgroundStyle?.usesGlass == usesGlass)
+                    #expect(style.backgroundStyle?.isGlassInteractive == usesGlass)
+                    if !usesGlass {
+                        #expect(style.backgroundStyle?.glassTintRole == nil)
+                        #expect(style.backgroundStyle?.fallbackFillRole == (role == .primary ? .accent : .surface))
+                        #expect(style.foregroundRole == (role == .primary ? .onAccent :
+                                                            role == .secondary ? .primaryText : .destructive))
+                    }
+                }
+            }
+        }
+    }
+
     @Test
     func automatic_and_enabled_use_glass_when_supported() {
         #expect(

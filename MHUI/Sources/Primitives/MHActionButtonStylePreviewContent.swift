@@ -26,3 +26,9 @@ private struct MHActionButtonStylePreviewContent: View {
     MHActionButtonStylePreviewContent()
         .mhPreviewSurface()
 }
+
+#Preview("Action Button Style / Explicit Glass", traits: .sizeThatFitsLayout) {
+    MHActionButtonStylePreviewContent()
+        .mhGlassPolicy(.enabled)
+        .mhPreviewSurface()
+}

@@ -168,6 +168,15 @@ summary when it would only repeat the current item name. `mhBadge` styles one
 metadata token, while the host app owns metadata priority and adaptive badge
 arrangement.
 
+Action styles use non-glass fills under the default `.automatic` glass policy,
+including on systems that support Liquid Glass. For controls in a floating
+functional layer, explicitly apply `.mhGlassPolicy(.enabled)` to that control
+or its bounded action group. Avoid enabling it at the app root when ordinary
+content actions should remain non-glass. `.disabled`, Reduce Transparency, and
+older systems retain the non-glass treatment. Standard content surfaces remain
+non-glass under all policies. Existing call sites need no changes for content
+actions; floating actions that relied on automatic glass must opt in.
+
 Use `MHFeatureGrid` when one piece of content needs to remain visually primary
 beside a small supporting set. It uses a split composition at regular widths,
 stacks the leading feature above up to two supporting columns in compact layouts,
