@@ -292,6 +292,12 @@ The background choice is independent of the native list style:
 - Omitting the modifier entirely is also supported when no MHUI container
   support is needed. The root theme remains available.
 
+With `.theme`, native row backgrounds can contrast with the MHUI canvas,
+especially in dark appearance. Plain and inset lists can show this difference
+as bands around sections. Use `.system` when the canvas and rows should retain
+their coordinated native treatment. Review both appearances for each adopted
+style, including the sidebar, content, and detail columns of a split view.
+
 MHUI does not select or inspect the list style. Keep `.automatic` implicit when
 SwiftUI should adapt to the navigation column and platform. Apply native
 `.listStyle(.plain)`, `.grouped`, `.inset`, `.insetGrouped`, or `.sidebar` only
