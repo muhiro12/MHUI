@@ -1,10 +1,15 @@
 repos:
-  - repo: https://github.com/realm/SwiftLint
-    rev: 0.63.2
+  - repo: local
     hooks:
-      - id: swiftlint
+      - id: swiftlint-format
         name: swiftlint-format
-        entry: swiftlint --fix --format
-      - id: swiftlint
+        entry: bash ci_scripts/tasks/format_swift.sh
+        language: system
+        types: [swift]
+        pass_filenames: false
+      - id: swiftlint-strict
         name: swiftlint-strict
-        entry: swiftlint --strict
+        entry: bash ci_scripts/tasks/lint_swift.sh
+        language: system
+        types: [swift]
+        pass_filenames: false

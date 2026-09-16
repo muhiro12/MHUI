@@ -382,7 +382,8 @@ and destination family.
 
 SwiftLint is resolved from the `SimplyDanny/SwiftLintPlugins` package declared
 in `Package.swift`; the scripts do not require a separately installed
-`swiftlint` binary on `PATH`.
+`swiftlint` binary on `PATH`. The optional pre-commit hooks delegate to the
+same formatting and lint scripts so both entrypoints use this dependency.
 
 Run retained repository rule checks with:
 
