@@ -232,7 +232,7 @@ struct MHComponentSmokeTests {
                     }
                 }
                 .frame(height: 260)
-                .mhListChrome()
+                .mhListChrome(background: .system)
 
                 Form {
                     Section {

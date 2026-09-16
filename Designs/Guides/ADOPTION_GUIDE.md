@@ -263,95 +263,90 @@ children instead of nesting another row-styled view inside a composite child.
 
 ## Native List Bridge
 
-Use `mhListChrome` for native grouping, including read-only details, or when
-selection, swipe actions, editing, reordering, and list navigation fit the
-screen. Choose it by the content and behavior the screen needs.
+Start with native `List`, `Section`, controls, and labeled content when the
+screen should follow the platform, including Settings-like screens and split
+view sidebars. Apply the root theme for MHUI environment values and optional
+host tint; it does not require row or section decoration.
 
 ```swift
-import MHUI
-import SwiftUI
-
-struct SettingsList: View {
-    var body: some View {
-        List {
-            Section {
-                Toggle("Use Cloud Sync", isOn: .constant(true))
-                    .mhRow()
-
-                LabeledContent("Theme", value: "System")
-                    .labeledContentStyle(.mhKeyValue)
-            } header: {
-                MHSectionHeader(
-                    "Preferences",
-                    supporting: "Native list behavior remains available."
-                )
-            } footer: {
-                MHSectionFooter(
-                    "The app owns the setting and its consequences."
-                )
-            }
-        }
-        .mhListChrome()
-        .navigationTitle("Workspace")
+List {
+    Section {
+        Toggle("Use Cloud Sync", isOn: $isSyncEnabled)
+        LabeledContent("Theme", value: "System")
+    } header: {
+        Text("Preferences")
+    } footer: {
+        Text("The app owns the setting and its consequences.")
     }
 }
+.mhListChrome(background: .system)
+.navigationTitle("Workspace")
 ```
 
-Use `.mhRow()` only when a native row needs MHUI's explicit row treatment.
-Native sections and controls can keep their platform-owned insets and styling.
-The `.mhKeyValue` labeled-content style already includes its own row behavior
-and compact-width fallback; do not add another row treatment around it.
+The background choice is independent of the native list style:
+
+- `.system` leaves the contextual scroll background to SwiftUI. Prefer it for
+  sidebars and screens whose complete container appearance should stay native.
+- `.theme` replaces only the scroll background with the MHUI canvas. This is
+  the existing default of `mhListChrome()`; row backgrounds remain native.
+- Omitting the modifier entirely is also supported when no MHUI container
+  support is needed. The root theme remains available.
+
+MHUI does not select or inspect the list style. Keep `.automatic` implicit when
+SwiftUI should adapt to the navigation column and platform. Apply native
+`.listStyle(.plain)`, `.grouped`, `.inset`, `.insetGrouped`, or `.sidebar` only
+when the host screen intentionally chooses that appearance and the platform
+supports it. A background choice does not replace selection, separators,
+section behavior, or style-specific insets.
+
+For a `NavigationSplitView`, choose the background on each contained List/Form;
+do not apply one container modifier around the entire split view. Keep selection
+and navigation state in the host. Do not force all columns to a grouped style.
+
+`.mhRow()` deliberately replaces native row insets and vertical rhythm. The
+`.mhKeyValue` style supplies its own value alignment and row treatment. Neither
+is required by `mhListChrome`, and `background: .system` does not undo them.
+Likewise, `MHSectionHeader` and `MHSectionFooter` are explicit MHUI typography,
+not aliases for system section text. Use plain `Text` headers/footers and native
+`LabeledContent` to preserve contextual styling, including sidebar behavior.
+Avoid mixing decorated and native rows without checking their alignment.
 
 For custom floating actions on iOS 26 and later, apply `safeAreaBar` directly
 to the `List` before `mhListChrome`. Place any `scrollEdgeEffectStyle` modifier
-on that same list. This keeps the scroll view and its bar inside MHUI's adaptive
-layout scope, allowing the native scroll edge effect to separate reading
-content from the fixed controls. The host app owns the actions and bar layout.
+on that same list. The host app owns the actions and bar layout.
 
 ## Native Form Bridge
 
-Use `mhFormChrome` for data entry that benefits from native form grouping and
-control behavior. It is not the default presentation route for read-only
-details, reports, dashboards, or tool screens.
+Use native `Form` for settings and data entry. Keep its implicit automatic style,
+or explicitly choose a supported `.formStyle` when the screen requires it.
+`mhFormChrome(background: .system)` preserves its contextual background;
+`mhFormChrome()` retains the optional MHUI canvas treatment.
 
 ```swift
-import MHUI
-import SwiftUI
-
-struct ProfileForm: View {
-    @State private var name = ""
-    @State private var notificationsEnabled = true
-
-    var body: some View {
-        Form {
-            Section {
-                TextField("Name", text: $name)
-
-                Toggle(
-                    "Notifications",
-                    isOn: $notificationsEnabled
-                )
-                .mhRow()
-            } header: {
-                MHSectionHeader(
-                    "Profile",
-                    supporting: "System controls keep their native behavior."
-                )
-            } footer: {
-                MHSectionFooter(
-                    "Product validation and persistence stay in the app."
-                )
-            }
-        }
-        .mhFormChrome()
-        .navigationTitle("Account")
+Form {
+    Section {
+        TextField("Name", text: $name)
+        Toggle("Notifications", isOn: $notificationsEnabled)
+        LabeledContent("Plan", value: "Personal")
+    } header: {
+        Text("Profile")
+    } footer: {
+        Text("Product validation and persistence stay in the app.")
     }
 }
+.mhFormChrome(background: .system)
+.navigationTitle("Account")
 ```
 
-Keep validation state, persistence, navigation, and side effects in the host
-app. Use native field styling inside `Form`; reserve `mhInputChrome` for
-detached inputs in stack-based or custom compositions.
+Keep validation, persistence, navigation, and side effects in the host app.
+Use native field styling inside `Form`; reserve `mhInputChrome` for detached
+inputs in custom compositions. Native buttons can retain their contextual form
+appearance; an MHUI action style is an explicit visual choice, not a requirement.
+
+The `MHNativeStyleComparisonPreview` fixture compares standard, system-background,
+canvas, and explicitly decorated treatments across iOS list and form styles.
+`MHNativeSplitViewPreview` exercises automatic styles in navigation columns.
+These fixtures are review tools, not proof of every OS or accessibility mode.
 
 ## Component Defaults and Explicit Roles
 
@@ -360,7 +355,7 @@ detached inputs in stack-based or custom compositions.
 | `mhTheme` | Propagates the complete theme, MHDesign metrics, and optional native tint | Select screen structure and roles that cannot be inferred |
 | `MHSummary` | Spacious editorial summary and stronger system title hierarchy | Provide concise screen context and optional accessory |
 | `MHFeatureGrid` | Adaptive leading-feature and supporting-content hierarchy | Select the primary feature, supporting set, and semantic treatments |
-| `MHSectionHeader` | System hierarchy for native sections | Provide product wording and optional accessory |
+| `MHSectionHeader` | Explicit MHUI section typography | Provide product wording and optional accessory |
 | `MHSectionFooter` | Quiet explanatory text | Provide concise supporting guidance |
 | `MHGroupedRows` | Direct-child row chrome and separators | Provide native controls or semantic row content |
 | `MHActionGroup` | Secondary style and adaptive layout | Mark primary, quiet, and destructive exceptions |

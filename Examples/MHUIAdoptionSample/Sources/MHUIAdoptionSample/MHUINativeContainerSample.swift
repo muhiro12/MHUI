@@ -1,7 +1,7 @@
 import MHUI
 import SwiftUI
 
-/// Shows the secondary bridge for a screen that requires native `Form` semantics.
+/// Preserves platform-owned form styling while adopting the shared theme.
 public struct MHUINativeContainerSample: View {
     @State private var isEnabled = true
     @State private var note = ""
@@ -12,7 +12,7 @@ public struct MHUINativeContainerSample: View {
                 overviewSection
                 noteSection
             }
-            .mhFormChrome()
+            .mhFormChrome(background: .system)
             .navigationTitle("Settings")
         }
     }
@@ -26,17 +26,12 @@ private extension MHUINativeContainerSample {
     var overviewSection: some View {
         Section {
             LabeledContent("Plan", value: "Personal")
-                .labeledContentStyle(.mhKeyValue)
 
             Toggle("Daily reminder", isOn: $isEnabled)
-                .mhRow()
         } header: {
-            MHSectionHeader(
-                "Overview",
-                supporting: "Use the native bridge only when its container semantics matter."
-            )
+            Text("Overview")
         } footer: {
-            MHSectionFooter("The app continues to own its data and interaction behavior.")
+            Text("The app continues to own its data and interaction behavior.")
         }
     }
 
@@ -44,21 +39,15 @@ private extension MHUINativeContainerSample {
         Section {
             TextField("Add a note", text: $note)
 
-            MHActionGroup {
-                Button("Continue") {
-                    // no-op
-                }
-                .buttonStyle(.mhPrimary)
+            Button("Continue") {
+                // no-op
+            }
 
-                Button("Review later") {
-                    // no-op
-                }
+            Button("Review later") {
+                // no-op
             }
         } header: {
-            MHSectionHeader(
-                "Note",
-                supporting: "Controls remain native while actions share package-owned fallback behavior."
-            )
+            Text("Note")
         }
     }
 }

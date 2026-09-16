@@ -359,6 +359,14 @@ across widths, themes, or runtime contexts.
 See [Shared Presentation Design](Designs/Architecture/shared-presentation-design.md)
 for design direction and detailed tuning rules.
 
+For Settings-like lists/forms and split-view sidebars, preserve native rows and
+`Section` text. Use `.mhListChrome(background: .system)` or
+`.mhFormChrome(background: .system)` to retain the system background, or use
+only the root theme. The no-argument modifiers retain the MHUI canvas. Both
+choices leave `listStyle` and `formStyle` to SwiftUI or the host app. Explicit
+`.mhRow()`, `.mhKeyValue`, and MHUI section typography still override those
+parts of the native appearance; they are not required for adoption.
+
 ## Requirements
 
 - Xcode with Swift 6.2 and the current Apple platform SDKs

@@ -15,6 +15,7 @@ private enum MHNativeStyleCase: String, CaseIterable {
 
 private enum MHNativeStyleTreatment: String, CaseIterable {
     case system = "System + theme"
+    case preserved = "MHUI system background"
     case canvas = "MHUI canvas"
     case explicit = "MHUI rows and headers"
 }
@@ -105,6 +106,22 @@ private struct MHNativeStyleList: View {
     }
 }
 
+private struct MHNativeStyleChromeContainer: View {
+    let style: MHNativeStyleCase
+    let treatment: MHNativeStyleTreatment
+    let background: MHContainerBackground
+
+    var body: some View {
+        if style == .form || style == .groupedForm {
+            MHNativeStyleContainer(style: style, treatment: treatment)
+                .mhFormChrome(background: background)
+        } else {
+            MHNativeStyleContainer(style: style, treatment: treatment)
+                .mhListChrome(background: background)
+        }
+    }
+}
+
 private struct MHNativeStyleComparisonPreview: View {
     let style: MHNativeStyleCase
 
@@ -118,9 +135,11 @@ private struct MHNativeStyleComparisonPreview: View {
                         if treatment == .system {
                             MHNativeStyleContainer(style: style, treatment: treatment)
                                 .navigationTitle("Settings")
+                        } else if treatment == .preserved {
+                            MHNativeStyleChromeContainer(style: style, treatment: treatment, background: .system)
+                                .navigationTitle("Settings")
                         } else {
-                            MHNativeStyleContainer(style: style, treatment: treatment)
-                                .mhListChrome()
+                            MHNativeStyleChromeContainer(style: style, treatment: treatment, background: .theme)
                                 .navigationTitle("Settings")
                         }
                     }
@@ -134,10 +153,27 @@ private struct MHNativeStyleComparisonPreview: View {
 @available(iOS 26.0, *)
 #Preview(
     "Native Styles / Comparison",
-    traits: .fixedLayout(width: 1_170, height: 844),
+    traits: .fixedLayout(width: 1_560, height: 844),
     arguments: MHNativeStyleCase.allCases
 ) { style in
     MHNativeStyleComparisonPreview(style: style)
+        .id(style)
+}
+#Preview("Native Styles / Single System", traits: .fixedLayout(width: 390, height: 844)) {
+    NavigationStack {
+        MHNativeStyleContainer(style: .automatic, treatment: .system)
+            .navigationTitle("Settings")
+    }
+    .mhTheme(.standard)
+}
+
+#Preview("Native Styles / Single Chrome", traits: .fixedLayout(width: 390, height: 844)) {
+    NavigationStack {
+        MHNativeStyleContainer(style: .automatic, treatment: .system)
+            .mhListChrome(background: .system)
+            .navigationTitle("Settings")
+    }
+    .mhTheme(.standard)
 }
 #endif
 // swiftlint:enable one_declaration_per_file no_magic_numbers

@@ -1,13 +1,20 @@
 import SwiftUI
 
 public extension View {
-    /// Applies the MHUI canvas to a native `List` without changing its viewport or list style.
-    func mhListChrome() -> some View {
-        modifier(MHContainerChromeModifier())
+    /// Applies MHUI container support without selecting a list style or overriding row metrics.
+    ///
+    /// Use `.system` to retain the contextual platform background, especially in sidebars.
+    /// The default `.theme` preserves the existing MHUI canvas treatment. Neither option
+    /// changes row insets, section typography, separators, or selection appearance.
+    func mhListChrome(background: MHContainerBackground = .theme) -> some View {
+        modifier(MHContainerChromeModifier(background: background))
     }
 
-    /// Applies the MHUI canvas to a native `Form` without changing its viewport or form style.
-    func mhFormChrome() -> some View {
-        modifier(MHContainerChromeModifier())
+    /// Applies MHUI container support without selecting a form style or overriding row metrics.
+    ///
+    /// Use `.system` for platform-owned backgrounds. Keep standard controls, `LabeledContent`,
+    /// and `Section` text when the form should also retain native row and header styling.
+    func mhFormChrome(background: MHContainerBackground = .theme) -> some View {
+        modifier(MHContainerChromeModifier(background: background))
     }
 }
