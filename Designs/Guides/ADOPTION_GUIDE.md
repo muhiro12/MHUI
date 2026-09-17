@@ -106,8 +106,8 @@ The host app owns both assets and must verify that the pair remains legible in
 light, dark, and Increase Contrast appearances. Do not define RGB or
 hexadecimal colors in Swift source.
 
-Start with the standard low-chroma surfaces and system fonts. Tune semantic
-theme values only after the complete composition is visible and reviewed.
+Use the standard typography, metrics, and surface treatments consistently.
+Choose the app-wide palette and brand accent at the root, not per screen.
 
 ## Choose Composition by Screen Purpose
 
@@ -120,9 +120,9 @@ not from a requirement to display custom package chrome.
 | Data entry, settings, or inspector | `mhFormChrome` with native sections and fields | Platform grouping, focus, and control behavior |
 | Overview, report, insight, or other content needing an editorial arrangement | `mhScreen`, `mhSection`, `MHSummary`, `MHFeatureGrid`, `MHGroupedRows` | Deliberate stack-based content hierarchy |
 
-Native containers are complete styled adoption paths. Add shared section
-headers, footers, and row treatments only where they improve hierarchy;
-native sections do not need duplicate decoration or frames.
+Native containers are complete styled adoption paths. Keep their sections,
+rows, and controls native; MHUI supplies one consistent canvas treatment.
+For the system route, omit the container modifier entirely.
 
 Signature composition does not imply replacement controls. Keep native
 buttons, toggles, pickers, text fields, navigation, toolbars, search, sheets,
@@ -279,46 +279,21 @@ List {
         Text("The app owns the setting and its consequences.")
     }
 }
-.mhListChrome(background: .system)
+.mhListChrome()
 .navigationTitle("Workspace")
 ```
 
-The background choice is independent of the native list style:
+`mhListChrome()` supplies the palette's canvas and preserves native row
+backgrounds, insets, section typography, separators, and selection. Omit it
+for a fully system-owned container. There is no background-strength setting.
 
-- `.system` leaves the contextual scroll background to SwiftUI. Prefer it for
-  sidebars and screens whose complete container appearance should stay native.
-- `.theme` replaces only the scroll background with the MHUI canvas. This is
-  the existing default of `mhListChrome()`; row backgrounds remain native.
-- Omitting the modifier entirely is also supported when no MHUI container
-  support is needed. The root theme remains available.
+Keep automatic list styling unless the screen requires a specific native
+style. In `NavigationSplitView`, leave the sidebar unmodified and use MHUI
+chrome on content or detail containers; do not wrap the entire split view.
 
-The standard canvas uses a nearly neutral light background and a near-black
-dark background to keep native plain and inset rows visually connected to it.
-Custom themes should also check this relationship: replacing the canvas does
-not recolor native row surfaces. Review both appearances for each adopted style.
-
-MHUI does not select or inspect the list style. Keep `.automatic` implicit when
-SwiftUI should adapt to the navigation column and platform. Apply native
-`.listStyle(.plain)`, `.grouped`, `.inset`, `.insetGrouped`, or `.sidebar` only
-when the host screen intentionally chooses that appearance and the platform
-supports it. A background choice does not replace selection, separators,
-section behavior, or style-specific insets.
-
-For a `NavigationSplitView`, choose the background on each contained List/Form;
-do not apply one container modifier around the entire split view. Keep selection
-and navigation state in the host. Do not force all columns to a grouped style.
-Keep `.system` on the navigation sidebar so its contextual material and tonal
-separation remain intact. Use `.theme` on the content or detail column when an
-MHUI canvas is desired. Filling every column with the same opaque canvas removes
-the sidebar's native depth cue; this is not the recommended themed composition.
-
-`.mhRow()` deliberately replaces native row insets and vertical rhythm. The
-`.mhKeyValue` style supplies its own value alignment and row treatment. Neither
-is required by `mhListChrome`, and `background: .system` does not undo them.
-Likewise, `MHSectionHeader` and `MHSectionFooter` are explicit MHUI typography,
-not aliases for system section text. Use plain `Text` headers/footers and native
-`LabeledContent` to preserve contextual styling, including sidebar behavior.
-Avoid mixing decorated and native rows without checking their alignment.
+Use native `Text` section headers and footers, controls, and `LabeledContent`.
+Reserve `mhRow`, MHUI section typography, and `mhKeyValue` for signature
+compositions rather than mixing them into this native route.
 
 For custom floating actions on iOS 26 and later, apply `safeAreaBar` directly
 to the `List` before `mhListChrome`. Place any `scrollEdgeEffectStyle` modifier
@@ -328,8 +303,7 @@ on that same list. The host app owns the actions and bar layout.
 
 Use native `Form` for settings and data entry. Keep its implicit automatic style,
 or explicitly choose a supported `.formStyle` when the screen requires it.
-`mhFormChrome(background: .system)` preserves its contextual background;
-`mhFormChrome()` retains the optional MHUI canvas treatment.
+`mhFormChrome()` supplies the theme canvas. Omit it for a system-owned form.
 
 ```swift
 Form {
@@ -343,7 +317,7 @@ Form {
         Text("Product validation and persistence stay in the app.")
     }
 }
-.mhFormChrome(background: .system)
+.mhFormChrome()
 .navigationTitle("Account")
 ```
 

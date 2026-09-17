@@ -15,7 +15,6 @@ private enum MHNativeStyleCase: String, CaseIterable {
 
 private enum MHNativeStyleTreatment: String, CaseIterable {
     case system = "System + theme"
-    case preserved = "MHUI system background"
     case canvas = "MHUI canvas"
     case explicit = "MHUI rows and headers"
 }
@@ -109,15 +108,14 @@ private struct MHNativeStyleList: View {
 private struct MHNativeStyleChromeContainer: View {
     let style: MHNativeStyleCase
     let treatment: MHNativeStyleTreatment
-    let background: MHContainerBackground
 
     var body: some View {
         if style == .form || style == .groupedForm {
             MHNativeStyleContainer(style: style, treatment: treatment)
-                .mhFormChrome(background: background)
+                .mhFormChrome()
         } else {
             MHNativeStyleContainer(style: style, treatment: treatment)
-                .mhListChrome(background: background)
+                .mhListChrome()
         }
     }
 }
@@ -150,8 +148,7 @@ private struct MHNativeStyleComparisonPreview: View {
             } else {
                 MHNativeStyleChromeContainer(
                     style: example.style,
-                    treatment: example.treatment,
-                    background: example.treatment == .preserved ? .system : .theme
+                    treatment: example.treatment
                 )
                 .navigationTitle("Settings")
             }

@@ -2,7 +2,6 @@ import SwiftUI
 
 #if os(iOS)
 private struct MHNativeSplitViewPreview: View {
-    let background: MHContainerBackground
     @State private var category: String? = "General"
     @State private var selection: String? = "Account"
     @State private var name = "Personal"
@@ -13,13 +12,12 @@ private struct MHNativeSplitViewPreview: View {
             List(["General", "Privacy"], id: \.self, selection: $category) { category in
                 NavigationLink(category, value: category)
             }
-            .mhListChrome(background: .system)
             .navigationTitle("Settings")
         } content: {
             List(["Account", "Notifications"], id: \.self, selection: $selection) { item in
                 NavigationLink(item, value: item)
             }
-            .mhListChrome(background: background)
+            .mhListChrome()
             .navigationTitle(category ?? "Settings")
         } detail: {
             Form {
@@ -32,7 +30,7 @@ private struct MHNativeSplitViewPreview: View {
                     Text("Native selection, row spacing, and section hierarchy remain system-owned.")
                 }
             }
-            .mhFormChrome(background: background)
+            .mhFormChrome()
             .navigationTitle(selection ?? "Account")
         }
         .mhTheme(.standard)
@@ -43,11 +41,9 @@ private struct MHNativeSplitViewPreview: View {
 @available(iOS 26.0, *)
 #Preview(
     "Native Styles / Split View",
-    traits: .fixedLayout(width: 1_194, height: 834),
-    arguments: MHContainerBackground.allCases
-) { background in
-    MHNativeSplitViewPreview(background: background)
-        .id(background)
+    traits: .fixedLayout(width: 1_194, height: 834)
+) {
+    MHNativeSplitViewPreview()
 }
 // swiftlint:enable no_magic_numbers
 #endif

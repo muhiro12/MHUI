@@ -35,7 +35,7 @@ private struct MHAdoptionRouteGuideHeader: View {
             Text(
                 """
                 Native containers remain supported boundaries when their behavior is essential, \
-                not equivalent visual alternatives for every screen.
+                Choose the route that fits the screen.
                 """
             )
             .mhTextStyle(.supporting, colorRole: .secondaryText)
@@ -46,7 +46,7 @@ private struct MHAdoptionRouteGuideHeader: View {
 private struct MHPrimaryAdoptionRoute: View {
     var body: some View {
         MHAdoptionRouteCard(
-            level: "PRIMARY ROUTE",
+            level: "SIGNATURE ROUTE",
             title: "Signature composition",
             supporting: """
                 The default for content-led screens. MHUI owns hierarchy, rhythm, surfaces, \
@@ -83,7 +83,7 @@ private struct MHNativeBoundaryHeader: View {
             Text("NATIVE CONTAINER BOUNDARIES")
                 .mhTextStyle(.metadata, colorRole: .secondaryText)
 
-            Text("Use these smaller routes only for concrete platform behavior.")
+            Text("Preserve native containers with or without the MHUI canvas.")
                 .mhTextStyle(.supporting, colorRole: .secondaryText)
         }
     }
@@ -93,10 +93,10 @@ private struct MHThemeFoundationRoute: View {
     var body: some View {
         MHAdoptionRouteCard(
             level: "FOUNDATION",
-            title: "Theme only",
+            title: "System appearance",
             supporting: """
-                Establishes root values and tint propagation. It is a valid starting point, \
-                not finished visual integration.
+                Native containers keep their system appearance. Root theme values and \
+                app tint remain available without adding container chrome.
                 """,
             examples: "Inherited baseline",
             systemImage: "circle.lefthalf.filled",
@@ -109,7 +109,7 @@ private struct MHThemeFoundationRoute: View {
 private struct MHNativeContainerRoute: View {
     var body: some View {
         MHAdoptionRouteCard(
-            level: "CONDITIONAL ROUTE",
+            level: "NATIVE MHUI ROUTE",
             title: "Native List or Form",
             supporting: """
                 Preserve selection, editing, focus, grouped form behavior, and other container \

@@ -243,65 +243,34 @@ and tonal depth. Reserve the app accent for semantic status, focus, native
 controls, and the primary action instead of applying it to every heading or
 surface.
 
-### Prefer the Signature Composition
+### Choose a Screen Route
 
-Choose from the screen's purpose, not its existing container.
+Choose one route for each screen. All MHUI routes share the root theme; apps do
+not assemble degrees of MHUI styling by decorating individual native rows.
 
-| Screen purpose | MHUI route | Role |
+| Route | Use | Ownership |
 | --- | --- | --- |
-| Overview, dashboard, read-only detail, report, insight, or product tool | `mhScreen`, `mhSection`, `MHSummary`, `MHFeatureGrid`, `MHGroupedRows` | Primary signature composition |
-| Collection or hierarchy that needs selection, swipe actions, editing, reordering, or list navigation | `mhListChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | Secondary native bridge |
-| Data entry, settings, or inspector that benefits from native form behavior | `mhFormChrome`, `MHSectionHeader`, `MHSectionFooter`, `mhRow` | Secondary native bridge |
+| System | Native `List` or `Form` without MHUI chrome | SwiftUI owns the complete container appearance |
+| Native MHUI | `List.mhListChrome()` or `Form.mhFormChrome()` | MHUI supplies the canvas; SwiftUI owns rows, sections, selection, and style |
+| Signature composition | `mhScreen`, `mhSection`, `MHSummary`, `MHGroupedRows` | MHUI owns content hierarchy, spacing, and surfaces around native controls |
 
-An existing `List` or `Form` does not decide the route. The signature
-composition is the visible MHUI product and is the normal choice for
-MHUI-forward apps. Native bridges intentionally preserve more OS-standard
-appearance in exchange for concrete container behavior.
+Use native `Section`, `Text`, and `LabeledContent` in the native MHUI route.
+Do not add `mhRow`, MHUI section typography, or the `mhKeyValue` style to this
+route. These building blocks belong to signature compositions. Keep native
+navigation titles and do not wrap a `List` or `Form` in `mhScreen`.
 
-Signature composition keeps native controls, navigation, toolbars, search,
-sheets, and system presentations. MHUI owns the surrounding hierarchy, rhythm,
-surfaces, and semantic emphasis instead of replacing those controls.
-
-Do not place a `List` or `Form` inside `mhScreen`; each route already owns its
-screen-level scrolling and chrome.
-
-`mhScreen` can supply a page title for a stack-based composition. Native
-`List` and `Form` routes keep page titles and any screen-specific lead content
-in the host app so their scroll view remains edge to edge.
-
-When a screen materially depends on a native container, preserve its behavior
-and apply MHUI at the presentation seams:
+In a split view, leave the sidebar system-owned and apply MHUI chrome to the
+content or detail containers. SwiftUI retains automatic style adaptation.
 
 ```swift
-import MHUI
-import SwiftUI
-
-struct SettingsScreen: View {
-    var body: some View {
-        NavigationStack {
-            List {
-                Section {
-                    Toggle("Use iCloud Sync", isOn: .constant(true))
-                        .mhRow()
-
-                    LabeledContent("Theme", value: "System")
-                        .labeledContentStyle(.mhKeyValue)
-                } header: {
-                    MHSectionHeader(
-                        "Preferences",
-                        supporting: "Native controls keep their behavior."
-                    )
-                } footer: {
-                    MHSectionFooter(
-                        "MHUI styles layout, surfaces, and hierarchy."
-                    )
-                }
-            }
-            .mhListChrome()
-            .navigationTitle("Workspace")
-        }
+Form {
+    Section("Preferences") {
+        Toggle("Use iCloud Sync", isOn: $isSyncEnabled)
+        LabeledContent("Theme", value: "System")
     }
 }
+.mhFormChrome()
+.navigationTitle("Settings")
 ```
 
 See the [Adoption Guide](Designs/Guides/ADOPTION_GUIDE.md) for staged migration,
@@ -316,25 +285,14 @@ Swift package and does not require an Xcode project.
 Apple's system type styles and native controls while giving apps a distinct
 luminous surface hierarchy, measured spacing, and dark-ink headings.
 
-Start with that baseline and customize its public semantic groups:
+Use the standard baseline at the app root. Typography, spacing, motion, and
+surface treatments are package-owned defaults, not per-screen tuning steps.
+Existing low-level theme customization APIs remain source compatible, but are
+not required for adoption. Request additional controls through a concrete issue
+when the standard routes cannot express a product requirement.
 
-- `colors` for semantic backgrounds, surfaces, text, accent, warning, and
-  destructive colors
-- `typography` for Dynamic Type-compatible system text roles, the stronger
-  `summaryTitle` role, and optional system monospaced metadata; action buttons
-  use `bodyStrong`
-- `metrics` for shared spacing, corner radius, and generic layout
-- `presentation` for MHUI row, action, and key-value fallback behavior
-- `divider`, `motion`, and `surfaces` for package-owned treatments
-
-Use `MHTheme.standard(metrics:)` when an app already has an `MHDesignMetrics`
-baseline. The no-argument standard theme uses `MHColorReference.tint`, leaving
-the app's `AccentColor` asset under host-app control without installing a tint
-override. If an app intentionally stores a concrete accent in its theme, use
-`MHTheme.standard(accent:onAccent:)` and provide the foreground that remains
-legible on that accent. A concrete accent makes the theme the source of truth
-for both MHUI colors and native-control tint; the app must verify the accent
-and on-accent pair in light, dark, and Increase Contrast appearances.
+The standard theme inherits the app's tint. For an asset-backed brand accent,
+use `MHTheme.standard(accent:onAccent:)` with a legible foreground color.
 
 Theme values and MHDesign metrics propagate automatically, but structural and
 semantic selection stays explicit. In practice, a styled screen adds one
@@ -358,14 +316,6 @@ across widths, themes, or runtime contexts.
 
 See [Shared Presentation Design](Designs/Architecture/shared-presentation-design.md)
 for design direction and detailed tuning rules.
-
-For Settings-like lists/forms and split-view sidebars, preserve native rows and
-`Section` text. Use `.mhListChrome(background: .system)` or
-`.mhFormChrome(background: .system)` to retain the system background, or use
-only the root theme. The no-argument modifiers retain the MHUI canvas. Both
-choices leave `listStyle` and `formStyle` to SwiftUI or the host app. Explicit
-`.mhRow()`, `.mhKeyValue`, and MHUI section typography still override those
-parts of the native appearance; they are not required for adoption.
 
 ## Requirements
 

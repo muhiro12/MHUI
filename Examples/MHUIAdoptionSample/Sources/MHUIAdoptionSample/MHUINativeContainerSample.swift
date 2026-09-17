@@ -12,7 +12,7 @@ public struct MHUINativeContainerSample: View {
                 overviewSection
                 noteSection
             }
-            .mhFormChrome(background: .system)
+            .mhFormChrome()
             .navigationTitle("Settings")
         }
     }
