@@ -383,6 +383,36 @@ Compatibility shell build and test wrappers remain available for cases where
 the Xcode-native integration is unavailable or does not cover the check. They
 may write disposable cache and result data under `.build/ci/shared/`.
 
+## Releases
+
+Starting with `1.20.0`, releases use `MAJOR.MINOR.PATCH` under the
+[versioning contract](Designs/Architecture/ARCHITECTURE_GUIDE.md#versioning-contract).
+Legacy two-component tags remain unchanged and count as patch zero when
+calculating the next version.
+
+After package tests, repository rules, public API compatibility review, and
+applicable Preview checks pass, a push to `main` automatically creates the next
+minor release (for example, `1.19` to `1.20.0`, then `1.21.0`). Breaking changes
+must be held until a major release is explicitly selected. Patch releases also
+require an explicit choice.
+
+For an explicit major or patch release, create the intended three-component tag
+on the verified commit **before** pushing, then push `main` and that tag together
+with `git push --atomic origin main <version>`. The workflow honors the tag on
+that commit instead of incrementing the minor version. Choose a version newer
+than the latest published release; never move or reuse a published tag.
+
+The workflow can be dispatched manually on `main` to retry a failed publication.
+Reruns reuse an existing tag on the commit and do not increment it again.
+Generated release notes should be supplemented with user-visible changes and
+any adoption guidance.
+
+Test version selection locally with:
+
+```sh
+python3 -m unittest discover -s ci_scripts/release -p 'test_*.py'
+```
+
 ## Architecture Docs
 
 - [Adoption guide](Designs/Guides/ADOPTION_GUIDE.md)

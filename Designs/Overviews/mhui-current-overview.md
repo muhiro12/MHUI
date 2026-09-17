@@ -28,8 +28,10 @@ The repository is intentionally biased toward package-owned visual rules and awa
   `MHUI/Sources`; the host app's `AccentColor` remains external.
 - Theme color customization accepts asset resources. RGB and hexadecimal color
   definitions do not belong in Swift source.
-- Versions in the `1.x` line are beta and may include intentional breaking API changes.
-- The package does not keep deprecated aliases, migration helpers, or compatibility shims for consuming apps during `1.x`.
+- Starting with `1.20.0`, releases follow the
+  [Semantic Versioning contract](../Architecture/ARCHITECTURE_GUIDE.md#versioning-contract).
+- Minor and patch releases preserve the public contract; breaking changes require
+  an explicitly selected major release.
 - Product behavior stays outside the package.
 - The nested adoption sample is a consumer of the package rather than a second
   source of truth.

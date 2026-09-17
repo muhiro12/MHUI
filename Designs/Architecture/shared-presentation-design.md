@@ -20,7 +20,8 @@ It explains where new code should live when the same visual rule or container pa
   design layer.
 - Views and modifiers in MHUI should stay domain neutral even when they feel screen-like.
 - MHUI remains a single package target unless there is a stronger reason than file organization alone.
-- Releases in the `1.x` line are beta, so package API clarity takes precedence over backward compatibility for consuming apps.
+- Starting with `1.20.0`, follow the
+  [Semantic Versioning contract](ARCHITECTURE_GUIDE.md#versioning-contract).
 
 ## Responsibility Boundaries
 
@@ -154,7 +155,7 @@ Changes to MHUI treatments do not imply changes to MHDesign's standard metrics.
 6. Keep product wording, feature-specific empty states, and business-state branching out of the package.
 7. Prefer semantic inputs such as roles, policies, and layout intent over app-specific configuration objects or low-level token graphs.
 8. If glue code is reused only inside one consuming app, keep it in that app instead of promoting it into the shared package layers.
-9. During `1.x`, do not add deprecated aliases, migration helpers, compatibility shims, or old-caller dual paths just to ease package upgrades for consuming apps.
+9. Preserve public API compatibility in minor and patch releases. Reserve incompatible API cleanup for an explicitly selected major release.
 10. Keep generic Foundation, SwiftData, date, string, numeric, image-decoding, and bundle-introspection utilities outside MHUI.
 11. Do not import SwiftData in MHUI or MHDesign presentation source.
 12. Do not add SwiftUtilities as a package/project dependency reference or source import; do not add source-compatible or MHUI-prefixed SwiftUtilities helper replacements just to support consumer migration.
@@ -218,4 +219,5 @@ When a duplicated helper is a thin app-local presentation shortcut, or is
 generic data, persistence, date, string, numeric, image decoding, or bundle
 introspection, the default fix is to keep it out of MHUI and evaluate durable
 non-UI utilities for a platform foundation instead.
-When a breaking package API change improves the boundary during `1.x`, prefer the cleaner API over carrying a temporary compatibility layer.
+When a breaking package API change improves the boundary, schedule it for an
+explicit major release and document the adoption change.

@@ -55,14 +55,26 @@ Not allowed in the package:
 - Generic Foundation, SwiftData, date, string, numeric, image-decoding, or bundle-introspection utilities
 - Direct SwiftData imports in MHUI or MHDesign presentation source
 - Direct SwiftUtilities package/project dependency references or source imports
-- Consumer-update compatibility layers, migration helpers, or deprecated alias paths during `1.x` beta
 
 ## Versioning Contract
 
-- Versions in the `1.x` line, including `1.0`, `1.5`, and `1.5.1`, are beta releases.
-- During `1.x`, breaking package API changes are allowed when they make the shared boundary or public surface clearer.
-- During `1.x`, consuming apps are expected to update to the current package APIs instead of relying on compatibility shims, migration helpers, or deprecated aliases in the package.
-- This contract does not remove runtime UI behavior such as compact-width layout changes or readability fallback, because those remain part of the product surface that the package owns.
+Starting with `1.20.0`, MHUI follows [Semantic Versioning 2.0.0](https://semver.org/).
+Earlier releases used a beta contract that allowed API changes within `1.x`;
+those historical tags remain unchanged.
+
+- The public contract includes the `MHDesign` and `MHUI` products, public Swift
+  declarations, supported deployment targets, and documented behavior.
+- Incompatible public contract changes require an explicitly chosen major release.
+- Backward-compatible additions use a minor release. Patch releases are reserved
+  for explicitly chosen backward-compatible fixes.
+- Palette values and adaptive visual treatments may evolve without pixel-level
+  compatibility. Visible changes must be described in release notes; semantic
+  behavior and accessibility contracts still require compatibility review.
+- The default release workflow increments the minor version and resets patch to
+  zero. Automation selects a number; it does not establish API compatibility or
+  replace package, consumer, and visual verification before publication.
+
+See the [release workflow](../../README.md#releases) for publication steps.
 
 ## Canonical Integration Flow
 
