@@ -285,6 +285,18 @@ Swift package and does not require an Xcode project.
 Apple's system type styles and native controls while giving apps a distinct
 luminous surface hierarchy, measured spacing, and dark-ink headings.
 
+Choose one palette at the app root. Mist is the default; Slate, Linen, and Sage
+provide cool, warm, and green-gray alternatives with the same hierarchy.
+
+```swift
+ContentView()
+    .mhTheme(.standard(palette: .slate))
+```
+
+All four palettes include light, dark, and increased-contrast colors. Increased
+Contrast uses the shared neutral surface baseline to prioritize legibility.
+The palette does not change the app tint or native row colors.
+
 Use the standard baseline at the app root. Typography, spacing, motion, and
 surface treatments are package-owned defaults, not per-screen tuning steps.
 Existing low-level theme customization APIs remain source compatible, but are

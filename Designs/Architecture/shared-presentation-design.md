@@ -87,6 +87,7 @@ The following types and helpers are the current shared entry points for package-
 - `MHLayoutMode`
 - `mhDesignMetrics(_:)`
 - `MHTheme`
+- `MHPalette`
 - `MHTheme.Colors`
 - `MHTheme.Typography`
 - `MHTheme.Presentation`
@@ -174,8 +175,9 @@ Changes to MHUI treatments do not imply changes to MHDesign's standard metrics.
   branding system. The baseline uses package-owned luminous low-chroma planes,
   dark-ink hierarchy, quiet boundaries, host-provided accent, system
   typography, and restrained geometry.
-- Public theme groups let an app configure semantic values once without moving
-  role selection or product meaning into the package.
+- Apps choose a root palette and brand accent. Typography, metrics, and surface
+  treatments are package-owned defaults; existing theme customization remains
+  compatible but is not a required adoption step.
 - The standard theme uses the app's `AccentColor` without installing a tint
   override. An app-provided concrete theme
   accent also tints native controls in the same subtree and should be paired
@@ -187,9 +189,11 @@ Changes to MHUI treatments do not imply changes to MHDesign's standard metrics.
   content as an elevated card.
 - `mhSection(...)` stays in the package because it establishes reusable
   hierarchy and surface composition without owning screen meaning.
-- `MHSectionHeader` and `MHSectionFooter` stay in the package because native
-  `List` and `Form` sections need the same hierarchy without replacing native
-  container behavior.
+- `MHSectionHeader` and `MHSectionFooter` express signature composition
+  hierarchy. Native List/Form adoption uses plain section text and native rows.
+- The three routes are system containers without chrome, native containers with
+  the MHUI canvas, and signature composition. Native adoption has no per-screen
+  background-strength control.
 - `MHGroupedRows` owns direct-child row chrome and separator placement.
 - `MHActionGroup` owns adaptive layout and treats unstyled child buttons as
   secondary actions. Primary, quiet, and destructive roles remain explicit at

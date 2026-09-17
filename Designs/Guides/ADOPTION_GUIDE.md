@@ -43,6 +43,11 @@ struct WorkspaceApp: App {
 }
 ```
 
+Choose a palette once at this root with `.standard(palette: .slate)`.
+Mist is the default; Slate, Linen, and Sage are alternatives. Each preset owns
+all four surface roles and adapts to light, dark, and increased contrast.
+Keep per-screen typography and surface recipes at the shared defaults.
+
 The call propagates colors, typography, metrics, presentation values, and
 surface treatments to every MHUI component in the subtree. It also synchronizes
 the `MHDesignMetrics` environment and, when the theme has a concrete

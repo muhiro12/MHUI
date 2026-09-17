@@ -121,23 +121,27 @@ public extension MHTheme {
     /// The package supplies a neutral on-accent fallback. Use the overload that
     /// accepts `onAccent` when the app's accent needs another foreground.
     static func standard(
-        accent: MHColorReference = .tint
+        accent: MHColorReference = .tint,
+        palette: MHPalette = .mist
     ) -> Self {
         standard(
             metrics: .standard,
             accent: accent,
-            onAccent: .asset(MHColorAsset.onAccent)
+            onAccent: .asset(MHColorAsset.onAccent),
+            palette: palette
         )
     }
 
     /// Creates the standard MHUI theme with an app-provided on-accent foreground.
     static func standard(
-        onAccent: MHColorReference
+        onAccent: MHColorReference,
+        palette: MHPalette = .mist
     ) -> Self {
         standard(
             metrics: .standard,
             accent: .tint,
-            onAccent: onAccent
+            onAccent: onAccent,
+            palette: palette
         )
     }
 
@@ -147,12 +151,14 @@ public extension MHTheme {
     /// accepts both colors when the app's accent needs another foreground.
     static func standard(
         metrics: MHDesignMetrics,
-        accent: MHColorReference = .tint
+        accent: MHColorReference = .tint,
+        palette: MHPalette = .mist
     ) -> Self {
         standard(
             metrics: metrics,
             accent: accent,
-            onAccent: .asset(MHColorAsset.onAccent)
+            onAccent: .asset(MHColorAsset.onAccent),
+            palette: palette
         )
     }
 
@@ -160,12 +166,14 @@ public extension MHTheme {
     /// Use this when the app's accent color needs a foreground other than the MHUI default.
     static func standard(
         accent: MHColorReference,
-        onAccent: MHColorReference
+        onAccent: MHColorReference,
+        palette: MHPalette = .mist
     ) -> Self {
         standard(
             metrics: .standard,
             accent: accent,
-            onAccent: onAccent
+            onAccent: onAccent,
+            palette: palette
         )
     }
 
@@ -174,10 +182,12 @@ public extension MHTheme {
     static func standard(
         metrics: MHDesignMetrics,
         accent: MHColorReference,
-        onAccent: MHColorReference
+        onAccent: MHColorReference,
+        palette: MHPalette = .mist
     ) -> Self {
         Self(
             colors: standardColors(
+                palette: palette,
                 accent: accent,
                 onAccent: onAccent
             ),
@@ -191,14 +201,15 @@ public extension MHTheme {
     }
 
     private static func standardColors(
+        palette: MHPalette,
         accent: MHColorReference,
         onAccent: MHColorReference
     ) -> Colors {
         .init(
-            background: .asset(MHColorAsset.background),
-            surface: .asset(MHColorAsset.surface),
-            surfaceElevated: .asset(MHColorAsset.surfaceElevated),
-            surfaceMuted: .asset(MHColorAsset.surfaceMuted),
+            background: .asset(palette.colorAsset("Background")),
+            surface: .asset(palette.colorAsset("Surface")),
+            surfaceElevated: .asset(palette.colorAsset("SurfaceElevated")),
+            surfaceMuted: .asset(palette.colorAsset("SurfaceMuted")),
             border: .asset(MHColorAsset.border),
             primaryText: .asset(MHColorAsset.primaryText),
             secondaryText: .asset(MHColorAsset.secondaryText),

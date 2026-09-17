@@ -8,7 +8,8 @@ enum MHUIAdoptionSampleTheme {
         ),
         onAccent: .asset(
             resource(named: "SampleOnAccent")
-        )
+        ),
+        palette: .mist
     )
 
     private static func resource(
