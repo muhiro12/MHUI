@@ -3,13 +3,13 @@ import SwiftUI
 
 enum MHUIAdoptionSampleTheme {
     static let standard = MHTheme.standard(
+        palette: .mist,
         accent: .asset(
             resource(named: "SampleAccent")
         ),
         onAccent: .asset(
             resource(named: "SampleOnAccent")
-        ),
-        palette: .mist
+        )
     )
 
     private static func resource(

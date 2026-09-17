@@ -200,9 +200,9 @@ private struct MHPaletteSplit: View {
             .mhSurfaceInset()
             .mhSurface()
             .mhTheme(.standard(
+                palette: palette,
                 accent: .asset(accent),
-                onAccent: .asset(MHPreviewColorAsset.foregroundDark),
-                palette: palette
+                onAccent: .asset(MHPreviewColorAsset.foregroundDark)
             ))
         }
     }

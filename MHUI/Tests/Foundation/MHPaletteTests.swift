@@ -3,6 +3,29 @@ import Testing
 
 struct MHPaletteTests {
     @Test
+    func existing_standard_factories_remain_usable_as_function_values() {
+        let accentFactory = MHTheme.standard(accent:)
+        let foregroundFactory = MHTheme.standard(onAccent:)
+        let metricsFactory = MHTheme.standard(metrics:accent:)
+        let colorsFactory = MHTheme.standard(accent:onAccent:)
+        let completeFactory = MHTheme.standard(metrics:accent:onAccent:)
+        let theme = MHTheme.standard
+        let accent = theme.colors.warning
+        let foreground = theme.colors.primaryText
+        let metrics = theme.metrics
+
+        #expect(accentFactory(accent) == MHTheme.standard(palette: .mist, accent: accent))
+        #expect(foregroundFactory(foreground) == MHTheme.standard(palette: .mist, onAccent: foreground))
+        #expect(metricsFactory(metrics, accent) == MHTheme.standard(palette: .mist, metrics: metrics, accent: accent))
+        #expect(colorsFactory(accent, foreground) == MHTheme.standard(
+            palette: .mist, accent: accent, onAccent: foreground
+        ))
+        #expect(completeFactory(metrics, accent, foreground) == MHTheme.standard(
+            palette: .mist, metrics: metrics, accent: accent, onAccent: foreground
+        ))
+    }
+
+    @Test
     func mist_preserves_the_existing_default() {
         #expect(MHTheme.standard(palette: .mist) == MHTheme.standard)
     }
@@ -24,9 +47,9 @@ struct MHPaletteTests {
         #expect(theme.colors.destructive == standard.colors.destructive)
 
         let branded = MHTheme.standard(
+            palette: palette,
             accent: standard.colors.warning,
-            onAccent: standard.colors.primaryText,
-            palette: palette
+            onAccent: standard.colors.primaryText
         )
         #expect(branded.colors.accent == standard.colors.warning)
         #expect(branded.colors.onAccent == standard.colors.primaryText)
