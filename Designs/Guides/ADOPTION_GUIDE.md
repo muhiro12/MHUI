@@ -292,11 +292,10 @@ The background choice is independent of the native list style:
 - Omitting the modifier entirely is also supported when no MHUI container
   support is needed. The root theme remains available.
 
-With `.theme`, native row backgrounds can contrast with the MHUI canvas,
-especially in dark appearance. Plain and inset lists can show this difference
-as bands around sections. Use `.system` when the canvas and rows should retain
-their coordinated native treatment. Review both appearances for each adopted
-style, including the sidebar, content, and detail columns of a split view.
+The standard canvas uses a nearly neutral light background and a near-black
+dark background to keep native plain and inset rows visually connected to it.
+Custom themes should also check this relationship: replacing the canvas does
+not recolor native row surfaces. Review both appearances for each adopted style.
 
 MHUI does not select or inspect the list style. Keep `.automatic` implicit when
 SwiftUI should adapt to the navigation column and platform. Apply native
@@ -308,6 +307,10 @@ section behavior, or style-specific insets.
 For a `NavigationSplitView`, choose the background on each contained List/Form;
 do not apply one container modifier around the entire split view. Keep selection
 and navigation state in the host. Do not force all columns to a grouped style.
+Keep `.system` on the navigation sidebar so its contextual material and tonal
+separation remain intact. Use `.theme` on the content or detail column when an
+MHUI canvas is desired. Filling every column with the same opaque canvas removes
+the sidebar's native depth cue; this is not the recommended themed composition.
 
 `.mhRow()` deliberately replaces native row insets and vertical rhythm. The
 `.mhKeyValue` style supplies its own value alignment and row treatment. Neither
@@ -351,6 +354,9 @@ appearance; an MHUI action style is an explicit visual choice, not a requirement
 
 The `MHNativeStyleComparisonPreview` fixture compares standard, system-background,
 canvas, and explicitly decorated treatments across iOS list and form styles.
+Each treatment renders as an independent navigation root. Assemble comparisons
+from these captures rather than nesting sibling navigation stacks in one canvas,
+which can distort the apparent large-title margins.
 `MHNativeSplitViewPreview` exercises automatic styles in navigation columns.
 These fixtures are review tools, not proof of every OS or accessibility mode.
 

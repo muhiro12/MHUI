@@ -13,7 +13,7 @@ private struct MHNativeSplitViewPreview: View {
             List(["General", "Privacy"], id: \.self, selection: $category) { category in
                 NavigationLink(category, value: category)
             }
-            .mhListChrome(background: background)
+            .mhListChrome(background: .system)
             .navigationTitle("Settings")
         } content: {
             List(["Account", "Notifications"], id: \.self, selection: $selection) { item in

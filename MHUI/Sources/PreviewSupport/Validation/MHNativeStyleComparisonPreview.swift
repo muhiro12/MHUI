@@ -122,58 +122,53 @@ private struct MHNativeStyleChromeContainer: View {
     }
 }
 
-private struct MHNativeStyleComparisonPreview: View {
+private struct MHNativeStyleExample: CustomStringConvertible {
+    static var allExamples: [Self] {
+        MHNativeStyleCase.allCases.flatMap { style in
+            MHNativeStyleTreatment.allCases.map { treatment in
+                Self(style: style, treatment: treatment)
+            }
+        }
+    }
+
     let style: MHNativeStyleCase
+    let treatment: MHNativeStyleTreatment
+
+    var description: String {
+        "\(style.rawValue) / \(treatment.rawValue)"
+    }
+}
+
+private struct MHNativeStyleComparisonPreview: View {
+    let example: MHNativeStyleExample
 
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(MHNativeStyleTreatment.allCases, id: \.rawValue) { treatment in
-                VStack {
-                    Text(treatment.rawValue)
-                        .font(.headline)
-                    NavigationStack {
-                        if treatment == .system {
-                            MHNativeStyleContainer(style: style, treatment: treatment)
-                                .navigationTitle("Settings")
-                        } else if treatment == .preserved {
-                            MHNativeStyleChromeContainer(style: style, treatment: treatment, background: .system)
-                                .navigationTitle("Settings")
-                        } else {
-                            MHNativeStyleChromeContainer(style: style, treatment: treatment, background: .theme)
-                                .navigationTitle("Settings")
-                        }
-                    }
-                }
+        NavigationStack {
+            if example.treatment == .system {
+                MHNativeStyleContainer(style: example.style, treatment: example.treatment)
+                    .navigationTitle("Settings")
+            } else {
+                MHNativeStyleChromeContainer(
+                    style: example.style,
+                    treatment: example.treatment,
+                    background: example.treatment == .preserved ? .system : .theme
+                )
+                .navigationTitle("Settings")
             }
         }
         .mhTheme(.standard)
     }
 }
 
+// Render each navigation root independently so sibling stacks cannot affect its margins.
 @available(iOS 26.0, *)
 #Preview(
-    "Native Styles / Comparison",
-    traits: .fixedLayout(width: 1_560, height: 844),
-    arguments: MHNativeStyleCase.allCases
-) { style in
-    MHNativeStyleComparisonPreview(style: style)
-        .id(style)
-}
-#Preview("Native Styles / Single System", traits: .fixedLayout(width: 390, height: 844)) {
-    NavigationStack {
-        MHNativeStyleContainer(style: .automatic, treatment: .system)
-            .navigationTitle("Settings")
-    }
-    .mhTheme(.standard)
-}
-
-#Preview("Native Styles / Single Chrome", traits: .fixedLayout(width: 390, height: 844)) {
-    NavigationStack {
-        MHNativeStyleContainer(style: .automatic, treatment: .system)
-            .mhListChrome(background: .system)
-            .navigationTitle("Settings")
-    }
-    .mhTheme(.standard)
+    "Native Styles / Screen",
+    traits: .fixedLayout(width: 390, height: 844),
+    arguments: MHNativeStyleExample.allExamples
+) { example in
+    MHNativeStyleComparisonPreview(example: example)
+        .id(example.description)
 }
 #endif
 // swiftlint:enable one_declaration_per_file no_magic_numbers
