@@ -11,7 +11,7 @@ struct MHThemeTypographyTests {
         #else
         #expect(typography.screenTitle.font == .title2)
         #endif
-        #expect(typography.screenTitle.weight == .regular)
+        #expect(typography.screenTitle.weight == .bold)
         #expect(typography.screenTitle.design == .standard)
         #if os(iOS)
         #expect(typography.summaryTitle.font == .title)

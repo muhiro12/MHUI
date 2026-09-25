@@ -33,15 +33,17 @@ stack that relationship without changing reading order; at accessibility sizes,
 allow every item the full width.
 
 `mhSection` groups a header, content, and footer without painting a background.
+Leave a content-sized gap between a section header and its content; use a
+screen-sized gap between independent groups in spacious compositions.
 `MHGroupedRows` aligns rows and separators to that content edge; its parent owns
 horizontal padding. A detached note or input group can explicitly opt into
 `mhSurfaceInset()` and `mhSurface()`. Avoid using a surface simply to compensate
 for unclear alignment or an ambiguous gap.
 
-Large headings use regular-weight system type. Section labels and row titles
-retain more weight for scanning. This contrast of scale and weight should make
-hierarchy visible on a blank canvas without all-caps transformations, condensed
-fonts, or artificial tracking. Preserve Dynamic Type and native language shapes.
+Screen titles use bold system type as a clear entry point. Summary text keeps
+regular weight, while section labels and row titles use moderate emphasis for
+scanning. Use scale, weight, and whitespace before adding a different typeface
+or tracking. Preserve Dynamic Type and native language shapes.
 
 Photography, documents, charts, and other app content may provide shape, texture,
 and color. Shared chrome must not imitate those materials or force every app to
@@ -112,9 +114,9 @@ Metrics-only adopters also need to review layout when updating the package.
 | Spacing | 8 / 16 / 20 / 32 / 48 points | Separate inline, control, content, section, and screen relationships without excessive blank space |
 | Compact screen | 24-point horizontal and top inset; 32-point content spacing | Align content clearly and bring the first useful information closer to navigation |
 | Regular screen | 40-point insets and spacing; 640-point readable width | Keep prose and summaries coherent within wide content columns |
-| Native content rows | 24 / 32-point horizontal inset; 16 / 20-point vertical padding | Keep native row targets comfortably inset at compact / regular widths |
+| Native content rows | 20 / 32-point horizontal inset; 16 / 20-point vertical padding | Keep native row targets comfortably inset at compact / regular widths |
 | Grouped content | No implicit horizontal inset or section surface; 8-point section gaps plus row padding | Align headings, rows, and captions while leaving outer padding to the screen or an explicit surface |
-| Display hierarchy | Regular-weight screen titles; iOS summaries use system title | Separate the leading thought from body copy through scale rather than a badge or background |
+| Display hierarchy | Bold screen titles; regular-weight iOS summaries use system title | Separate the leading thought from body copy through scale and weight without a badge or background |
 | Section typography | System title3, medium | Give content sections an identifiable hierarchy above body copy |
 | Surface / control radius | 6 / 8 points retained | Quiet, nearly rectangular content planes and softly bounded fields; native controls keep their contextual shapes |
 | Minimum controls | 44 points; 28 on macOS, retained | Preserve platform-appropriate interaction targets |

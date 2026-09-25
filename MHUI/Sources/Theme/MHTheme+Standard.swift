@@ -20,9 +20,9 @@ public extension MHTheme {
 
     private static var standardScreenTitle: TextStyle {
         #if os(iOS)
-        .init(font: .largeTitle, weight: .regular)
+        .init(font: .largeTitle, weight: .bold)
         #else
-        .init(font: .title2, weight: .regular)
+        .init(font: .title2, weight: .bold)
         #endif
     }
 
@@ -39,7 +39,7 @@ public extension MHTheme {
             rowHorizontalInset: 32,
             rowVerticalPadding: 20,
             rowAccessorySpacing: 16,
-            compactRowHorizontalInset: 24,
+            compactRowHorizontalInset: 20,
             compactRowVerticalPadding: 16,
             compactRowAccessorySpacing: 12,
             compactActionHorizontalPadding: 22,

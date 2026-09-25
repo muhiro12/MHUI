@@ -69,7 +69,7 @@ struct MHThemeTests {
         #expect(theme.presentation.rowHorizontalInset == 32)
         #expect(theme.presentation.rowVerticalPadding == 20)
         #expect(theme.presentation.rowAccessorySpacing == 16)
-        #expect(theme.presentation.compactRowHorizontalInset == 24)
+        #expect(theme.presentation.compactRowHorizontalInset == 20)
         #expect(theme.presentation.compactRowVerticalPadding == 16)
         #expect(theme.presentation.compactRowAccessorySpacing == 12)
         #expect(theme.presentation.compactActionHorizontalPadding == 22)
