@@ -1,7 +1,7 @@
 import MHUI
 import SwiftUI
 
-/// Preserves platform-owned form styling while adopting the shared theme.
+/// Preserves native form controls and grouping on themed content surfaces.
 public struct MHUINativeContainerSample: View {
     @State private var isEnabled = true
     @State private var note = ""
@@ -12,7 +12,7 @@ public struct MHUINativeContainerSample: View {
                 overviewSection
                 noteSection
             }
-            .mhFormChrome(.native)
+            .mhFormChrome(.content)
             .navigationTitle("Settings")
         }
     }
@@ -26,10 +26,12 @@ private extension MHUINativeContainerSample {
     var overviewSection: some View {
         Section {
             LabeledContent("Plan", value: "Personal")
+                .mhRow()
 
             Toggle("Daily reminder", isOn: $isEnabled)
+                .mhRow()
         } header: {
-            Text("Overview")
+            MHSectionHeader("Overview")
         } footer: {
             Text("The app continues to own its data and interaction behavior.")
         }
@@ -38,16 +40,19 @@ private extension MHUINativeContainerSample {
     var noteSection: some View {
         Section {
             TextField("Add a note", text: $note)
+                .mhRow()
 
             Button("Continue") {
                 // no-op
             }
+            .mhRow()
 
             Button("Review later") {
                 // no-op
             }
+            .mhRow()
         } header: {
-            Text("Note")
+            MHSectionHeader("Note")
         }
     }
 }

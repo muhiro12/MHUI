@@ -10,7 +10,7 @@ public struct MHUIComposedScreenSample: View {
     @State private var note = ""
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: theme.spacing.section) {
+        VStack(alignment: .leading, spacing: theme.spacing.screen) {
             summary
             featureGrid
             overviewSection
