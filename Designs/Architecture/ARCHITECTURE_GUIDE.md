@@ -67,7 +67,7 @@ those historical tags remain unchanged.
 - Incompatible public contract changes require an explicitly chosen major release.
 - Backward-compatible additions use a minor release. Patch releases are reserved
   for explicitly chosen backward-compatible fixes.
-- Palette values and adaptive visual treatments may evolve without pixel-level
+- Color asset values and adaptive visual treatments may evolve without pixel-level
   compatibility. Visible changes must be described in release notes; semantic
   behavior and accessibility contracts still require compatibility review.
 - The default release workflow increments the minor version and resets patch to
@@ -210,8 +210,9 @@ Neither should become the place where new shared styling rules are invented befo
    - Keep row, action, and key-value tuning in `MHUI` even when the implementation is numeric.
    - Keep MHUI APIs generic enough to compose multiple sibling products and re-export `MHDesign` for styled adopters.
    - Keep feature labels, app navigation meaning, and business-state branching outside the package.
-   - Keep Liquid Glass use to package-owned chrome: grouped glass containers,
-     semantic tinting, action interactivity, and accessibility fallbacks.
+   - Keep Liquid Glass use to package-owned action buttons: opt-in policy,
+     semantic tinting, interactivity, and accessibility fallbacks. Content
+     chrome never uses glass.
    - Prefer native SwiftUI glass, toolbar, and button APIs in host apps when
      behavior is product-specific.
    - Treat requests for app-specific screen shells as a signal to add host-side composition rather than package-owned product views.

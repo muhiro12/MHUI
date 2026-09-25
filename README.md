@@ -5,8 +5,9 @@
 MHUI is a narrow runtime presentation kit for calm, tool-like SwiftUI apps.
 It is intentionally opinionated, intentionally small, and biased toward a
 shared visual language rather than product behavior. Its standard theme pairs
-system typography with luminous low-chroma planes, dark-ink hierarchy, quiet
-boundaries, restrained geometry, and selective use of the host app's accent color.
+system typography with an achromatic foundation: neutral planes and text shaped
+by geometry, spacing, proportion, and useful hierarchy. Color comes from the
+host app's accent and from semantic warning and destructive status.
 
 The package exposes two library products:
 
@@ -25,7 +26,8 @@ MHUI owns shared presentation rules that can apply across sibling apps:
 - semantic theme application through `MHTheme.standard(...)`
 - text, surface, row, section, screen, and native-container chrome
 - action, key-value, row, and compact-width fallback behavior
-- package-owned low-chroma color assets and validation previews
+- package-owned achromatic color assets, semantic status colors, and
+  validation previews
 
 MHUI does not own host-app behavior:
 
@@ -59,7 +61,10 @@ decisions.
 
 For the overall MHUI direction, open
 `MHUI/Sources/PreviewSupport/DesignReview/MHSignatureCompositionPreview.swift`.
-Its `START HERE` previews are the canonical visual review surface. Preview files
+Its `START HERE` previews are the canonical visual review surface. They cover
+modest and dense content, dark mode, accessibility text sizes, and right-to-left
+layout with the neutral standard theme; a separate host-accent preview shows how
+an app's accent pair integrates. Preview files
 under `Diagnostics` compare specific conditions and are not competing design
 directions. Use the Canvas environment overrides for Increase Contrast and
 Reduce Transparency; these system accessibility values are read-only in app
@@ -118,7 +123,7 @@ struct OverviewScreen: View {
         ) {
             MHSummary(
                 "Focused work",
-                metadata: "OVERVIEW",
+                metadata: "Overview",
                 supporting: "A concise hierarchy for the current context."
             ) {
                 Text("Ready")
@@ -173,9 +178,9 @@ including on systems that support Liquid Glass. For controls in a floating
 functional layer, explicitly apply `.mhGlassPolicy(.enabled)` to that control
 or its bounded action group. Avoid enabling it at the app root when ordinary
 content actions should remain non-glass. `.disabled`, Reduce Transparency, and
-older systems retain the non-glass treatment. Standard content surfaces remain
-non-glass under all policies. Existing call sites need no changes for content
-actions; floating actions that relied on automatic glass must opt in.
+older systems retain the non-glass treatment. Content surfaces, the screen
+canvas, badges, and inputs never use Liquid Glass under any policy, and
+`MHTheme.SurfaceTreatment` has no glass options.
 
 Use `MHFeatureGrid` when one piece of content needs to remain visually primary
 beside a small supporting set. It uses a split composition at regular widths,
@@ -199,7 +204,7 @@ list, or form styles. Those modifiers would also affect toolbars, menus, system
 presentations, and controls whose primary, secondary, or destructive role
 cannot be inferred at the root.
 
-The low-chroma base and system typography remain package-owned defaults. The
+The achromatic base and system typography remain package-owned defaults. The
 host app continues to own its identity through its `AccentColor` asset.
 
 ```swift
@@ -238,8 +243,8 @@ specialized native subtree outside those structural modifiers when it must
 retain an OS-standard presentation. A local theme or asset-backed `.tint(...)`
 is available when that subtree also needs a deliberate color exception.
 
-Decorative hierarchy stays low-chroma and relies on proportion, whitespace,
-and tonal depth. Reserve the app accent for semantic status, focus, native
+Hierarchy stays achromatic and relies on proportion, spacing, type, and
+neutral tone. Reserve the app accent for semantic status, focus, native
 controls, and the primary action instead of applying it to every heading or
 surface.
 
@@ -275,32 +280,29 @@ Form {
 
 See the [Adoption Guide](Designs/Guides/ADOPTION_GUIDE.md) for staged migration,
 the `Form` route, component ownership, migration notes, and the review
-checklist. The source-only
+checklist. Apps upgrading from 1.x should start with
+[Migration to 2.0](Designs/Guides/ADOPTION_GUIDE.md#migration-to-20). The source-only
 [adoption sample](Examples/MHUIAdoptionSample/Package.swift) can be opened as a
 Swift package and does not require an Xcode project.
 
 ## Tuning
 
 `MHTheme.standard` is ready to use as a package-owned visual baseline. It keeps
-Apple's system type styles and native controls while giving apps a distinct
-luminous surface hierarchy, measured spacing, and dark-ink headings.
+Apple's system type styles and native controls while giving apps a neutral
+surface hierarchy, measured spacing, and clear type hierarchy.
 
-Choose one palette at the app root. Mist is the default; Slate, Linen, and Sage
-provide cool, warm, and green-gray alternatives with the same hierarchy.
-
-```swift
-ContentView()
-    .mhTheme(.standard(palette: .slate))
-```
-
-All four palettes include light, dark, and increased-contrast colors. Increased
-Contrast uses the shared neutral surface baseline to prioritize legibility.
-The palette does not change the app tint or native row colors.
+The standard foundation is achromatic. Every package-owned background, surface,
+border, and text color has equal red, green, and blue channels in light, dark,
+and Increase Contrast appearances. Brand color comes only from the host accent
+pair; warning and destructive keep their semantic system hues. Standard
+surfaces and badges are borderless and differ by tone alone. Separators,
+input boundaries, and pressed, focused, and disabled states remain. Increase
+Contrast adds or strengthens a hairline outline on surfaces, badges, and inputs.
 
 Use the standard baseline at the app root. Typography, spacing, motion, and
 surface treatments are package-owned defaults, not per-screen tuning steps.
-Existing low-level theme customization APIs remain source compatible, but are
-not required for adoption. Request additional controls through a concrete issue
+Low-level theme customization APIs remain available, but are not required for
+adoption. Request additional controls through a concrete issue
 when the standard routes cannot express a product requirement.
 
 The standard theme inherits the app's tint. For an asset-backed brand accent,

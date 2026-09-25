@@ -10,7 +10,8 @@ It explains where new code should live when the same visual rule or container pa
 - `MHDesign/Sources` is the source of truth for shared spacing, corner radius, and generic screen or surface layout parameters that should work without MHUI chrome.
 - `MHUI/Sources` is the source of truth for shared presentation logic built on `MHDesign`.
 - `MHUI/Resources` is the source of truth for package-owned color and image
-  resources, including luminous, low-chroma standard base colors.
+  resources, including achromatic standard base colors and semantic status
+  colors.
 - Host apps own their accent color; the standard theme resolves it from the app's `AccentColor` asset and uses it selectively for semantic emphasis.
 - Durable color and image values live in asset catalogs. Source code may map
   assets to semantic roles and derive treatment properties such as opacity,
@@ -29,7 +30,7 @@ It explains where new code should live when the same visual rule or container pa
 | --- | --- | --- |
 | Shared design parameters | `MHDesign/Sources` | `MHDesignMetrics`, spacing, corner radii, readable widths, generic screen or surface insets, compact thresholds, SwiftUI environment bridge |
 | Shared presentation logic | `MHUI/Sources` | `MHTheme`, semantic roles, text styles, row and action fallback, key-value fallback, surface chrome, grouped rows, section chrome, screen chrome, and re-export of `MHDesign` |
-| Package resource assets | `MHUI/Resources` | Achromatic background, surface, border, dark-ink text, status, fallback foreground, and preview assets referenced by semantic roles |
+| Package resource assets | `MHUI/Resources` | Achromatic background, surface, border, and text assets; semantic status, fallback foreground, and preview assets referenced by semantic roles |
 | Package preview support | `MHDesign/Sources/PreviewSupport`, `MHUI/Sources/PreviewSupport`, plus local preview files beside the tuned API | minimal MHDesign preview helpers, `MHPreviewStyle`, `MHPreviewCatalog`, validation catalogs for compact width and native-container chrome, plus local previews kept beside the API they tune |
 | Host app composition | App repositories that consume MHUI | feature screens, navigation state, form state, domain-driven copy, feature-specific layouts |
 | Public adoption sample | `Examples/MHUIAdoptionSample` | independent public API build and one app-like consumer review Preview |
@@ -44,8 +45,8 @@ Styled apps can apply the opinionated `MHTheme.standard` baseline unchanged or
 derive one app-owned theme from it. They apply that theme near the app root with
 `mhTheme(_:)` and use a narrower theme only for deliberate local exceptions.
 The unchanged baseline uses the host app's `AccentColor` asset.
-Its decorative hierarchy remains low-chroma: dark-ink headings and quiet
-boundaries distinguish content without borrowing the app's brand color. Accent is
+Its hierarchy remains achromatic: type, spacing, proportion, and neutral tone
+distinguish content without borrowing the app's brand color. Accent is
 reserved for semantic status, focus, native controls, and primary actions.
 
 The root theme is the canonical root-first styling entry point. It propagates
@@ -66,7 +67,7 @@ The host app chooses by screen purpose, content hierarchy, and required
 behavior. Read-only detail screens can use native grouped lists; they do not
 need custom composition merely to demonstrate MHUI adoption. Shared headers,
 footers, and row treatments are optional when native sections already provide
-the intended hierarchy. Preserve MHUI's quiet semantic palette and rhythm
+the intended hierarchy. Preserve MHUI's neutral foundation and rhythm
 without requiring every screen to repeat its rules or surface frames.
 
 `mhScreen` owns screen scrolling, so it must not wrap a native `List` or `Form`.
@@ -88,7 +89,6 @@ The following types and helpers are the current shared entry points for package-
 - `MHLayoutMode`
 - `mhDesignMetrics(_:)`
 - `MHTheme`
-- `MHPalette`
 - `MHTheme.Colors`
 - `MHTheme.Typography`
 - `MHTheme.Presentation`
@@ -119,9 +119,10 @@ The following types and helpers are the current shared entry points for package-
 
 ## Liquid Glass Policy
 
-MHUI may use Liquid Glass only as package-owned surface treatment for domain-neutral primitives.
-The package should keep the policy high level: host apps choose `mhGlassPolicy(_:)`, while
-MHUI resolves platform support, Reduce Transparency, and fallback fills.
+MHUI may use Liquid Glass only for package-owned action buttons.
+The package should keep the policy high level: host apps opt floating actions in
+with `mhGlassPolicy(_:)`, while MHUI resolves platform support, Reduce
+Transparency, and fallback fills.
 Do not add low-level glass choreography, feature-specific morphing, or per-screen art direction
 to shared APIs.
 When several package-owned glass surfaces appear near each other, keep
@@ -135,12 +136,12 @@ filled actions apply glass to the complete padded label in a capsule so the
 foreground and interactive effect share one surface. Their opaque fallback
 continues to use the theme's control radius and semantic fills.
 
-Canvas backgrounds, content surfaces, metadata badges, and inputs currently
-use solid fills. Do not spread Liquid Glass across the content layer or add
-decorative shadows to every surface. Native grouping, shape, spacing, and
-semantic contrast can establish depth while preserving a quiet palette.
-Any new content material needs a concrete content role and separate visual
-review; it is not implied by enabling the glass policy.
+Canvas backgrounds, content surfaces, metadata badges, and inputs always use
+non-glass fills, and `MHTheme.SurfaceTreatment` cannot request glass. Do not
+spread Liquid Glass across the content layer or add decorative borders or
+shadows to every surface. Native grouping, shape, spacing, and neutral tone
+establish depth. Any new content material needs a concrete content role and
+separate visual review; it is not implied by enabling the glass policy.
 
 Directional previews are review material, not accepted appearance baselines.
 Changes to MHUI treatments do not imply changes to MHDesign's standard metrics.
@@ -173,10 +174,10 @@ Changes to MHUI treatments do not imply changes to MHDesign's standard metrics.
 - Re-export of `MHDesign` in `MHUI` stays in the package because styled adopters should reach both layers through one import.
 - `MHTheme.standard()` and `MHTheme.standard(accent:)` stay in the package
   because they define a reusable semantic baseline rather than one app's
-  branding system. The baseline uses package-owned luminous low-chroma planes,
-  dark-ink hierarchy, quiet boundaries, host-provided accent, system
+  branding system. The baseline uses package-owned achromatic planes and text,
+  borderless surfaces, host-provided accent, semantic status colors, system
   typography, and restrained geometry.
-- Apps choose a root palette and brand accent. Typography, metrics, and surface
+- Apps choose a root brand accent pair. Typography, metrics, and surface
   treatments are package-owned defaults; existing theme customization remains
   compatible but is not a required adoption step.
 - The standard theme uses the app's `AccentColor` without installing a tint

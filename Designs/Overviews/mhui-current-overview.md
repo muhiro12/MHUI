@@ -1,6 +1,6 @@
 # MHUI Current Repository Overview
 
-Current as of July 18, 2026.
+Current as of September 25, 2026.
 
 ## Purpose
 
@@ -23,9 +23,9 @@ The repository is intentionally biased toward package-owned visual rules and awa
 
 - Shared design parameters live in `MHDesign/Sources`.
 - Shared presentation APIs live in `MHUI/Sources`, which re-exports `MHDesign`.
-- Standard low-chroma base colors and package-owned image resources live in
-  `MHUI/Resources` and are reached through semantic references in
-  `MHUI/Sources`; the host app's `AccentColor` remains external.
+- Standard achromatic base colors, semantic status colors, and package-owned
+  image resources live in `MHUI/Resources` and are reached through semantic
+  references in `MHUI/Sources`; the host app's `AccentColor` remains external.
 - Theme color customization accepts asset resources. RGB and hexadecimal color
   definitions do not belong in Swift source.
 - Starting with `1.20.0`, releases follow the
@@ -105,6 +105,9 @@ the Xcode-native integration is unavailable or does not cover a check.
   intentional subtree exceptions.
 - The standard theme uses the host app's `AccentColor`. Apps that provide an
   asset-backed accent also own and verify its `onAccent` foreground asset.
+- The standard foundation is one achromatic set of assets rather than a choice
+  of palettes. Standard surfaces and badges are borderless; Increase Contrast
+  adds outlines.
 - Root theme propagation supplies all inheritable semantic values, synchronizes
   MHDesign metrics, and optionally applies native tint. Screen structure and
   semantic control roles remain explicit because they cannot be inferred
@@ -121,8 +124,9 @@ the Xcode-native integration is unavailable or does not cover a check.
   roles remain explicit.
 - The source-only adoption sample remains outside the root package targets and
   requires no Xcode project.
-- Package-owned Liquid Glass behavior is limited to semantic tinting, grouped
-  chrome containers, action interactivity, and accessibility/runtime fallback.
+- Package-owned Liquid Glass behavior is limited to opt-in action buttons,
+  their semantic tinting and interactivity, and accessibility/runtime fallback.
+  Content surfaces, the canvas, badges, and inputs never use glass.
 - Runtime UI fallback remains package-owned behavior and is separate from consumer-update compatibility policy.
 - Verification should prefer documented Xcode-native capabilities and retained
   `ci_scripts/tasks/*.sh` rule entrypoints over ad-hoc commands.

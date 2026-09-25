@@ -6,7 +6,7 @@ This guide turns an existing SwiftUI screen into a complete MHUI composition
 without replacing native controls or moving product behavior into the package.
 Native `List` and `Form` integration and stack-based composition are supported
 routes. Choose the route that fits the content and platform behavior while
-keeping the package's quiet semantic palette and rhythm.
+keeping the package's neutral semantic foundation and rhythm.
 
 The source-only
 [MHUI adoption sample](../../Examples/MHUIAdoptionSample/Package.swift)
@@ -43,10 +43,9 @@ struct WorkspaceApp: App {
 }
 ```
 
-Choose a palette once at this root with `.standard(palette: .slate)`.
-Mist is the default; Slate, Linen, and Sage are alternatives. Each preset owns
-all four surface roles and adapts to light, dark, and increased contrast.
-Keep per-screen typography and surface recipes at the shared defaults.
+The standard foundation is achromatic and adapts to light, dark, and Increase
+Contrast appearances. Keep per-screen typography and surface recipes at the
+shared defaults.
 
 The call propagates colors, typography, metrics, presentation values, and
 surface treatments to every MHUI component in the subtree. It also synchronizes
@@ -86,12 +85,12 @@ style instead of inheriting the group's secondary default.
 
 ### Keep the Accent App-Owned
 
-The standard theme uses luminous, low-chroma package-owned base colors and
-system typography. It resolves its accent from the host app's `AccentColor`
+The standard theme uses achromatic package-owned base colors and system
+typography. It resolves its accent from the host app's `AccentColor`
 asset, so each app can keep its own identity without changing the neutral
 canvas.
 
-Dark-ink headings, proportion, whitespace, and tonal depth establish the
+Type hierarchy, proportion, spacing, and neutral tone establish the
 hierarchy. Reserve the app accent for semantic status, focus, native controls,
 and the primary action. Do not use it as the default color for headings,
 metadata, rules, or surfaces.
@@ -112,7 +111,7 @@ light, dark, and Increase Contrast appearances. Do not define RGB or
 hexadecimal colors in Swift source.
 
 Use the standard typography, metrics, and surface treatments consistently.
-Choose the app-wide palette and brand accent at the root, not per screen.
+Choose the app-wide brand accent pair at the root, not per screen.
 
 ## Choose Composition by Screen Purpose
 
@@ -207,7 +206,7 @@ struct OverviewScreen: View {
         ) {
             MHSummary(
                 "Focused work",
-                metadata: "OVERVIEW",
+                metadata: "Overview",
                 supporting: "A concise hierarchy for the current context."
             ) {
                 Text("Ready")
@@ -288,7 +287,7 @@ List {
 .navigationTitle("Workspace")
 ```
 
-`mhListChrome()` supplies the palette's canvas and preserves native row
+`mhListChrome()` supplies the neutral canvas and preserves native row
 backgrounds, insets, section typography, separators, and selection. Omit it
 for a fully system-owned container. There is no background-strength setting.
 
@@ -403,7 +402,7 @@ proportion and whitespace.
 
 Liquid Glass belongs to navigation and important interactive chrome. Do not use
 it as a content background or apply it to rows, metadata, and static surfaces to
-make a screen feel more styled. Let low-chroma content planes provide continuity
+make a screen feel more styled. Let neutral content planes provide continuity
 under native translucent controls, and reserve the host accent for semantic
 state, focus, and the primary action.
 
@@ -424,6 +423,84 @@ screen before deciding whether it needs further composition. Native and
 stack-based routes can both be finished implementations. Directional previews
 remain proposals until their appearance is reviewed; do not freeze them as
 golden baselines merely because they compile or render successfully.
+
+## Migration to 2.0
+
+MHUI 2.0 replaces the palette presets with one achromatic foundation and keeps
+all content chrome off Liquid Glass. Host apps keep ownership of their accent
+pair.
+
+### Palettes Are Removed
+
+`MHPalette` and every `MHTheme.standard(palette:...)` overload are removed.
+Delete the `palette:` argument; the remaining factories keep their labels and
+defaults.
+
+| 1.x | 2.0 |
+| --- | --- |
+| `.standard(palette: .mist)` | `.standard` |
+| `.standard(palette:accent:)` | `.standard(accent:)` |
+| `.standard(palette:onAccent:)` | `.standard(onAccent:)` |
+| `.standard(palette:metrics:accent:)` | `.standard(metrics:accent:)` |
+| `.standard(palette:accent:onAccent:)` | `.standard(accent:onAccent:)` |
+| `.standard(palette:metrics:accent:onAccent:)` | `.standard(metrics:accent:onAccent:)` |
+
+An app that depended on tinted surfaces can assign its own asset-backed colors
+to `MHTheme.Colors` in its root theme.
+
+### Surface Treatments Cannot Request Glass
+
+`MHTheme.SurfaceTreatment` now describes a non-glass content fill. The glass
+properties are removed and the fill properties are renamed.
+
+| 1.x | 2.0 |
+| --- | --- |
+| `fallbackColorRole` | `colorRole` |
+| `fallbackOpacity` | `opacity` |
+| `prefersGlass`, `glassTintColorRole`, `glassTintOpacity` | Removed |
+
+Before:
+
+```swift
+theme.surfaces.standard = .init(
+    prefersGlass: false,
+    fallbackColorRole: .surface,
+    fallbackOpacity: 1,
+    glassTintColorRole: nil,
+    glassTintOpacity: 0,
+    borderColorRole: .border,
+    borderOpacity: 0.14
+)
+```
+
+After:
+
+```swift
+theme.surfaces.standard = .init(
+    colorRole: .surface,
+    borderOpacity: 0.14
+)
+```
+
+The initializer defaults `opacity` to `1`, `borderColorRole` to `.border`, and
+`borderOpacity` to `0`. Content surfaces, the screen canvas, badges, and inputs
+never use Liquid Glass, regardless of `MHGlassPolicy`. The policy affects only
+MHUI action buttons: `.enabled` opts them in where the system supports it, and
+`.automatic` and `.disabled` keep non-glass fills.
+
+### Standard Appearance Changes
+
+These changes need no source edits, but they affect visual snapshots:
+
+- Background, surface, border, and text assets are neutral grays matched to
+  the luminance, and therefore the contrast, of the 1.x defaults. Warning and
+  destructive keep their system hues.
+- Standard surfaces and badges no longer draw a border. Increase Contrast adds
+  an outline at the divider opacity, and detached inputs keep their boundary.
+  Set `borderOpacity` on a surface treatment to restore a permanent outline.
+- `metadata` and `caption` text use the standard system design with zero
+  tracking instead of monospaced type. Set `design: .monospaced` on those
+  `MHTheme.TextStyle` values if an app depends on the previous treatment.
 
 ## Migration from 1.11
 
@@ -558,8 +635,10 @@ on individual child buttons when their role differs from the group default.
 Before considering a screen adopted, verify all of the following:
 
 - The app applies one root theme and still owns its accent color.
-- Standard base planes remain low-chroma unless the app deliberately overrides
-  a semantic color.
+- Standard base planes and text remain achromatic unless the app deliberately
+  overrides a semantic color.
+- Surfaces rely on tone and spacing instead of decorative borders, and no
+  surface is framed inside another.
 - Structural rules do not use the app accent.
 - Accent appears selectively for semantic status, focus, native controls, and
   the primary action.
