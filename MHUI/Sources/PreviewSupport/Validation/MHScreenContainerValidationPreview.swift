@@ -54,7 +54,8 @@ private struct MHScreenValidationContent: View {
         }
         .mhScreen(
             "MHUI",
-            subtitle: "Screen-level validation for compact resilience and shared runtime responsibilities."
+            subtitle: "Screen-level validation for compact resilience and shared runtime responsibilities.",
+            titlePlacement: .content
         )
     }
 }

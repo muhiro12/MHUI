@@ -29,7 +29,8 @@ private struct MHActionButtonStyleValidationPreview: View {
             "Action Buttons",
             subtitle: """
                 Automatic presentation should try intrinsic width first and fall back without host-specific fixes.
-                """
+                """,
+            titlePlacement: .content
         )
     }
 }

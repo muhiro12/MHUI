@@ -62,9 +62,11 @@ private struct MHSignatureCompositionPreview: View {
     var theme = MHTheme.standard
 
     var body: some View {
-        MHSignatureCompositionContent(density: density)
-            .mhTheme(theme)
-            .mhPreviewTint(context)
+        NavigationStack {
+            MHSignatureCompositionContent(density: density)
+        }
+        .mhTheme(theme)
+        .mhPreviewTint(context)
     }
 }
 

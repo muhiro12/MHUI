@@ -15,7 +15,8 @@ private struct MHActionGroupContrastPreview: View {
         }
         .mhScreen(
             "Glass Action Contrast",
-            subtitle: "Enabled and disabled labels should remain visually distinct in every appearance."
+            subtitle: "Enabled and disabled labels should remain visually distinct in every appearance.",
+            titlePlacement: .content
         )
     }
 

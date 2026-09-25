@@ -6,6 +6,7 @@ struct MHScreenModifier<Header: View>: ViewModifier {
 
     let title: Text?
     let subtitle: Text?
+    let titlePlacement: MHScreenTitlePlacement
     let header: Header?
 
     func body(content: Content) -> some View {
@@ -17,13 +18,16 @@ struct MHScreenModifier<Header: View>: ViewModifier {
                 )
             }
             .background(MHCanvasBackground())
+            .modifier(MHScreenNavigationTitleModifier(
+                title: titlePlacement == .navigation ? title : nil
+            ))
         }
     }
 }
 
 private extension MHScreenModifier {
     var showsTitleBlock: Bool {
-        title != nil || subtitle != nil
+        (titlePlacement == .content && title != nil) || subtitle != nil
     }
 
     @ViewBuilder
@@ -37,7 +41,7 @@ private extension MHScreenModifier {
             VStack(alignment: .leading, spacing: style.contentSpacing) {
                 if showsTitleBlock {
                     MHScreenTitleBlock(
-                        title: title,
+                        title: titlePlacement == .content ? title : nil,
                         subtitle: subtitle
                     )
                 }

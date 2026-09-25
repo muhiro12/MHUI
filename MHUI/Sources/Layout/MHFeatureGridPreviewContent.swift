@@ -36,7 +36,8 @@ private struct MHFeatureGridPreviewContent: View {
         )
         .mhScreen(
             "Composition",
-            subtitle: "System type, semantic surfaces, and adaptive hierarchy."
+            subtitle: "System type, semantic surfaces, and adaptive hierarchy.",
+            titlePlacement: .content
         )
     }
 

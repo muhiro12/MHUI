@@ -1,15 +1,19 @@
 import SwiftUI
 
 public extension View {
-    /// Wraps content in the MHUI centered screen layout.
+    /// Wraps content in the MHUI responsive screen layout.
+    /// Place the screen in a native navigation container for the default title.
+    /// Use `.content` only for a heading that should scroll out of view.
     func mhScreen(
         title: Text? = nil,
-        subtitle: Text? = nil
+        subtitle: Text? = nil,
+        titlePlacement: MHScreenTitlePlacement = .navigation
     ) -> some View {
         modifier(
             MHScreenModifier<EmptyView>(
                 title: title,
                 subtitle: subtitle,
+                titlePlacement: titlePlacement,
                 header: nil
             )
         )
@@ -19,12 +23,14 @@ public extension View {
     func mhScreen<Header: View>(
         title: Text? = nil,
         subtitle: Text? = nil,
+        titlePlacement: MHScreenTitlePlacement = .navigation,
         @ViewBuilder header: () -> Header
     ) -> some View {
         modifier(
             MHScreenModifier(
                 title: title,
                 subtitle: subtitle,
+                titlePlacement: titlePlacement,
                 header: header()
             )
         )
@@ -33,13 +39,15 @@ public extension View {
     /// Wraps content in the MHUI centered screen layout using a localized title.
     func mhScreen(
         _ title: LocalizedStringKey,
-        subtitle: LocalizedStringKey? = nil
+        subtitle: LocalizedStringKey? = nil,
+        titlePlacement: MHScreenTitlePlacement = .navigation
     ) -> some View {
         mhScreen(
             title: Text(title),
             subtitle: subtitle.map { subtitle in
                 Text(subtitle)
-            }
+            },
+            titlePlacement: titlePlacement
         )
     }
 
@@ -47,6 +55,7 @@ public extension View {
     func mhScreen<Header: View>(
         _ title: LocalizedStringKey,
         subtitle: LocalizedStringKey? = nil,
+        titlePlacement: MHScreenTitlePlacement = .navigation,
         @ViewBuilder header: () -> Header
     ) -> some View {
         mhScreen(
@@ -54,6 +63,7 @@ public extension View {
             subtitle: subtitle.map { subtitle in
                 Text(subtitle)
             },
+            titlePlacement: titlePlacement,
             header: header
         )
     }
