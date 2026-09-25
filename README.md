@@ -189,6 +189,24 @@ and uses one supporting column at accessibility text sizes. The container owns
 only hierarchy, spacing, and fallback; adopters still provide semantic content
 and choose any surface or control treatment explicitly.
 
+### Choose Container Presentation
+
+Native behavior and visual presentation are separate choices:
+
+- `.mhListChrome(.native)` and `.mhFormChrome(.native)` preserve system
+  backgrounds and styles. The no-argument calls use this choice.
+- `.mhListChrome(.content)` uses a plain native list with the MHUI canvas.
+  Apply `mhRow()` to complete rows and use MHUI headers and text styles.
+- `.mhFormChrome(.content)` supplies the canvas while the app chooses the
+  native form style, fields, and any MHUI row treatment.
+
+A main collection and a settings screen can choose different presentation
+under one root theme. Apply content chrome inside each navigation destination
+or split-view column, preserving native sidebars, dividers, toolbars, and tabs.
+`MHSummary` leaves outer spacing to its composition: use `mhRow()` in a list
+or `mhSurfaceInset()` on a surface. See the [adoption guide](Designs/Guides/ADOPTION_GUIDE.md)
+and the content list/editor in the public sample for complete examples.
+
 ### Root Configuration and App Accent
 
 Apply the standard theme once near the app root. This is MHUI's canonical
@@ -238,9 +256,9 @@ appearances. MHUI does not accept RGB or hexadecimal color definitions in
 source.
 
 Visible MHUI structure requires one explicit route at the screen boundary.
-Use signature composition for the normal MHUI-forward route, and leave a
-specialized native subtree outside those structural modifiers when it must
-retain an OS-standard presentation. A local theme or asset-backed `.tint(...)`
+Choose MHUI content inside native containers or a stack-based composition
+for the main experience, and use native presentation where familiar system
+appearance serves the screen. A local theme or asset-backed `.tint(...)`
 is available when that subtree also needs a deliberate color exception.
 
 Hierarchy stays achromatic and relies on proportion, spacing, type, and
@@ -250,22 +268,22 @@ surface.
 
 ### Choose a Screen Route
 
-Choose one route for each screen. All MHUI routes share the root theme; apps do
-not assemble degrees of MHUI styling by decorating individual native rows.
+Choose appearance by screen purpose and container behavior independently.
+All routes share the root theme, and an app can mix them across destinations.
 
 | Route | Use | Ownership |
 | --- | --- | --- |
-| System | Native `List` or `Form` without MHUI chrome | SwiftUI owns the complete container appearance |
-| Native MHUI | `List.mhListChrome()` or `Form.mhFormChrome()` | MHUI supplies the canvas; SwiftUI owns rows, sections, selection, and style |
-| Signature composition | `mhScreen`, `mhSection`, `MHSummary`, `MHGroupedRows` | MHUI owns content hierarchy, spacing, and surfaces around native controls |
+| Native | `mhListChrome(.native)` or `mhFormChrome(.native)`, or theme only | SwiftUI owns the container appearance |
+| MHUI content | `mhListChrome(.content)` or `mhFormChrome(.content)` with MHUI rows and headers | MHUI supplies hierarchy and rhythm while SwiftUI retains scrolling, selection, and controls |
+| Stack composition | `mhScreen`, `mhSection`, `MHSummary`, `MHGroupedRows` | MHUI supplies freely arranged content hierarchy around native controls |
 
-Use native `Section`, `Text`, and `LabeledContent` in the native MHUI route.
-Do not add `mhRow`, MHUI section typography, or the `mhKeyValue` style to this
-route. These building blocks belong to signature compositions. Keep native
-navigation titles and do not wrap a `List` or `Form` in `mhScreen`.
+MHUI row, section, and labeled-content styles are supported in List and Form.
+Place `mhRow()` on the complete native row, and use native navigation titles.
+Do not wrap a `List` or `Form` in `mhScreen`, which owns a separate scroll view.
 
-In a split view, leave the sidebar system-owned and apply MHUI chrome to the
-content or detail containers. SwiftUI retains automatic style adaptation.
+In a split view, leave navigation chrome system-owned and apply content
+presentation inside each content or detail column. The content list chooses
+plain styling; the app can explicitly select another list style afterward.
 
 ```swift
 Form {
@@ -300,7 +318,8 @@ input boundaries, and pressed, focused, and disabled states remain. Increase
 Contrast adds or strengthens a hairline outline on surfaces, badges, and inputs.
 
 Use the standard baseline at the app root. Typography, spacing, motion, and
-surface treatments are package-owned defaults, not per-screen tuning steps.
+surface treatments are package-owned defaults. Screen purpose selects native
+or MHUI content presentation; hosts can deliberately override theme values.
 Low-level theme customization APIs remain available, but are not required for
 adoption. Request additional controls through a concrete issue
 when the standard routes cannot express a product requirement.

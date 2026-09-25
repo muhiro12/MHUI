@@ -69,9 +69,8 @@ where meaning is known: `MHGroupedRows` styles its direct children and
 ### Preserve Native Presentation Locally
 
 Do not turn off the root theme for an entire app because one screen needs
-native presentation. Keep the `List`, `Form`, or control subtree
-outside MHUI structural modifiers. It then retains its OS-selected container
-and control styles while still receiving the shared metrics and ordinary app
+native presentation. Use `.mhListChrome(.native)` or `.mhFormChrome(.native)`, or omit the
+container modifier. The subtree retains its OS-selected container and control styles while still receiving the shared metrics and ordinary app
 tint.
 
 If the subtree intentionally needs a different theme, apply
@@ -120,13 +119,16 @@ not from a requirement to display custom package chrome.
 
 | Screen purpose | Route | Fit |
 | --- | --- | --- |
-| Collection, hierarchy, or grouped read-only detail | `mhListChrome` with native sections and rows | Platform grouping, scrolling, selection, and navigation |
-| Data entry, settings, or inspector | `mhFormChrome` with native sections and fields | Platform grouping, focus, and control behavior |
-| Overview, report, insight, or other content needing an editorial arrangement | `mhScreen`, `mhSection`, `MHSummary`, `MHFeatureGrid`, `MHGroupedRows` | Deliberate stack-based content hierarchy |
+| Main collection or browsing screen | `List` with `.mhListChrome(.content)`, `mhRow`, and MHUI headers | MHUI content rhythm with native selection and navigation |
+| Editor or product-specific form | `Form` with `.mhFormChrome(.content)` and explicit MHUI rows | MHUI hierarchy with native fields, focus, and validation behavior |
+| Settings, navigation sidebar, or familiar utility screen | `.mhListChrome(.native)` / `.mhFormChrome(.native)`, or theme only | Platform-owned appearance and behavior |
+| Overview, report, or freely arranged detail | `mhScreen`, `mhSection`, `MHSummary`, `MHFeatureGrid`, `MHGroupedRows` | Deliberate stack-based content hierarchy |
 
-Native containers are complete styled adoption paths. Keep their sections,
-rows, and controls native; MHUI supplies one consistent canvas treatment.
-For the system route, omit the container modifier entirely.
+Choose appearance independently of the container's behavior. A main screen
+can use MHUI inside `List`; a settings screen can keep the native appearance
+inside the same app. These are defaults by purpose, not restrictions on which
+screens may use a treatment. Explicit row and header styles can be mixed when
+they serve the product's hierarchy.
 
 Signature composition does not imply replacement controls. Keep native
 buttons, toggles, pickers, text fields, navigation, toolbars, search, sheets,
@@ -142,9 +144,10 @@ on replacing these platform conventions with flat, ruled surfaces.
 block. Do not place a `List`, `Form`, or another screen-level scrolling
 container inside it.
 
-`mhListChrome` and `mhFormChrome` preserve the native container's edge-to-edge
-scrolling, platform-selected style, and control behavior while applying the
-shared canvas. Keep page titles and screen-specific lead content in the host
+`mhListChrome(.content)` uses a plain list and the shared canvas.
+`mhFormChrome(.content)` applies the canvas without forcing a form style.
+Both preserve native scrolling and controls. The `.native` choice preserves
+the platform-selected background and style. Keep page titles and screen-specific lead content in the host
 app.
 
 Use either the MHUI screen title or the host navigation title as the visible
@@ -160,7 +163,9 @@ becomes especially prominent at accessibility text sizes.
 
 If the screen has no distinct editorial lead, omit `MHSummary` and begin with
 the screen content. The package primitive is optional; complete adoption does
-not require every screen to display one.
+not require every screen to display one. `MHSummary` has no outer padding: use
+`mhRow()` inside a list, or `mhSurfaceInset()` when placing it on a surface.
+The surrounding composition owns its margins.
 
 ### Adaptive Feature Hierarchy
 
@@ -267,76 +272,91 @@ children instead of nesting another row-styled view inside a composite child.
 
 ## Native List Bridge
 
-Start with native `List`, `Section`, controls, and labeled content when the
-screen should follow the platform, including Settings-like screens and split
-view sidebars. Apply the root theme for MHUI environment values and optional
-host tint; it does not require row or section decoration.
+The container supplies scrolling, selection, navigation, swipe actions, and
+editing. The app independently chooses its appearance. For a main collection:
 
 ```swift
 List {
     Section {
-        Toggle("Use Cloud Sync", isOn: $isSyncEnabled)
-        LabeledContent("Theme", value: "System")
+        ForEach(documents) { document in
+            NavigationLink(value: document.id) {
+                VStack(alignment: .leading) {
+                    Text(document.title).mhRowTitle()
+                    Text(document.summary).mhRowSupporting()
+                }
+            }
+            .mhRow()
+        }
     } header: {
-        Text("Preferences")
-    } footer: {
-        Text("The app owns the setting and its consequences.")
+        MHSectionHeader("In use", supporting: "Keep what matters close.")
     }
 }
-.mhListChrome()
-.navigationTitle("Workspace")
+.mhListChrome(.content)
+.navigationTitle("Collection")
 ```
 
-`mhListChrome()` supplies the neutral canvas and preserves native row
-backgrounds, insets, section typography, separators, and selection. Omit it
-for a fully system-owned container. There is no background-strength setting.
+Apply `mhRow()` to the complete row, including the `NavigationLink`, so its
+insets and background reach the native row. The content route deliberately
+uses a plain list; apply another supported `.listStyle` afterward when a
+product needs its grouping. For an unchanged native appearance choose
+`.mhListChrome(.native)` or omit the modifier. The no-argument call is native.
 
-Keep automatic list styling unless the screen requires a specific native
-style. In `NavigationSplitView`, leave the sidebar unmodified and use MHUI
-chrome on content or detail containers; do not wrap the entire split view.
+Content rows use system-relative primary, secondary, and tertiary text styles
+so selection can supply a legible foreground. Their typography and spacing
+remain MHUI-owned. Explicit status and accent roles retain their semantic
+colors and require selection-aware presentation when used on a selected row.
 
-Use native `Text` section headers and footers, controls, and `LabeledContent`.
-Reserve `mhRow`, MHUI section typography, and `mhKeyValue` for signature
-compositions rather than mixing them into this native route.
-
-For custom floating actions on iOS 26 and later, apply `safeAreaBar` directly
-to the `List` before `mhListChrome`. Place any `scrollEdgeEffectStyle` modifier
-on that same list. The host app owns the actions and bar layout.
+For custom floating actions on supported systems, apply `safeAreaBar` and
+`scrollEdgeEffectStyle` directly to the `List`. The app owns their actions.
 
 ## Native Form Bridge
 
-Use native `Form` for settings and data entry. Keep its implicit automatic style,
-or explicitly choose a supported `.formStyle` when the screen requires it.
-`mhFormChrome()` supplies the theme canvas. Omit it for a system-owned form.
+Settings can use `.mhFormChrome(.native)`. A product editor can instead use
+MHUI hierarchy while retaining native fields and focus behavior:
 
 ```swift
 Form {
     Section {
         TextField("Name", text: $name)
-        Toggle("Notifications", isOn: $notificationsEnabled)
-        LabeledContent("Plan", value: "Personal")
+            .mhRow()
+        Toggle("Keep offline", isOn: $keepsOffline)
+            .mhRow()
+        LabeledContent("Documents", value: "3")
+            .labeledContentStyle(.mhKeyValue)
+            .mhRow()
     } header: {
-        Text("Profile")
-    } footer: {
-        Text("Product validation and persistence stay in the app.")
+        MHSectionHeader("Collection", supporting: "Your working copy")
     }
 }
-.mhFormChrome()
-.navigationTitle("Account")
+.formStyle(.grouped)
+.mhFormChrome(.content)
 ```
 
-Keep validation, persistence, navigation, and side effects in the host app.
-Use native field styling inside `Form`; reserve `mhInputChrome` for detached
-inputs in custom compositions. Native buttons can retain their contextual form
-appearance; an MHUI action style is an explicit visual choice, not a requirement.
+The example chooses grouped form presentation; the modifier does not force it.
+`mhRow()` owns the outer row insets and lets nested MHUI labeled content avoid
+double padding. MHUI headers, footers, row text, and action styles are valid
+inside native containers. Apply them selectively according to screen purpose.
+Native field styling is sufficient in a form; `mhInputChrome` is useful for
+inputs that need a visible detached boundary. Validation and persistence stay
+in the app.
 
-The `MHNativeStyleComparisonPreview` fixture compares standard, system-background,
-canvas, and explicitly decorated treatments across iOS list and form styles.
-Each treatment renders as an independent navigation root. Assemble comparisons
-from these captures rather than nesting sibling navigation stacks in one canvas,
-which can distort the apparent large-title margins.
-`MHNativeSplitViewPreview` exercises automatic styles in navigation columns.
-These fixtures are review tools, not proof of every OS or accessibility mode.
+## Navigation and Presentation Boundaries
+
+Apply the root theme to `TabView` or `NavigationSplitView`, but apply content
+chrome only to the list, form, or scrolling content in each destination or
+column. A shared theme does not paint navigation backgrounds. Sidebars, tab
+bars, toolbars, sheets, and split-view dividers remain system-owned.
+
+Use `.native` for a settings destination or sheet even when opened from a
+content-styled main screen. Do not paint one canvas across all split columns
+or replace system dividers with decorative rules. The MHUI canvas extends
+vertically behind navigation chrome, stays within horizontal column bounds,
+and respects the keyboard safe area.
+
+Review `MHNativeStyleComparisonPreview` for the same List/Form data in both
+styles, `MHNativeSplitViewPreview` for native and content columns, and
+`MHNativeNavigationPreview` for tabs and a settings sheet. The public adoption
+sample demonstrates the content list/editor alongside a native settings form.
 
 ## Component Defaults and Explicit Roles
 
@@ -395,8 +415,8 @@ treatment. Apply `.buttonStyle(.mhDestructive)` explicitly inside an
 ## Staged Adoption
 
 Before choosing a component route, separate the stable content plane from the
-floating functional layer. Routine collections and forms normally keep native
-container presentation. Use the signature composition when a concise overview,
+floating functional layer. Collections and forms choose native or MHUI content presentation by
+screen purpose. Use the signature composition when a concise overview,
 summary, leading visual, or insight genuinely benefits from deliberate
 proportion and whitespace.
 
@@ -413,7 +433,7 @@ Adopt one screen at a time in this order:
 2. Classify the screen by purpose and required interaction semantics.
 3. Choose native containers or stack-based composition to fit that purpose.
 4. Use shared semantic APIs where they add meaning or remove ad hoc styling;
-   preserve native section and field treatment where it already fits.
+   choose native or MHUI section and row treatment where it fits.
 5. Remove redundant local backgrounds, corner radii, insets, and button layout
    workarounds that duplicate package-owned treatments.
 6. Review the complete screen before changing theme tokens.
@@ -429,6 +449,25 @@ golden baselines merely because they compile or render successfully.
 MHUI 2.0 replaces the palette presets with one achromatic foundation and keeps
 all content chrome off Liquid Glass. Host apps keep ownership of their accent
 pair.
+
+### Container Choice and Layout
+
+No-argument `mhListChrome()` and `mhFormChrome()` now preserve the OS background.
+Choose `.content` to apply MHUI presentation. A content list uses plain styling;
+MHUI rows and headers are explicit, supported choices in both List and Form.
+Apply `mhRow()` to the full native row; nested MHUI styles share that padding.
+
+`MHSummary` no longer inserts surface padding. Place it with `mhRow()` in a list
+or add `mhSurfaceInset()` when a surrounding surface needs an inset.
+
+The shared standard metrics are redesigned, including a
+640-point readable width, 24-point compact screen margins and top inset, and
+32-point section spacing. Explicit `standard(metrics:)` overrides still win.
+`MHDesignMetrics.standard` remains the single generic baseline. Metrics-only
+adopters also receive these changes when updating to 2.0 and should review
+their screen layouts.
+See [Visual Design Principles](VISUAL_DESIGN_PRINCIPLES.md#intentional-design-parameters)
+for the decisions behind changed and retained parameters.
 
 ### Palettes Are Removed
 
@@ -492,8 +531,9 @@ MHUI action buttons: `.enabled` opts them in where the system supports it, and
 
 These changes need no source edits, but they affect visual snapshots:
 
-- Background, surface, border, and text assets are neutral grays matched to
-  the luminance, and therefore the contrast, of the 1.x defaults. Warning and
+- Background, surface, border, and text assets are neutral grays. The 2.0
+  surface tones are redesigned for visible tonal depth; text contrast remains
+  verified across supported appearances. Warning and
   destructive keep their semantic hues.
 - Standard surfaces and badges no longer draw a border. Increase Contrast adds
   an outline at the divider opacity, and detached inputs keep their boundary.

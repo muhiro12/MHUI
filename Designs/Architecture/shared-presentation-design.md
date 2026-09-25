@@ -56,8 +56,10 @@ for arbitrary SwiftUI content: blanket root button, font, foreground, list,
 and form styles are excluded because they would cross semantic and system
 presentation boundaries. Styled adoption supports three complementary routes:
 
-1. Native `List` and `Form` integration preserves platform grouping, scrolling,
-   controls, and navigation conventions with `mhListChrome` or `mhFormChrome`.
+1. Native `List` and `Form` integration preserves scrolling, controls, selection,
+   and navigation while choosing `.native` or `.content` appearance through
+   `mhListChrome` or `mhFormChrome`. Content rows and headers can use MHUI
+   presentation without replacing the container.
 2. Stack-based composition uses `mhScreen`, `MHSummary`, `mhSection`, and
    `MHGroupedRows` when content needs a deliberate editorial layout.
 3. Theme-only integration establishes the inherited baseline without inserting
@@ -71,7 +73,10 @@ the intended hierarchy. Preserve MHUI's neutral foundation and rhythm
 without requiring every screen to repeat its rules or surface frames.
 
 `mhScreen` owns screen scrolling, so it must not wrap a native `List` or `Form`.
-The native-container routes preserve their container behavior.
+The native-container routes preserve their container behavior. Content lists
+choose plain styling explicitly; native routes preserve the system background.
+The theme uses `MHDesignMetrics.standard` as the shared layout baseline;
+explicit host metrics override it.
 
 ## Canonical Shared APIs
 
@@ -89,6 +94,7 @@ The following types and helpers are the current shared entry points for package-
 - `MHLayoutMode`
 - `mhDesignMetrics(_:)`
 - `MHTheme`
+- `MHContainerStyle`
 - `MHTheme.Colors`
 - `MHTheme.Typography`
 - `MHTheme.Presentation`
@@ -187,15 +193,15 @@ Changes to MHUI treatments do not imply changes to MHDesign's standard metrics.
 - Theme propagation does not remove explicit semantic role selection at the
   use site and does not globally replace native SwiftUI controls.
 - `MHSummary` stays in the package because its stronger system title role and
-  inset rhythm form a reusable editorial summary without presenting the
-  content as an elevated card.
+  hierarchy forms a reusable summary. The surrounding composition owns its
+  padding; the summary does not add an implicit card or surface inset.
 - `mhSection(...)` stays in the package because it establishes reusable
   hierarchy and surface composition without owning screen meaning.
 - `MHSectionHeader` and `MHSectionFooter` express signature composition
-  hierarchy. Native List/Form adoption uses plain section text and native rows.
-- The three routes are system containers without chrome, native containers with
-  the MHUI canvas, and signature composition. Native adoption has no per-screen
-  background-strength control.
+  hierarchy in both custom compositions and native List/Form containers.
+- Native containers offer `.native` and `.content` presentation. Stack-based
+  composition is an independent layout choice. Container behavior does not
+  determine how much MHUI hierarchy a screen may use.
 - `MHGroupedRows` owns direct-child row chrome and separator placement.
 - `MHActionGroup` owns adaptive layout and treats unstyled child buttons as
   secondary actions. Primary, quiet, and destructive roles remain explicit at

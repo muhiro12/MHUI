@@ -36,9 +36,9 @@ an overview, a concise summary, a leading figure, an insight, or a meaningful
 transition in a task. Hierarchy comes from proportion, alignment, whitespace,
 and pacing before it comes from color.
 
-Emphasis is selective. Routine collections, forms, settings, and navigation
-keep their native semantics and should not be restyled into a magazine-like
-composition merely to appear distinctive. A screen does not need a hero block,
+Emphasis is selective. Native semantics do not require native appearance.
+A main collection or editor can use MHUI hierarchy inside List or Form, while
+settings retain familiar system presentation. The app chooses by purpose. A screen does not need a hero block,
 and one surface should not be framed inside another.
 
 ## Structure Before Decoration
@@ -69,3 +69,33 @@ When designing or reviewing an MHUI screen, decide in this order:
 
 The result should feel calm before it feels styled, spatial before it feels
 decorated, and distinctive through restraint rather than novelty.
+
+## Intentional Design Parameters
+
+Shared spacing and layout are defined once in `MHDesignMetrics.standard` and
+used by the standard MHUI theme. Explicit host metrics remain supported. These
+choices establish a working rhythm rather than reproducing an earlier release.
+Metrics-only adopters also need to review layout when updating the package.
+
+| Parameter | Standard choice | Reason |
+| --- | --- | --- |
+| Spacing | 8 / 16 / 20 / 32 / 48 points | Separate inline, control, content, section, and screen relationships without excessive blank space |
+| Compact screen | 24-point horizontal and top inset; 32-point content spacing | Align content clearly and bring the first useful information closer to navigation |
+| Regular screen | 40-point insets and spacing; 640-point readable width | Keep prose and summaries coherent within wide content columns |
+| Content rows | 24 / 32-point horizontal inset; 16 / 20-point vertical padding | Give main collections a measured rhythm at compact / regular widths |
+| Section typography | System title3, medium | Give content sections an identifiable hierarchy above body copy |
+| Surface / control radius | 6 / 8 points retained | Quiet, nearly rectangular content planes and softly bounded fields; native controls keep their contextual shapes |
+| Minimum controls | 44 points; 28 on macOS, retained | Preserve platform-appropriate interaction targets |
+| Surface tones | Achromatic, with a lighter raised plane and a quieter muted plane | Separate content through tone without depending on decorative borders |
+| Motion | 0.18 / 0.30 seconds retained | Short state feedback; no decorative motion added |
+
+Watch layouts retain their compact platform baseline. Surface insets retain
+20 / 18 points on compact layouts and 28 / 24 on regular layouts because they
+separate a surface's contents without competing with the screen margin.
+Semantic status hues remain distinct; brand accent belongs to the host.
+
+Navigation structure is not a styling canvas. Preserve native sidebar depth,
+split dividers, tab bars, and sheet boundaries. Apply content treatment inside
+individual destinations or columns, and verify their selected states as well
+as their unselected appearance. Native-relative row foreground hierarchy
+allows selected text to remain readable without changing MHUI typography.

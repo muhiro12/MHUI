@@ -87,7 +87,8 @@ Styled adopter:
 The package should shape presentation and composition without becoming the owner of host application behavior.
 Styled adoption combines root theme configuration with a route chosen for the
 screen's content and behavior. Native `List` and `Form` chrome preserve
-platform grouping and controls; stack-based composition uses `mhScreen`,
+native controls, selection, and scrolling while offering `.native` and
+`.content` presentation; stack-based composition uses `mhScreen`,
 `MHSummary`, `MHFeatureGrid`, `mhSection`, and `MHGroupedRows` for deliberate
 editorial layouts. Both are complete adoption paths. Theme-only integration
 supplies the inherited baseline without prescribing screen structure.

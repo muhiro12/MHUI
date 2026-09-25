@@ -116,8 +116,11 @@ the Xcode-native integration is unavailable or does not cover a check.
   paths chosen by content hierarchy and required behavior.
 - `MHFeatureGrid` provides the optional leading-feature hierarchy for concise
   visual sets and owns compact-width and accessibility fallback behavior.
-- Native list and form chrome preserve platform grouping and control behavior,
-  including native grouped lists for read-only detail screens.
+- `MHContainerStyle` separates `.native` appearance from `.content` presentation
+  on native List and Form. Content lists use plain styling with opt-in MHUI
+  rows and headers; controls and selection remain native.
+- The standard theme uses the redesigned MHDesign metrics as its shared
+  baseline. Navigation and split-view backgrounds remain system-owned.
 - `MHGroupedRows` owns direct-child row chrome. Standalone and native-container
   rows can use `mhRow()` when explicit MHUI treatment is needed.
 - `MHActionGroup` gives unstyled child buttons the secondary role. Other action
