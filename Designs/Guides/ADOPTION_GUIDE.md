@@ -310,11 +310,13 @@ List(selection: $selection) {
 including navigation links. Per-row `mhRow()` is unnecessary inside it. The content route deliberately
 uses a plain list; apply another supported `.listStyle` afterward when a
 product needs its grouping. For an unchanged native appearance choose
-`.mhListChrome(.native)` or omit the modifier. The no-argument call is native.
+`.mhListChrome(.native)`. The no-argument call chooses MHUI content.
 
-Content rows use system-relative primary, secondary, and tertiary text styles
-so selection can supply a legible foreground. Their typography and spacing
-remain MHUI-owned. Explicit status and accent roles retain their semantic
+MHUI text in content rows uses the theme's primary, secondary, and tertiary
+colors. On prominent selected backgrounds, it resolves to the native
+foreground hierarchy. Native chrome chooses that hierarchy for the entire
+container. These choices require no additional per-row modifiers.
+Explicit status and accent roles retain their semantic
 colors and require selection-aware presentation when used on a selected row.
 
 For custom floating actions on supported systems, apply `safeAreaBar` and
@@ -383,14 +385,18 @@ every descendant. In composed content, `mhTextStyle` uses the same primary color
 for screen titles, section titles, and body text unless another color role is
 specified. Supporting and caption colors preserve the hierarchy.
 
-Native navigation titles, unstyled `Text`, and native container row foregrounds
-can still use system black or white. List and Form row styles deliberately use
-the native foreground hierarchy to preserve selection and control states.
-Explicit colors supplied by the host also take precedence at their call sites.
+MHUI components and text styles retain the theme colors in content List and
+Form rows. `mhListChrome(.native)` and `mhFormChrome(.native)` switch their
+neutral text to the platform hierarchy. For a composed screen,
+`mhTextAppearance(.native)` makes the same choice once for the subtree.
+Prominent native selection backgrounds also use the platform hierarchy.
 
-For app-owned static content, use `mhTextStyle` or `mhForegroundStyle` explicitly.
-Do not apply a fixed foreground across an entire selectable container: it can
-make selected or disabled content difficult to read. Native bar title colors
+Native navigation titles, unstyled `Text`, and native control labels can still
+use system black or white. The root does not override their foreground:
+blanket foreground styles also override prominent button labels and disabled
+control treatments. Explicit host colors continue to take precedence.
+The package does not require per-control corrections to undo a root override.
+Native bar title colors
 are a separate platform appearance concern; MHUI does not install a global bar
 appearance override or replace the collapsing native title with a custom label.
 
@@ -507,8 +513,9 @@ pair.
 
 ### Container Choice and Layout
 
-No-argument `mhListChrome()` and `mhFormChrome()` now preserve the OS background.
-Choose `.content` to apply MHUI presentation. A content list uses plain styling;
+No-argument `mhListChrome()` and `mhFormChrome()` choose MHUI presentation.
+Pass `.native` explicitly to preserve the OS background and text hierarchy.
+A content list uses plain styling;
 MHUI rows and headers are explicit, supported choices in both List and Form.
 Wrap ordinary container content in `MHContainerContent` to style all rows, or
 apply `mhRow()` explicitly for mixed or specialized structures.

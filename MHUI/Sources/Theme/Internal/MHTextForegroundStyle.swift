@@ -1,12 +1,10 @@
 import SwiftUI
 
-extension MHTheme {
-    func resolvedTextForeground(
-        for role: MHColorRole,
-        in colorScheme: ColorScheme,
-        usesNativeHierarchy: Bool
-    ) -> AnyShapeStyle {
-        if usesNativeHierarchy {
+struct MHTextForegroundStyle: ShapeStyle {
+    let role: MHColorRole
+
+    func resolve(in environment: EnvironmentValues) -> AnyShapeStyle {
+        if environment.mhTextAppearance == .native || environment.backgroundProminence == .increased {
             switch role {
             case .primaryText:
                 return .init(HierarchicalShapeStyle.primary)
@@ -19,6 +17,6 @@ extension MHTheme {
             }
         }
 
-        return .init(resolvedColor(for: role, in: colorScheme))
+        return .init(environment.mhTheme.resolvedColor(for: role, in: environment.colorScheme))
     }
 }

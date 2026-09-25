@@ -83,7 +83,7 @@ private struct MHNativeListValidationContent: View {
                 )
             }
         }
-        .mhListChrome()
+        .mhListChrome(.native)
         .navigationTitle("Preferences")
     }
 }
@@ -113,7 +113,7 @@ private struct MHNativeFormValidationContent: View {
                 MHSectionFooter("Tint continues to come from the host app.")
             }
         }
-        .mhFormChrome()
+        .mhFormChrome(.native)
         .navigationTitle("Workspace")
     }
 }

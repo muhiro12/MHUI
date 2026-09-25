@@ -23,7 +23,7 @@ private struct MHSemanticColorModifier: ViewModifier {
 
         switch application {
         case .foreground:
-            content.foregroundStyle(color)
+            content.foregroundStyle(MHTextForegroundStyle(role: role))
         case .tint:
             content.tint(color)
         }

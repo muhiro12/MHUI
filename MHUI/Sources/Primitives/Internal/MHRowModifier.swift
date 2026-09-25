@@ -7,8 +7,6 @@ struct MHRowModifier: ViewModifier {
     private var colorScheme
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.mhContainerStyle)
-    private var containerStyle
     @Environment(\.mhRowChromeScope)
     private var rowChromeScope
     @Environment(\.mhAdaptiveLayoutContext)
@@ -28,7 +26,6 @@ struct MHRowModifier: ViewModifier {
         let style = theme.resolvedRowChromeStyle(for: context)
 
         let row = content
-            .environment(\.mhUsesNativeRowForeground, containerStyle != nil)
             .environment(\.mhRowChromeScope, .grouped)
             .mhRowChrome(style.resolved(for: rowChromeScope), scope: rowChromeScope)
 

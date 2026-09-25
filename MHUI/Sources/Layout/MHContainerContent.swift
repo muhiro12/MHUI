@@ -6,10 +6,6 @@ import SwiftUI
 /// with `mhListChrome` or `mhFormChrome` on that native container. Keep app-owned
 /// sections, selection tags, navigation links, and controls in the content builder.
 public struct MHContainerContent<Content: View>: View {
-    @Environment(\.mhTheme)
-    private var theme
-    @Environment(\.colorScheme)
-    private var colorScheme
     @Environment(\.mhContainerStyle)
     private var containerStyle
 
@@ -25,13 +21,12 @@ public struct MHContainerContent<Content: View>: View {
                 } header: {
                     section.header
                         .modifier(MHContainerHeaderModifier())
-                        .foregroundStyle(theme.resolvedColor(for: .primaryText, in: colorScheme))
+                        .foregroundStyle(MHTextForegroundStyle(role: .primaryText))
                 } footer: {
                     section.footer
                 }
             }
             .environment(\.mhRowChromeScope, .grouped)
-            .environment(\.mhUsesNativeRowForeground, true)
             .labeledContentStyle(.mhKeyValue)
         } else {
             content

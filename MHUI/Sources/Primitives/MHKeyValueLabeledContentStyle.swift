@@ -8,10 +8,6 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
     var rowChromeScope
     @Environment(\.mhAdaptiveLayoutContext)
     var adaptiveLayoutContext
-    @Environment(\.mhUsesNativeRowForeground)
-    var usesNativeRowForeground
-    @Environment(\.colorScheme)
-    var colorScheme
     @Environment(\.horizontalSizeClass)
     var horizontalSizeClass
     @Environment(\.dynamicTypeSize)

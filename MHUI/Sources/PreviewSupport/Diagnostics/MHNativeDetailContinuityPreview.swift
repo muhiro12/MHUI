@@ -25,7 +25,7 @@ private struct MHNativeDetailContinuityPreview: View {
                     LabeledContent("Last marked", value: "Yesterday")
                 }
             }
-            .mhListChrome()
+            .mhListChrome(.native)
             .navigationTitle("Field Note")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
@@ -110,7 +110,7 @@ private struct MHNativeEditContinuityPreview: View {
                     Text("Reminders arrive once a day while the item is active.")
                 }
             }
-            .mhFormChrome()
+            .mhFormChrome(.native)
             .navigationTitle("Edit Item")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

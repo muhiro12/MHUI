@@ -11,19 +11,11 @@ extension MHKeyValueLabeledContentStyle {
         ) {
             configuration.label
                 .foregroundStyle(
-                    theme.resolvedTextForeground(
-                        for: style.labelColorRole,
-                        in: colorScheme,
-                        usesNativeHierarchy: usesNativeRowForeground
-                    )
+                    MHTextForegroundStyle(role: style.labelColorRole)
                 )
             configuration.content
                 .foregroundStyle(
-                    theme.resolvedTextForeground(
-                        for: style.valueColorRole,
-                        in: colorScheme,
-                        usesNativeHierarchy: usesNativeRowForeground
-                    )
+                    MHTextForegroundStyle(role: style.valueColorRole)
                 )
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -38,19 +30,11 @@ extension MHKeyValueLabeledContentStyle {
         VStack(alignment: .leading, spacing: style.stackedSpacing) {
             configuration.label
                 .foregroundStyle(
-                    theme.resolvedTextForeground(
-                        for: style.labelColorRole,
-                        in: colorScheme,
-                        usesNativeHierarchy: usesNativeRowForeground
-                    )
+                    MHTextForegroundStyle(role: style.labelColorRole)
                 )
             configuration.content
                 .foregroundStyle(
-                    theme.resolvedTextForeground(
-                        for: style.valueColorRole,
-                        in: colorScheme,
-                        usesNativeHierarchy: usesNativeRowForeground
-                    )
+                    MHTextForegroundStyle(role: style.valueColorRole)
                 )
                 .frame(maxWidth: .infinity, alignment: .leading)
         }

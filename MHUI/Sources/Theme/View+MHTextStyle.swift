@@ -3,10 +3,6 @@ import SwiftUI
 private struct MHTextStyleModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.colorScheme)
-    private var colorScheme
-    @Environment(\.mhUsesNativeRowForeground)
-    private var usesNativeRowForeground
 
     let role: MHTextRole
     let colorRole: MHColorRole
@@ -25,11 +21,7 @@ private struct MHTextStyleModifier: ViewModifier {
             .fontDesign(style.design)
             .tracking(style.tracking)
             .foregroundStyle(
-                theme.resolvedTextForeground(
-                    for: style.colorRole,
-                    in: colorScheme,
-                    usesNativeHierarchy: usesNativeRowForeground
-                )
+                MHTextForegroundStyle(role: style.colorRole)
             )
     }
 }

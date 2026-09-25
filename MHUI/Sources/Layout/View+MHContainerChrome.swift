@@ -7,13 +7,15 @@ public extension View {
     /// `MHContainerContent`, or apply `mhRow()` to individual complete rows.
     /// Keep navigation sidebars native; style content columns individually.
     @ViewBuilder
-    func mhListChrome(_ style: MHContainerStyle = .native) -> some View {
+    func mhListChrome(_ style: MHContainerStyle = .content) -> some View {
         switch style {
         case .native:
             environment(\.mhContainerStyle, .native)
+                .mhTextAppearance(.native)
                 .environment(\.mhUsesFormSurface, false)
         case .content:
             listStyle(.plain)
+                .mhTextAppearance(.themed)
                 .modifier(MHContainerChromeModifier())
                 .environment(\.mhUsesFormSurface, false)
         }
@@ -25,13 +27,15 @@ public extension View {
     /// automatic row surfaces, or apply `mhRow()` to individual complete rows.
     /// The form style, grouping, and controls remain native.
     @ViewBuilder
-    func mhFormChrome(_ style: MHContainerStyle = .native) -> some View {
+    func mhFormChrome(_ style: MHContainerStyle = .content) -> some View {
         switch style {
         case .native:
             environment(\.mhContainerStyle, .native)
+                .mhTextAppearance(.native)
                 .environment(\.mhUsesFormSurface, false)
         case .content:
             modifier(MHContainerChromeModifier())
+                .mhTextAppearance(.themed)
                 .environment(\.mhUsesFormSurface, true)
         }
     }

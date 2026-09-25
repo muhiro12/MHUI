@@ -146,5 +146,6 @@ communicate selection, focus, or the boundaries of system navigation containers.
 Navigation structure is not a styling canvas. Preserve native sidebar depth,
 split dividers, tab bars, and sheet boundaries. Apply content treatment inside
 individual destinations or columns, and verify their selected states as well
-as their unselected appearance. Native-relative row foreground hierarchy
-allows selected text to remain readable without changing MHUI typography.
+as their unselected appearance. MHUI text retains theme colors in content rows and resolves to the native
+foreground hierarchy on prominent selection backgrounds. Explicit native
+container presentation uses the native hierarchy throughout.

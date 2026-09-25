@@ -308,6 +308,9 @@ surface.
 
 Choose appearance by screen purpose and container behavior independently.
 All routes share the root theme, and an app can mix them across destinations.
+The no-argument chrome modifiers choose MHUI content. Pass `.native` explicitly
+for platform container presentation. MHUI text follows that choice; selected
+rows adapt to prominent native backgrounds without per-row configuration.
 
 | Route | Use | Ownership |
 | --- | --- | --- |
@@ -331,7 +334,7 @@ Form {
         LabeledContent("Theme", value: "System")
     }
 }
-.mhFormChrome()
+.mhFormChrome(.native)
 .navigationTitle("Settings")
 ```
 
