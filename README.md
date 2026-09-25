@@ -199,7 +199,8 @@ and choose any surface or control treatment explicitly.
 Native behavior and visual presentation are separate choices:
 
 - `.mhListChrome(.native)` and `.mhFormChrome(.native)` preserve system
-  backgrounds and styles. The no-argument calls use this choice.
+  backgrounds and styles. Pass `.native` explicitly; no-argument calls use
+  `.content`.
 - `.mhListChrome(.content)` uses a plain native list with the MHUI canvas.
   Wrap its content once in `MHContainerContent` to style complete rows.
 - `.mhFormChrome(.content)` supplies the canvas while the app chooses the
@@ -236,6 +237,10 @@ inside `List`. Standard `Section` headers are valid; `MHSectionHeader` adds the
 shared title/supporting hierarchy when useful. See the
 [container contract and limits](Designs/Guides/ADOPTION_GUIDE.md#automatic-container-content)
 for advanced sections and mixed styling.
+
+For a section with only a footer, use `mhSectionWithFooter("Title") { ... }`.
+Use `mhSection` for header-only, accessory-only, or accessory-and-footer
+sections. These call shapes stay distinct after trailing-closure formatting.
 
 ### Screen Titles and Scrolling
 

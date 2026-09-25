@@ -34,7 +34,8 @@ public extension View {
     }
 
     /// Wraps content in an MHUI section with footer content.
-    func mhSection<Footer: View>(
+    /// The distinct name keeps trailing-closure formatting unambiguous.
+    func mhSectionWithFooter<Footer: View>(
         title: Text,
         supporting: Text? = nil,
         @ViewBuilder footer: () -> Footer
@@ -89,24 +90,26 @@ public extension View {
             title: Text(title),
             supporting: supporting.map { supporting in
                 Text(supporting)
-            },
-            accessory: accessory
-        )
+            }
+        ) {
+            accessory()
+        }
     }
 
     /// Wraps content in an MHUI section using localized string keys and footer content.
-    func mhSection<Footer: View>(
+    func mhSectionWithFooter<Footer: View>(
         _ title: LocalizedStringKey,
         supporting: LocalizedStringKey? = nil,
         @ViewBuilder footer: () -> Footer
     ) -> some View {
-        mhSection(
+        mhSectionWithFooter(
             title: Text(title),
             supporting: supporting.map { supporting in
                 Text(supporting)
-            },
-            footer: footer
-        )
+            }
+        ) {
+            footer()
+        }
     }
 
     /// Wraps content in an MHUI section using localized string keys, accessory, and footer content.
@@ -120,10 +123,12 @@ public extension View {
             title: Text(title),
             supporting: supporting.map { supporting in
                 Text(supporting)
-            },
-            accessory: accessory,
-            footer: footer
-        )
+            }
+        ) {
+            accessory()
+        } footer: {
+            footer()
+        }
     }
 }
 
@@ -146,9 +151,11 @@ public extension View {
         LabeledContent("Surface", value: "Styled")
             .labeledContentStyle(.mhKeyValue)
     }
-    .mhSection(
+    .mhSectionWithFooter(
         "Rhythm",
         supporting: "Shared section framing without owning app workflow."
-    )
+    ) {
+        MHSectionFooter("A footer stays below the complete section.")
+    }
     .mhPreviewSurface()
 }

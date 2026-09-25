@@ -70,10 +70,12 @@ private extension MHUIComposedScreenSample {
                 supporting: "Runs nightly on Wi-Fi."
             )
         }
-        .mhSection(
+        .mhSectionWithFooter(
             "Highlights",
             supporting: "Space, devices, and your latest backup."
-        )
+        ) {
+            MHSectionFooter("A snapshot of your workspace.")
+        }
     }
 
     var noteSection: some View {

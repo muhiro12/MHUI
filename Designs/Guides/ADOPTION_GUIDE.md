@@ -593,6 +593,26 @@ their screen layouts.
 See [Visual Design Principles](VISUAL_DESIGN_PRINCIPLES.md#intentional-design-parameters)
 for the decisions behind changed and retained parameters.
 
+### Footer-Only Sections
+
+Rename footer-only `mhSection(..., footer:)` calls to `mhSectionWithFooter`.
+The distinct name prevents a trailing closure from being interpreted as header
+accessory content after formatting. Both `Text` and localized string titles
+are supported.
+
+```swift
+MHGroupedRows {
+    Text("Content")
+}
+.mhSectionWithFooter("Ideas") {
+    MHSectionFooter("Supporting guidance below the section.")
+}
+```
+
+Header-only and accessory-only calls remain `mhSection`. Calls with both
+`accessory:` and `footer:` also keep `mhSection`; an empty accessory is no longer
+needed for footer-only content.
+
 ### Navigation Title Color
 
 On iOS, add `configureNavigationTitleAppearance()` to app initialization using
