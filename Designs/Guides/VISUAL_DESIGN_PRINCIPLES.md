@@ -148,4 +148,6 @@ split dividers, tab bars, and sheet boundaries. Apply content treatment inside
 individual destinations or columns, and verify their selected states as well
 as their unselected appearance. MHUI text retains theme colors in content rows and resolves to the native
 foreground hierarchy on prominent selection backgrounds. Explicit native
-container presentation uses the native hierarchy throughout.
+container presentation uses the native hierarchy for content text. Navigation
+titles can still share MHUI's primary text color through the app-wide iOS
+startup configuration; this does not replace native title behavior.

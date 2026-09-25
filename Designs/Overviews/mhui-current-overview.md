@@ -1,6 +1,6 @@
 # MHUI Current Repository Overview
 
-Current as of September 25, 2026.
+Current as of September 26, 2026.
 
 ## Purpose
 
@@ -55,6 +55,11 @@ The repository is intentionally biased toward package-owned visual rules and awa
   tint through `mhForegroundStyle(_:)` and `mhTint(_:)`
 - Standard, elevated, and muted surface roles, row and section modifiers, and
   the `MHGroupedRows` container
+- App-wide iOS navigation title color configured once through
+  `MHTheme.configureNavigationTitleAppearance()`, separate from `mhTheme`
+- Neutral text hierarchy selection through `MHTextAppearance` and
+  `mhTextAppearance(_:)`
+- Automatic complete-row styling through `MHContainerContent`
 - Screen-level chrome such as `mhScreen(...)`, `mhListChrome(...)`, and `mhFormChrome(...)`
 - Presentation helpers including action groups, badges, input chrome, and package-owned compact fallback behavior
 
@@ -117,8 +122,12 @@ the Xcode-native integration is unavailable or does not cover a check.
 - `MHFeatureGrid` provides the optional leading-feature hierarchy for concise
   visual sets and owns compact-width and accessibility fallback behavior.
 - `MHContainerStyle` separates `.native` appearance from `.content` presentation
-  on native List and Form. Content lists use plain styling with opt-in MHUI
-  rows and headers; controls and selection remain native.
+  on native List and Form. The default is `.content`; `.native` is explicit.
+  Content lists use plain styling and `MHContainerContent` supplies automatic
+  row treatment; controls and selection remain native.
+- iOS navigation titles share the app-wide primary text color when configured
+  at startup, including on `.native` screens. Subtree theme changes do not
+  update this UIKit default.
 - The standard theme uses the redesigned MHDesign metrics as its shared
   baseline. Navigation and split-view backgrounds remain system-owned.
 - `MHGroupedRows` owns direct-child row chrome. Standalone and native-container

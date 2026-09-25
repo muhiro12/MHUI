@@ -34,6 +34,12 @@ import SwiftUI
 
 @main
 struct WorkspaceApp: App {
+    init() {
+        #if os(iOS)
+        MHTheme.standard.configureNavigationTitleAppearance()
+        #endif
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()
@@ -42,6 +48,10 @@ struct WorkspaceApp: App {
     }
 }
 ```
+
+The iOS startup call configures large and inline navigation title colors once
+for the app, including `.native` screens. It is separate from the subtree
+environment; see [Text Color Ownership](#text-color-ownership) for its scope.
 
 The standard foundation is achromatic and adapts to light, dark, and Increase
 Contrast appearances. Keep per-screen typography and surface recipes at the
@@ -54,7 +64,7 @@ asset-backed accent, native-control tint. A narrower `.mhTheme(...)` call
 overrides that baseline for one subtree through ordinary SwiftUI environment
 scoping.
 
-This is the maximum safe automatic application for arbitrary SwiftUI content.
+Theme propagation does not assign a visual role to arbitrary SwiftUI content.
 MHUI does not apply root-wide button, font, foreground, list, or form styles:
 those styles propagate into toolbars, menus, system presentations, and
 controls whose semantic role the root cannot know. It also cannot insert
@@ -69,9 +79,11 @@ where meaning is known: `MHGroupedRows` styles its direct children and
 ### Preserve Native Presentation Locally
 
 Do not turn off the root theme for an entire app because one screen needs
-native presentation. Use `.mhListChrome(.native)` or `.mhFormChrome(.native)`, or omit the
-container modifier. The subtree retains its OS-selected container and control styles while still receiving the shared metrics and ordinary app
-tint.
+native presentation. Use `.mhListChrome(.native)` or `.mhFormChrome(.native)`
+for native container backgrounds and text hierarchy. Omitting the modifier
+also leaves container presentation to SwiftUI, but does not switch MHUI text
+styles to the native hierarchy. Both retain the root theme and app tint.
+The app-wide navigation title color remains shared in either case.
 
 If the subtree intentionally needs a different theme, apply
 `.mhTheme(localTheme)` there. If only its native-control tint differs, apply a
@@ -120,7 +132,7 @@ not from a requirement to display custom package chrome.
 | Screen purpose | Route | Fit |
 | --- | --- | --- |
 | Main collection or browsing screen | `List` with `.mhListChrome(.content)` and `MHContainerContent` | MHUI content rhythm with native selection and navigation |
-| Editor or product-specific form | `Form` with `.mhFormChrome(.content)` and explicit MHUI rows | MHUI hierarchy with native fields, focus, and validation behavior |
+| Editor or product-specific form | `Form` with `.mhFormChrome(.content)` and `MHContainerContent` | MHUI hierarchy with native fields, focus, and validation behavior |
 | Settings, navigation sidebar, or familiar utility screen | `.mhListChrome(.native)` / `.mhFormChrome(.native)`, or theme only | Platform-owned appearance and behavior |
 | Overview, report, or freely arranged detail | `mhScreen`, `mhSection`, `MHSummary`, `MHFeatureGrid`, `MHGroupedRows` | Deliberate stack-based content hierarchy |
 
@@ -453,7 +465,10 @@ native controls and grouping on MHUI surfaces.
 | `MHSectionFooter` | Quiet explanatory text | Provide concise supporting guidance |
 | `MHGroupedRows` | Direct-child row chrome and separators | Provide native controls or semantic row content |
 | `MHActionGroup` | Secondary style and adaptive layout | Mark primary, quiet, and destructive exceptions |
-| `mhRow` | Standalone or native-container row chrome | Apply it outside `MHGroupedRows` when needed |
+| `mhRow` | Standalone or native-container row chrome | Apply only when neither `MHGroupedRows` nor `MHContainerContent` already styles the complete row |
+| `MHContainerContent` | Automatic row treatment for content List/Form; unchanged rows in native mode | Wrap the container content once and choose its chrome style |
+| `configureNavigationTitleAppearance()` | Shared iOS navigation title color | Call once before creating UI, using the app theme |
+| `mhTextAppearance` | Theme-owned neutral text with selection adaptation | Choose `.native` only for a deliberate subtree exception; native chrome selects it automatically |
 
 ### Compact Metadata Badges
 
@@ -513,7 +528,8 @@ state, focus, and the primary action.
 Adopt one screen at a time in this order:
 
 1. Apply `.mhTheme(.standard)` near the app root and keep the app-owned
-   `AccentColor` asset.
+   `AccentColor` asset. On iOS, configure navigation title appearance once
+   during app initialization using the same theme.
 2. Classify the screen by purpose and required interaction semantics.
 3. Choose native containers or stack-based composition to fit that purpose.
 4. Use shared semantic APIs where they add meaning or remove ad hoc styling;
@@ -576,6 +592,13 @@ adopters also receive these changes when updating to 2.0 and should review
 their screen layouts.
 See [Visual Design Principles](VISUAL_DESIGN_PRINCIPLES.md#intentional-design-parameters)
 for the decisions behind changed and retained parameters.
+
+### Navigation Title Color
+
+On iOS, add `configureNavigationTitleAppearance()` to app initialization using
+the root theme. Existing `mhTheme` calls alone do not apply this global UIKit
+default. Both native and content screens share the primary text color.
+See [Text Color Ownership](#text-color-ownership) for setup and scope.
 
 ### Palettes Are Removed
 
@@ -641,7 +664,7 @@ These changes need no source edits, but they affect visual snapshots:
 
 - Background, surface, border, and text assets are neutral grays. The 2.0
   canvas uses pure white / black; explicit surfaces provide graded separation.
-  Dark primary text is softened from full white; text contrast remains
+  Primary text is softened from pure black and white; text contrast remains
   verified across supported appearances. Warning and
   destructive keep their semantic hues.
 - Standard surfaces and badges no longer draw a border. Increase Contrast adds
@@ -652,6 +675,10 @@ These changes need no source edits, but they affect visual snapshots:
   `MHTheme.TextStyle` values if an app depends on the previous treatment.
 
 ## Migration from 1.11
+
+These historical changes explain older API removals. For an upgrade directly
+to 2.0, also apply [Migration to 2.0](#migration-to-20); its defaults supersede
+the intervening 1.x visual treatments.
 
 ### Heading Cues Are Removed
 
@@ -675,12 +702,13 @@ host composition. Apply `navigationTitle` inside the app-owned
 List {
     // Native sections and rows.
 }
-.mhListChrome()
+.mhListChrome(.native)
 .navigationTitle("Workspace")
 ```
 
-The modifiers no longer force the plain list style or clear native row
-backgrounds and separators. Remove app-local workarounds that attempted to
+The explicit `.native` route does not force plain list styling or clear row
+backgrounds and separators. The 2.0 default `.content` route uses a plain list.
+Remove app-local workarounds that attempted to
 restore grouped row shapes or extend the scroll view to the screen edges.
 
 ### Native Forms Own Field Grouping
@@ -708,10 +736,10 @@ The `MHBackground`, `MHSurface`, and `MHSurfaceMuted` assets use brighter
 standard light appearances. Treat the asset catalog as the source of truth for
 their concrete values.
 
-The standard control corner radius changes from 6 points to 8 points, and the
-standard surface corner radius changes from 8 points to 12 points. Update
-visual snapshots and any layout assumptions that copied the previous standard
-values. Explicit app-owned color and metric overrides remain in control.
+Intervening 1.x releases changed the control radius to 8 points and the surface
+radius to 12 points. In 2.0, the standard control radius is 8 points and the
+surface radius is 6 points. Use the current metrics instead of carrying forward
+those historical values. Explicit app-owned metric overrides remain in control.
 
 ## Migration from 1.10
 
@@ -785,6 +813,8 @@ on individual child buttons when their role differs from the group default.
 Before considering a screen adopted, verify all of the following:
 
 - The app applies one root theme and still owns its accent color.
+- On iOS, startup title configuration uses that theme; large, collapsed, and
+  pushed titles retain their color in light, dark, and Increase Contrast.
 - Standard base planes and text remain achromatic unless the app deliberately
   overrides a semantic color.
 - Surfaces rely on tone and spacing instead of decorative borders, and no

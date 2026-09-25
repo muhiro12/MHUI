@@ -1,7 +1,7 @@
 # ADR 0006: Root Theme Propagation
 
 - Date: 2026-07-16
-- Last updated: 2026-07-18
+- Last updated: 2026-09-26
 - Status: Accepted
 
 ## Context
@@ -31,8 +31,8 @@ asset-backed accent also becomes the native-control tint within the same
 subtree. `MHColorReference` accepts asset resources rather than RGB or
 hexadecimal source values.
 
-The root call is the maximum safe automatic styling application for arbitrary
-SwiftUI content. Writing `mhTheme(_:)` also synchronizes the theme's
+The root call supplies inheritable styling values to SwiftUI content.
+Writing `mhTheme(_:)` also synchronizes the theme's
 `MHDesignMetrics` with the lower-level metrics environment. A narrower
 `mhTheme(_:)` call provides an intentional local override.
 
@@ -43,6 +43,19 @@ font, foreground, list, and form styles. Such styles propagate into toolbars,
 menus, system presentations, and controls whose meaning cannot be known at the
 app root. A root modifier also cannot rewrite an unknown descendant hierarchy
 to insert signature screen, section, or grouped-row structure.
+
+## Application-Wide Navigation Titles
+
+On iOS, the host can call `configureNavigationTitleAppearance()` once during
+app initialization, before creating navigation bars. This explicit startup
+operation sets the native large and inline title foreground to the theme's
+primary text color. It does not change backgrounds, fonts, or button tint.
+
+This is a UIKit appearance default across the app, including `.native` screens.
+It is separate from `mhTheme(_:)`, which remains a subtree environment write.
+Local themes do not reconfigure it, and explicit per-bar appearances retain
+precedence. The package does not inspect SwiftUI controller hierarchies or
+mutate global appearance while rendering a view.
 
 ## Consequences
 

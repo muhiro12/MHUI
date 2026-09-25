@@ -106,7 +106,9 @@ one import is enough for both metrics and styled APIs.
 
 The visible MHUI language comes from composing its semantic screen, section,
 row, input, summary, and action treatments. Start with that complete path before
-tuning individual tokens.
+tuning individual tokens. Start with the
+[root configuration](#root-configuration-and-app-accent), including the one-time
+iOS navigation title setup, then choose the screen composition below.
 
 ```swift
 import MHUI

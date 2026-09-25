@@ -88,7 +88,9 @@ The package should shape presentation and composition without becoming the owner
 Styled adoption combines root theme configuration with a route chosen for the
 screen's content and behavior. Native `List` and `Form` chrome preserve
 native controls, selection, and scrolling while offering `.native` and
-`.content` presentation; stack-based composition uses `mhScreen`,
+`.content` presentation. No-argument chrome modifiers select `.content`;
+`.native` is explicit. `MHContainerContent` applies complete-row treatment
+without repeating `mhRow()`; stack-based composition uses `mhScreen`,
 `MHSummary`, `MHFeatureGrid`, `mhSection`, and `MHGroupedRows` for deliberate
 editorial layouts. Both are complete adoption paths. Theme-only integration
 supplies the inherited baseline without prescribing screen structure.
@@ -104,6 +106,10 @@ supplies the inherited baseline without prescribing screen structure.
   theme accent also becomes the native-control tint for the subtree,
   while the standard theme resolves semantic accent from the app's
   `AccentColor` without installing a tint override.
+- On iOS, the host calls `configureNavigationTitleAppearance()` once before
+  creating UI to share the theme's primary text color across native navigation
+  titles. This UIKit appearance default is app-wide, including `.native`
+  screens; it is not applied or updated by `mhTheme(_:)`.
 - A narrower `mhTheme(_:)` call is the supported mechanism for an intentional
   local exception.
 - Theme propagation supplies values. Views still select semantic intent with
@@ -129,7 +135,9 @@ there instead of creating parallel full-screen host previews.
 MHDesign tuning previews should live in same-directory sidecar files so metrics types stay focused on values while still keeping the first review surface nearby.
 MHUI development previews should live inside the edited implementation file so the styled API and its first review surface stay together.
 `MHDesign/Sources/PreviewSupport` is reserved for minimal helper views shared by MHDesign sidecar previews.
-`MHUI/Sources/PreviewSupport/DesignReview` contains the one canonical full-system review surface.
+`MHUI/Sources/PreviewSupport/DesignReview` contains focused foundation and
+screen-level studies. The canonical app-like review is `MHUIDesignReviewRoot`
+in the adoption sample.
 `MHUI/Sources/PreviewSupport/Diagnostics` and `Validation` contain focused comparisons and regression catalogs; they are not alternative design directions.
 Neither should become the place where new shared styling rules are invented before the canonical package API exists.
 

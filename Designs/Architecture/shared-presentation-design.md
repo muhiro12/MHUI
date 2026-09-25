@@ -20,7 +20,8 @@ It explains where new code should live when the same visual rule or container pa
 - The adoption sample and previews are consumers of package APIs, not a second
   design layer.
 - Views and modifiers in MHUI should stay domain neutral even when they feel screen-like.
-- MHUI remains a single package target unless there is a stronger reason than file organization alone.
+- Keep shared presentation in the `MHUI` target and generic metrics in
+  `MHDesign`; file organization alone does not justify further target splits.
 - Starting with `1.20.0`, follow the
   [Semantic Versioning contract](ARCHITECTURE_GUIDE.md#versioning-contract).
 
@@ -51,8 +52,8 @@ reserved for semantic status, focus, native controls, and primary actions.
 
 The root theme is the canonical root-first styling entry point. It propagates
 the complete semantic theme, synchronizes MHDesign metrics, and applies a
-concrete asset accent to native-control tint. It is the maximum safe cascade
-for arbitrary SwiftUI content: blanket root button, font, foreground, list,
+concrete asset accent to native-control tint. It supplies values to consumers;
+blanket root button, font, foreground, list,
 and form styles are excluded because they would cross semantic and system
 presentation boundaries. Styled adoption supports three complementary routes:
 
@@ -64,6 +65,14 @@ presentation boundaries. Styled adoption supports three complementary routes:
    `MHGroupedRows` when content needs a deliberate editorial layout.
 3. Theme-only integration establishes the inherited baseline without inserting
    visible screen structure around arbitrary descendants.
+
+The chrome modifiers default to `.content`. `.native` preserves platform
+container presentation without discarding the app theme. `MHContainerContent`
+applies complete-row treatment once for ordinary content lists and forms.
+
+On iOS, `configureNavigationTitleAppearance()` is a separate host-invoked
+startup API for the app-wide native title color. It changes only title
+attributes and remains independent of subtree `mhTheme` and `.native` choices.
 
 The host app chooses by screen purpose, content hierarchy, and required
 behavior. Read-only detail screens can use native grouped lists; they do not
@@ -95,6 +104,9 @@ The following types and helpers are the current shared entry points for package-
 - `mhDesignMetrics(_:)`
 - `MHTheme`
 - `MHContainerStyle`
+- `MHTextAppearance`
+- `mhTextAppearance(_:)`
+- `MHTheme.configureNavigationTitleAppearance()` (iOS startup)
 - `MHTheme.Colors`
 - `MHTheme.Typography`
 - `MHTheme.Presentation`
@@ -186,7 +198,7 @@ Changes to MHUI treatments do not imply changes to MHDesign's standard metrics.
   typography, and restrained geometry.
 - Apps choose a root brand accent pair. Typography, metrics, and surface
   treatments are package-owned defaults; existing theme customization remains
-  compatible but is not a required adoption step.
+  available but is not a required adoption step.
 - The standard theme uses the app's `AccentColor` without installing a tint
   override. An app-provided concrete theme
   accent also tints native controls in the same subtree and should be paired
