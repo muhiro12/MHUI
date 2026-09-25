@@ -21,7 +21,7 @@ struct MHThemeTypographyTests {
         #expect(typography.summaryTitle.weight == .medium)
         #endif
         #expect(typography.summaryTitle.design == .standard)
-        #expect(typography.sectionTitle.font == .subheadline)
+        #expect(typography.sectionTitle.font == .title3)
         #expect(typography.sectionTitle.weight == .medium)
         #expect(typography.bodyStrong.weight == .semibold)
         #expect(typography.supporting.weight == .regular)

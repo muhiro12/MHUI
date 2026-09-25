@@ -239,7 +239,7 @@ struct MHStyleResolutionTests {
         #expect(theme.surfaceColorRole(for: .muted) == .surfaceMuted)
         #expect(grouped.showsDividers)
         #expect(grouped.rowChrome == theme.resolvedRowChromeStyle())
-        #expect(grouped.dividerLeadingInset == theme.layout.surface.insetHorizontal)
+        #expect(grouped.dividerLeadingInset == grouped.rowChrome.horizontalInset)
         #expect(grouped.dividerThickness == theme.divider.thickness)
         #expect(grouped.dividerOpacity == theme.divider.opacity)
         #expect(grouped.spacerHeight == theme.presentation.rowVerticalPadding)

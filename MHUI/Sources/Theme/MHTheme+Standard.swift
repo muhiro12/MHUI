@@ -8,7 +8,7 @@ public extension MHTheme {
     private static var standardTypography: Typography {
         .init(
             screenTitle: standardScreenTitle,
-            sectionTitle: .init(font: .subheadline, weight: .medium),
+            sectionTitle: .init(font: .title3, weight: .medium),
             body: .init(font: .body, weight: .regular),
             bodyStrong: .init(font: .body, weight: .semibold),
             supporting: .init(font: .subheadline, weight: .regular),
@@ -36,11 +36,11 @@ public extension MHTheme {
 
     private static var standardPresentation: Presentation {
         .init(
-            rowHorizontalInset: 28,
-            rowVerticalPadding: 18,
+            rowHorizontalInset: 32,
+            rowVerticalPadding: 20,
             rowAccessorySpacing: 16,
-            compactRowHorizontalInset: 20,
-            compactRowVerticalPadding: 14,
+            compactRowHorizontalInset: 24,
+            compactRowVerticalPadding: 16,
             compactRowAccessorySpacing: 12,
             compactActionHorizontalPadding: 22,
             compactActionVerticalPadding: 12,

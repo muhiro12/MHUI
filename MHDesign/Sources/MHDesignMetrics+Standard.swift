@@ -4,13 +4,7 @@ public extension MHDesignMetrics {
     // swiftlint:disable no_magic_numbers
     /// The default design baseline shared across MH sibling apps.
     static let standard = Self(
-        spacing: .init(
-            inline: gridUnit * 1,
-            control: gridUnit * 2,
-            content: gridUnit * 3,
-            section: gridUnit * 5,
-            screen: gridUnit * 7
-        ),
+        spacing: platformSpacing,
         cornerRadius: .init(
             control: gridUnit * 1,
             surface: gridUnit * 0.75
@@ -32,11 +26,19 @@ public extension MHDesignMetrics {
 private extension MHDesignMetrics {
     static let gridUnit: CGFloat = 8
 
+    static var platformSpacing: MHSpacingMetrics {
+        #if os(watchOS)
+        .init(inline: 8, control: 16, content: 24, section: 40, screen: 56)
+        #else
+        .init(inline: 8, control: 16, content: 20, section: 32, screen: 48)
+        #endif
+    }
+
     static var platformReadableContentWidth: CGFloat {
         #if os(watchOS)
         gridUnit * 40
         #else
-        gridUnit * 90
+        gridUnit * 80
         #endif
     }
 
@@ -60,12 +62,12 @@ private extension MHDesignMetrics {
         )
         #else
         .init(
-            contentInsetHorizontal: gridUnit * 7,
-            contentInsetVertical: gridUnit * 8,
-            contentSpacing: gridUnit * 7,
+            contentInsetHorizontal: gridUnit * 5,
+            contentInsetVertical: gridUnit * 5,
+            contentSpacing: gridUnit * 5,
             compactContentInsetHorizontal: gridUnit * 3,
-            compactContentInsetVertical: gridUnit * 5,
-            compactContentSpacing: gridUnit * 4.5
+            compactContentInsetVertical: gridUnit * 3,
+            compactContentSpacing: gridUnit * 4
         )
         #endif
     }
