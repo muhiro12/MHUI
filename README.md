@@ -294,7 +294,7 @@ surface hierarchy, measured spacing, and clear type hierarchy.
 The standard foundation is achromatic. Every package-owned background, surface,
 border, and text color has equal red, green, and blue channels in light, dark,
 and Increase Contrast appearances. Brand color comes only from the host accent
-pair; warning and destructive keep their semantic system hues. Standard
+pair; warning and destructive keep their semantic hues. Standard
 surfaces and badges are borderless and differ by tone alone. Separators,
 input boundaries, and pressed, focused, and disabled states remain. Increase
 Contrast adds or strengthens a hairline outline on surfaces, badges, and inputs.

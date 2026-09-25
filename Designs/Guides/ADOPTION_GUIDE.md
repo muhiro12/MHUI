@@ -494,7 +494,7 @@ These changes need no source edits, but they affect visual snapshots:
 
 - Background, surface, border, and text assets are neutral grays matched to
   the luminance, and therefore the contrast, of the 1.x defaults. Warning and
-  destructive keep their system hues.
+  destructive keep their semantic hues.
 - Standard surfaces and badges no longer draw a border. Increase Contrast adds
   an outline at the divider opacity, and detached inputs keep their boundary.
   Set `borderOpacity` on a surface treatment to restore a permanent outline.
@@ -566,11 +566,12 @@ values. Explicit app-owned color and metric overrides remain in control.
 
 ## Migration from 1.10
 
-### Standard Styling Is Achromatic
+### Standard Styling Became Low-Chroma
 
-The standard background, surface, border, and text assets form a restrained
-palette. Layout hierarchy uses proportion, whitespace, and tonal depth instead
-of decorative heading marks.
+In 1.10, the standard background, surface, border, and text assets formed a
+restrained low-chroma foundation. Version 2.0 makes that foundation achromatic
+as described in [Migration to 2.0](#migration-to-20). Layout hierarchy uses
+proportion, whitespace, and tonal depth instead of decorative heading marks.
 
 The app still owns `AccentColor`, but the standard composition uses it
 selectively for semantic status, focus, native controls, and primary actions.
