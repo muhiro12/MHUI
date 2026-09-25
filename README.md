@@ -269,6 +269,12 @@ import SwiftUI
 
 @main
 struct WorkspaceApp: App {
+    init() {
+        #if os(iOS)
+        MHTheme.standard.configureNavigationTitleAppearance()
+        #endif
+    }
+
     var body: some Scene {
         WindowGroup {
             OverviewScreen()
@@ -277,6 +283,14 @@ struct WorkspaceApp: App {
     }
 }
 ```
+
+On iOS, call `configureNavigationTitleAppearance()` once before creating UI,
+using the same theme as the root. It applies the theme's primary text color to
+large and inline native navigation titles, including `.native` screens.
+This UIKit default is application-wide; local `mhTheme` overrides do not change
+it. It preserves system title fonts, scrolling behavior, bar backgrounds, and
+button tint. Existing bars and explicit per-bar appearance settings are not
+overridden. macOS and watchOS retain their platform title presentation.
 
 For an app-specific accent pair, keep both colors in the app's asset catalog
 and pass their generated resource symbols to

@@ -56,7 +56,10 @@ private struct MHColorFoundationPreview: View {
 }
 
 #Preview("Native and Themed Titles") {
-    NavigationStack {
+    #if os(iOS)
+    MHTheme.standard.configureNavigationTitleAppearance()
+    #endif
+    return NavigationStack {
         MHColorFoundationPreview()
             .navigationTitle("Native title")
     }

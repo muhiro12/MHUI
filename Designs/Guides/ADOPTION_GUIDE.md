@@ -391,14 +391,37 @@ neutral text to the platform hierarchy. For a composed screen,
 `mhTextAppearance(.native)` makes the same choice once for the subtree.
 Prominent native selection backgrounds also use the platform hierarchy.
 
-Native navigation titles, unstyled `Text`, and native control labels can still
-use system black or white. The root does not override their foreground:
+Unstyled `Text` and native control labels can still use system black or white.
+The root does not override their foreground:
 blanket foreground styles also override prominent button labels and disabled
 control treatments. Explicit host colors continue to take precedence.
 The package does not require per-control corrections to undo a root override.
-Native bar title colors
-are a separate platform appearance concern; MHUI does not install a global bar
-appearance override or replace the collapsing native title with a custom label.
+
+On iOS, configure native navigation titles once from the app initializer:
+
+```swift
+init() {
+    #if os(iOS)
+    MHTheme.standard.configureNavigationTitleAppearance()
+    #endif
+}
+```
+
+Use the same theme for this call and the root `mhTheme`. The primary text asset
+supplies both large and inline title colors, including light, dark, and
+increased-contrast variants. `.native` chooses the container presentation;
+it does not opt navigation titles out of the app's shared appearance.
+Native fonts, title collapse, backgrounds, Liquid Glass, and button tint remain
+unchanged. The package uses UIKit's appearance proxy, without inspecting
+SwiftUI's view controllers or installing replacement title views.
+
+This startup configuration is application-wide across windows. Apply it before
+navigation bars enter a window, not from `body`, `onAppear`, or a per-screen
+modifier. Local `mhTheme` changes do not update this default. Existing bars and
+explicit per-bar appearance settings take precedence; app-specific title
+attribute defaults should be configured afterward. macOS and watchOS retain
+platform title presentation. For Preview, configure it before returning the
+preview's navigation hierarchy, as shown in the adoption sample.
 
 ### Container Placement
 

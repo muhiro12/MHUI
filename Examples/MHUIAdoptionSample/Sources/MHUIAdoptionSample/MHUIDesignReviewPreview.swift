@@ -1,18 +1,27 @@
 import SwiftUI
 
 #Preview("START HERE / MHUI Design Review") {
-    MHUIDesignReviewRoot()
+    #if os(iOS)
+    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    #endif
+    return MHUIDesignReviewRoot()
 }
 
 #Preview("Composition") {
-    NavigationStack {
+    #if os(iOS)
+    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    #endif
+    return NavigationStack {
         MHUIComposedScreenSample()
     }
     .mhTheme(MHUIAdoptionSampleTheme.standard)
 }
 
 #Preview("Field notes") {
-    NavigationStack {
+    #if os(iOS)
+    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    #endif
+    return NavigationStack {
         MHUIContentFormSample()
             .navigationTitle("Field notes")
     }
@@ -20,26 +29,38 @@ import SwiftUI
 }
 
 #Preview("Form / MHUI") {
-    MHUINativeContainerSample()
+    #if os(iOS)
+    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    #endif
+    return MHUINativeContainerSample()
         .mhTheme(MHUIAdoptionSampleTheme.standard)
 }
 
 #Preview("Content List") {
-    NavigationStack {
+    #if os(iOS)
+    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    #endif
+    return NavigationStack {
         MHUIContentContainerSample()
     }
     .mhTheme(MHUIAdoptionSampleTheme.standard)
 }
 
 #Preview("Content List / Native") {
-    NavigationStack {
+    #if os(iOS)
+    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    #endif
+    return NavigationStack {
         MHUIContentContainerSample(style: .native)
     }
     .mhTheme(MHUIAdoptionSampleTheme.standard)
 }
 
 #Preview("Form / Native") {
-    NavigationStack {
+    #if os(iOS)
+    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    #endif
+    return NavigationStack {
         MHUIContentFormSample(style: .native)
             .navigationTitle("Field notes")
     }
@@ -47,14 +68,20 @@ import SwiftUI
 }
 
 #Preview("States") {
-    NavigationStack {
+    #if os(iOS)
+    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    #endif
+    return NavigationStack {
         MHUIDesignReviewIndex()
     }
     .mhTheme(MHUIAdoptionSampleTheme.standard)
 }
 
 #Preview("Visual notes") {
-    NavigationStack {
+    #if os(iOS)
+    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    #endif
+    return NavigationStack {
         MHUIVisualContentSample()
     }
     .mhTheme(MHUIAdoptionSampleTheme.standard)
