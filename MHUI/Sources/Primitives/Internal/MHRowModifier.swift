@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct MHRowModifier: ViewModifier {
+    @Environment(\.mhUsesFormSurface)
+    private var usesFormSurface
+    @Environment(\.colorScheme)
+    private var colorScheme
     @Environment(\.mhTheme)
     private var theme
     @Environment(\.mhContainerStyle)
@@ -23,9 +27,18 @@ struct MHRowModifier: ViewModifier {
 
         let style = theme.resolvedRowChromeStyle(for: context)
 
-        content
+        let row = content
             .environment(\.mhUsesNativeRowForeground, containerStyle != nil)
             .environment(\.mhRowChromeScope, .grouped)
-            .mhRowChrome(style.resolved(for: rowChromeScope))
+            .mhRowChrome(style.resolved(for: rowChromeScope), scope: rowChromeScope)
+
+        if usesFormSurface {
+            row.listRowBackground(
+                theme.resolvedColor(for: theme.surfaces.muted.colorRole, in: colorScheme)
+                    .opacity(theme.surfaces.muted.opacity)
+            )
+        } else {
+            row
+        }
     }
 }

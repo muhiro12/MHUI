@@ -146,6 +146,11 @@ container inside it.
 
 `mhListChrome(.content)` uses a plain list and the shared canvas.
 `mhFormChrome(.content)` applies the canvas without forcing a form style.
+Its `mhRow()` rows use the theme's muted surface, so native grouped forms remain
+visible against a white or dark canvas. `MHSectionHeader` leaves outer form
+margins to the system, avoiding a second horizontal inset on the heading.
+Horizontal key-value rows align values to the trailing edge; stacked values
+retain leading alignment for reading.
 Both preserve native scrolling and controls. The `.native` choice preserves
 the platform-selected background and style. Keep page titles and screen-specific lead content in the host
 app.
@@ -358,7 +363,8 @@ and respects the keyboard safe area.
 Review `MHNativeStyleComparisonPreview` for the same List/Form data in both
 styles, `MHNativeSplitViewPreview` for native and content columns, and
 `MHNativeNavigationPreview` for tabs and a settings sheet. The public adoption
-sample demonstrates the content list/editor alongside a native settings form.
+sample demonstrates the content list/editor alongside a settings form with
+native controls and grouping on MHUI surfaces.
 
 ## Component Defaults and Explicit Roles
 

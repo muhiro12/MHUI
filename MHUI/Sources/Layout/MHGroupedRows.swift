@@ -39,7 +39,7 @@ public struct MHGroupedRows<Content: View>: View {
                         subviews[index]
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .environment(\.mhRowChromeScope, .grouped)
-                            .mhRowChrome(style.rowChrome)
+                            .mhRowChrome(style.rowChrome, scope: .standalone)
 
                         if index != lastIndex {
                             separator(style: style)

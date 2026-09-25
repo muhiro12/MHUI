@@ -25,10 +25,10 @@ extension MHKeyValueLabeledContentStyle {
                         usesNativeHierarchy: usesNativeRowForeground
                     )
                 )
-                .multilineTextAlignment(.leading)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .multilineTextAlignment(.trailing)
+                .frame(maxWidth: .infinity, alignment: .trailing)
         }
-        .mhRowChrome(style.rowChrome)
+        .mhRowChrome(style.rowChrome, scope: rowChromeScope)
     }
 
     func verticalContent(
@@ -55,6 +55,6 @@ extension MHKeyValueLabeledContentStyle {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .mhRowChrome(style.rowChrome)
+        .mhRowChrome(style.rowChrome, scope: rowChromeScope)
     }
 }

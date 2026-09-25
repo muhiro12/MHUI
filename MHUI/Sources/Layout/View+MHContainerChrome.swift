@@ -11,23 +11,28 @@ public extension View {
         switch style {
         case .native:
             environment(\.mhContainerStyle, .native)
+                .environment(\.mhUsesFormSurface, false)
         case .content:
             listStyle(.plain)
                 .modifier(MHContainerChromeModifier())
+                .environment(\.mhUsesFormSurface, false)
         }
     }
 
     /// Chooses native presentation or MHUI content presentation for one form.
     ///
-    /// Content presentation supplies the canvas. The form style and controls
-    /// remain native; rows and headers can opt into MHUI presentation separately.
+    /// Content presentation supplies the canvas. Apply `mhRow()` to each complete
+    /// row for a themed surface, and use `MHSectionHeader` for aligned headings.
+    /// The form style, grouping, and controls remain native.
     @ViewBuilder
     func mhFormChrome(_ style: MHContainerStyle = .native) -> some View {
         switch style {
         case .native:
             environment(\.mhContainerStyle, .native)
+                .environment(\.mhUsesFormSurface, false)
         case .content:
             modifier(MHContainerChromeModifier())
+                .environment(\.mhUsesFormSurface, true)
         }
     }
 }

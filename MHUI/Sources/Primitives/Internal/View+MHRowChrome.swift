@@ -2,8 +2,9 @@ import SwiftUI
 
 extension View {
     func mhRowChrome(
-        _ style: MHResolvedRowChromeStyle
+        _ style: MHResolvedRowChromeStyle,
+        scope: MHRowChromeScope
     ) -> some View {
-        modifier(MHRowChromeModifier(style: style))
+        modifier(MHRowChromeModifier(style: style, scope: scope))
     }
 }
