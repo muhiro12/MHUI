@@ -11,19 +11,23 @@ struct MHSectionHeaderModifier: ViewModifier {
     private var adaptiveLayoutContext
 
     func body(content: Content) -> some View {
+        #if os(macOS)
+        let rowInsets: EdgeInsets? = nil
+        #else
         let inset = usesFormSurface
             ? 0
             : theme.resolvedRowChromeStyle(for: adaptiveLayoutContext).horizontalInset
+
+        let rowInsets: EdgeInsets? = containerStyle == .content
+            ? .init(top: 0, leading: inset, bottom: 0, trailing: inset)
+            : nil
+        #endif
 
         content
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.top, usesFormSurface ? theme.spacing.control : 0)
             .padding(.bottom, theme.spacing.inline)
             .textCase(nil)
-            .listRowInsets(
-                containerStyle == .content
-                    ? .init(top: 0, leading: inset, bottom: 0, trailing: inset)
-                    : nil
-            )
+            .listRowInsets(rowInsets)
     }
 }

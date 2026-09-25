@@ -18,6 +18,7 @@ struct MHSummaryText: View {
             VStack(alignment: .leading, spacing: theme.spacing.inline) {
                 title
                     .mhTextStyle(.summaryTitle)
+                    .fixedSize(horizontal: false, vertical: true)
                     .accessibilityAddTraits(.isHeader)
 
                 if let supporting {

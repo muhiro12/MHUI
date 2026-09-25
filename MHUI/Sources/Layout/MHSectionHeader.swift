@@ -4,6 +4,10 @@ import SwiftUI
 public struct MHSectionHeader<Accessory: View>: View {
     @Environment(\.mhTheme)
     private var theme
+    @Environment(\.mhAdaptiveLayoutContext)
+    private var adaptiveLayoutContext
+    @Environment(\.horizontalSizeClass)
+    private var horizontalSizeClass
     @Environment(\.dynamicTypeSize)
     private var dynamicTypeSize
 
@@ -27,7 +31,13 @@ public struct MHSectionHeader<Accessory: View>: View {
     public var body: some View {
         VStack(
             alignment: .leading,
-            spacing: theme.resolvedSectionChromeStyle().contentSpacing
+            spacing: theme.resolvedSectionChromeStyle(
+                for: adaptiveLayoutContext.resolved(
+                    with: horizontalSizeClass,
+                    dynamicTypeSize: dynamicTypeSize,
+                    threshold: theme.layout.compactWidthThreshold
+                )
+            ).contentSpacing
         ) {
             titleLayout {
                 title

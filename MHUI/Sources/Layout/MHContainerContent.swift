@@ -1,0 +1,45 @@
+import SwiftUI
+
+/// Applies the enclosing MHUI container's presentation to complete native rows.
+///
+/// Place this once inside `List` or `Form`, then choose `.content` or `.native`
+/// with `mhListChrome` or `mhFormChrome` on that native container. Keep app-owned
+/// sections, selection tags, navigation links, and controls in the content builder.
+public struct MHContainerContent<Content: View>: View {
+    @Environment(\.mhTheme)
+    private var theme
+    @Environment(\.colorScheme)
+    private var colorScheme
+    @Environment(\.mhContainerStyle)
+    private var containerStyle
+
+    private let content: Content
+
+    public var body: some View {
+        if containerStyle == .content {
+            ForEach(sections: content) { section in
+                Section {
+                    ForEach(section.content) { row in
+                        row.modifier(MHContainerRowModifier())
+                    }
+                } header: {
+                    section.header
+                        .modifier(MHContainerHeaderModifier())
+                        .foregroundStyle(theme.resolvedColor(for: .primaryText, in: colorScheme))
+                } footer: {
+                    section.footer
+                }
+            }
+            .environment(\.mhRowChromeScope, .grouped)
+            .environment(\.mhUsesNativeRowForeground, true)
+            .labeledContentStyle(.mhKeyValue)
+        } else {
+            content
+        }
+    }
+
+    /// Creates container content without taking ownership of its scrolling or navigation.
+    public init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+}
