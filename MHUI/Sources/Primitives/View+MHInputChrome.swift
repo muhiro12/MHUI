@@ -3,21 +3,13 @@ import SwiftUI
 private struct MHInputChromeModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.mhGlassPolicy)
-    private var glassPolicy
     @Environment(\.colorScheme)
     private var colorScheme
-    @Environment(\.accessibilityReduceTransparency)
-    private var accessibilityReduceTransparency
 
     let state: MHFieldState
 
     func body(content: Content) -> some View {
-        let style = theme.resolvedInputChromeStyle(
-            for: state,
-            glassPolicy: glassPolicy,
-            reduceTransparency: accessibilityReduceTransparency
-        )
+        let style = theme.resolvedInputChromeStyle(for: state)
         let shape = RoundedRectangle(
             cornerRadius: theme.cornerRadius.control,
             style: .continuous
@@ -36,17 +28,15 @@ private struct MHInputChromeModifier: ViewModifier {
                 )
             }
             .overlay {
-                if let borderRole = style.backgroundStyle.borderRole {
-                    shape
-                        .stroke(
-                            theme.resolvedColor(
-                                for: borderRole,
-                                in: colorScheme
-                            )
-                            .opacity(style.backgroundStyle.borderOpacity),
-                            lineWidth: theme.divider.thickness
+                shape
+                    .stroke(
+                        theme.resolvedColor(
+                            for: style.backgroundStyle.borderRole,
+                            in: colorScheme
                         )
-                }
+                        .opacity(style.backgroundStyle.borderOpacity),
+                        lineWidth: theme.divider.thickness
+                    )
             }
             .animation(
                 .easeOut(duration: theme.motion.quick),

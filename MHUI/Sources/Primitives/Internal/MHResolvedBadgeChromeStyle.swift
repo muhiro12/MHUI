@@ -8,32 +8,15 @@ struct MHResolvedBadgeChromeStyle: Sendable, Equatable {
 
     var textRole: MHTextRole
     var foregroundRole: MHColorRole
-    var backgroundStyle: MHResolvedGlassBackgroundStyle
+    var backgroundStyle: MHResolvedSurfaceStyle
     var horizontalPadding: CGFloat
     var verticalPadding: CGFloat
 }
 
 extension MHTheme {
     func resolvedBadgeChromeStyle(
-        for style: MHBadgeStyle,
-        glassPolicy: MHGlassPolicy,
-        reduceTransparency: Bool
+        for style: MHBadgeStyle
     ) -> MHResolvedBadgeChromeStyle {
-        resolvedBadgeChromeStyle(
-            for: style,
-            glassPolicy: glassPolicy,
-            reduceTransparency: reduceTransparency,
-            supportsGlass: MHGlassRuntimeSupport.isAvailable
-        )
-    }
-
-    func resolvedBadgeChromeStyle(
-        for style: MHBadgeStyle,
-        glassPolicy: MHGlassPolicy,
-        reduceTransparency: Bool,
-        supportsGlass: Bool
-    ) -> MHResolvedBadgeChromeStyle {
-        let foregroundRole = badgeForegroundColorRole(for: style)
         let markerRole = badgeMarkerColorRole(for: style)
         let fillOpacity = style == .neutral
             ? MHResolvedBadgeChromeStyle.neutralFillOpacity
@@ -41,22 +24,13 @@ extension MHTheme {
         let borderOpacity = style == .neutral
             ? MHResolvedBadgeChromeStyle.neutralBorderOpacity
             : MHResolvedBadgeChromeStyle.emphasizedBorderOpacity
-        let usesGlass = glassPolicy.resolvesUsesGlass(
-            prefersGlass: false,
-            supportsGlass: supportsGlass,
-            reduceTransparency: reduceTransparency
-        )
 
         return .init(
             textRole: .caption,
-            foregroundRole: foregroundRole,
+            foregroundRole: badgeForegroundColorRole(for: style),
             backgroundStyle: .init(
-                usesGlass: usesGlass,
-                fallbackFillRole: markerRole,
-                fallbackFillOpacity: fillOpacity,
-                glassTintRole: usesGlass ? markerRole : nil,
-                glassTintOpacity: usesGlass ? fillOpacity : 0,
-                isGlassInteractive: false,
+                fillRole: markerRole,
+                fillOpacity: fillOpacity,
                 borderRole: markerRole,
                 borderOpacity: borderOpacity
             ),

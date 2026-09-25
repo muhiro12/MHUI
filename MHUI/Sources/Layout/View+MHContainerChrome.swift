@@ -11,7 +11,7 @@ public extension View {
 
     /// Applies the MHUI canvas while preserving native form controls, sections, and style.
     ///
-    /// The root theme supplies the palette. No per-screen visual tuning is needed.
+    /// The root theme supplies the colors. No per-screen visual tuning is needed.
     func mhFormChrome() -> some View {
         modifier(MHContainerChromeModifier())
     }

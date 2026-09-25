@@ -1,42 +1,20 @@
 import SwiftUI
 
-// Shared surface fill keeps glass and fallback rendering on the same code path.
+// Content surfaces, badges, inputs, and the canvas share one non-glass fill path.
 struct MHSurfaceFill<ShapeType: Shape>: View {
     let shape: ShapeType
-    let style: MHResolvedGlassBackgroundStyle
+    let style: MHResolvedSurfaceStyle
     let theme: MHTheme
     let colorScheme: ColorScheme
 
-    @ViewBuilder var body: some View {
-        if style.usesGlass {
-            if #available(iOS 26, macOS 26, watchOS 26, *) {
-                shape
-                    .fill(.clear)
-                    .glassEffect(
-                        style.glass(theme: theme, colorScheme: colorScheme, isEnabled: true),
-                        in: shape
-                    )
-            } else {
-                fallbackFill
-            }
-        } else {
-            fallbackFill
-        }
-    }
-
-    @ViewBuilder private var fallbackFill: some View {
-        if let fallbackFillRole = style.fallbackFillRole {
-            shape
-                .fill(
-                    theme.resolvedColor(
-                        for: fallbackFillRole,
-                        in: colorScheme
-                    )
-                    .opacity(style.fallbackFillOpacity)
+    var body: some View {
+        shape
+            .fill(
+                theme.resolvedColor(
+                    for: style.fillRole,
+                    in: colorScheme
                 )
-        } else {
-            shape
-                .fill(.clear)
-        }
+                .opacity(style.fillOpacity)
+            )
     }
 }

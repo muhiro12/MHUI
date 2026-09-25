@@ -28,54 +28,13 @@ extension MHTheme {
     }
 
     func resolvedSurfaceStyle(
-        for role: MHSurfaceRole,
-        glassPolicy: MHGlassPolicy,
-        reduceTransparency: Bool
+        for role: MHSurfaceRole
     ) -> MHResolvedSurfaceStyle {
-        resolvedSurfaceStyle(
-            for: role,
-            glassPolicy: glassPolicy,
-            reduceTransparency: reduceTransparency,
-            supportsGlass: MHGlassRuntimeSupport.isAvailable
-        )
+        resolvedSurfaceStyle(treatment: treatment(for: role))
     }
 
-    func resolvedSurfaceStyle(
-        for role: MHSurfaceRole,
-        glassPolicy: MHGlassPolicy,
-        reduceTransparency: Bool,
-        supportsGlass: Bool
-    ) -> MHResolvedSurfaceStyle {
-        resolvedSurfaceStyle(
-            treatment: treatment(for: role),
-            glassPolicy: glassPolicy,
-            reduceTransparency: reduceTransparency,
-            supportsGlass: supportsGlass
-        )
-    }
-
-    func resolvedCanvasSurfaceStyle(
-        glassPolicy: MHGlassPolicy,
-        reduceTransparency: Bool
-    ) -> MHResolvedSurfaceStyle {
-        resolvedCanvasSurfaceStyle(
-            glassPolicy: glassPolicy,
-            reduceTransparency: reduceTransparency,
-            supportsGlass: MHGlassRuntimeSupport.isAvailable
-        )
-    }
-
-    func resolvedCanvasSurfaceStyle(
-        glassPolicy: MHGlassPolicy,
-        reduceTransparency: Bool,
-        supportsGlass: Bool
-    ) -> MHResolvedSurfaceStyle {
-        resolvedSurfaceStyle(
-            treatment: surfaces.canvas,
-            glassPolicy: glassPolicy,
-            reduceTransparency: reduceTransparency,
-            supportsGlass: supportsGlass
-        )
+    func resolvedCanvasSurfaceStyle() -> MHResolvedSurfaceStyle {
+        resolvedSurfaceStyle(treatment: surfaces.canvas)
     }
 
     private func treatment(
@@ -92,24 +51,11 @@ extension MHTheme {
     }
 
     private func resolvedSurfaceStyle(
-        treatment: SurfaceTreatment,
-        glassPolicy: MHGlassPolicy,
-        reduceTransparency: Bool,
-        supportsGlass: Bool
+        treatment: SurfaceTreatment
     ) -> MHResolvedSurfaceStyle {
-        let usesGlass = glassPolicy.resolvesUsesGlass(
-            prefersGlass: treatment.prefersGlass,
-            supportsGlass: supportsGlass,
-            reduceTransparency: reduceTransparency
-        )
-
-        return .init(
-            usesGlass: usesGlass,
-            fallbackFillRole: treatment.fallbackColorRole,
-            fallbackFillOpacity: treatment.fallbackOpacity,
-            glassTintRole: usesGlass ? treatment.glassTintColorRole : nil,
-            glassTintOpacity: usesGlass ? treatment.glassTintOpacity : .zero,
-            isGlassInteractive: false,
+        .init(
+            fillRole: treatment.colorRole,
+            fillOpacity: treatment.opacity,
             borderRole: treatment.borderColorRole,
             borderOpacity: treatment.borderOpacity
         )

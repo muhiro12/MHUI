@@ -11,22 +11,17 @@ struct MHBadgeContrastResolutionTests {
         let destructive = resolvedBadge(.destructive, in: theme)
 
         #expect(accent.foregroundRole == .primaryText)
-        #expect(accent.backgroundStyle.fallbackFillRole == .accent)
+        #expect(accent.backgroundStyle.fillRole == .accent)
         #expect(warning.foregroundRole == .primaryText)
-        #expect(warning.backgroundStyle.fallbackFillRole == .warning)
+        #expect(warning.backgroundStyle.fillRole == .warning)
         #expect(destructive.foregroundRole == .primaryText)
-        #expect(destructive.backgroundStyle.fallbackFillRole == .destructive)
+        #expect(destructive.backgroundStyle.fillRole == .destructive)
     }
 
     private func resolvedBadge(
         _ style: MHBadgeStyle,
         in theme: MHTheme
     ) -> MHResolvedBadgeChromeStyle {
-        theme.resolvedBadgeChromeStyle(
-            for: style,
-            glassPolicy: .disabled,
-            reduceTransparency: false,
-            supportsGlass: true
-        )
+        theme.resolvedBadgeChromeStyle(for: style)
     }
 }

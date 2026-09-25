@@ -31,31 +31,32 @@ public extension MHTheme {
         }
     }
 
-    /// A surface recipe with native glass and solid fallback behavior.
+    /// A non-glass content surface recipe.
+    ///
+    /// Content surfaces stay on the stable content plane. They never render
+    /// Liquid Glass, regardless of the active `MHGlassPolicy`.
     struct SurfaceTreatment: Sendable, Equatable {
-        public var prefersGlass: Bool
-        public var fallbackColorRole: MHColorRole
-        public var fallbackOpacity: Double
-        public var glassTintColorRole: MHColorRole?
-        public var glassTintOpacity: Double
+        /// The semantic color that fills the surface.
+        public var colorRole: MHColorRole
+
+        /// The opacity applied to the fill color.
+        public var opacity: Double
+
+        /// The semantic color of the surface outline.
         public var borderColorRole: MHColorRole
+
+        /// The outline opacity. Zero omits the outline.
         public var borderOpacity: Double
 
-        /// Creates a complete surface treatment.
+        /// Creates a content surface treatment.
         public init(
-            prefersGlass: Bool,
-            fallbackColorRole: MHColorRole,
-            fallbackOpacity: Double,
-            glassTintColorRole: MHColorRole?,
-            glassTintOpacity: Double,
-            borderColorRole: MHColorRole,
-            borderOpacity: Double
+            colorRole: MHColorRole,
+            opacity: Double = 1,
+            borderColorRole: MHColorRole = .border,
+            borderOpacity: Double = 0
         ) {
-            self.prefersGlass = prefersGlass
-            self.fallbackColorRole = fallbackColorRole
-            self.fallbackOpacity = fallbackOpacity
-            self.glassTintColorRole = glassTintColorRole
-            self.glassTintOpacity = glassTintOpacity
+            self.colorRole = colorRole
+            self.opacity = opacity
             self.borderColorRole = borderColorRole
             self.borderOpacity = borderOpacity
         }

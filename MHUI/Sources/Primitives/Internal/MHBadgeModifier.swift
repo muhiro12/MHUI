@@ -5,12 +5,8 @@ struct MHBadgeModifier: ViewModifier {
 
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.mhGlassPolicy)
-    private var glassPolicy
     @Environment(\.colorScheme)
     private var colorScheme
-    @Environment(\.accessibilityReduceTransparency)
-    private var accessibilityReduceTransparency
     @Environment(\.dynamicTypeSize)
     private var dynamicTypeSize
 
@@ -24,11 +20,7 @@ struct MHBadgeModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        let chromeStyle = theme.resolvedBadgeChromeStyle(
-            for: style,
-            glassPolicy: glassPolicy,
-            reduceTransparency: accessibilityReduceTransparency
-        )
+        let chromeStyle = theme.resolvedBadgeChromeStyle(for: style)
         let shape = RoundedRectangle(
             cornerRadius: theme.cornerRadius.control,
             style: .continuous
@@ -53,17 +45,15 @@ struct MHBadgeModifier: ViewModifier {
                 )
             }
             .overlay {
-                if let borderRole = chromeStyle.backgroundStyle.borderRole {
-                    shape
-                        .stroke(
-                            theme.resolvedColor(
-                                for: borderRole,
-                                in: colorScheme
-                            )
-                            .opacity(chromeStyle.backgroundStyle.borderOpacity),
-                            lineWidth: theme.divider.thickness
+                shape
+                    .stroke(
+                        theme.resolvedColor(
+                            for: chromeStyle.backgroundStyle.borderRole,
+                            in: colorScheme
                         )
-                }
+                        .opacity(chromeStyle.backgroundStyle.borderOpacity),
+                        lineWidth: theme.divider.thickness
+                    )
             }
 
         return accessibilityAdjustedContent(styledContent)

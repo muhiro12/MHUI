@@ -52,13 +52,16 @@ struct MHActionButtonChromeModifier: ViewModifier {
     private func fallbackSurface(label: some View) -> some View {
         label
             .background {
-                if let backgroundStyle = style.backgroundStyle {
-                    MHSurfaceFill(
-                        shape: shape,
-                        style: backgroundStyle,
-                        theme: theme,
-                        colorScheme: colorScheme
-                    )
+                if let backgroundStyle = style.backgroundStyle,
+                   let fillRole = backgroundStyle.fallbackFillRole {
+                    shape
+                        .fill(
+                            theme.resolvedColor(
+                                for: fillRole,
+                                in: colorScheme
+                            )
+                            .opacity(backgroundStyle.fallbackFillOpacity)
+                        )
                 }
             }
             .overlay {

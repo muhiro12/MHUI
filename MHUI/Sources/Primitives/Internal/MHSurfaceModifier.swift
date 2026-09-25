@@ -3,12 +3,8 @@ import SwiftUI
 struct MHSurfaceModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.mhGlassPolicy)
-    private var glassPolicy
     @Environment(\.colorScheme)
     private var colorScheme
-    @Environment(\.accessibilityReduceTransparency)
-    private var accessibilityReduceTransparency
 
     let role: MHSurfaceRole
 
@@ -17,11 +13,7 @@ struct MHSurfaceModifier: ViewModifier {
             cornerRadius: theme.cornerRadius.surface,
             style: .continuous
         )
-        let style = theme.resolvedSurfaceStyle(
-            for: role,
-            glassPolicy: glassPolicy,
-            reduceTransparency: accessibilityReduceTransparency
-        )
+        let style = theme.resolvedSurfaceStyle(for: role)
 
         return content
             .background {
@@ -36,7 +28,7 @@ struct MHSurfaceModifier: ViewModifier {
                 shape
                     .stroke(
                         theme.resolvedColor(
-                            for: style.borderRole ?? .border,
+                            for: style.borderRole,
                             in: colorScheme
                         )
                         .opacity(style.borderOpacity),

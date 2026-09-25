@@ -1,15 +1,15 @@
-/// Controls whether MHUI chrome may render using Liquid Glass when it is available.
+/// Controls whether MHUI action buttons may render using Liquid Glass.
+///
+/// Content surfaces, the screen canvas, badges, and input chrome never use
+/// Liquid Glass under any policy.
 public enum MHGlassPolicy: String, Sendable, CaseIterable {
-    /// Lets eligible MHUI chrome use Liquid Glass when runtime and accessibility
-    /// support allow it. Action buttons and content surfaces remain non-glass.
+    /// Lets MHUI choose the treatment. Action buttons keep non-glass fills.
     case automatic
 
-    /// Requests Liquid Glass for eligible MHUI chrome while still respecting
-    /// accessibility and fallback paths. Scope this to floating action controls;
-    /// it opts action buttons into glass but does not make content surfaces
-    /// glass-eligible.
+    /// Requests Liquid Glass for action buttons while still respecting
+    /// accessibility and fallback paths. Scope this to floating action controls.
     case enabled
 
-    /// Uses non-glass fallback fills for MHUI chrome.
+    /// Uses non-glass fills for action buttons.
     case disabled
 }

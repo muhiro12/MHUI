@@ -229,40 +229,8 @@ struct MHStyleResolutionTests {
     func surface_and_group_styles_resolve_from_theme_tokens() {
         let theme = MHTheme.standard
         let grouped = theme.resolvedGroupedRowsStyle(showsDividers: true)
-        let automaticSurface = theme.resolvedSurfaceStyle(
-            for: .standard,
-            glassPolicy: .automatic,
-            reduceTransparency: false,
-            supportsGlass: true
-        )
-        let enabledSurface = theme.resolvedSurfaceStyle(
-            for: .standard,
-            glassPolicy: .enabled,
-            reduceTransparency: false,
-            supportsGlass: true
-        )
-        let disabledSurface = theme.resolvedSurfaceStyle(
-            for: .standard,
-            glassPolicy: .disabled,
-            reduceTransparency: false,
-            supportsGlass: true
-        )
-        let unsupportedSurface = theme.resolvedSurfaceStyle(
-            for: .standard,
-            glassPolicy: .enabled,
-            reduceTransparency: false,
-            supportsGlass: false
-        )
-        let reducedTransparencySurface = theme.resolvedSurfaceStyle(
-            for: .standard,
-            glassPolicy: .enabled,
-            reduceTransparency: true
-        )
-        let canvas = theme.resolvedCanvasSurfaceStyle(
-            glassPolicy: .enabled,
-            reduceTransparency: false,
-            supportsGlass: true
-        )
+        let surface = theme.resolvedSurfaceStyle(for: .standard)
+        let canvas = theme.resolvedCanvasSurfaceStyle()
 
         #expect(theme.surfaceColorRole(for: .standard) == .surface)
         #expect(theme.surfaceColorRole(for: .muted) == .surfaceMuted)
@@ -272,16 +240,10 @@ struct MHStyleResolutionTests {
         #expect(grouped.dividerThickness == theme.divider.thickness)
         #expect(grouped.dividerOpacity == theme.divider.opacity)
         #expect(grouped.spacerHeight == theme.presentation.rowVerticalPadding)
-        #expect(!automaticSurface.usesGlass)
-        #expect(!enabledSurface.usesGlass)
-        #expect(!enabledSurface.isGlassInteractive)
-        #expect(!disabledSurface.usesGlass)
-        #expect(!unsupportedSurface.usesGlass)
-        #expect(!reducedTransparencySurface.usesGlass)
-        #expect(disabledSurface.fallbackFillRole == .surface)
-        #expect(enabledSurface.glassTintRole == nil)
-        #expect(canvas.fallbackFillRole == .background)
-        #expect(!canvas.usesGlass)
+        #expect(surface.fillRole == .surface)
+        #expect(surface.fillOpacity == 1)
+        #expect(canvas.fillRole == .background)
+        #expect(canvas.borderOpacity == 0)
     }
 
     @Test

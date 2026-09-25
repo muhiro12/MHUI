@@ -163,11 +163,8 @@ struct MHComponentSmokeTests {
         appTheme.divider = .init(thickness: 2, opacity: 0.75)
         appTheme.motion = .init(quick: 0.1, regular: 0.2)
         appTheme.surfaces.standard = .init(
-            prefersGlass: false,
-            fallbackColorRole: .surface,
-            fallbackOpacity: 0.9,
-            glassTintColorRole: nil,
-            glassTintOpacity: 0,
+            colorRole: .surface,
+            opacity: 0.9,
             borderColorRole: .border,
             borderOpacity: 0.4
         )
