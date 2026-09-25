@@ -72,6 +72,20 @@ struct MHNeutralColorAssetTests {
     }
 
     @Test
+    func status_labels_remain_legible_on_every_surface() throws {
+        for traits in Self.appearances {
+            for surfaceAsset in Self.surfaceAssets {
+                let surface = try luminance(of: surfaceAsset, with: traits)
+
+                for statusAsset in [MHColorAsset.warning, MHColorAsset.destructive] {
+                    let status = try luminance(of: statusAsset, with: traits)
+                    #expect(contrastRatio(surface, status) >= Self.minimumTextContrast)
+                }
+            }
+        }
+    }
+
+    @Test
     func text_hierarchy_remains_legible_on_every_surface() throws {
         for traits in Self.appearances {
             for surfaceAsset in Self.surfaceAssets {

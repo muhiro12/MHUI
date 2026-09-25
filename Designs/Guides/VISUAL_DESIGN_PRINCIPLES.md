@@ -16,9 +16,19 @@ communicate meaning.
 
 The canvas is pure white in light appearance and pure black in dark appearance.
 White supports a clear relationship between text and empty space. Black provides
-an equally neutral dark base; normal primary text is softened to 90% sRGB gray
-instead of using maximum white everywhere. Increased Contrast restores full
-black and white. These are screen design choices, not simulated paper or ink.
+an equally neutral dark base. Primary text uses charcoal in light appearance
+and softened light gray in dark appearance. Increased Contrast strengthens
+foreground differentiation. These are screen design choices, not simulated
+paper or ink.
+
+Package-owned destructive and warning colors use restrained red and ochre,
+with separate light, dark, and increased-contrast variants. Their meaning must
+also be conveyed through labels or symbols. Native system controls retain their
+platform semantics; these assets style MHUI-owned content and treatments.
+
+Concrete asset RGB channels use hexadecimal sRGB notation consistently.
+Identical high-contrast variants are omitted only when the normal variant
+already supplies the intended result, as with the white and black canvas.
 
 Most screens should remain visually quiet. A surface earns distinction through
 its content role, not because every region needs a card treatment.
