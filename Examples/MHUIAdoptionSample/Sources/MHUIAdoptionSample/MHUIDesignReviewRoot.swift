@@ -19,6 +19,13 @@ public struct MHUIDesignReviewRoot: View {
                 Label("States", systemImage: "square.grid.2x2")
             }
 
+            NavigationStack {
+                MHUIContentContainerSample()
+            }
+            .tabItem {
+                Label("Content List", systemImage: "books.vertical")
+            }
+
             MHUINativeContainerSample()
                 .tabItem {
                     Label("Native Form", systemImage: "list.bullet.rectangle")

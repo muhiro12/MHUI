@@ -1,4 +1,4 @@
-// swiftlint:disable file_types_order no_magic_numbers one_declaration_per_file
+// swiftlint:disable file_types_order one_declaration_per_file
 import SwiftUI
 
 private struct MHAdoptionRouteGuidePreview: View {
@@ -11,8 +11,10 @@ private struct MHAdoptionRouteGuidePreview: View {
 
             HStack(alignment: .top, spacing: theme.spacing.section) {
                 MHPrimaryAdoptionRoute()
-                MHNativeBoundaryRoutes()
-                    .frame(width: 360, alignment: .topLeading)
+                MHThemeFoundationRoute()
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                MHNativeContainerRoute()
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
             }
         }
         .padding(theme.spacing.section)
@@ -26,16 +28,16 @@ private struct MHAdoptionRouteGuideHeader: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: theme.spacing.inline) {
-            Text("ADOPTION HIERARCHY")
+            Text("SCREEN PURPOSE")
                 .mhTextStyle(.metadata, colorRole: .secondaryText)
 
-            Text("Start with the signature composition")
+            Text("Choose behavior and appearance independently")
                 .mhTextStyle(.screenTitle)
 
             Text(
                 """
-                Native containers remain supported boundaries when their behavior is essential, \
-                Choose the route that fits the screen.
+                Use MHUI content in a List or Form, retain native presentation, or compose a free layout. \
+                The screen determines the choice.
                 """
             )
             .mhTextStyle(.supporting, colorRole: .secondaryText)
@@ -49,7 +51,7 @@ private struct MHPrimaryAdoptionRoute: View {
             level: "SIGNATURE ROUTE",
             title: "Signature composition",
             supporting: """
-                The default for content-led screens. MHUI owns hierarchy, rhythm, surfaces, \
+                For freely arranged content. MHUI owns hierarchy, rhythm, surfaces, \
                 and semantic emphasis around native controls.
                 """,
             examples: "Overview · Dashboard · Detail · Report",
@@ -58,34 +60,6 @@ private struct MHPrimaryAdoptionRoute: View {
             surfaceRole: .elevated
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-    }
-}
-
-private struct MHNativeBoundaryRoutes: View {
-    @Environment(\.mhTheme)
-    private var theme
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: theme.spacing.content) {
-            MHNativeBoundaryHeader()
-            MHThemeFoundationRoute()
-            MHNativeContainerRoute()
-        }
-    }
-}
-
-private struct MHNativeBoundaryHeader: View {
-    @Environment(\.mhTheme)
-    private var theme
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: theme.spacing.inline) {
-            Text("NATIVE CONTAINER BOUNDARIES")
-                .mhTextStyle(.metadata, colorRole: .secondaryText)
-
-            Text("Preserve native containers with or without the MHUI canvas.")
-                .mhTextStyle(.supporting, colorRole: .secondaryText)
-        }
     }
 }
 
@@ -98,7 +72,7 @@ private struct MHThemeFoundationRoute: View {
                 Native containers keep their system appearance. Root theme values and \
                 app tint remain available without adding container chrome.
                 """,
-            examples: "Inherited baseline",
+            examples: "Settings · Sidebar · Utility",
             systemImage: "circle.lefthalf.filled",
             levelColorRole: .secondaryText,
             surfaceRole: .muted
@@ -109,13 +83,13 @@ private struct MHThemeFoundationRoute: View {
 private struct MHNativeContainerRoute: View {
     var body: some View {
         MHAdoptionRouteCard(
-            level: "NATIVE MHUI ROUTE",
-            title: "Native List or Form",
+            level: "MHUI CONTENT",
+            title: "Content List or Form",
             supporting: """
-                Preserve selection, editing, focus, grouped form behavior, and other container \
-                semantics when they are material to the screen.
+                Use MHUI rows, headings, and content rhythm while preserving native selection, \
+                editing, focus, and navigation.
                 """,
-            examples: "Settings · Editing · Hierarchy",
+            examples: "Collection · Editor · Detail",
             systemImage: "list.bullet.rectangle",
             levelColorRole: .secondaryText,
             surfaceRole: .standard
@@ -184,4 +158,4 @@ private struct MHAdoptionRouteCard: View {
             padding: 0
         )
 }
-// swiftlint:enable file_types_order no_magic_numbers one_declaration_per_file
+// swiftlint:enable file_types_order one_declaration_per_file

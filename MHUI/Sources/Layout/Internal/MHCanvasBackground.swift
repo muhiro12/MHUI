@@ -13,6 +13,6 @@ struct MHCanvasBackground: View {
             theme: theme,
             colorScheme: colorScheme
         )
-        .ignoresSafeArea()
+        .ignoresSafeArea(.container, edges: .vertical)
     }
 }

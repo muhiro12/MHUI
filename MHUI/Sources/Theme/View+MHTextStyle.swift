@@ -5,6 +5,8 @@ private struct MHTextStyleModifier: ViewModifier {
     private var theme
     @Environment(\.colorScheme)
     private var colorScheme
+    @Environment(\.mhUsesNativeRowForeground)
+    private var usesNativeRowForeground
 
     let role: MHTextRole
     let colorRole: MHColorRole
@@ -23,9 +25,10 @@ private struct MHTextStyleModifier: ViewModifier {
             .fontDesign(style.design)
             .tracking(style.tracking)
             .foregroundStyle(
-                theme.resolvedColor(
+                theme.resolvedTextForeground(
                     for: style.colorRole,
-                    in: colorScheme
+                    in: colorScheme,
+                    usesNativeHierarchy: usesNativeRowForeground
                 )
             )
     }

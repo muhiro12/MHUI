@@ -3,6 +3,8 @@ import SwiftUI
 struct MHRowModifier: ViewModifier {
     @Environment(\.mhTheme)
     private var theme
+    @Environment(\.mhContainerStyle)
+    private var containerStyle
     @Environment(\.mhRowChromeScope)
     private var rowChromeScope
     @Environment(\.mhAdaptiveLayoutContext)
@@ -22,7 +24,8 @@ struct MHRowModifier: ViewModifier {
         let style = theme.resolvedRowChromeStyle(for: context)
 
         content
-            .environment(\.mhRowChromeScope, .standalone)
+            .environment(\.mhUsesNativeRowForeground, containerStyle != nil)
+            .environment(\.mhRowChromeScope, .grouped)
             .mhRowChrome(style.resolved(for: rowChromeScope))
     }
 }

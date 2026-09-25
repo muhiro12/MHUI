@@ -15,7 +15,6 @@ public struct MHSummary<Accessory: View>: View {
             accessory: accessory
         )
         .frame(maxWidth: .infinity, alignment: .leading)
-        .mhSurfaceInset()
     }
 
     /// Creates a summary with an accessory such as a status badge or compact control.

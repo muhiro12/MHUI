@@ -1,49 +1,34 @@
+// swiftlint:disable no_magic_numbers
 import SwiftUI
 
-#if os(iOS)
+#if os(iOS) || os(macOS)
 private struct MHNativeSplitViewPreview: View {
-    @State private var category: String? = "General"
-    @State private var selection: String? = "Account"
-    @State private var name = "Personal"
-    @State private var notificationsEnabled = true
+    let style: MHContainerStyle
+    @State private var category: String? = "Documents"
 
     var body: some View {
         NavigationSplitView(columnVisibility: .constant(.all)) {
-            List(["General", "Privacy"], id: \.self, selection: $category) { category in
+            List(["Documents", "Archive"], id: \.self, selection: $category) { category in
                 NavigationLink(category, value: category)
             }
-            .navigationTitle("Settings")
+            .listStyle(.sidebar)
+            .navigationTitle("Library")
         } content: {
-            List(["Account", "Notifications"], id: \.self, selection: $selection) { item in
-                NavigationLink(item, value: item)
-            }
-            .mhListChrome()
-            .navigationTitle(category ?? "Settings")
+            MHCollectionComparison(style: style)
+                .navigationSplitViewColumnWidth(min: 280, ideal: 340)
         } detail: {
-            Form {
-                Section("Preferences") {
-                    TextField("Name", text: $name)
-                    Toggle("Notifications", isOn: $notificationsEnabled)
-                    LabeledContent("Account", value: "Personal")
-                }
-                Section {
-                    Text("Native selection, row spacing, and section hierarchy remain system-owned.")
-                }
-            }
-            .mhFormChrome()
-            .navigationTitle(selection ?? "Account")
+            MHFormComparison(style: style)
         }
         .mhTheme(.standard)
     }
 }
 
-// swiftlint:disable no_magic_numbers
-@available(iOS 26.0, *)
-#Preview(
-    "Native Styles / Split View",
-    traits: .fixedLayout(width: 1_194, height: 834)
-) {
-    MHNativeSplitViewPreview()
+#Preview("Containers / Split / Native", traits: .fixedLayout(width: 1_194, height: 834)) {
+    MHNativeSplitViewPreview(style: .native)
 }
-// swiftlint:enable no_magic_numbers
+
+#Preview("Containers / Split / Content", traits: .fixedLayout(width: 1_194, height: 834)) {
+    MHNativeSplitViewPreview(style: .content)
+}
 #endif
+// swiftlint:enable no_magic_numbers
