@@ -259,8 +259,10 @@ This route gives each layer a distinct responsibility:
   whitespace rather than an elevated card.
 - `MHFeatureGrid` preserves one leading feature and a concise supporting set
   across regular width, compact width, and accessibility text sizes.
-- `mhSection` owns supporting text, content surface, inset, and optional footer.
-- `MHGroupedRows` applies row chrome and separators to its direct children.
+- `mhSection` owns the header, supporting text, content spacing, and optional footer.
+  Content remains on the canvas; add a surface explicitly when its role needs one.
+- `MHGroupedRows` owns vertical row rhythm and separators. Its parent owns
+  horizontal padding, so plain groups align with their section heading.
 - `mhInputChrome` gives native text-entry controls semantic input treatment.
 - `MHActionGroup` owns action spacing and horizontal-to-vertical fallback.
 
@@ -460,6 +462,25 @@ Apply `mhRow()` to the full native row; nested MHUI styles share that padding.
 `MHSummary` no longer inserts surface padding. Place it with `mhRow()` in a list
 or add `mhSurfaceInset()` when a surrounding surface needs an inset.
 
+`mhSection` no longer wraps content in a surface or adds surface insets.
+`MHGroupedRows` no longer adds horizontal row padding. These changes align
+headings, rows, and footers on an open canvas. To retain a distinct group plane,
+apply the surface to the content before adding its section:
+
+```swift
+MHGroupedRows {
+    LabeledContent("Storage", value: "2.4 GB")
+        .labeledContentStyle(.mhKeyValue)
+}
+.mhSurfaceInset()
+.mhSurface()
+.mhSection("On this device")
+```
+
+Standalone `mhRow()` and native List/Form rows retain their own insets.
+Screen titles use regular weight; iOS summaries use the larger system `title`
+style. Review long titles and controls alongside them at large text sizes.
+
 The shared standard metrics are redesigned, including a
 640-point readable width, 24-point compact screen margins and top inset, and
 32-point section spacing. Explicit `standard(metrics:)` overrides still win.
@@ -532,7 +553,8 @@ MHUI action buttons: `.enabled` opts them in where the system supports it, and
 These changes need no source edits, but they affect visual snapshots:
 
 - Background, surface, border, and text assets are neutral grays. The 2.0
-  surface tones are redesigned for visible tonal depth; text contrast remains
+  canvas uses pure white / black; explicit surfaces provide graded separation.
+  Dark primary text is softened from full white; text contrast remains
   verified across supported appearances. Warning and
   destructive keep their semantic hues.
 - Standard surfaces and badges no longer draw a border. Increase Contrast adds

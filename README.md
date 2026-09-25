@@ -62,8 +62,8 @@ decisions.
 For the overall MHUI direction, open
 `MHUI/Sources/PreviewSupport/DesignReview/MHSignatureCompositionPreview.swift`.
 Its `START HERE` previews are the canonical visual review surface. They cover
-modest and dense content, dark mode, accessibility text sizes, and right-to-left
-layout with the neutral standard theme; a separate host-accent preview shows how
+modest and dense content, compact and wide layouts, dark mode, accessibility
+text sizes, and right-to-left layout with the neutral standard theme; a separate host-accent preview shows how
 an app's accent pair integrates. Preview files
 under `Diagnostics` compare specific conditions and are not competing design
 directions. Use the Canvas environment overrides for Increase Contrast and
@@ -163,7 +163,10 @@ struct OverviewScreen: View {
 }
 ```
 
-`MHGroupedRows` applies row chrome to its direct children. `MHActionGroup`
+`mhSection` arranges headings and content on the canvas without an implicit
+card. `MHGroupedRows` applies vertical row chrome to its direct children; the
+parent owns horizontal insets. Add `mhSurfaceInset()` and `mhSurface()` to a
+group only when it needs a distinct plane. `MHActionGroup`
 defaults unstyled buttons to the secondary role, so only primary, quiet, or
 destructive exceptions need an explicit button style. Treat each direct child
 of `MHGroupedRows` as one row; do not nest another row-styled view inside it.

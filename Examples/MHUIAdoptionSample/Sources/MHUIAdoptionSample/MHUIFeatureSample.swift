@@ -5,6 +5,7 @@ struct MHUIFeatureSample: View {
     let metadata: LocalizedStringKey
     let title: LocalizedStringKey
     let supporting: LocalizedStringKey
+    var isLead = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
@@ -12,7 +13,7 @@ struct MHUIFeatureSample: View {
                 .mhTextStyle(.metadata, colorRole: .secondaryText)
 
             Text(title)
-                .mhTextStyle(.bodyStrong)
+                .mhTextStyle(isLead ? .summaryTitle : .bodyStrong)
 
             Text(supporting)
                 .mhTextStyle(.supporting, colorRole: .secondaryText)

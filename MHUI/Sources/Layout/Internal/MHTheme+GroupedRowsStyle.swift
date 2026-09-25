@@ -3,7 +3,8 @@ extension MHTheme {
         showsDividers: Bool,
         for context: MHAdaptiveLayoutContext
     ) -> MHResolvedGroupedRowsStyle {
-        let rowChrome = resolvedRowChromeStyle(for: context)
+        var rowChrome = resolvedRowChromeStyle(for: context)
+        rowChrome.horizontalInset = .zero
 
         return .init(
             rowChrome: rowChrome,

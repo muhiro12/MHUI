@@ -3,6 +3,7 @@ import SwiftUI
 /// Dynamic type friendly base styles used by MHUI typography.
 public enum MHFontStyle: String, Sendable, CaseIterable {
     case largeTitle
+    case title
     case title2
     case title3
     case body
@@ -14,6 +15,8 @@ public enum MHFontStyle: String, Sendable, CaseIterable {
         switch self {
         case .largeTitle:
             .largeTitle
+        case .title:
+            .title
         case .title2:
             .title2
         case .title3:

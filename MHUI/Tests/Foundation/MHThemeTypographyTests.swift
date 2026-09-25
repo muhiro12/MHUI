@@ -11,14 +11,14 @@ struct MHThemeTypographyTests {
         #else
         #expect(typography.screenTitle.font == .title2)
         #endif
-        #expect(typography.screenTitle.weight == .medium)
+        #expect(typography.screenTitle.weight == .regular)
         #expect(typography.screenTitle.design == .standard)
         #if os(iOS)
-        #expect(typography.summaryTitle.font == .title2)
-        #expect(typography.summaryTitle.weight == .medium)
+        #expect(typography.summaryTitle.font == .title)
+        #expect(typography.summaryTitle.weight == .regular)
         #else
         #expect(typography.summaryTitle.font == .title3)
-        #expect(typography.summaryTitle.weight == .medium)
+        #expect(typography.summaryTitle.weight == .regular)
         #endif
         #expect(typography.summaryTitle.design == .standard)
         #expect(typography.sectionTitle.font == .title3)

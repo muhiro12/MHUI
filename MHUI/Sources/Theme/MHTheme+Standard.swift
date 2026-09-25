@@ -20,17 +20,17 @@ public extension MHTheme {
 
     private static var standardScreenTitle: TextStyle {
         #if os(iOS)
-        .init(font: .largeTitle, weight: .medium)
+        .init(font: .largeTitle, weight: .regular)
         #else
-        .init(font: .title2, weight: .medium)
+        .init(font: .title2, weight: .regular)
         #endif
     }
 
     private static var standardSummaryTitle: TextStyle {
         #if os(iOS)
-        .init(font: .title2, weight: .medium)
+        .init(font: .title, weight: .regular)
         #else
-        .init(font: .title3, weight: .medium)
+        .init(font: .title3, weight: .regular)
         #endif
     }
 

@@ -2,6 +2,8 @@
 import SwiftUI
 
 private enum MHSignatureCompositionPreviewLayout {
+    static let wideWidth: CGFloat = 1_024
+    static let wideHeight: CGFloat = 1_400
     static let width: CGFloat = 390
     static let compactWidth: CGFloat = 320
     static let height: CGFloat = 844
@@ -96,14 +98,9 @@ private struct MHSignatureOverview: View {
                 "Three documents changed",
                 metadata: "This week",
                 supporting: "Review recent edits before sharing the next version."
-            ) {
-                Text("3 new")
-                    .mhBadge(style: .accent)
-            }
+            )
 
             MHSignatureFigures()
-                .mhSurfaceInset()
-                .mhSurface()
         }
     }
 }
@@ -150,7 +147,7 @@ private struct MHSignatureFigure: View {
                 .mhTextStyle(.metadata, colorRole: .secondaryText)
 
             Text(value)
-                .mhTextStyle(isLead ? .summaryTitle : .bodyStrong)
+                .mhTextStyle(isLead ? .screenTitle : .summaryTitle)
                 .monospacedDigit()
 
             Text(detail)
@@ -370,6 +367,26 @@ private struct MHSignatureNoteSection: View {
         context: MHPreviewStyle.context(colorMode: .dark),
         theme: MHPreviewStyle.hostAccentTheme
     )
+}
+
+#Preview(
+    "START HERE / Design System / Wide Light",
+    traits: .fixedLayout(
+        width: MHSignatureCompositionPreviewLayout.wideWidth,
+        height: MHSignatureCompositionPreviewLayout.wideHeight
+    )
+) {
+    MHSignatureCompositionPreview(context: MHPreviewStyle.context())
+}
+
+#Preview(
+    "START HERE / Design System / Wide Dark",
+    traits: .fixedLayout(
+        width: MHSignatureCompositionPreviewLayout.wideWidth,
+        height: MHSignatureCompositionPreviewLayout.wideHeight
+    )
+) {
+    MHSignatureCompositionPreview(context: MHPreviewStyle.context(colorMode: .dark))
 }
 
 // swiftlint:enable file_types_order one_declaration_per_file

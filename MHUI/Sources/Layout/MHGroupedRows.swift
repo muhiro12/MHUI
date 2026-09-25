@@ -2,9 +2,10 @@ import SwiftUI
 
 /// Arranges direct child rows with theme-owned chrome and separators.
 ///
-/// The container applies the standard row inset, vertical rhythm, and minimum
-/// height. Existing explicit `mhRow()` modifiers remain source-compatible and
-/// resolve without adding a second layer of row chrome.
+/// Rows align with the surrounding content; the parent owns horizontal insets.
+/// The container applies the standard vertical rhythm and minimum height.
+/// Existing explicit `mhRow()` modifiers remain source-compatible and resolve
+/// without adding a second layer of row chrome.
 public struct MHGroupedRows<Content: View>: View {
     @Environment(\.mhTheme)
     private var theme

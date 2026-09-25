@@ -1,7 +1,8 @@
 import SwiftUI
 
 public extension View {
-    /// Wraps content in an MHUI section with calm hierarchy and surface treatment.
+    /// Wraps content in an MHUI section with a header, content, and optional footer.
+    /// Add `mhSurfaceInset()` and `mhSurface()` to the content when it needs a separate plane.
     func mhSection(
         title: Text,
         supporting: Text? = nil

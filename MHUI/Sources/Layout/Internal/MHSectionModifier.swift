@@ -10,7 +10,7 @@ struct MHSectionModifier<Accessory: View, Footer: View>: ViewModifier {
     let footer: Footer?
 
     func body(content: Content) -> some View {
-        VStack(alignment: .leading, spacing: theme.spacing.content) {
+        VStack(alignment: .leading, spacing: theme.spacing.inline) {
             MHSectionHeader(
                 title: title,
                 supporting: supporting,
@@ -18,8 +18,6 @@ struct MHSectionModifier<Accessory: View, Footer: View>: ViewModifier {
             )
 
             content
-                .mhSurfaceInset()
-                .mhSurface()
 
             if let footer {
                 footer

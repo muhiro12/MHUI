@@ -17,8 +17,8 @@ public struct MHUIComposedScreenSample: View {
             noteSection
         }
         .mhScreen(
-            "Settings",
-            subtitle: "The primary MHUI composition with an app-owned accent."
+            "Library",
+            subtitle: "Useful things, kept in one place."
         )
     }
 
@@ -30,13 +30,10 @@ public struct MHUIComposedScreenSample: View {
 private extension MHUIComposedScreenSample {
     var summary: some View {
         MHSummary(
-            "Review settings",
+            "Ready for the week ahead",
             metadata: "Overview",
-            supporting: "A focused hierarchy distinguishes the screen without replacing native controls."
-        ) {
-            Text("Ready")
-                .mhBadge(style: .accent)
-        }
+            supporting: "Your documents are up to date and available across your devices."
+        )
     }
 
     var overviewSection: some View {
@@ -48,7 +45,7 @@ private extension MHUIComposedScreenSample {
         }
         .mhSection(
             "Overview",
-            supporting: "Grouped rows own their shared rhythm and separators."
+            supporting: "Access and reminders for this collection."
         )
     }
 
@@ -57,7 +54,8 @@ private extension MHUIComposedScreenSample {
             MHUIFeatureSample(
                 metadata: "Storage",
                 title: "2.4 GB of 5 GB",
-                supporting: "Documents and photos stay in sync across your devices."
+                supporting: "Documents and photos stay in sync across your devices.",
+                isLead: true
             )
         } supporting: {
             MHUIFeatureSample(
@@ -74,7 +72,7 @@ private extension MHUIComposedScreenSample {
         }
         .mhSection(
             "Highlights",
-            supporting: "A leading feature and supporting content adapt as one composition."
+            supporting: "Space, devices, and your latest backup."
         )
     }
 
@@ -94,9 +92,11 @@ private extension MHUIComposedScreenSample {
                 }
             }
         }
+        .mhSurfaceInset()
+        .mhSurface(role: .muted)
         .mhSection(
             "Note",
-            supporting: "Explicit primary emphasis pairs with the group's secondary default."
+            supporting: "Leave a reminder for your next visit."
         )
     }
 }
