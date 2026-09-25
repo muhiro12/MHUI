@@ -10,6 +10,8 @@ private struct MHColorFoundationPreview: View {
                 Text("Everyday notes")
                     .mhTextStyle(.screenTitle)
                 textHierarchy
+                Toggle("System blue accent", isOn: .constant(true))
+                    .tint(Color(MHPreviewColorAsset.blue))
                 status
                 Button("Delete note", role: .destructive) {
                     // Preview-only action.
@@ -51,4 +53,11 @@ private struct MHColorFoundationPreview: View {
 
 #Preview("Color Foundation") {
     MHColorFoundationPreview()
+}
+
+#Preview("Native and Themed Titles") {
+    NavigationStack {
+        MHColorFoundationPreview()
+            .navigationTitle("Native title")
+    }
 }

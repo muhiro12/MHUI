@@ -376,6 +376,26 @@ stack when the window or column narrows.
 
 ## Navigation and Presentation Boundaries
 
+### Text Color Ownership
+
+`mhTheme` supplies theme values and an optional native tint; it does not recolor
+every descendant. In composed content, `mhTextStyle` uses the same primary color
+for screen titles, section titles, and body text unless another color role is
+specified. Supporting and caption colors preserve the hierarchy.
+
+Native navigation titles, unstyled `Text`, and native container row foregrounds
+can still use system black or white. List and Form row styles deliberately use
+the native foreground hierarchy to preserve selection and control states.
+Explicit colors supplied by the host also take precedence at their call sites.
+
+For app-owned static content, use `mhTextStyle` or `mhForegroundStyle` explicitly.
+Do not apply a fixed foreground across an entire selectable container: it can
+make selected or disabled content difficult to read. Native bar title colors
+are a separate platform appearance concern; MHUI does not install a global bar
+appearance override or replace the collapsing native title with a custom label.
+
+### Container Placement
+
 Apply the root theme to `TabView` or `NavigationSplitView`, but apply content
 chrome only to the list, form, or scrolling content in each destination or
 column. A shared theme does not paint navigation backgrounds. Sidebars, tab
