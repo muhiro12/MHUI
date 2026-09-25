@@ -5,209 +5,284 @@ private enum MHSignatureCompositionPreviewLayout {
     static let width: CGFloat = 390
     static let compactWidth: CGFloat = 320
     static let height: CGFloat = 844
-    static let accessibilityHeight: CGFloat = 1_600
-    static let metadataSpacingDivisor: CGFloat = 2
-    static let standardPlateAspectRatio: CGFloat = 1
-    static let largePlateAspectRatio: CGFloat = 1.25
-    static let widePlateAspectRatio: CGFloat = 1.45
+    static let denseHeight: CGFloat = 1_500
+    static let accessibilityHeight: CGFloat = 2_400
+}
+
+private struct MHSignatureRow: Identifiable {
+    let title: String
+    let detail: String
+    let value: String
+    var status: String?
+
+    var id: String {
+        title
+    }
+}
+
+private enum MHSignatureDensity {
+    case modest
+    case dense
+
+    var recentRows: [MHSignatureRow] {
+        switch self {
+        case .modest:
+            [
+                .init(title: "Project plan", detail: "Edited today", value: "2 pages"),
+                .init(title: "Budget", detail: "Edited yesterday", value: "1 sheet", status: "Draft"),
+                .init(title: "Meeting notes", detail: "Edited Monday", value: "4 pages")
+            ]
+        case .dense:
+            [
+                .init(title: "Project plan", detail: "Edited today", value: "2 pages"),
+                .init(title: "Budget", detail: "Edited yesterday", value: "1 sheet", status: "Draft"),
+                .init(title: "Meeting notes", detail: "Edited Monday", value: "4 pages"),
+                .init(
+                    title: "Quarterly review for the design and platform teams",
+                    detail: "Edited Sep 18",
+                    value: "12 pages"
+                ),
+                .init(title: "Travel checklist", detail: "Edited Sep 16", value: "1 page", status: "Shared"),
+                .init(title: "Reading list", detail: "Edited Sep 12", value: "3 pages"),
+                .init(title: "Research summary", detail: "Edited Sep 9", value: "8 pages")
+            ]
+        }
+    }
+
+    var showsAllDetails: Bool {
+        self == .dense
+    }
 }
 
 private struct MHSignatureCompositionPreview: View {
     let context: MHPreviewContext
+    var density = MHSignatureDensity.modest
+    var theme = MHTheme.standard
 
     var body: some View {
-        MHSignatureCompositionContent()
+        MHSignatureCompositionContent(density: density)
+            .mhTheme(theme)
             .mhPreviewTint(context)
     }
 }
 
 private struct MHSignatureCompositionContent: View {
-    @State private var keepsFocus = true
-    @State private var note = ""
+    @Environment(\.mhTheme)
+    private var theme
+
+    let density: MHSignatureDensity
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
-            MHSignatureSummary()
-            MHSignaturePlateGrid()
-            MHSignatureCompositionSection(keepsFocus: $keepsFocus)
-            MHSignatureActions(note: $note)
+        VStack(alignment: .leading, spacing: theme.spacing.section) {
+            MHSignatureOverview()
+            MHSignatureRecentSection(rows: density.recentRows)
+            MHSignatureDetailSection(showsAllDetails: density.showsAllDetails)
+            MHSignatureNoteSection()
         }
         .mhScreen(
-            "Review Index",
-            subtitle: "System type, measured grids, and quiet controls."
+            "Library",
+            subtitle: "Documents shared across your devices."
         )
     }
 }
 
-private struct MHSignatureSummary: View {
-    var body: some View {
-        MHSummary(
-            "Editorial review is ready",
-            metadata: "SET 07 / 08",
-            supporting: "A compact arrangement of content, metadata, and actions for one review pass."
-        ) {
-            Text("Ready")
-                .mhBadge(style: .accent)
-        }
-    }
-}
-
-private struct MHSignaturePlateGrid: View {
-    var body: some View {
-        MHFeatureGrid {
-            MHSignaturePlate(
-                item: .init(
-                    title: "Lead",
-                    metadata: "01",
-                    prominence: .large
-                )
-            )
-        } supporting: {
-            MHSignaturePlate(
-                item: .init(
-                    title: "Palette",
-                    metadata: "02",
-                    prominence: .standard
-                )
-            )
-
-            MHSignaturePlate(
-                item: .init(
-                    title: "Detail",
-                    metadata: "03",
-                    prominence: .standard
-                )
-            )
-
-            MHSignaturePlate(
-                item: .init(
-                    title: "Action",
-                    metadata: "04",
-                    prominence: .wide
-                )
-            )
-        }
-        .mhSurface()
-    }
-}
-
-private struct MHSignaturePlate: View {
+private struct MHSignatureOverview: View {
     @Environment(\.mhTheme)
     private var theme
-    @Environment(\.colorScheme)
-    private var colorScheme
 
-    let item: MHSignaturePlateItem
+    var body: some View {
+        VStack(alignment: .leading, spacing: theme.spacing.content) {
+            MHSummary(
+                "Three documents changed",
+                metadata: "This week",
+                supporting: "Review recent edits before sharing the next version."
+            ) {
+                Text("3 new")
+                    .mhBadge(style: .accent)
+            }
+
+            MHSignatureFigures()
+                .mhSurfaceInset()
+                .mhSurface()
+        }
+    }
+}
+
+private struct MHSignatureFigures: View {
+    var body: some View {
+        MHFeatureGrid {
+            MHSignatureFigure(
+                label: "Documents",
+                value: "128",
+                detail: "Across 4 folders",
+                isLead: true
+            )
+        } supporting: {
+            MHSignatureFigure(
+                label: "Updated",
+                value: "12",
+                detail: "This week",
+                isLead: false
+            )
+
+            MHSignatureFigure(
+                label: "Shared",
+                value: "5",
+                detail: "With 2 people",
+                isLead: false
+            )
+        }
+    }
+}
+
+private struct MHSignatureFigure: View {
+    @Environment(\.mhTheme)
+    private var theme
+
+    let label: String
+    let value: String
+    let detail: String
+    let isLead: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: theme.spacing.inline) {
-            RoundedRectangle(cornerRadius: theme.cornerRadius.control, style: .continuous)
-                .fill(fillColor)
-                .overlay {
-                    RoundedRectangle(cornerRadius: theme.cornerRadius.control, style: .continuous)
-                        .stroke(borderColor, lineWidth: theme.divider.thickness)
-                        .accessibilityHidden(true)
-                }
-                .aspectRatio(item.aspectRatio, contentMode: .fit)
+            Text(label)
+                .mhTextStyle(.metadata, colorRole: .secondaryText)
 
-            VStack(
-                alignment: .leading,
-                spacing: theme.spacing.inline
-                    / MHSignatureCompositionPreviewLayout.metadataSpacingDivisor
-            ) {
-                Text(item.metadata)
-                    .mhTextStyle(.metadata, colorRole: .tertiaryText)
+            Text(value)
+                .mhTextStyle(isLead ? .summaryTitle : .bodyStrong)
+                .monospacedDigit()
 
-                Text(item.title)
-                    .mhTextStyle(.bodyStrong)
-            }
+            Text(detail)
+                .mhTextStyle(.caption, colorRole: .tertiaryText)
         }
-        .mhSurfaceInset()
         .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private var fillColor: Color {
-        theme.resolvedColor(
-            for: item.prominence == .large ? .surfaceMuted : .surfaceElevated,
-            in: colorScheme
-        )
-    }
-
-    private var borderColor: Color {
-        theme.resolvedColor(
-            for: .border,
-            in: colorScheme
-        )
-        .opacity(theme.divider.opacity)
+        .accessibilityElement(children: .combine)
     }
 }
 
-private struct MHSignaturePlateItem {
-    let title: LocalizedStringKey
-    let metadata: LocalizedStringKey
-    let prominence: MHSignaturePlateProminence
-
-    var aspectRatio: CGFloat {
-        switch prominence {
-        case .standard:
-            MHSignatureCompositionPreviewLayout.standardPlateAspectRatio
-        case .large:
-            MHSignatureCompositionPreviewLayout.largePlateAspectRatio
-        case .wide:
-            MHSignatureCompositionPreviewLayout.widePlateAspectRatio
-        }
-    }
-}
-
-private enum MHSignaturePlateProminence: Equatable {
-    case standard
-    case large
-    case wide
-}
-
-private struct MHSignatureCompositionSection: View {
-    @Binding var keepsFocus: Bool
+private struct MHSignatureRecentSection: View {
+    let rows: [MHSignatureRow]
 
     var body: some View {
         MHGroupedRows {
-            LabeledContent("Status", value: "Ready")
-                .labeledContentStyle(.mhKeyValue)
-
-            LabeledContent("Layout", value: "Editorial grid")
-                .labeledContentStyle(.mhKeyValue)
-
-            Toggle("Keep focus", isOn: $keepsFocus)
+            ForEach(rows) { row in
+                MHSignatureRecentRow(row: row)
+            }
         }
-        .mhSection(
-            "Details",
-            supporting: "System type, measured spacing, and semantic surfaces stay reusable."
-        )
+        .mhSection("Recent") {
+            Button("Show All") {
+                // Preview only.
+            }
+            .buttonStyle(.mhQuiet)
+        } footer: {
+            Text("Sorted by the most recent edit.")
+        }
     }
 }
 
-private struct MHSignatureActions: View {
-    @Binding var note: String
+private struct MHSignatureRecentRow: View {
+    @Environment(\.mhTheme)
+    private var theme
+    @Environment(\.dynamicTypeSize)
+    private var dynamicTypeSize
+
+    let row: MHSignatureRow
+
+    private var layout: AnyLayout {
+        if dynamicTypeSize.isAccessibilitySize {
+            .init(VStackLayout(alignment: .leading, spacing: theme.spacing.inline))
+        } else {
+            .init(
+                HStackLayout(
+                    alignment: .firstTextBaseline,
+                    spacing: theme.presentation.rowAccessorySpacing
+                )
+            )
+        }
+    }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
-                Text("Note")
-                    .mhTextStyle(.bodyStrong)
+        layout {
+            VStack(alignment: .leading, spacing: theme.spacing.inline) {
+                Text(row.title)
+                    .mhRowTitle()
 
-                TextField("Capture direction", text: $note)
-                    .mhInputChrome()
+                Text(row.detail)
+                    .mhRowSupporting()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if let status = row.status {
+                Text(status)
+                    .mhBadge(style: .neutral)
             }
 
+            Text(row.value)
+                .mhRowValue()
+        }
+    }
+}
+
+private struct MHSignatureDetailSection: View {
+    @State private var keepsOffline = true
+
+    let showsAllDetails: Bool
+
+    var body: some View {
+        MHGroupedRows {
+            LabeledContent("Owner", value: "You")
+                .labeledContentStyle(.mhKeyValue)
+
+            LabeledContent("Modified", value: "Today at 9:41")
+                .labeledContentStyle(.mhKeyValue)
+
+            if showsAllDetails {
+                LabeledContent("Created", value: "September 2, 2026")
+                    .labeledContentStyle(.mhKeyValue)
+
+                LabeledContent("Location", value: "Shared › Planning › Autumn")
+                    .labeledContentStyle(.mhKeyValue)
+
+                LabeledContent("Size", value: "2.4 MB")
+                    .labeledContentStyle(.mhKeyValue)
+            }
+
+            Toggle("Keep offline", isOn: $keepsOffline)
+        }
+        .mhSection("Project plan") {
+            Text("Shared")
+                .mhBadge(style: .neutral)
+        } footer: {
+            Text("Offline copies use storage on this device.")
+        }
+    }
+}
+
+private struct MHSignatureNoteSection: View {
+    @Environment(\.mhTheme)
+    private var theme
+    @State private var note = ""
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: theme.spacing.control) {
+            MHSectionHeader(
+                "Note",
+                supporting: "Visible to everyone with access."
+            )
+
+            TextField("Add a note", text: $note, axis: .vertical)
+                .mhInputChrome()
+
             MHActionGroup {
-                Button("Continue") {
-                    // no-op
+                Button("Share") {
+                    // Preview only.
                 }
                 .buttonStyle(.mhPrimary)
 
-                Button("Review later") {
-                    // no-op
+                Button("Save Draft") {
+                    // Preview only.
                 }
-                .buttonStyle(.mhQuiet)
             }
         }
     }
@@ -236,6 +311,19 @@ private struct MHSignatureActions: View {
 }
 
 #Preview(
+    "START HERE / Design System / Dense",
+    traits: .fixedLayout(
+        width: MHSignatureCompositionPreviewLayout.width,
+        height: MHSignatureCompositionPreviewLayout.denseHeight
+    )
+) {
+    MHSignatureCompositionPreview(
+        context: MHPreviewStyle.context(),
+        density: .dense
+    )
+}
+
+#Preview(
     "START HERE / Design System / Accessibility",
     traits: .fixedLayout(
         width: MHSignatureCompositionPreviewLayout.compactWidth,
@@ -256,6 +344,32 @@ private struct MHSignatureActions: View {
 ) {
     MHSignatureCompositionPreview(context: MHPreviewStyle.context())
         .environment(\.layoutDirection, .rightToLeft)
+}
+
+#Preview(
+    "START HERE / Host Accent / Light",
+    traits: .fixedLayout(
+        width: MHSignatureCompositionPreviewLayout.width,
+        height: MHSignatureCompositionPreviewLayout.height
+    )
+) {
+    MHSignatureCompositionPreview(
+        context: MHPreviewStyle.context(),
+        theme: MHPreviewStyle.hostAccentTheme
+    )
+}
+
+#Preview(
+    "START HERE / Host Accent / Dark",
+    traits: .fixedLayout(
+        width: MHSignatureCompositionPreviewLayout.width,
+        height: MHSignatureCompositionPreviewLayout.height
+    )
+) {
+    MHSignatureCompositionPreview(
+        context: MHPreviewStyle.context(colorMode: .dark),
+        theme: MHPreviewStyle.hostAccentTheme
+    )
 }
 
 // swiftlint:enable file_types_order one_declaration_per_file

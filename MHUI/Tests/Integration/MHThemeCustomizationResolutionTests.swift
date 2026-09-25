@@ -22,7 +22,10 @@ struct MHThemeCustomizationResolutionTests {
             colorRole: .primaryText
         )
         let rowStyle = theme.resolvedRowChromeStyle()
-        let surfaceStyle = theme.resolvedSurfaceStyle(for: .standard)
+        let surfaceStyle = theme.resolvedSurfaceStyle(
+            for: .standard,
+            increasedContrast: true
+        )
 
         #expect(textStyle.textStyle == theme.typography.bodyStrong)
         #expect(rowStyle.verticalPadding == 19)

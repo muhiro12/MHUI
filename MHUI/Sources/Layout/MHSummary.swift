@@ -87,7 +87,7 @@ public extension MHSummary where Accessory == EmptyView {
 #Preview("Summary", traits: .sizeThatFitsLayout) {
     MHSummary(
         "Focused work",
-        metadata: "OVERVIEW",
+        metadata: "Overview",
         supporting: "A compact hierarchy for the screen's most important context."
     ) {
         Text("Ready")

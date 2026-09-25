@@ -9,7 +9,7 @@ struct MHUIFeatureSample: View {
     var body: some View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
             Text(metadata)
-                .mhTextStyle(.metadata, colorRole: .tertiaryText)
+                .mhTextStyle(.metadata, colorRole: .secondaryText)
 
             Text(title)
                 .mhTextStyle(.bodyStrong)
@@ -18,7 +18,5 @@ struct MHUIFeatureSample: View {
                 .mhTextStyle(.supporting, colorRole: .secondaryText)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .mhSurfaceInset()
-        .mhSurface(role: .muted)
     }
 }

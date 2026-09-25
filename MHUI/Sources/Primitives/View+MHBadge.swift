@@ -80,7 +80,7 @@ private struct MHBadgeAccessibilityValidationPreview: View {
     private var summaryBadge: some View {
         MHSummary(
             "Badge in summary accessory",
-            metadata: "VALIDATION",
+            metadata: "Validation",
             supporting: "The accessory should remain readable when accessibility text sizes are active."
         ) {
             Text("Review in progress")

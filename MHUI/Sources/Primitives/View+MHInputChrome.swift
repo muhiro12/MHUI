@@ -5,11 +5,16 @@ private struct MHInputChromeModifier: ViewModifier {
     private var theme
     @Environment(\.colorScheme)
     private var colorScheme
+    @Environment(\.colorSchemeContrast)
+    private var colorSchemeContrast
 
     let state: MHFieldState
 
     func body(content: Content) -> some View {
-        let style = theme.resolvedInputChromeStyle(for: state)
+        let style = theme.resolvedInputChromeStyle(
+            for: state,
+            increasedContrast: colorSchemeContrast == .increased
+        )
         let shape = RoundedRectangle(
             cornerRadius: theme.cornerRadius.control,
             style: .continuous

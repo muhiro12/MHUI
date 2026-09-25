@@ -12,7 +12,10 @@ struct MHSurfaceStyleResolutionTests {
             borderOpacity: 0.32
         )
 
-        let surface = theme.resolvedSurfaceStyle(for: .elevated)
+        let surface = theme.resolvedSurfaceStyle(
+            for: .elevated,
+            increasedContrast: false
+        )
 
         #expect(theme.surfaceColorRole(for: .elevated) == .surfaceElevated)
         #expect(surface.fillRole == .surfaceElevated)
@@ -46,16 +49,48 @@ struct MHSurfaceStyleResolutionTests {
                 == .init(fillRole: .surfaceMuted, fillOpacity: 0.5, borderRole: .border, borderOpacity: 0)
         )
         #expect(
-            theme.resolvedSurfaceStyle(for: .standard)
+            theme.resolvedSurfaceStyle(for: .standard, increasedContrast: false)
                 == .init(fillRole: .accent, fillOpacity: 0.2, borderRole: .accent, borderOpacity: 0.4)
         )
         #expect(
-            theme.resolvedSurfaceStyle(for: .elevated)
+            theme.resolvedSurfaceStyle(for: .elevated, increasedContrast: false)
                 == .init(fillRole: .surface, fillOpacity: 1, borderRole: .border, borderOpacity: 0)
         )
         #expect(
-            theme.resolvedSurfaceStyle(for: .muted)
+            theme.resolvedSurfaceStyle(for: .muted, increasedContrast: false)
                 == .init(fillRole: .warning, fillOpacity: 0.1, borderRole: .warning, borderOpacity: 0.3)
         )
+    }
+
+    @Test(arguments: MHSurfaceRole.allCases)
+    func standard_surfaces_are_borderless_until_contrast_increases(role: MHSurfaceRole) {
+        let theme = MHTheme.standard
+        let standardSurface = theme.resolvedSurfaceStyle(
+            for: role,
+            increasedContrast: false
+        )
+        let increasedContrastSurface = theme.resolvedSurfaceStyle(
+            for: role,
+            increasedContrast: true
+        )
+
+        #expect(standardSurface.borderOpacity == 0)
+        #expect(increasedContrastSurface.borderRole == .border)
+        #expect(increasedContrastSurface.borderOpacity == theme.divider.opacity)
+        #expect(increasedContrastSurface.fillRole == standardSurface.fillRole)
+        #expect(theme.resolvedCanvasSurfaceStyle().borderOpacity == 0)
+    }
+
+    @Test
+    func increased_contrast_preserves_a_stronger_custom_outline() {
+        var theme = MHTheme.standard
+        theme.surfaces.standard.borderOpacity = 0.6
+
+        let surface = theme.resolvedSurfaceStyle(
+            for: .standard,
+            increasedContrast: true
+        )
+
+        #expect(surface.borderOpacity == 0.6)
     }
 }

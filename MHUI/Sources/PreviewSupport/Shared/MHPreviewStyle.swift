@@ -151,14 +151,17 @@ enum MHPreviewStyle {
         MHPreviewColorAsset.hostOnAccent
     )
 
+    /// A sample host brand accent, kept separate from the neutral standard theme.
+    static let hostAccentTheme = MHTheme.standard(
+        accent: sampleHostAccent,
+        onAccent: sampleHostOnAccent
+    )
+
     static func theme(
         for context: MHPreviewContext
     ) -> MHTheme {
         _ = context
-        return MHTheme.standard(
-            accent: sampleHostAccent,
-            onAccent: sampleHostOnAccent
-        )
+        return .standard
     }
 
     static func tintColor(

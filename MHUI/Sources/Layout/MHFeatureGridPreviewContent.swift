@@ -7,48 +7,28 @@ private struct MHFeatureGridPreviewContent: View {
     static let regularWidth: CGFloat = 1_000
     static let regularHeight: CGFloat = 1_050
 
-    private static let leadAspectRatio: CGFloat = 1.5
-
     var body: some View {
         MHFeatureGrid {
-            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.control) {
-                Rectangle()
-                    .mhForegroundStyle(.surfaceMuted)
-                    .aspectRatio(Self.leadAspectRatio, contentMode: .fit)
-
-                Text("01 / Lead")
-                    .mhTextStyle(.metadata, colorRole: .tertiaryText)
-
-                Text("A clear primary feature")
-                    .mhTextStyle(.summaryTitle)
-            }
-            .mhSurfaceInset()
+            figure(
+                label: "Documents",
+                value: "128",
+                detail: "The leading feature keeps the primary context first.",
+                valueRole: .summaryTitle
+            )
         } supporting: {
-            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
-                Rectangle()
-                    .mhForegroundStyle(.surfaceMuted)
-                    .aspectRatio(1, contentMode: .fit)
+            figure(
+                label: "Updated",
+                value: "12",
+                detail: "This week",
+                valueRole: .bodyStrong
+            )
 
-                Text("02 / Context")
-                    .mhTextStyle(.metadata, colorRole: .tertiaryText)
-
-                Text("Supporting detail")
-                    .mhTextStyle(.bodyStrong)
-            }
-            .mhSurfaceInset()
-
-            VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
-                Rectangle()
-                    .mhForegroundStyle(.surfaceMuted)
-                    .aspectRatio(1, contentMode: .fit)
-
-                Text("03 / Next")
-                    .mhTextStyle(.metadata, colorRole: .tertiaryText)
-
-                Text("A secondary path")
-                    .mhTextStyle(.bodyStrong)
-            }
-            .mhSurfaceInset()
+            figure(
+                label: "Shared",
+                value: "5",
+                detail: "With 2 people",
+                valueRole: .bodyStrong
+            )
         }
         .mhSection(
             "Feature grid",
@@ -58,6 +38,25 @@ private struct MHFeatureGridPreviewContent: View {
             "Composition",
             subtitle: "System type, semantic surfaces, and adaptive hierarchy."
         )
+    }
+
+    private func figure(
+        label: String,
+        value: String,
+        detail: String,
+        valueRole: MHTextRole
+    ) -> some View {
+        VStack(alignment: .leading, spacing: MHTheme.standard.spacing.inline) {
+            Text(label)
+                .mhTextStyle(.metadata, colorRole: .secondaryText)
+
+            Text(value)
+                .mhTextStyle(valueRole)
+
+            Text(detail)
+                .mhTextStyle(.supporting, colorRole: .secondaryText)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

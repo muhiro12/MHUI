@@ -82,8 +82,9 @@ struct MHThemeTests {
         #expect(theme.surfaces.elevated.colorRole == .surfaceElevated)
         #expect(theme.surfaces.muted.colorRole == .surfaceMuted)
         #expect(theme.surfaces.standard.opacity == 1)
-        #expect(theme.surfaces.standard.borderOpacity == 0.14)
-        #expect(theme.surfaces.elevated.borderOpacity == 0.24)
+        #expect(theme.surfaces.canvas.borderOpacity == 0)
+        #expect(theme.surfaces.standard.borderOpacity == 0)
+        #expect(theme.surfaces.elevated.borderOpacity == 0)
         #expect(theme.surfaces.muted.borderOpacity == 0)
         let primary = theme.resolvedActionButtonStyle(
             for: .primary,

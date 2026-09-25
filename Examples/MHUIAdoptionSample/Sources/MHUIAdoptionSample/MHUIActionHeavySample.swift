@@ -12,7 +12,7 @@ struct MHUIActionHeavySample: View {
         VStack(alignment: .leading, spacing: theme.spacing.section) {
             MHSummary(
                 "Ready to publish",
-                metadata: "3 CHANGES",
+                metadata: "3 changes",
                 supporting: "One action leads. Alternatives remain available without competing for attention."
             ) {
                 Text("Draft")

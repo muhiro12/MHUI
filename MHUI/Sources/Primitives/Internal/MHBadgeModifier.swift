@@ -7,6 +7,8 @@ struct MHBadgeModifier: ViewModifier {
     private var theme
     @Environment(\.colorScheme)
     private var colorScheme
+    @Environment(\.colorSchemeContrast)
+    private var colorSchemeContrast
     @Environment(\.dynamicTypeSize)
     private var dynamicTypeSize
 
@@ -20,7 +22,10 @@ struct MHBadgeModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        let chromeStyle = theme.resolvedBadgeChromeStyle(for: style)
+        let chromeStyle = theme.resolvedBadgeChromeStyle(
+            for: style,
+            increasedContrast: colorSchemeContrast == .increased
+        )
         let shape = RoundedRectangle(
             cornerRadius: theme.cornerRadius.control,
             style: .continuous

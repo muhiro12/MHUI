@@ -5,6 +5,8 @@ struct MHSurfaceModifier: ViewModifier {
     private var theme
     @Environment(\.colorScheme)
     private var colorScheme
+    @Environment(\.colorSchemeContrast)
+    private var colorSchemeContrast
 
     let role: MHSurfaceRole
 
@@ -13,7 +15,10 @@ struct MHSurfaceModifier: ViewModifier {
             cornerRadius: theme.cornerRadius.surface,
             style: .continuous
         )
-        let style = theme.resolvedSurfaceStyle(for: role)
+        let style = theme.resolvedSurfaceStyle(
+            for: role,
+            increasedContrast: colorSchemeContrast == .increased
+        )
 
         return content
             .background {

@@ -2,7 +2,7 @@
 import SwiftUI
 
 // Directional studies, not accepted snapshots or app-owned screen components.
-private struct MHAtmosphericContinuityPreview: View {
+private struct MHNativeDetailContinuityPreview: View {
     @State private var isMarked = false
 
     var body: some View {
@@ -14,15 +14,10 @@ private struct MHAtmosphericContinuityPreview: View {
                             .mhTextStyle(.supporting, colorRole: .secondaryText)
                         Text(isMarked ? "Marked Today" : "Not marked")
                             .mhTextStyle(.summaryTitle)
-                        Text("A quiet record held in changing light.")
+                        Text("Marks from every device appear in this history.")
                             .mhTextStyle(.supporting, colorRole: .secondaryText)
                     }
                     .padding(.vertical, 8)
-                }
-
-                Section {
-                    MHAtmosphericMediaPreview()
-                        .listRowInsets(EdgeInsets())
                 }
 
                 Section("History") {
@@ -93,20 +88,7 @@ private extension View {
     }
 }
 
-private struct MHAtmosphericMediaPreview: View {
-    var body: some View {
-        Image(systemName: "photo.on.rectangle.angled")
-            .font(.system(size: 64, weight: .light))
-            .mhForegroundStyle(.primaryText)
-            .opacity(0.64)
-            .frame(maxWidth: .infinity)
-            .frame(height: 230)
-            .background(Color(MHPreviewColorAsset.atmosphericMedia))
-            .accessibilityLabel("Sample archive image")
-    }
-}
-
-private struct MHAtmosphericContinuityFormPreview: View {
+private struct MHNativeEditContinuityPreview: View {
     @State private var name = "Field Note"
     @State private var reminderEnabled = true
     @State private var reviewAfterDays = 14
@@ -125,7 +107,7 @@ private struct MHAtmosphericContinuityFormPreview: View {
                 } header: {
                     Text("Review")
                 } footer: {
-                    Text("A quiet reminder to notice the things you use.")
+                    Text("Reminders arrive once a day while the item is active.")
                 }
             }
             .mhFormChrome()
@@ -146,33 +128,33 @@ private struct MHAtmosphericContinuityFormPreview: View {
     }
 }
 
-#Preview("Diagnostics / Atmosphere / Detail / Light", traits: .fixedLayout(width: 390, height: 844)) {
-    MHAtmosphericContinuityPreview()
+#Preview("Diagnostics / Native Continuity / Detail / Light", traits: .fixedLayout(width: 390, height: 844)) {
+    MHNativeDetailContinuityPreview()
         .mhPreviewTint()
 }
 
-#Preview("Diagnostics / Atmosphere / Detail / Dark", traits: .fixedLayout(width: 390, height: 844)) {
-    MHAtmosphericContinuityPreview()
+#Preview("Diagnostics / Native Continuity / Detail / Dark", traits: .fixedLayout(width: 390, height: 844)) {
+    MHNativeDetailContinuityPreview()
         .mhPreviewTint(MHPreviewStyle.context(colorMode: .dark))
 }
 
-#Preview("Diagnostics / Atmosphere / Native Form", traits: .fixedLayout(width: 390, height: 844)) {
-    MHAtmosphericContinuityFormPreview()
+#Preview("Diagnostics / Native Continuity / Edit Form", traits: .fixedLayout(width: 390, height: 844)) {
+    MHNativeEditContinuityPreview()
         .mhPreviewTint()
 }
 
-#Preview("Diagnostics / Atmosphere / Accessibility", traits: .fixedLayout(width: 390, height: 1_180)) {
-    MHAtmosphericContinuityPreview()
+#Preview("Diagnostics / Native Continuity / Accessibility", traits: .fixedLayout(width: 390, height: 1_180)) {
+    MHNativeDetailContinuityPreview()
         .mhPreviewTint(MHPreviewStyle.context(typeScale: .accessibility))
 }
 
-#Preview("Diagnostics / Atmosphere / Fallback", traits: .fixedLayout(width: 390, height: 844)) {
-    MHAtmosphericContinuityPreview()
+#Preview("Diagnostics / Native Continuity / Fallback", traits: .fixedLayout(width: 390, height: 844)) {
+    MHNativeDetailContinuityPreview()
         .mhPreviewTint(MHPreviewStyle.context(glassPolicy: .disabled))
 }
 
-#Preview("Diagnostics / Atmosphere / Dark Fallback", traits: .fixedLayout(width: 390, height: 844)) {
-    MHAtmosphericContinuityPreview()
+#Preview("Diagnostics / Native Continuity / Dark Fallback", traits: .fixedLayout(width: 390, height: 844)) {
+    MHNativeDetailContinuityPreview()
         .mhPreviewTint(
             MHPreviewStyle.context(
                 colorMode: .dark,

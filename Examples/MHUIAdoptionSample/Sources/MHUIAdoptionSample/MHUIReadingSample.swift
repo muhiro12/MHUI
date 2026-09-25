@@ -8,8 +8,8 @@ struct MHUIReadingSample: View {
     var body: some View {
         VStack(alignment: .leading, spacing: theme.spacing.section) {
             MHSummary(
-                "Light across a stable plane",
-                metadata: "READING · 06 MIN",
+                "Pacing long-form content",
+                metadata: "6 min read",
                 supporting: "A long-form surface tests pacing while navigation remains in the functional layer."
             )
 
@@ -44,8 +44,6 @@ struct MHUIReadingSample: View {
 
             Text("Clarity comes from proportion, alignment, and a restrained change in tone.")
                 .mhTextStyle(.summaryTitle)
-                .mhSurfaceInset()
-                .mhSurface(role: .muted)
 
             Text(
                 """

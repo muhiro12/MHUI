@@ -45,11 +45,11 @@ struct MHStyleResolutionTests {
         #expect(supporting.textStyle.weight == .regular)
         #expect(supporting.tracking == 0)
         #expect(metadata.textStyle == theme.typography.metadata)
-        #expect(metadata.design == .monospaced)
-        #expect(metadata.tracking == 0.6)
+        #expect(metadata.design == .default)
+        #expect(metadata.tracking == 0)
         #expect(caption.textStyle.weight == .regular)
-        #expect(caption.design == .monospaced)
-        #expect(caption.tracking == 0.2)
+        #expect(caption.design == .default)
+        #expect(caption.tracking == 0)
     }
 
     @Test
@@ -229,7 +229,10 @@ struct MHStyleResolutionTests {
     func surface_and_group_styles_resolve_from_theme_tokens() {
         let theme = MHTheme.standard
         let grouped = theme.resolvedGroupedRowsStyle(showsDividers: true)
-        let surface = theme.resolvedSurfaceStyle(for: .standard)
+        let surface = theme.resolvedSurfaceStyle(
+            for: .standard,
+            increasedContrast: false
+        )
         let canvas = theme.resolvedCanvasSurfaceStyle()
 
         #expect(theme.surfaceColorRole(for: .standard) == .surface)
@@ -242,6 +245,7 @@ struct MHStyleResolutionTests {
         #expect(grouped.spacerHeight == theme.presentation.rowVerticalPadding)
         #expect(surface.fillRole == .surface)
         #expect(surface.fillOpacity == 1)
+        #expect(surface.borderOpacity == 0)
         #expect(canvas.fillRole == .background)
         #expect(canvas.borderOpacity == 0)
     }

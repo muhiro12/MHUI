@@ -12,18 +12,8 @@ public extension MHTheme {
             body: .init(font: .body, weight: .regular),
             bodyStrong: .init(font: .body, weight: .semibold),
             supporting: .init(font: .subheadline, weight: .regular),
-            metadata: .init(
-                font: .footnote,
-                weight: .medium,
-                design: .monospaced,
-                tracking: 0.6
-            ),
-            caption: .init(
-                font: .caption,
-                weight: .regular,
-                design: .monospaced,
-                tracking: 0.2
-            ),
+            metadata: .init(font: .footnote, weight: .medium),
+            caption: .init(font: .caption, weight: .regular),
             summaryTitle: standardSummaryTitle
         )
     }
@@ -78,14 +68,8 @@ public extension MHTheme {
     private static var standardSurfaces: Surfaces {
         .init(
             canvas: .init(colorRole: .background),
-            standard: .init(
-                colorRole: .surface,
-                borderOpacity: 0.14
-            ),
-            elevated: .init(
-                colorRole: .surfaceElevated,
-                borderOpacity: 0.24
-            ),
+            standard: .init(colorRole: .surface),
+            elevated: .init(colorRole: .surfaceElevated),
             muted: .init(colorRole: .surfaceMuted)
         )
     }

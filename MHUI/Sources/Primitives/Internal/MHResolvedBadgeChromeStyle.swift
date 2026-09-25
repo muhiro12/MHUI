@@ -3,8 +3,6 @@ import SwiftUI
 struct MHResolvedBadgeChromeStyle: Sendable, Equatable {
     static let neutralFillOpacity: Double = 0.06
     static let emphasizedFillOpacity: Double = 0.08
-    static let neutralBorderOpacity: Double = 0.10
-    static let emphasizedBorderOpacity: Double = 0.14
 
     var textRole: MHTextRole
     var foregroundRole: MHColorRole
@@ -15,24 +13,26 @@ struct MHResolvedBadgeChromeStyle: Sendable, Equatable {
 
 extension MHTheme {
     func resolvedBadgeChromeStyle(
-        for style: MHBadgeStyle
+        for style: MHBadgeStyle,
+        increasedContrast: Bool
     ) -> MHResolvedBadgeChromeStyle {
         let markerRole = badgeMarkerColorRole(for: style)
         let fillOpacity = style == .neutral
             ? MHResolvedBadgeChromeStyle.neutralFillOpacity
             : MHResolvedBadgeChromeStyle.emphasizedFillOpacity
-        let borderOpacity = style == .neutral
-            ? MHResolvedBadgeChromeStyle.neutralBorderOpacity
-            : MHResolvedBadgeChromeStyle.emphasizedBorderOpacity
+        let backgroundStyle = MHResolvedSurfaceStyle(
+            fillRole: markerRole,
+            fillOpacity: fillOpacity,
+            borderRole: markerRole,
+            borderOpacity: .zero
+        )
 
         return .init(
             textRole: .caption,
             foregroundRole: badgeForegroundColorRole(for: style),
-            backgroundStyle: .init(
-                fillRole: markerRole,
-                fillOpacity: fillOpacity,
-                borderRole: markerRole,
-                borderOpacity: borderOpacity
+            backgroundStyle: backgroundStyle.outlined(
+                minimumOpacity: divider.opacity,
+                when: increasedContrast
             ),
             horizontalPadding: spacing.control,
             verticalPadding: spacing.inline

@@ -28,9 +28,14 @@ extension MHTheme {
     }
 
     func resolvedSurfaceStyle(
-        for role: MHSurfaceRole
+        for role: MHSurfaceRole,
+        increasedContrast: Bool
     ) -> MHResolvedSurfaceStyle {
         resolvedSurfaceStyle(treatment: treatment(for: role))
+            .outlined(
+                minimumOpacity: divider.opacity,
+                when: increasedContrast
+            )
     }
 
     func resolvedCanvasSurfaceStyle() -> MHResolvedSurfaceStyle {

@@ -26,11 +26,11 @@ struct MHThemeTypographyTests {
         #expect(typography.bodyStrong.weight == .semibold)
         #expect(typography.supporting.weight == .regular)
         #expect(typography.metadata.weight == .medium)
-        #expect(typography.metadata.design == .monospaced)
-        #expect(typography.metadata.tracking == 0.6)
+        #expect(typography.metadata.design == .standard)
+        #expect(typography.metadata.tracking == 0)
         #expect(typography.caption.font == .caption)
         #expect(typography.caption.weight == .regular)
-        #expect(typography.caption.design == .monospaced)
-        #expect(typography.caption.tracking == 0.2)
+        #expect(typography.caption.design == .standard)
+        #expect(typography.caption.tracking == 0)
     }
 }

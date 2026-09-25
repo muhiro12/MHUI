@@ -31,7 +31,7 @@ private extension MHUIComposedScreenSample {
     var summary: some View {
         MHSummary(
             "Review settings",
-            metadata: "OVERVIEW",
+            metadata: "Overview",
             supporting: "A focused hierarchy distinguishes the screen without replacing native controls."
         ) {
             Text("Ready")
@@ -55,21 +55,21 @@ private extension MHUIComposedScreenSample {
     var featureGrid: some View {
         MHFeatureGrid {
             MHUIFeatureSample(
-                metadata: "01",
-                title: "Overview",
-                supporting: "The leading feature establishes the screen's primary context."
+                metadata: "Storage",
+                title: "2.4 GB of 5 GB",
+                supporting: "Documents and photos stay in sync across your devices."
             )
         } supporting: {
             MHUIFeatureSample(
-                metadata: "02",
-                title: "Status",
-                supporting: "Supporting content stays concise."
+                metadata: "Devices",
+                title: "3 connected",
+                supporting: "Last synced a minute ago."
             )
 
             MHUIFeatureSample(
-                metadata: "03",
-                title: "Actions",
-                supporting: "Native controls keep their platform behavior."
+                metadata: "Backup",
+                title: "Today at 9:41",
+                supporting: "Runs nightly on Wi-Fi."
             )
         }
         .mhSection(

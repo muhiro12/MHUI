@@ -6,7 +6,7 @@ struct MHUIDesignReviewIndex: View {
         VStack(alignment: .leading, spacing: MHTheme.standard.spacing.section) {
             MHSummary(
                 "Review representative states",
-                metadata: "PUBLIC API",
+                metadata: "Public API",
                 supporting: "Use real navigation to compare content density, empty states, and action hierarchy."
             )
 

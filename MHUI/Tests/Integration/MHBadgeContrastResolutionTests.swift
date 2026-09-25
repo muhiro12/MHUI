@@ -22,6 +22,9 @@ struct MHBadgeContrastResolutionTests {
         _ style: MHBadgeStyle,
         in theme: MHTheme
     ) -> MHResolvedBadgeChromeStyle {
-        theme.resolvedBadgeChromeStyle(for: style)
+        theme.resolvedBadgeChromeStyle(
+            for: style,
+            increasedContrast: false
+        )
     }
 }

@@ -14,10 +14,15 @@ struct MHResolvedInputChromeStyle: Sendable, Equatable {
 
 extension MHTheme {
     func resolvedInputChromeStyle(
-        for state: MHFieldState
+        for state: MHFieldState,
+        increasedContrast: Bool
     ) -> MHResolvedInputChromeStyle {
         .init(
-            backgroundStyle: inputBackgroundStyle(for: state),
+            backgroundStyle: inputBackgroundStyle(for: state)
+                .outlined(
+                    minimumOpacity: divider.opacity,
+                    when: increasedContrast
+                ),
             horizontalPadding: spacing.content,
             verticalPadding: spacing.control,
             minimumHeight: layout.control.minimumTouchTarget
