@@ -25,6 +25,13 @@ struct MHUIDesignReviewIndex: View {
     private var reviewRoutes: some View {
         MHGroupedRows {
             reviewLink(
+                "Visual notes",
+                supporting: "Image placeholders, captions, and multilingual reading.",
+                systemImage: "photo",
+                destination: MHUIVisualContentSample()
+            )
+
+            reviewLink(
                 "Reading detail",
                 supporting: "Long-form content beneath native navigation.",
                 systemImage: "doc.text",

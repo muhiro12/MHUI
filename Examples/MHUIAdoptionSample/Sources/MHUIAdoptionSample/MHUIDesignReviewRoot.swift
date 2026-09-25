@@ -28,7 +28,7 @@ public struct MHUIDesignReviewRoot: View {
 
             MHUINativeContainerSample()
                 .tabItem {
-                    Label("Native Form", systemImage: "list.bullet.rectangle")
+                    Label("Form", systemImage: "list.bullet.rectangle")
                 }
         }
         .mhTheme(MHUIAdoptionSampleTheme.standard)

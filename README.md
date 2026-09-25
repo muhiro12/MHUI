@@ -199,16 +199,51 @@ Native behavior and visual presentation are separate choices:
 - `.mhListChrome(.native)` and `.mhFormChrome(.native)` preserve system
   backgrounds and styles. The no-argument calls use this choice.
 - `.mhListChrome(.content)` uses a plain native list with the MHUI canvas.
-  Apply `mhRow()` to complete rows and use MHUI headers and text styles.
+  Wrap its content once in `MHContainerContent` to style complete rows.
 - `.mhFormChrome(.content)` supplies the canvas while the app chooses the
-  native form style, fields, and any MHUI row treatment.
+  native form style and fields. `MHContainerContent` applies the row surfaces.
 
 A main collection and a settings screen can choose different presentation
 under one root theme. Apply content chrome inside each navigation destination
 or split-view column, preserving native sidebars, dividers, toolbars, and tabs.
-`MHSummary` leaves outer spacing to its composition: use `mhRow()` in a list
-or `mhSurfaceInset()` on a surface. See the [adoption guide](Designs/Guides/ADOPTION_GUIDE.md)
+`MHSummary` leaves outer spacing to its composition: automatic container rows
+provide it in a list; use `mhSurfaceInset()` on a surface. See the [adoption guide](Designs/Guides/ADOPTION_GUIDE.md)
 and the content list/editor in the public sample for complete examples.
+
+```swift
+NavigationStack {
+    Form {
+        MHContainerContent {
+            Section("General") {
+                TextField("Name", text: $name)
+                Toggle("Keep offline", isOn: $keepsOffline)
+                LabeledContent("Documents", value: "3")
+            }
+        }
+    }
+    .mhFormChrome(.content)
+    .navigationTitle("Settings")
+}
+.mhTheme(.standard)
+```
+
+Here `name` and `keepsOffline` are app-owned bindings. Change `.content` to
+`.native` to keep the same content with system presentation. No per-row
+`mhRow()` or labeled-content style is needed. Use the same content wrapper
+inside `List`. Standard `Section` headers are valid; `MHSectionHeader` adds the
+shared title/supporting hierarchy when useful. See the
+[container contract and limits](Designs/Guides/ADOPTION_GUIDE.md#automatic-container-content)
+for advanced sections and mixed styling.
+
+### Screen Titles and Scrolling
+
+Place `mhScreen("Library")` inside the app's `NavigationStack` or split-view
+column. Its title uses native navigation presentation by default, including
+large-to-inline title transitions on iOS. MHUI owns the scrolling content,
+subtitle, readable width, and spacing; the app owns navigation and toolbar actions.
+Do not repeat that title in a content heading. For a standalone composition
+without navigation, explicitly use `titlePlacement: .content`; that heading
+scrolls out of view. This option does not simulate a navigation bar.
 
 ### Root Configuration and App Accent
 
@@ -281,7 +316,8 @@ All routes share the root theme, and an app can mix them across destinations.
 | Stack composition | `mhScreen`, `mhSection`, `MHSummary`, `MHGroupedRows` | MHUI supplies freely arranged content hierarchy around native controls |
 
 MHUI row, section, and labeled-content styles are supported in List and Form.
-Place `mhRow()` on the complete native row, and use native navigation titles.
+Use `MHContainerContent` once inside the native container, or opt individual
+rows into `mhRow()` when the screen needs mixed treatments.
 Do not wrap a `List` or `Form` in `mhScreen`, which owns a separate scroll view.
 
 In a split view, leave navigation chrome system-owned and apply content

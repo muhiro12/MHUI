@@ -119,7 +119,7 @@ not from a requirement to display custom package chrome.
 
 | Screen purpose | Route | Fit |
 | --- | --- | --- |
-| Main collection or browsing screen | `List` with `.mhListChrome(.content)`, `mhRow`, and MHUI headers | MHUI content rhythm with native selection and navigation |
+| Main collection or browsing screen | `List` with `.mhListChrome(.content)` and `MHContainerContent` | MHUI content rhythm with native selection and navigation |
 | Editor or product-specific form | `Form` with `.mhFormChrome(.content)` and explicit MHUI rows | MHUI hierarchy with native fields, focus, and validation behavior |
 | Settings, navigation sidebar, or familiar utility screen | `.mhListChrome(.native)` / `.mhFormChrome(.native)`, or theme only | Platform-owned appearance and behavior |
 | Overview, report, or freely arranged detail | `mhScreen`, `mhSection`, `MHSummary`, `MHFeatureGrid`, `MHGroupedRows` | Deliberate stack-based content hierarchy |
@@ -140,13 +140,13 @@ navigation or controls. Native grouping and shape can give content depth
 without adding glass or shadows to every block. MHUI's identity does not depend
 on replacing these platform conventions with flat, ruled surfaces.
 
-`mhScreen` owns its `ScrollView`, canvas, readable width, margins, and title
-block. Do not place a `List`, `Form`, or another screen-level scrolling
+`mhScreen` owns its `ScrollView`, canvas, readable width, margins, and subtitle.
+Its default title is a native navigation title, with large presentation on iOS. Do not place a `List`, `Form`, or another screen-level scrolling
 container inside it.
 
 `mhListChrome(.content)` uses a plain list and the shared canvas.
 `mhFormChrome(.content)` applies the canvas without forcing a form style.
-Its `mhRow()` rows use the theme's muted surface, so native grouped forms remain
+Its automatic or explicit MHUI rows use the theme's muted surface, so native grouped forms remain
 visible against a white or dark canvas. `MHSectionHeader` leaves outer form
 margins to the system, avoiding a second horizontal inset on the heading.
 Horizontal key-value rows align values to the trailing edge; stacked values
@@ -155,8 +155,10 @@ Both preserve native scrolling and controls. The `.native` choice preserves
 the platform-selected background and style. Keep page titles and screen-specific lead content in the host
 app.
 
-Use either the MHUI screen title or the host navigation title as the visible
-page heading. Avoid presenting the same title in both places.
+Place a screen in the app's native navigation container. `mhScreen("Title")`
+sets the navigation title; do not repeat it in content. Use
+`titlePlacement: .content` only for a standalone scrolling heading. This explicit
+option works without navigation and intentionally does not collapse into a bar.
 
 ### Summary And Navigation Hierarchy
 
@@ -258,8 +260,8 @@ struct OverviewScreen: View {
 
 This route gives each layer a distinct responsibility:
 
-- `mhScreen` owns screen scrolling, canvas treatment, readable width, and title
-  rhythm.
+- `mhScreen` owns screen scrolling, canvas treatment, readable width, and the
+  native navigation title.
 - `MHSummary` establishes a concise editorial context through inset rhythm and
   whitespace rather than an elevated card.
 - `MHFeatureGrid` preserves one leading feature and a concise supporting set
@@ -283,27 +285,29 @@ The container supplies scrolling, selection, navigation, swipe actions, and
 editing. The app independently chooses its appearance. For a main collection:
 
 ```swift
-List {
-    Section {
-        ForEach(documents) { document in
-            NavigationLink(value: document.id) {
-                VStack(alignment: .leading) {
-                    Text(document.title).mhRowTitle()
-                    Text(document.summary).mhRowSupporting()
+List(selection: $selection) {
+    MHContainerContent {
+        Section {
+            ForEach(documents) { document in
+                NavigationLink(value: document.id) {
+                    VStack(alignment: .leading) {
+                        Text(document.title).mhRowTitle()
+                        Text(document.summary).mhRowSupporting()
+                    }
                 }
+                .tag(document.id)
             }
-            .mhRow()
+        } header: {
+            MHSectionHeader("In use", supporting: "Keep what matters close.")
         }
-    } header: {
-        MHSectionHeader("In use", supporting: "Keep what matters close.")
     }
 }
 .mhListChrome(.content)
 .navigationTitle("Collection")
 ```
 
-Apply `mhRow()` to the complete row, including the `NavigationLink`, so its
-insets and background reach the native row. The content route deliberately
+`MHContainerContent` applies row insets and backgrounds to complete rows,
+including navigation links. Per-row `mhRow()` is unnecessary inside it. The content route deliberately
 uses a plain list; apply another supported `.listStyle` afterward when a
 product needs its grouping. For an unchanged native appearance choose
 `.mhListChrome(.native)` or omit the modifier. The no-argument call is native.
@@ -323,16 +327,14 @@ MHUI hierarchy while retaining native fields and focus behavior:
 
 ```swift
 Form {
-    Section {
-        TextField("Name", text: $name)
-            .mhRow()
-        Toggle("Keep offline", isOn: $keepsOffline)
-            .mhRow()
-        LabeledContent("Documents", value: "3")
-            .labeledContentStyle(.mhKeyValue)
-            .mhRow()
-    } header: {
-        MHSectionHeader("Collection", supporting: "Your working copy")
+    MHContainerContent {
+        Section {
+            TextField("Name", text: $name)
+            Toggle("Keep offline", isOn: $keepsOffline)
+            LabeledContent("Documents", value: "3")
+        } header: {
+            MHSectionHeader("Collection", supporting: "Your working copy")
+        }
     }
 }
 .formStyle(.grouped)
@@ -340,12 +342,37 @@ Form {
 ```
 
 The example chooses grouped form presentation; the modifier does not force it.
-`mhRow()` owns the outer row insets and lets nested MHUI labeled content avoid
-double padding. MHUI headers, footers, row text, and action styles are valid
+`MHContainerContent` owns outer row insets and applies the MHUI labeled-content
+style once, avoiding double padding. Outside the wrapper, `mhRow()` remains the
+explicit per-row route. MHUI headers, footers, row text, and action styles are valid
 inside native containers. Apply them selectively according to screen purpose.
 Native field styling is sufficient in a form; `mhInputChrome` is useful for
 inputs that need a visible detached boundary. Validation and persistence stay
 in the app.
+
+## Automatic Container Content
+
+`MHContainerContent` is a content adapter, not a replacement for `List` or `Form`.
+Choose presentation once with the enclosing container's `mhListChrome` or
+`mhFormChrome`. In `.native` mode the original content passes through unchanged.
+In `.content` mode the adapter uses SwiftUI's public section/subview composition
+APIs to apply row chrome and the labeled-content style. Stable row identity,
+app-owned values, tags, links, and control bindings stay with the supplied content.
+
+Do not add another `mhRow()` inside the adapter. A complete row should be one
+view; use a stack for several labels that belong to the same row. Both plain
+rows and ordinary sections are supported. Keep navigation sidebars outside the
+adapter. For explicitly collapsible sections or specialized section traits, keep
+the native section structure and apply `mhRow()` explicitly: recomposing an
+ordinary section does not forward every specialized section configuration.
+For intentionally mixed row surfaces, use that explicit route as well.
+
+Native horizontal row and section margins are retained on macOS. On other
+platforms the content row metrics adapt to the available width and Dynamic Type.
+Section title/supporting spacing consumes the same live width context rather
+than assuming a device class. Readable-width limits, spacing tokens, and image
+aspect ratios are constraints, not fixed screen frames; content can wrap and
+stack when the window or column narrows.
 
 ## Navigation and Presentation Boundaries
 
@@ -463,10 +490,12 @@ pair.
 No-argument `mhListChrome()` and `mhFormChrome()` now preserve the OS background.
 Choose `.content` to apply MHUI presentation. A content list uses plain styling;
 MHUI rows and headers are explicit, supported choices in both List and Form.
-Apply `mhRow()` to the full native row; nested MHUI styles share that padding.
+Wrap ordinary container content in `MHContainerContent` to style all rows, or
+apply `mhRow()` explicitly for mixed or specialized structures.
 
-`MHSummary` no longer inserts surface padding. Place it with `mhRow()` in a list
-or add `mhSurfaceInset()` when a surrounding surface needs an inset.
+`MHSummary` no longer inserts surface padding. Place it inside
+`MHContainerContent`, apply `mhRow()` explicitly in a list, or add
+`mhSurfaceInset()` when a surrounding surface needs an inset.
 
 `mhSection` no longer wraps content in a surface or adds surface insets.
 `MHGroupedRows` no longer adds horizontal row padding. These changes align
@@ -483,8 +512,10 @@ MHGroupedRows {
 .mhSection("On this device")
 ```
 
-Standalone `mhRow()` and native List/Form rows retain their own insets.
-Screen titles use regular weight; iOS summaries use the larger system `title`
+Standalone `mhRow()` and native List/Form rows retain their own insets;
+macOS uses native horizontal row margins.
+Screen titles now default to native navigation presentation. Standalone
+content titles use bold system type; iOS summaries use the regular system `title`
 style. Review long titles and controls alongside them at large text sizes.
 
 The shared standard metrics are redesigned, including a

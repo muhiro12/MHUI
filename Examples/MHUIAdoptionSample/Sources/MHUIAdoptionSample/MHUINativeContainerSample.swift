@@ -9,8 +9,10 @@ public struct MHUINativeContainerSample: View {
     public var body: some View {
         NavigationStack {
             Form {
-                overviewSection
-                noteSection
+                MHContainerContent {
+                    overviewSection
+                    noteSection
+                }
             }
             .mhFormChrome(.content)
             .navigationTitle("Settings")
@@ -26,10 +28,8 @@ private extension MHUINativeContainerSample {
     var overviewSection: some View {
         Section {
             LabeledContent("Plan", value: "Personal")
-                .mhRow()
 
             Toggle("Daily reminder", isOn: $isEnabled)
-                .mhRow()
         } header: {
             MHSectionHeader("Overview")
         } footer: {
@@ -40,17 +40,14 @@ private extension MHUINativeContainerSample {
     var noteSection: some View {
         Section {
             TextField("Add a note", text: $note)
-                .mhRow()
 
             Button("Continue") {
                 // no-op
             }
-            .mhRow()
 
             Button("Review later") {
                 // no-op
             }
-            .mhRow()
         } header: {
             MHSectionHeader("Note")
         }

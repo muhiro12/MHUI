@@ -1,30 +1,30 @@
 import MHUI
 import SwiftUI
 
-/// Chooses content presentation for an editor independently of its native Form behavior.
+/// Chooses presentation independently of native form behavior.
 public struct MHUIContentFormSample: View {
     @State private var name = "Field notes"
     @State private var keepsOffline = true
 
+    private let style: MHContainerStyle
+
     public var body: some View {
         Form {
-            Section {
-                TextField("Name", text: $name)
-                    .mhRow()
-                Toggle("Keep offline", isOn: $keepsOffline)
-                    .mhRow()
-                LabeledContent("Documents", value: "3")
-                    .labeledContentStyle(.mhKeyValue)
-                    .mhRow()
-            } header: {
-                MHSectionHeader("Collection", supporting: "Your working copy")
+            MHContainerContent {
+                Section {
+                    TextField("Name", text: $name)
+                    Toggle("Keep offline", isOn: $keepsOffline)
+                    LabeledContent("Documents", value: "3")
+                } header: {
+                    MHSectionHeader("Collection", supporting: "Your working copy")
+                }
             }
         }
         .formStyle(.grouped)
-        .mhFormChrome(.content)
+        .mhFormChrome(style)
     }
 
-    public init() {
-        // State belongs to the example, not to MHUI.
+    public init(style: MHContainerStyle = .content) {
+        self.style = style
     }
 }

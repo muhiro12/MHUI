@@ -1,41 +1,61 @@
 import MHUI
 import SwiftUI
 
-/// Uses MHUI presentation while retaining native list navigation and form controls.
+/// Exercises native navigation, deletion, and reordering with styled rows.
 public struct MHUIContentContainerSample: View {
+    @State private var documents = ["Field notes", "Reading list", "Project index"]
+
+    private let style: MHContainerStyle
+
     public var body: some View {
         List {
-            Section {
-                MHSummary(
-                    "A place for everyday work",
-                    metadata: "3 documents",
-                    supporting: "Notes, reading, and projects worth returning to."
-                )
-                .mhRow()
-                .listRowSeparator(.hidden)
-            }
-            Section {
-                ForEach(["Field notes", "Reading list", "Project index"], id: \.self) { title in
-                    NavigationLink {
-                        MHUIContentFormSample()
-                            .navigationTitle(title)
-                    } label: {
-                        VStack(alignment: .leading) {
-                            Text(title).mhRowTitle()
-                            Text("Updated today").mhRowSupporting()
+            MHContainerContent {
+                Section {
+                    MHSummary(
+                        "A place for everyday work",
+                        metadata: "Your collection",
+                        supporting: "Notes, reading, and projects worth returning to."
+                    )
+                    .listRowSeparator(.hidden)
+                }
+                Section {
+                    ForEach(documents, id: \.self) { title in
+                        NavigationLink(value: title) {
+                            VStack(alignment: .leading) {
+                                Text(title).mhRowTitle()
+                                Text("Updated today").mhRowSupporting()
+                            }
                         }
                     }
-                    .mhRow()
+                    .onDelete(perform: delete)
+                    .onMove(perform: move)
+                } header: {
+                    MHSectionHeader("In use", supporting: "Keep what matters close.")
                 }
-            } header: {
-                MHSectionHeader("In use", supporting: "Keep what matters close.")
             }
         }
-        .mhListChrome(.content)
+        .mhListChrome(style)
         .navigationTitle("Collection")
+        .navigationDestination(for: String.self) { title in
+            MHUIContentFormSample(style: style)
+                .navigationTitle(title)
+        }
+        #if os(iOS)
+        .toolbar {
+            EditButton()
+        }
+        #endif
     }
 
-    public init() {
-        // Uses stable, immutable example identities.
+    public init(style: MHContainerStyle = .content) {
+        self.style = style
+    }
+
+    private func delete(at offsets: IndexSet) {
+        documents.remove(atOffsets: offsets)
+    }
+
+    private func move(from offsets: IndexSet, to destination: Int) {
+        documents.move(fromOffsets: offsets, toOffset: destination)
     }
 }

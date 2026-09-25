@@ -110,6 +110,7 @@ The following types and helpers are the current shared entry points for package-
 - `mhSurface(role:)`
 - `mhRow()`
 - `MHGroupedRows`
+- `MHContainerContent`
 - `MHSummary`
 - `MHSectionHeader`
 - `MHSectionFooter`

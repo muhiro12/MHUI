@@ -40,7 +40,9 @@ horizontal padding. A detached note or input group can explicitly opt into
 `mhSurfaceInset()` and `mhSurface()`. Avoid using a surface simply to compensate
 for unclear alignment or an ambiguous gap.
 
-Screen titles use bold system type as a clear entry point. Summary text keeps
+Screen names belong to native navigation, preserving scroll transitions and
+platform title behavior. Standalone content headings use bold system type as a
+clear entry point. Summary text keeps
 regular weight, while section labels and row titles use moderate emphasis for
 scanning. Use scale, weight, and whitespace before adding a different typeface
 or tracking. Preserve Dynamic Type and native language shapes.
@@ -114,9 +116,9 @@ Metrics-only adopters also need to review layout when updating the package.
 | Spacing | 8 / 16 / 20 / 32 / 48 points | Separate inline, control, content, section, and screen relationships without excessive blank space |
 | Compact screen | 24-point horizontal and top inset; 32-point content spacing | Align content clearly and bring the first useful information closer to navigation |
 | Regular screen | 40-point insets and spacing; 640-point readable width | Keep prose and summaries coherent within wide content columns |
-| Native content rows | 20 / 32-point horizontal inset; 16 / 20-point vertical padding | Keep native row targets comfortably inset at compact / regular widths |
+| Native content rows | Native horizontal margins on macOS; 20 / 32-point content inset elsewhere; 16 / 20-point vertical padding | Keep native row targets comfortably inset at compact / regular widths |
 | Grouped content | No implicit horizontal inset or section surface; 8-point section gaps plus row padding | Align headings, rows, and captions while leaving outer padding to the screen or an explicit surface |
-| Display hierarchy | Bold screen titles; regular-weight iOS summaries use system title | Separate the leading thought from body copy through scale and weight without a badge or background |
+| Display hierarchy | Native navigation titles; bold standalone headings; regular-weight iOS summaries | Separate the leading thought from body copy through scale and weight without a badge or background |
 | Section typography | System title3, medium | Give content sections an identifiable hierarchy above body copy |
 | Surface / control radius | 6 / 8 points retained | Quiet, nearly rectangular content planes and softly bounded fields; native controls keep their contextual shapes |
 | Minimum controls | 44 points; 28 on macOS, retained | Preserve platform-appropriate interaction targets |
