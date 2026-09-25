@@ -4,25 +4,39 @@ import SwiftUI
 public struct MHSectionHeader<Accessory: View>: View {
     @Environment(\.mhTheme)
     private var theme
+    @Environment(\.dynamicTypeSize)
+    private var dynamicTypeSize
 
     private let title: Text
     private let supporting: Text?
     private let accessory: Accessory?
+
+    private var titleLayout: AnyLayout {
+        if dynamicTypeSize.isAccessibilitySize {
+            .init(VStackLayout(alignment: .leading, spacing: theme.spacing.inline))
+        } else {
+            .init(
+                HStackLayout(
+                    alignment: .firstTextBaseline,
+                    spacing: theme.presentation.rowAccessorySpacing
+                )
+            )
+        }
+    }
 
     public var body: some View {
         VStack(
             alignment: .leading,
             spacing: theme.resolvedSectionChromeStyle().contentSpacing
         ) {
-            HStack(
-                alignment: .firstTextBaseline,
-                spacing: theme.presentation.rowAccessorySpacing
-            ) {
+            titleLayout {
                 title
                     .mhSectionHeaderTitle()
                     .accessibilityAddTraits(.isHeader)
 
-                Spacer(minLength: theme.presentation.rowAccessorySpacing)
+                if !dynamicTypeSize.isAccessibilitySize {
+                    Spacer(minLength: theme.presentation.rowAccessorySpacing)
+                }
 
                 if let accessory {
                     accessory
