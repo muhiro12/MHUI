@@ -21,8 +21,25 @@ public struct MHLayoutMetrics: Sendable, Equatable {
         compactWidthThreshold: CGFloat,
         screen: MHScreenLayoutMetrics,
         surface: MHSurfaceLayoutMetrics,
+        control: MHControlLayoutMetrics
+    ) {
+        self.init(
+            readableContentWidth: readableContentWidth,
+            compactWidthThreshold: compactWidthThreshold,
+            screen: screen,
+            surface: surface,
+            control: control,
+            column: .standard
+        )
+    }
+
+    public init(
+        readableContentWidth: CGFloat,
+        compactWidthThreshold: CGFloat,
+        screen: MHScreenLayoutMetrics,
+        surface: MHSurfaceLayoutMetrics,
         control: MHControlLayoutMetrics,
-        column: MHColumnLayoutMetrics = .standard
+        column: MHColumnLayoutMetrics
     ) {
         self.readableContentWidth = readableContentWidth
         self.compactWidthThreshold = compactWidthThreshold

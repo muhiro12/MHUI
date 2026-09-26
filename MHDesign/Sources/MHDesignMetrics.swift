@@ -17,8 +17,16 @@ public struct MHDesignMetrics: Sendable, Equatable {
     public init(
         spacing: MHSpacingMetrics,
         cornerRadius: MHCornerRadiusMetrics,
+        layout: MHLayoutMetrics
+    ) {
+        self.init(spacing: spacing, cornerRadius: cornerRadius, layout: layout, strokeWidth: 1)
+    }
+
+    public init(
+        spacing: MHSpacingMetrics,
+        cornerRadius: MHCornerRadiusMetrics,
         layout: MHLayoutMetrics,
-        strokeWidth: CGFloat = 1
+        strokeWidth: CGFloat
     ) {
         self.spacing = spacing
         self.cornerRadius = cornerRadius
