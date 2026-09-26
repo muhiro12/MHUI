@@ -21,6 +21,8 @@ private struct MHInputChromeModifier: ViewModifier {
         )
 
         content
+            .scrollContentBackground(.hidden)
+            .foregroundStyle(MHTextForegroundStyle(role: .primaryText))
             .padding(.horizontal, style.horizontalPadding)
             .padding(.vertical, style.verticalPadding)
             .frame(minHeight: style.minimumHeight)
@@ -65,7 +67,7 @@ public extension View {
 
 #Preview("Input Chrome", traits: .sizeThatFitsLayout) {
     VStack(spacing: MHTheme.standard.spacing.content) {
-        TextField("Name", text: .constant(""))
+        TextField("Name", text: .constant("Personal notes"))
             .mhInputChrome()
         TextField("Focused", text: .constant("Focused"))
             .mhInputChrome(state: .focused)
@@ -78,5 +80,7 @@ public extension View {
             .mhInputChrome(state: .invalid)
         #endif
     }
-    .mhPreviewSurface()
+    .padding(MHTheme.standard.spacing.content)
+    .background(MHCanvasBackground())
+    .mhTheme(.standard)
 }

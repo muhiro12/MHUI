@@ -7,7 +7,9 @@ public extension MHTheme {
     /// Call once from the app initializer using the root theme. This includes
     /// navigation titles, but preserves native bar backgrounds and materials.
     /// Local SwiftUI themes do not change these application-wide defaults.
-    /// Explicit instance appearances and native states can take precedence.
+    /// SwiftUI controls, explicit instance appearances, and native states can
+    /// override these UIKit defaults. This does not guarantee SwiftUI input or
+    /// search text colors; `mhInputChrome` themes detached input text directly.
     @MainActor
     func configureNativeAppearance() {
         configureNavigationTitleAppearance()

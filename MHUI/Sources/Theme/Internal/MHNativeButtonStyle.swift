@@ -13,7 +13,7 @@ struct MHNativeButtonStyle: PrimitiveButtonStyle {
                 theme.resolvedColor(
                     for: configuration.role == .destructive
                         ? .destructive
-                        : .primaryText,
+                        : .accent,
                     in: colorScheme
                 )
             )

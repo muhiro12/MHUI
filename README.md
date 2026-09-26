@@ -252,7 +252,7 @@ sections. These call shapes stay distinct after trailing-closure formatting.
 Place `mhScreen("Library")` inside the app's `NavigationStack` or split-view
 column. Its title uses native navigation presentation by default, including
 large-to-inline title transitions on iOS. MHUI owns the scrolling content,
-subtitle, readable width, and spacing; the app owns navigation and toolbar actions.
+subtitle, responsive margins, and spacing; the app owns navigation and toolbar actions.
 Do not repeat that title in a content heading. For a standalone composition
 without navigation, explicitly use `titlePlacement: .content`; that heading
 scrolls out of view. This option does not simulate a navigation bar.
@@ -300,7 +300,8 @@ On iOS, call `configureNativeAppearance()` once before creating UI,
 using the same theme as the root. It applies the theme's primary text color to
 large and inline native navigation titles and UIKit text inputs, including
 `.native` screens. It also requests secondary color for unselected tab items;
-newer system tab renderers can retain their own foreground.
+newer system tab renderers can retain their own foreground. SwiftUI can also
+override UIKit input defaults; this call does not guarantee all input colors.
 This UIKit default is application-wide; local `mhTheme` overrides do not change
 it. It preserves system title fonts, scrolling behavior, bar backgrounds, and
 button tint. Existing bars and explicit per-bar appearance settings are not
@@ -528,3 +529,22 @@ component padding, and minimum targets from those metrics. Zero spacing and
 styles remain platform-managed. See the
 [dimension contract](Designs/Guides/VISUAL_DESIGN_PRINCIPLES.md#dimension-ownership-and-grid)
 for responsive layout, accessibility, and host customization boundaries.
+
+### Wide Content and Reading Width
+
+`mhScreen` uses its available column width with responsive theme margins.
+It does not impose a maximum width on a `NavigationSplitView` sidebar,
+content, or detail. SwiftUI owns the column allocation and collapsed navigation.
+Apply `.mhReadableContent()` to prose inside a screen when a maximum reading
+width is useful; leave images, grids, and action areas outside that modifier.
+The maximum comes from `MHDesign` through the theme, not a screen-local constant.
+
+Default content buttons use the theme accent to distinguish actions from text.
+Use an explicit MHUI primary or secondary button style when an action needs
+shape as well as color. Neutral toolbar exceptions remain local theme choices.
+
+`configureNativeAppearance()` requests UIKit text-input colors, but SwiftUI can
+override those defaults, including in search fields. `mhInputChrome()` applies
+primary text color directly to detached inputs. Native form fields do not need
+its background treatment; the startup call alone is not a guarantee of their
+foreground color. MHUI does not inspect private native view hierarchies.

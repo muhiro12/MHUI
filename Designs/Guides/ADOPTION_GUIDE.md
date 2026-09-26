@@ -149,7 +149,7 @@ navigation or controls. Native grouping and shape can give content depth
 without adding glass or shadows to every block. MHUI's identity does not depend
 on replacing these platform conventions with flat, ruled surfaces.
 
-`mhScreen` owns its `ScrollView`, canvas, readable width, margins, and subtitle.
+`mhScreen` owns its `ScrollView`, canvas, responsive margins, and subtitle.
 Its default title is a native navigation title, with large presentation on iOS. Do not place a `List`, `Form`, or another screen-level scrolling
 container inside it.
 
@@ -269,7 +269,7 @@ struct OverviewScreen: View {
 
 This route gives each layer a distinct responsibility:
 
-- `mhScreen` owns screen scrolling, canvas treatment, readable width, and the
+- `mhScreen` owns screen scrolling, canvas treatment, responsive margins, and the
   native navigation title.
 - `MHSummary` establishes a concise editorial context through inset rhythm and
   whitespace rather than an elevated card.
@@ -399,7 +399,7 @@ interaction remain intact while supported colors follow MHUI:
 | List/Form canvas and row surfaces | MHUI theme, using `MHContainerContent` |
 | MHUI text and default toggle labels | Semantic theme text colors |
 | Default labeled content | Primary label and secondary value, with native layout |
-| Default content buttons | Primary text or destructive role; native disabled treatment |
+| Default content buttons | Accent or destructive role; native disabled treatment |
 | System toolbar buttons | May prioritize inherited control tint over the default button style |
 | Switch ON and tint-responsive selected tabs | Theme accent, including the app's `AccentColor` by default |
 | iOS navigation titles and UIKit text inputs | Primary text through `configureNativeAppearance()` at startup |
@@ -415,7 +415,10 @@ arbitrary enclosing tint. There is no per-control setup requirement.
 
 The iOS startup appearance call is separate from the subtree theme. It includes
 the existing navigation-title setup and requests UIKit text-input and unselected
-tab colors. It does not replace bar backgrounds or materials. The iOS 27.1
+tab colors. SwiftUI can override UIKit input defaults, including search text.
+`mhInputChrome` directly applies primary text to detached inputs; it is not
+required decoration for native Form fields. The startup call does not guarantee
+all SwiftUI input foregrounds. It does not replace bar backgrounds or materials. The iOS 27.1
 Preview still renders unselected Liquid Glass tab items in the system color;
 MHUI does not inspect or replace the system tab implementation to force it.
 The preferred toolbar foreground is neutral primary text. On iOS 27.1,
@@ -603,7 +606,7 @@ Their technical entry points depend on who owns scrolling:
 
 | Composition | Entry point | Structure |
 | --- | --- | --- |
-| MHUI scrolling content | `mhScreen` on a stack | MHUI supplies scrolling, readable width, and spacing |
+| MHUI scrolling content | `mhScreen` on a stack | MHUI supplies scrolling, responsive margins, and spacing |
 | MHUI List or Form | `MHContainerContent` with `.content` chrome | MHUI supplies row rhythm; native controls and scrolling remain |
 | Themed native List or Form | `MHContainerContent` with `.native` chrome | Native grouping, typography, insets, and editing structure remain |
 
@@ -1015,7 +1018,7 @@ destructive, prominent, toolbar, and tab treatments.
 - The root theme now explicitly propagates brand tint to native controls.
   Review toolbar items that previously used the system's neutral appearance.
   For deliberate neutral exceptions, use the theme's primary text color.
-- Default content buttons use primary text; destructive actions use the
+- In 2.2, default content buttons used primary text; destructive actions used the
   destructive color. Explicit action styles keep their semantic treatments.
 - Replace the startup navigation-title setup with `configureNativeAppearance()`
   to include text inputs and supported unselected tab defaults. Existing
@@ -1023,3 +1026,16 @@ destructive, prominent, toolbar, and tab treatments.
 - Unselected Liquid Glass tab colors remain system-controlled in the observed
   iOS 27.1 Preview. The public UIKit color request remains installed for
   renderers that honor it; other runtime versions still require visual review.
+
+## Updating Screen Width After 2.2
+
+`mhScreen` now uses the available width of any navigation column. Its responsive
+margins remain; the previous 640-point maximum for the entire screen is removed.
+Use `.mhReadableContent()` on a prose subtree to retain the theme's reading
+limit. Media and grids can use the full column independently. `mhListChrome`
+and `mhFormChrome` do not impose a column maximum either. Native split-view
+allocation, collapse behavior, and host-defined column widths remain intact.
+
+Default content buttons now use the accent rather than primary text. Review
+host accent contrast against the canvas; use explicit primary or secondary
+button styles for actions that need a visible shape.
