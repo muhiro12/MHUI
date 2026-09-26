@@ -25,8 +25,8 @@ struct MHSectionHeaderModifier: ViewModifier {
 
         content
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, usesFormSurface ? theme.spacing.control : 0)
-            .padding(.bottom, theme.spacing.inline)
+            .padding(.top, containerStyle != nil && usesFormSurface ? theme.spacing.control : 0)
+            .padding(.bottom, containerStyle == nil ? 0 : theme.spacing.inline)
             .textCase(nil)
             .listRowInsets(rowInsets)
     }

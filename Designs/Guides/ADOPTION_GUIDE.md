@@ -943,3 +943,11 @@ Build that sample as an independent public API consumer with:
 ```sh
 bash ci_scripts/tasks/test_mhui_consumer_adoption.sh
 ```
+
+### Composed Section Spacing
+
+Use `spacing.section` between sibling sections. `mhSection` keeps its header,
+content, and optional footer close with `spacing.inline`; do not add compensating
+padding under its header. Standalone `MHSectionHeader` leaves external spacing
+to its parent stack. Native List/Form headers retain container-specific insets.
+Review `MHSectionRhythmPreview` for grouped rows, actions, footers, and large text.

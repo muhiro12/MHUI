@@ -43,8 +43,13 @@ stack that relationship without changing reading order; at accessibility sizes,
 allow every item the full width.
 
 `mhSection` groups a header, content, and footer without painting a background.
-Leave a content-sized gap between a section header and its content; use a
-screen-sized gap between independent groups in spacious compositions.
+Within a composed section, the header-to-content and content-to-footer gaps use
+`spacing.inline` (8 points by default). Adjacent sections should use
+`spacing.section` (32 points on iOS/macOS). The header contributes no hidden
+bottom padding in a stack. Row and button padding remains inside the content,
+so visible text-to-text distances can exceed those structural gaps.
+Native List/Form header geometry remains a separate container concern.
+Use a screen-sized gap between independent groups in spacious compositions.
 `MHGroupedRows` aligns rows and separators to that content edge; its parent owns
 horizontal padding. A detached note or input group can explicitly opt into
 `mhSurfaceInset()` and `mhSurface()`. Avoid using a surface simply to compensate
