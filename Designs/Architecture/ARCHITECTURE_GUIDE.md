@@ -101,14 +101,15 @@ supplies the inherited baseline without prescribing screen structure.
   copying `MHTheme.standard` and changing the semantic values it owns.
 - The app applies that value once near its root with `mhTheme(_:)`.
 - `mhTheme(_:)` is environment configuration, not a global skin. Applying it
-  alone must not replace or infer styles for arbitrary native content.
+  applies native-delegating semantic defaults without replacing controls.
 - `mhTheme(_:)` propagates the theme through SwiftUI's environment. A concrete
   theme accent also becomes the native-control tint for the subtree,
   while the standard theme resolves semantic accent from the app's
-  `AccentColor` without installing a tint override.
-- On iOS, the host calls `configureNavigationTitleAppearance()` once before
+  `AccentColor` and also supplies it as native tint.
+- On iOS, the host calls `configureNativeAppearance()` once before
   creating UI to share the theme's primary text color across native navigation
-  titles. This UIKit appearance default is app-wide, including `.native`
+  titles and UIKit text inputs, and request unselected tab colors. These
+  UIKit appearance defaults are app-wide, including `.native`
   screens; it is not applied or updated by `mhTheme(_:)`.
 - A narrower `mhTheme(_:)` call is the supported mechanism for an intentional
   local exception.

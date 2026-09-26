@@ -95,12 +95,6 @@ public struct MHTheme: Sendable, Equatable {
         colorReference(for: role).resolve(for: colorScheme)
     }
 
-    internal func nativeTintOverride(
-        in colorScheme: ColorScheme
-    ) -> Color? {
-        colors.accent.nativeTintOverride(for: colorScheme)
-    }
-
     internal func textStyle(for role: MHTextRole) -> TextStyle {
         switch role {
         case .screenTitle:

@@ -7,7 +7,7 @@ public struct MHColorReference: Sendable, Equatable {
         case asset(ColorResource)
     }
 
-    /// Uses the host app's accent color without installing a tint override.
+    /// Uses the host app's accent color for MHUI and native controls.
     public static let tint = Self(storage: .tint)
 
     private let storage: Storage
@@ -25,17 +25,6 @@ public struct MHColorReference: Sendable, Equatable {
             .accentColor
         case let .asset(resource):
             Color(resource)
-        }
-    }
-
-    internal func nativeTintOverride(
-        for colorScheme: ColorScheme
-    ) -> Color? {
-        switch storage {
-        case .tint:
-            nil
-        default:
-            resolve(for: colorScheme)
         }
     }
 }

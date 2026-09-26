@@ -20,7 +20,7 @@ struct MHThemeTests {
         #expect(theme.colors.onAccent == .asset(MHColorAsset.onAccent))
         #expect(theme.colors.warning == .asset(MHColorAsset.warning))
         #expect(theme.colors.destructive == .asset(MHColorAsset.destructive))
-        #expect(theme.nativeTintOverride(in: .light) == nil)
+        #expect(theme.colors.accent.resolve(for: .light) == Color.accentColor)
         #expect(theme.metrics == MHDesignMetrics.standard)
         #expect(theme == MHTheme.standard())
         #expect(theme.spacing.inline == 8)
@@ -108,8 +108,8 @@ struct MHThemeTests {
         let theme = MHTheme.standard(accent: accent)
 
         #expect(theme.colors.accent == accent)
-        #expect(theme.nativeTintOverride(in: .light) != nil)
-        #expect(theme.nativeTintOverride(in: .dark) != nil)
+        #expect(theme.colors.accent.resolve(for: .light) == Color(MHColorAsset.warning))
+        #expect(theme.colors.accent.resolve(for: .dark) == Color(MHColorAsset.warning))
     }
 
     @Test

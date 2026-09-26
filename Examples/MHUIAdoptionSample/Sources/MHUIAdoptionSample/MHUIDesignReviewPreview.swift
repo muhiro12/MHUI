@@ -2,14 +2,14 @@ import SwiftUI
 
 #Preview("START HERE / MHUI Design Review") {
     #if os(iOS)
-    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    MHUIAdoptionSampleTheme.standard.configureNativeAppearance()
     #endif
     return MHUIDesignReviewRoot()
 }
 
 #Preview("Composition") {
     #if os(iOS)
-    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    MHUIAdoptionSampleTheme.standard.configureNativeAppearance()
     #endif
     return NavigationStack {
         MHUIComposedScreenSample()
@@ -19,7 +19,7 @@ import SwiftUI
 
 #Preview("Field notes") {
     #if os(iOS)
-    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    MHUIAdoptionSampleTheme.standard.configureNativeAppearance()
     #endif
     return NavigationStack {
         MHUIContentFormSample()
@@ -30,7 +30,7 @@ import SwiftUI
 
 #Preview("Form / MHUI") {
     #if os(iOS)
-    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    MHUIAdoptionSampleTheme.standard.configureNativeAppearance()
     #endif
     return MHUINativeContainerSample()
         .mhTheme(MHUIAdoptionSampleTheme.standard)
@@ -38,7 +38,7 @@ import SwiftUI
 
 #Preview("Content List") {
     #if os(iOS)
-    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    MHUIAdoptionSampleTheme.standard.configureNativeAppearance()
     #endif
     return NavigationStack {
         MHUIContentContainerSample()
@@ -48,7 +48,7 @@ import SwiftUI
 
 #Preview("Content List / Native") {
     #if os(iOS)
-    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    MHUIAdoptionSampleTheme.standard.configureNativeAppearance()
     #endif
     return NavigationStack {
         MHUIContentContainerSample(style: .native)
@@ -58,7 +58,7 @@ import SwiftUI
 
 #Preview("Form / Native") {
     #if os(iOS)
-    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    MHUIAdoptionSampleTheme.standard.configureNativeAppearance()
     #endif
     return NavigationStack {
         MHUIContentFormSample(style: .native)
@@ -69,7 +69,7 @@ import SwiftUI
 
 #Preview("States") {
     #if os(iOS)
-    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    MHUIAdoptionSampleTheme.standard.configureNativeAppearance()
     #endif
     return NavigationStack {
         MHUIDesignReviewIndex()
@@ -79,7 +79,7 @@ import SwiftUI
 
 #Preview("Visual notes") {
     #if os(iOS)
-    MHUIAdoptionSampleTheme.standard.configureNavigationTitleAppearance()
+    MHUIAdoptionSampleTheme.standard.configureNativeAppearance()
     #endif
     return NavigationStack {
         MHUIVisualContentSample()

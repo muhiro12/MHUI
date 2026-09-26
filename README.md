@@ -236,7 +236,8 @@ Here `name` and `keepsOffline` are app-owned bindings. Change `.content` to
 `.native` to keep native grouping and row geometry with the same MHUI colors. No per-row
 `mhRow()` or labeled-content style is needed. Both choices use the MHUI canvas
 and themed row surfaces; `.native` retains platform row geometry and typography.
-Native control labels and unstyled text retain system semantics. Use the same content wrapper
+Default toggle and labeled-content labels use MHUI colors, and native controls
+receive the app accent. Plain text retains its own foreground semantics. Use the same content wrapper
 inside `List`. Standard `Section` headers are valid; `MHSectionHeader` adds the
 shared title/supporting hierarchy when useful. See the
 [container contract and limits](Designs/Guides/ADOPTION_GUIDE.md#automatic-container-content)
@@ -282,7 +283,7 @@ import SwiftUI
 struct WorkspaceApp: App {
     init() {
         #if os(iOS)
-        MHTheme.standard.configureNavigationTitleAppearance()
+        MHTheme.standard.configureNativeAppearance()
         #endif
     }
 
@@ -295,9 +296,11 @@ struct WorkspaceApp: App {
 }
 ```
 
-On iOS, call `configureNavigationTitleAppearance()` once before creating UI,
+On iOS, call `configureNativeAppearance()` once before creating UI,
 using the same theme as the root. It applies the theme's primary text color to
-large and inline native navigation titles, including `.native` screens.
+large and inline native navigation titles and UIKit text inputs, including
+`.native` screens. It also requests secondary color for unselected tab items;
+newer system tab renderers can retain their own foreground.
 This UIKit default is application-wide; local `mhTheme` overrides do not change
 it. It preserves system title fonts, scrolling behavior, bar backgrounds, and
 button tint. Existing bars and explicit per-bar appearance settings are not

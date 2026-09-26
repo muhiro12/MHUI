@@ -6,16 +6,13 @@ private struct MHThemeModifier: ViewModifier {
 
     let theme: MHTheme
 
-    @ViewBuilder
     func body(content: Content) -> some View {
-        if let nativeTint = theme.nativeTintOverride(in: colorScheme) {
-            content
-                .environment(\.mhTheme, theme)
-                .tint(nativeTint)
-        } else {
-            content
-                .environment(\.mhTheme, theme)
-        }
+        content
+            .environment(\.mhTheme, theme)
+            .tint(theme.colors.accent.resolve(for: colorScheme))
+            .toggleStyle(MHNativeToggleStyle())
+            .labeledContentStyle(MHNativeLabeledContentStyle())
+            .buttonStyle(MHNativeButtonStyle())
     }
 }
 
@@ -23,8 +20,9 @@ public extension View {
     /// Applies the complete inheritable MHUI styling baseline to this subtree.
     ///
     /// Apply this once near the app's root. It propagates the theme, synchronizes
-    /// its MHDesign metrics, and applies an asset-backed native-control tint when
-    /// the theme supplies one. Apply it again only for an intentional local
+    /// its MHDesign metrics, and applies the accent to native controls. Native
+    /// control labels and actions receive semantic colors through default styles.
+    /// Apply it again only for an intentional local
     /// theme exception. Screen structure and semantic control roles remain
     /// explicit because a root modifier cannot infer them safely.
     func mhTheme(_ theme: MHTheme) -> some View {

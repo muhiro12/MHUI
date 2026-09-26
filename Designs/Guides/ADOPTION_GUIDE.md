@@ -36,7 +36,7 @@ import SwiftUI
 struct WorkspaceApp: App {
     init() {
         #if os(iOS)
-        MHTheme.standard.configureNavigationTitleAppearance()
+        MHTheme.standard.configureNativeAppearance()
         #endif
     }
 
@@ -58,18 +58,14 @@ Contrast appearances. Keep per-screen typography and surface recipes at the
 shared defaults.
 
 The call propagates colors, typography, metrics, presentation values, and
-surface treatments to every MHUI component in the subtree. It also synchronizes
-the `MHDesignMetrics` environment and, when the theme has a concrete
-asset-backed accent, native-control tint. A narrower `.mhTheme(...)` call
-overrides that baseline for one subtree through ordinary SwiftUI environment
-scoping.
+surface treatments to MHUI components. It synchronizes `MHDesignMetrics` and
+applies the theme accent to native controls, including the host `AccentColor`
+when using `.standard`. Default toggle, labeled-content, and button styles
+apply semantic colors while delegating structure and interaction to the
+native automatic styles. Explicit local styles take precedence.
 
-Theme propagation does not assign a visual role to arbitrary SwiftUI content.
-MHUI does not apply root-wide button, font, foreground, list, or form styles:
-those styles propagate into toolbars, menus, system presentations, and
-controls whose semantic role the root cannot know. It also cannot insert
-`mhScreen`, section hierarchy, or grouped-row structure around unknown
-descendants.
+The root does not apply a blanket foreground or font to arbitrary descendants.
+It cannot infer the role of plain text or insert screen and section structure.
 
 Complete visible adoption therefore needs one explicit structural route at
 each screen boundary. Within package-owned containers, MHUI removes repetition
@@ -395,35 +391,36 @@ stack when the window or column narrows.
 
 ### Native Color Coverage
 
-The `.native` container presentation keeps MHUI surfaces, but does not recolor
-every part of every system control. Color ownership is explicit:
+Both container presentations use the same root theme. Native geometry and
+interaction remain intact while supported colors follow MHUI:
 
 | Element | Color source |
 | --- | --- |
-| List/Form canvas and row surfaces | MHUI theme, with `MHContainerContent` inside the styled container |
-| MHUI text roles, including text inside rows | MHUI primary, secondary, or tertiary text; prominent selection uses the native foreground hierarchy |
-| Unstyled `Text`, text fields, and native control labels | Native foreground unless the host supplies a semantic text style |
-| iOS large and inline navigation titles | MHUI primary text after the one-time navigation appearance setup |
-| Navigation bar materials and backgrounds | Native presentation |
-| Tint-responsive switch states, selected tabs, toolbar actions, and other controls | An asset-backed theme accent is propagated using SwiftUI `tint`; each native control decides how to use it |
-| Switch OFF track and thumb, unselected tabs, disabled states, and system semantic roles | Native presentation; no package-wide appearance override |
+| List/Form canvas and row surfaces | MHUI theme, using `MHContainerContent` |
+| MHUI text and default toggle labels | Semantic theme text colors |
+| Default labeled content | Primary label and secondary value, with native layout |
+| Default buttons and toolbar buttons | Theme accent or destructive role; native disabled treatment |
+| Switch ON and tint-responsive selected tabs | Theme accent, including the app's `AccentColor` by default |
+| iOS navigation titles and UIKit text inputs | Primary text through `configureNativeAppearance()` at startup |
+| Unselected UIKit tab items | Secondary text requested through native appearance; newer system tab renderers can retain their own color |
+| Switch OFF track, thumb, and bar materials | Native presentation |
+| Plain `Text` and controls with explicit replacement styles | Their own foreground rules |
 
-The default accent reference, `.tint`, deliberately installs no tint override.
-It preserves the host's tint environment and platform defaults; it does not
-force every native control to use the same accent. For example, a native switch
-can retain its platform ON color. To supply a shared brand tint, configure
-`.mhTheme(.standard(accent: .asset(.appAccent)))` once at the root using an
-app-owned color asset. Native style and platform behavior still determine which
-parts respond. This does not require a separate modifier on each control.
+Apply `.mhTheme(.standard)` once at the root. For another app-owned accent use
+`.mhTheme(.standard(accent: .asset(.appAccent)))`. A local `.tint` inside the
+themed subtree can override control tint; an outer `.tint` is overridden by the
+root theme. The standard theme resolves the app's `AccentColor` asset, not an
+arbitrary enclosing tint. There is no per-control setup requirement.
 
-Do not use text foreground colors as a blanket replacement for control tint.
-Foreground styling also reaches symbols and labels on prominent backgrounds.
-Navigation title appearance is a separate iOS startup setting, not an automatic
-effect of `mhTheme`, and does not style every navigation bar element.
+The iOS startup appearance call is separate from the subtree theme. It includes
+the existing navigation-title setup and requests UIKit text-input and unselected
+tab colors. It does not replace bar backgrounds or materials. The iOS 27.1
+Preview still renders unselected Liquid Glass tab items in the system color;
+MHUI does not inspect or replace the system tab implementation to force it.
 
 ### Text Color Ownership
 
-`mhTheme` supplies theme values and an optional native tint; it does not recolor
+`mhTheme` supplies theme values and native tint; it does not recolor
 every descendant. In composed content, `mhTextStyle` uses the same primary color
 for screen titles, section titles, and body text unless another color role is
 specified. Supporting and caption colors preserve the hierarchy.
@@ -434,18 +431,18 @@ Form presentations. For an intentional text-only exception,
 the subtree.
 Prominent native selection backgrounds also use the platform hierarchy.
 
-Unstyled `Text` and native control labels can still use system black or white.
+Unstyled `Text` and explicitly styled controls can still use system black or white.
 The root does not override their foreground:
 blanket foreground styles also override prominent button labels and disabled
 control treatments. Explicit host colors continue to take precedence.
 The package does not require per-control corrections to undo a root override.
 
-On iOS, configure native navigation titles once from the app initializer:
+On iOS, configure native appearance once from the app initializer:
 
 ```swift
 init() {
     #if os(iOS)
-    MHTheme.standard.configureNavigationTitleAppearance()
+    MHTheme.standard.configureNativeAppearance()
     #endif
 }
 ```
@@ -498,7 +495,7 @@ native controls and grouping on MHUI surfaces.
 
 | API | Package-owned default | Adopter responsibility |
 | --- | --- | --- |
-| `mhTheme` | Propagates the complete theme, MHDesign metrics, and optional native tint | Select screen structure and roles that cannot be inferred |
+| `mhTheme` | Propagates the complete theme, MHDesign metrics, and native tint | Select screen structure and roles that cannot be inferred |
 | `MHSummary` | Spacious editorial summary and stronger system title hierarchy | Provide concise screen context and optional accessory |
 | `MHFeatureGrid` | Adaptive leading-feature and supporting-content hierarchy | Select the primary feature, supporting set, and semantic treatments |
 | `MHSectionHeader` | Explicit MHUI section typography | Provide product wording and optional accessory |
@@ -507,7 +504,7 @@ native controls and grouping on MHUI surfaces.
 | `MHActionGroup` | Secondary style and adaptive layout | Mark primary, quiet, and destructive exceptions |
 | `mhRow` | Standalone or native-container row chrome | Apply only when neither `MHGroupedRows` nor `MHContainerContent` already styles the complete row |
 | `MHContainerContent` | Automatic content-row treatment or themed native-row surfaces | Wrap the container content once and choose its chrome style |
-| `configureNavigationTitleAppearance()` | Shared iOS navigation title color | Call once before creating UI, using the app theme |
+| `configureNativeAppearance()` | Shared iOS title, text-input, and requested tab colors | Call once before creating UI, using the app theme |
 | `mhTextAppearance` | Theme-owned neutral text with selection adaptation | Choose `.native` only for a deliberate subtree exception; native chrome selects it automatically |
 
 ### Compact Metadata Badges
@@ -606,8 +603,7 @@ Do not apply full-screen chrome to the navigation shell across its columns.
 Apply content styling to an individual list, including a primary content list
 that occupies the leading column of a split view.
 
-Standard control labels, unstyled `Text`, and native selection/disabled states
-retain system semantics; this is not an app-wide foreground override. Use MHUI
+Unstyled `Text` and native selection/disabled states retain system semantics; this is not an app-wide foreground override. Use MHUI
 text roles for composed prose. `mhTextAppearance(.native)` remains an explicit
 text-only escape hatch, independent of the two container presentations.
 
@@ -626,7 +622,7 @@ Existing MHDesign initializers also remain usable as function values.
   control dimensions and system font sizes remain platform-owned.
 - Themed native containers now use MHUI canvas and row colors. Wrap List/Form
   content once in `MHContainerContent`; do not add `mhRow()` to each child too.
-  Native control labels and selection states retain system semantics.
+  In 2.1, native control labels and selection states retain system semantics.
 - Light text is softer gray and the dark canvas is near-black. Recheck app-owned
   accent colors, images, placeholders, overlays, and explicitly colored text.
 - Choose `.content` or `.native` by the screen's purpose, not the position of a
@@ -709,7 +705,7 @@ needed for footer-only content.
 
 ### Navigation Title Color
 
-On iOS, add `configureNavigationTitleAppearance()` to app initialization using
+On iOS, use `configureNativeAppearance()` in app initialization using
 the root theme. Existing `mhTheme` calls alone do not apply this global UIKit
 default. Both native and content screens share the primary text color.
 See [Text Color Ownership](#text-color-ownership) for setup and scope.
@@ -979,3 +975,19 @@ content, and optional footer close with `spacing.inline`; do not add compensatin
 padding under its header. Standalone `MHSectionHeader` leaves external spacing
 to its parent stack. Native List/Form headers retain container-specific insets.
 Review `MHSectionRhythmPreview` for grouped rows, actions, footers, and large text.
+
+### Native Control Color Adoption
+
+The root theme now supplies native control tint even when its accent is the
+host `AccentColor`. Default toggle labels, labeled-content labels and values,
+and automatic buttons use semantic theme colors. Native geometry, interaction,
+and explicit local control styles remain intact. Local styles must be placed
+inside the themed subtree; the root establishes its own defaults.
+
+Replace the one-time `configureNavigationTitleAppearance()` startup call with
+`configureNativeAppearance()` to include UIKit text-input colors and request
+unselected tab colors. The title-only API remains available. Existing controls
+and explicit appearances can take precedence, and the new Liquid Glass tab
+renderer can keep system unselected colors. Do not reconfigure appearance from
+individual screens. Review `MHNativeControlColorsPreview` for enabled, disabled,
+destructive, prominent, toolbar, and tab treatments.

@@ -56,7 +56,7 @@ The repository is intentionally biased toward package-owned visual rules and awa
 - Standard, elevated, and muted surface roles, row and section modifiers, and
   the `MHGroupedRows` container
 - App-wide iOS navigation title color configured once through
-  `MHTheme.configureNavigationTitleAppearance()`, separate from `mhTheme`
+  `MHTheme.configureNativeAppearance()`, separate from `mhTheme`
 - Neutral text hierarchy selection through `MHTextAppearance` and
   `mhTextAppearance(_:)`
 - Automatic complete-row styling through `MHContainerContent`

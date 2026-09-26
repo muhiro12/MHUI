@@ -70,7 +70,7 @@ The chrome modifiers default to `.content`. `.native` preserves platform
 grouping and row geometry while retaining themed canvas and row surfaces. `MHContainerContent`
 applies complete-row treatment once for ordinary content lists and forms.
 
-On iOS, `configureNavigationTitleAppearance()` is a separate host-invoked
+On iOS, `configureNativeAppearance()` is a separate host-invoked
 startup API for the app-wide native title color. It changes only title
 attributes and remains independent of subtree `mhTheme` and `.native` choices.
 
@@ -107,7 +107,7 @@ The following types and helpers are the current shared entry points for package-
 - `MHContainerStyle`
 - `MHTextAppearance`
 - `mhTextAppearance(_:)`
-- `MHTheme.configureNavigationTitleAppearance()` (iOS startup)
+- `MHTheme.configureNativeAppearance()` (iOS startup)
 - `MHTheme.Colors`
 - `MHTheme.Typography`
 - `MHTheme.Presentation`
@@ -200,9 +200,8 @@ Changes to MHUI treatments do not imply changes to MHDesign's standard metrics.
 - Apps choose a root brand accent pair. Typography, metrics, and surface
   treatments are package-owned defaults; existing theme customization remains
   available but is not a required adoption step.
-- The standard theme uses the app's `AccentColor` without installing a tint
-  override. An app-provided concrete theme
-  accent also tints native controls in the same subtree and should be paired
+- The standard theme uses the app's `AccentColor` as the native tint. An
+  app-provided concrete theme accent also tints native controls in the same subtree and should be paired
   with an app-tested `onAccent` foreground.
 - Theme propagation does not remove explicit semantic role selection at the
   use site and does not globally replace native SwiftUI controls.

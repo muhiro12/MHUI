@@ -26,7 +26,7 @@ change the values they own, and apply the result once near the app root with
 
 The modifier propagates the theme through SwiftUI's environment. The standard
 theme uses `MHColorReference.tint`, which resolves the host app's `AccentColor`
-asset without installing a native tint override. An explicitly configured
+asset and supplies it as native tint. An explicitly configured
 asset-backed accent also becomes the native-control tint within the same
 subtree. `MHColorReference` accepts asset resources rather than RGB or
 hexadecimal source values.
@@ -38,18 +38,21 @@ Writing `mhTheme(_:)` also synchronizes the theme's
 
 Views still select structural and semantic intent explicitly through MHUI text,
 surface, row, button, and container APIs. MHUI does not infer roles from
-arbitrary content, replace native controls, or install blanket root button,
-font, foreground, list, and form styles. Such styles propagate into toolbars,
+arbitrary content, replace native controls, or install blanket root font, foreground, list, and form styles. Default
+toggle, labeled-content, and button styles apply semantic colors while delegating
+to native automatic styles. Such styles propagate into toolbars,
 menus, system presentations, and controls whose meaning cannot be known at the
 app root. A root modifier also cannot rewrite an unknown descendant hierarchy
 to insert signature screen, section, or grouped-row structure.
 
-## Application-Wide Navigation Titles
+## Application-Wide Native Appearance
 
-On iOS, the host can call `configureNavigationTitleAppearance()` once during
+On iOS, the host can call `configureNativeAppearance()` once during
 app initialization, before creating navigation bars. This explicit startup
 operation sets the native large and inline title foreground to the theme's
-primary text color. It does not change backgrounds, fonts, or button tint.
+primary text color. It also sets UIKit text-input defaults and requests a
+secondary foreground for unselected tab items. Native renderers may override
+these defaults. It does not change backgrounds, fonts, or button tint.
 
 This is a UIKit appearance default across the app, including `.native` screens.
 It is separate from `mhTheme(_:)`, which remains a subtree environment write.
@@ -61,7 +64,7 @@ mutate global appearance while rendering a view.
 
 - Adopters can keep the ordinary app theme in one source location and receive
   automatic subtree propagation for all inheritable theme values, MHDesign
-  metrics, and optional native tint.
+  metrics, and native tint.
 - Host apps keep ownership of their brand color when they use the standard
   theme unchanged.
 - Asset-backed accent colors stay aligned between MHUI components and native
