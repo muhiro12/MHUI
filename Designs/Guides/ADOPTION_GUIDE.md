@@ -393,6 +393,34 @@ stack when the window or column narrows.
 
 ## Navigation and Presentation Boundaries
 
+### Native Color Coverage
+
+The `.native` container presentation keeps MHUI surfaces, but does not recolor
+every part of every system control. Color ownership is explicit:
+
+| Element | Color source |
+| --- | --- |
+| List/Form canvas and row surfaces | MHUI theme, with `MHContainerContent` inside the styled container |
+| MHUI text roles, including text inside rows | MHUI primary, secondary, or tertiary text; prominent selection uses the native foreground hierarchy |
+| Unstyled `Text`, text fields, and native control labels | Native foreground unless the host supplies a semantic text style |
+| iOS large and inline navigation titles | MHUI primary text after the one-time navigation appearance setup |
+| Navigation bar materials and backgrounds | Native presentation |
+| Tint-responsive switch states, selected tabs, toolbar actions, and other controls | An asset-backed theme accent is propagated using SwiftUI `tint`; each native control decides how to use it |
+| Switch OFF track and thumb, unselected tabs, disabled states, and system semantic roles | Native presentation; no package-wide appearance override |
+
+The default accent reference, `.tint`, deliberately installs no tint override.
+It preserves the host's tint environment and platform defaults; it does not
+force every native control to use the same accent. For example, a native switch
+can retain its platform ON color. To supply a shared brand tint, configure
+`.mhTheme(.standard(accent: .asset(.appAccent)))` once at the root using an
+app-owned color asset. Native style and platform behavior still determine which
+parts respond. This does not require a separate modifier on each control.
+
+Do not use text foreground colors as a blanket replacement for control tint.
+Foreground styling also reaches symbols and labels on prominent backgrounds.
+Navigation title appearance is a separate iOS startup setting, not an automatic
+effect of `mhTheme`, and does not style every navigation bar element.
+
 ### Text Color Ownership
 
 `mhTheme` supplies theme values and an optional native tint; it does not recolor
