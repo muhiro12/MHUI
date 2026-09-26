@@ -14,9 +14,9 @@ proportion, and useful hierarchy. It avoids decorative borders and shadows,
 stacked frames, simulated materials or textures, and color that does not
 communicate meaning.
 
-The canvas is pure white in light appearance and pure black in dark appearance.
-White supports a clear relationship between text and empty space. Black provides
-an equally neutral dark base. Primary text uses charcoal in light appearance
+The canvas is pure white in light appearance and near-black (`#080808`) in dark
+appearance. White supports a clear relationship between text and empty space.
+Near-black keeps a neutral dark base while softening the transition to content. Primary text uses charcoal in light appearance
 and softened light gray in dark appearance. Increased Contrast strengthens
 foreground differentiation. These are screen design choices, not simulated
 paper or ink.
@@ -28,7 +28,7 @@ platform semantics; these assets style MHUI-owned content and treatments.
 
 Concrete asset RGB channels use hexadecimal sRGB notation consistently.
 Identical high-contrast variants are omitted only when the normal variant
-already supplies the intended result, as with the white and black canvas.
+already supplies the intended result, as with the white and near-black canvas.
 
 Most screens should remain visually quiet. A surface earns distinction through
 its content role, not because every region needs a card treatment.
@@ -132,7 +132,7 @@ Metrics-only adopters also need to review layout when updating the package.
 | Section typography | System title3, medium | Give content sections an identifiable hierarchy above body copy |
 | Surface / control radius | 8 / 8 points | Quiet, nearly rectangular content planes and softly bounded fields; native controls keep their contextual shapes |
 | Minimum controls | 48 points; 32 on macOS | Preserve platform-appropriate interaction targets |
-| Surface tones | White / black canvas; muted 98% / 4%, standard 96% / 8%, elevated 92% / 14% sRGB gray | Reserve progressively stronger tonal separation for explicit supporting planes |
+| Surface tones | White / near-black canvas; dark muted `#121212`, standard `#1C1C1C`, elevated `#2A2A2A` | Reserve progressively stronger tonal separation for explicit supporting planes |
 | Motion | 0.18 / 0.30 seconds retained | Short state feedback; no decorative motion added |
 
 Watch layouts use 16-point screen and surface insets. Other platforms use
@@ -171,3 +171,11 @@ and 32 points on macOS; content can grow beyond that minimum. Padding does not
 define a hit target by itself. The standard theme derives presentation and
 stroke defaults from the metrics passed to `MHTheme.standard(metrics:)`.
 Explicit host presentation overrides remain supported.
+
+Native control sizing remains owned by the OS, even when its dimensions are not
+multiples of 8. The minimum-target token is not a global control constraint.
+MHUI applies it to its own custom action body and detached content chrome, where
+standard control sizing is not supplied by the custom style. Do not apply that
+minimum to system toggles, toolbar buttons, or native List/Form rows merely to
+force them onto the grid. The control-sizing Preview distinguishes layout bounds
+from hit regions; measured bounds alone do not prove hit-testing behavior.

@@ -134,7 +134,7 @@ not from a requirement to display custom package chrome.
 | --- | --- | --- |
 | Main collection or browsing screen | `List` with `.mhListChrome(.content)` and `MHContainerContent` | MHUI content rhythm with native selection and navigation |
 | Editor or product-specific form | `Form` with `.mhFormChrome(.content)` and `MHContainerContent` | MHUI hierarchy with native fields, focus, and validation behavior |
-| Settings, navigation sidebar, or familiar utility screen | `.mhListChrome(.native)` / `.mhFormChrome(.native)`, or theme only | Platform-owned appearance and behavior |
+| Settings, navigation sidebar, or familiar utility screen | `.mhListChrome(.native)` / `.mhFormChrome(.native)`, or theme only | Native structure and interaction with MHUI theme colors |
 | Overview, report, or freely arranged detail | `mhScreen`, `mhSection`, `MHSummary`, `MHFeatureGrid`, `MHGroupedRows` | Deliberate stack-based content hierarchy |
 
 Choose appearance independently of the container's behavior. A main screen
@@ -714,7 +714,7 @@ MHUI action buttons: `.enabled` opts them in where the system supports it, and
 These changes need no source edits, but they affect visual snapshots:
 
 - Background, surface, border, and text assets are neutral grays. The 2.0
-  canvas uses pure white / black; explicit surfaces provide graded separation.
+  canvas uses white / near-black; explicit surfaces provide graded separation.
   Primary text is softened from pure black and white; text contrast remains
   verified across supported appearances. Warning and
   destructive keep their semantic hues.
