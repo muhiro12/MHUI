@@ -1027,7 +1027,7 @@ destructive, prominent, toolbar, and tab treatments.
   iOS 27.1 Preview. The public UIKit color request remains installed for
   renderers that honor it; other runtime versions still require visual review.
 
-## Updating Screen Width After 2.2
+## Migration to 2.3
 
 `mhScreen` now uses the available width of any navigation column. Its responsive
 margins remain; the previous 640-point maximum for the entire screen is removed.
@@ -1038,3 +1038,9 @@ allocation, collapse behavior, and host-defined column widths remain intact.
 Default content buttons now use the accent rather than primary text. Review
 host accent contrast against the canvas; use explicit primary or secondary
 button styles for actions that need a visible shape.
+
+Detached inputs using `mhInputChrome` now use primary text and hide the native
+scroll-content background, allowing a `TextEditor` to share the input surface.
+Do not add detached-input decoration to native Form fields solely to change
+text color. SwiftUI may override the UIKit defaults requested at startup;
+arbitrary input and search fields still require runtime review.
