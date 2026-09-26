@@ -27,11 +27,9 @@ private struct MHContentSplitViewPreview: View {
             .navigationTitle("Library")
         } detail: {
             if let selection {
-                ScrollView {
-                    MHSummary(title: Text(selection), supporting: Text("A place for the details."))
-                        .mhScreen()
-                }
-                .navigationTitle(selection)
+                MHSummary(title: Text(selection), supporting: Text("A place for the details."))
+                    .mhScreen()
+                    .navigationTitle(selection)
             } else {
                 ContentUnavailableView("Choose a document", systemImage: "doc.text")
             }

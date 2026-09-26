@@ -586,6 +586,29 @@ text-only escape hatch, independent of the two container presentations.
 Action styles share horizontal and vertical padding in every arrangement.
 Quiet and destructive actions differ in color and fill, not label indentation.
 
+## Migration to 2.1
+
+Version 2.1 preserves the 2.0 public call sites while updating visual defaults.
+Existing MHDesign initializers also remain usable as function values.
+
+- Quiet and filled actions share padding across roles and arrangements. Remove
+  app-side padding added solely to compensate for their former misalignment.
+- Standard dimensions now follow the MHDesign eight-point grid. Recheck wrapping
+  and density; do not copy the previous numeric values into app code. Native
+  control dimensions and system font sizes remain platform-owned.
+- Themed native containers now use MHUI canvas and row colors. Wrap List/Form
+  content once in `MHContainerContent`; do not add `mhRow()` to each child too.
+  Native control labels and selection states retain system semantics.
+- Light text is softer gray and the dark canvas is near-black. Recheck app-owned
+  accent colors, images, placeholders, overlays, and explicitly colored text.
+- Choose `.content` or `.native` by the screen's purpose, not the position of a
+  split-view column. A main collection can remain `.content` at all widths.
+  Same-color column boundaries may still appear subtle and require app review.
+
+Retain the root `mhTheme` and the startup navigation-title configuration.
+Validate light/dark appearance, increased contrast, large Dynamic Type, native
+form editing, selected rows, and compact/expanded navigation after updating.
+
 ## Migration to 2.0
 
 MHUI 2.0 replaces the palette presets with one achromatic foundation and keeps
