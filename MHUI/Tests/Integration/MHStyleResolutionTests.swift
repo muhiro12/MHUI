@@ -108,7 +108,7 @@ struct MHStyleResolutionTests {
         #expect(destructive.backgroundStyle?.borderRole == nil)
         #expect(fallbackSecondary.backgroundStyle?.borderRole == .border)
         #expect(fallbackSecondary.backgroundStyle?.borderOpacity == 0.24)
-        #expect(primary.horizontalPadding == theme.spacing.content)
+        #expect(primary.horizontalPadding == theme.spacing.control)
         #expect(primary.minimumHeight == theme.layout.control.minimumTouchTarget)
         #expect(quiet.verticalPadding == primary.verticalPadding)
         #expect(quiet.horizontalPadding == primary.horizontalPadding)

@@ -516,3 +516,12 @@ python3 -m unittest discover -s ci_scripts/release -p 'test_*.py'
 - [ADR 0004: Host screens own product meaning](Designs/Decisions/0004-host-screens-own-product-meaning.md)
 - [ADR 0005: SwiftUtilities presentation boundary](Designs/Decisions/0005-swiftutilities-presentation-boundary.md)
 - [ADR 0006: Root theme propagation](Designs/Decisions/0006-root-theme-propagation.md)
+
+### Shared dimension baseline
+
+MHDesign owns package dimensions on an 8-point grid. MHUI derives its spacing,
+component padding, and minimum targets from those metrics. Zero spacing and
+1-point strokes have separate roles; native control sizes and system text
+styles remain platform-managed. See the
+[dimension contract](Designs/Guides/VISUAL_DESIGN_PRINCIPLES.md#dimension-ownership-and-grid)
+for responsive layout, accessibility, and host customization boundaries.

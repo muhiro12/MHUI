@@ -34,30 +34,6 @@ public extension MHTheme {
         #endif
     }
 
-    private static var standardPresentation: Presentation {
-        .init(
-            rowHorizontalInset: 32,
-            rowVerticalPadding: 20,
-            rowAccessorySpacing: 16,
-            compactRowHorizontalInset: 20,
-            compactRowVerticalPadding: 16,
-            compactRowAccessorySpacing: 12,
-            compactActionHorizontalPadding: 22,
-            compactActionVerticalPadding: 12,
-            regularKeyValueMinimumValueWidth: 160,
-            compactKeyValueMinimumValueWidth: 120,
-            compactKeyValueSpacing: 8,
-            compactActionGroupSpacing: 12
-        )
-    }
-
-    private static var standardDivider: Divider {
-        .init(
-            thickness: 1,
-            opacity: 0.32
-        )
-    }
-
     private static var standardMotion: Motion {
         .init(
             quick: 0.18,
@@ -88,6 +64,30 @@ public extension MHTheme {
             onAccent: .asset(MHColorAsset.onAccent),
             warning: .asset(MHColorAsset.warning),
             destructive: .asset(MHColorAsset.destructive)
+        )
+    }
+
+    private static func standardPresentation(metrics: MHDesignMetrics) -> Presentation {
+        .init(
+            rowHorizontalInset: metrics.spacing.section,
+            rowVerticalPadding: metrics.spacing.control,
+            rowAccessorySpacing: metrics.spacing.control,
+            compactRowHorizontalInset: metrics.spacing.control,
+            compactRowVerticalPadding: metrics.spacing.control,
+            compactRowAccessorySpacing: metrics.spacing.inline,
+            compactActionHorizontalPadding: metrics.spacing.control,
+            compactActionVerticalPadding: metrics.spacing.inline,
+            regularKeyValueMinimumValueWidth: metrics.layout.column.minimumValueWidth,
+            compactKeyValueMinimumValueWidth: metrics.layout.column.compactMinimumValueWidth,
+            compactKeyValueSpacing: metrics.spacing.inline,
+            compactActionGroupSpacing: metrics.spacing.inline
+        )
+    }
+
+    private static func standardDivider(metrics: MHDesignMetrics) -> Divider {
+        .init(
+            thickness: metrics.strokeWidth,
+            opacity: 0.32
         )
     }
 
@@ -155,8 +155,8 @@ public extension MHTheme {
             colors: colors,
             typography: standardTypography,
             metrics: metrics,
-            presentation: standardPresentation,
-            divider: standardDivider,
+            presentation: standardPresentation(metrics: metrics),
+            divider: standardDivider(metrics: metrics),
             motion: standardMotion,
             surfaces: standardSurfaces
         )

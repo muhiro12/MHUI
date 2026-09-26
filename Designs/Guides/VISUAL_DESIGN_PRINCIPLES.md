@@ -123,21 +123,21 @@ Metrics-only adopters also need to review layout when updating the package.
 
 | Parameter | Standard choice | Reason |
 | --- | --- | --- |
-| Spacing | 8 / 16 / 20 / 32 / 48 points | Separate inline, control, content, section, and screen relationships without excessive blank space |
+| Spacing | 8 / 16 / 24 / 32 / 48 points | Separate inline, control, content, section, and screen relationships without excessive blank space |
 | Compact screen | 24-point horizontal and top inset; 32-point content spacing | Align content clearly and bring the first useful information closer to navigation |
 | Regular screen | 40-point insets and spacing; 640-point readable width | Keep prose and summaries coherent within wide content columns |
-| Native content rows | Native horizontal margins on macOS; 20 / 32-point content inset elsewhere; 16 / 20-point vertical padding | Keep native row targets comfortably inset at compact / regular widths |
+| Native content rows | Native horizontal margins on macOS; 16 / 32-point content inset elsewhere; 16-point vertical padding | Keep native row targets comfortably inset at compact / regular widths |
 | Grouped content | No implicit horizontal inset or section surface; 8-point section gaps plus row padding | Align headings, rows, and captions while leaving outer padding to the screen or an explicit surface |
 | Display hierarchy | Native navigation titles; bold standalone headings; regular-weight iOS summaries | Separate the leading thought from body copy through scale and weight without a badge or background |
 | Section typography | System title3, medium | Give content sections an identifiable hierarchy above body copy |
-| Surface / control radius | 6 / 8 points retained | Quiet, nearly rectangular content planes and softly bounded fields; native controls keep their contextual shapes |
-| Minimum controls | 44 points; 28 on macOS, retained | Preserve platform-appropriate interaction targets |
+| Surface / control radius | 8 / 8 points | Quiet, nearly rectangular content planes and softly bounded fields; native controls keep their contextual shapes |
+| Minimum controls | 48 points; 32 on macOS | Preserve platform-appropriate interaction targets |
 | Surface tones | White / black canvas; muted 98% / 4%, standard 96% / 8%, elevated 92% / 14% sRGB gray | Reserve progressively stronger tonal separation for explicit supporting planes |
 | Motion | 0.18 / 0.30 seconds retained | Short state feedback; no decorative motion added |
 
-Watch layouts retain their compact platform baseline. Surface insets retain
-20 / 18 points on compact layouts and 28 / 24 on regular layouts because they
-separate a surface's contents without competing with the screen margin.
+Watch layouts use 16-point screen and surface insets. Other platforms use
+16-point compact and 24-point regular surface insets. Action styles share
+16-point horizontal and 8-point vertical padding across roles and arrangements.
 Semantic status hues remain distinct; brand accent belongs to the host.
 Surface values above describe normal contrast; accessibility variants and
 contrast outlines provide stronger separation. Color differences alone do not
@@ -151,3 +151,23 @@ foreground hierarchy on prominent selection backgrounds. Themed native
 container presentation retains the same MHUI text hierarchy. Navigation
 titles can still share MHUI's primary text color through the app-wide iOS
 startup configuration; this does not replace native title behavior.
+
+### Dimension ownership and grid
+
+MHDesign owns every package-defined dimension. MHUI maps these metrics to
+presentation roles; it must not introduce independent point values. Standard
+spacing, radii, thresholds, and component dimensions are multiples of 8 points.
+Zero means no spacing. A 1-point stroke is a separate drawing metric. A 4-point
+minimum spacing may be introduced only for a demonstrated need; it does not
+permit 12, 20, or 28-point tokens. No 4-point token is currently needed.
+
+The grid governs design parameters, not measured text or the final size of
+responsive layouts. Native controls retain their intrinsic dimensions. System
+text styles retain Dynamic Type. MHDesign does not define font sizes. Preview
+device sizes describe test environments rather than design tokens.
+
+Package-styled actions use a minimum target of 48 points on touch platforms
+and 32 points on macOS; content can grow beyond that minimum. Padding does not
+define a hit target by itself. The standard theme derives presentation and
+stroke defaults from the metrics passed to `MHTheme.standard(metrics:)`.
+Explicit host presentation overrides remain supported.

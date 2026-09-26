@@ -13,18 +13,23 @@ public struct MHLayoutMetrics: Sendable, Equatable {
     /// Shared control layout metrics.
     public let control: MHControlLayoutMetrics
 
+    /// Shared adaptive value-column metrics.
+    public let column: MHColumnLayoutMetrics
+
     public init(
         readableContentWidth: CGFloat,
         compactWidthThreshold: CGFloat,
         screen: MHScreenLayoutMetrics,
         surface: MHSurfaceLayoutMetrics,
-        control: MHControlLayoutMetrics
+        control: MHControlLayoutMetrics,
+        column: MHColumnLayoutMetrics = .standard
     ) {
         self.readableContentWidth = readableContentWidth
         self.compactWidthThreshold = compactWidthThreshold
         self.screen = screen
         self.surface = surface
         self.control = control
+        self.column = column
     }
 
     public func mode(

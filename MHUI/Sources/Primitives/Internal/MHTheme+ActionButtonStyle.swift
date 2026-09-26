@@ -62,10 +62,10 @@ private extension MHTheme {
         return .init(
             horizontal: isCompactWidth
                 ? presentation.compactActionHorizontalPadding
-                : spacing.content,
+                : spacing.control,
             vertical: isCompactWidth
                 ? presentation.compactActionVerticalPadding
-                : spacing.control
+                : spacing.inline
         )
     }
 

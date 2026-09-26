@@ -788,8 +788,8 @@ standard light appearances. Treat the asset catalog as the source of truth for
 their concrete values.
 
 Intervening 1.x releases changed the control radius to 8 points and the surface
-radius to 12 points. In 2.0, the standard control radius is 8 points and the
-surface radius is 6 points. Use the current metrics instead of carrying forward
+radius to 12 points. The 2.0.0 release used an 8-point control radius and a
+6-point surface radius. The current baseline uses 8 points for both. Use the current metrics instead of carrying forward
 those historical values. Explicit app-owned metric overrides remain in control.
 
 ## Migration from 1.10

@@ -1,13 +1,12 @@
 import CoreGraphics
 
 public extension MHDesignMetrics {
-    // swiftlint:disable no_magic_numbers
     /// The default design baseline shared across MH sibling apps.
     static let standard = Self(
         spacing: platformSpacing,
         cornerRadius: .init(
             control: gridUnit * 1,
-            surface: gridUnit * 0.75
+            surface: gridUnit * 1
         ),
         layout: .init(
             readableContentWidth: platformReadableContentWidth,
@@ -19,7 +18,6 @@ public extension MHDesignMetrics {
             )
         )
     )
-    // swiftlint:enable no_magic_numbers
 }
 
 // swiftlint:disable no_magic_numbers
@@ -30,7 +28,7 @@ private extension MHDesignMetrics {
         #if os(watchOS)
         .init(inline: 8, control: 16, content: 24, section: 40, screen: 56)
         #else
-        .init(inline: 8, control: 16, content: 20, section: 32, screen: 48)
+        .init(inline: 8, control: 16, content: 24, section: 32, screen: 48)
         #endif
     }
 
@@ -44,7 +42,7 @@ private extension MHDesignMetrics {
 
     static var platformCompactWidthThreshold: CGFloat {
         #if os(watchOS)
-        gridUnit * 37.5
+        gridUnit * 38
         #else
         gridUnit * 80
         #endif
@@ -54,11 +52,11 @@ private extension MHDesignMetrics {
         #if os(watchOS)
         .init(
             contentInsetHorizontal: gridUnit * 2,
-            contentInsetVertical: gridUnit * 2.5,
+            contentInsetVertical: gridUnit * 2,
             contentSpacing: gridUnit * 2,
-            compactContentInsetHorizontal: gridUnit * 1.5,
-            compactContentInsetVertical: gridUnit * 1.5,
-            compactContentSpacing: gridUnit * 1.5
+            compactContentInsetHorizontal: gridUnit * 2,
+            compactContentInsetVertical: gridUnit * 2,
+            compactContentSpacing: gridUnit * 2
         )
         #else
         .init(
@@ -75,26 +73,26 @@ private extension MHDesignMetrics {
     static var platformSurfaceLayout: MHSurfaceLayoutMetrics {
         #if os(watchOS)
         .init(
-            insetHorizontal: gridUnit * 1.5,
-            insetVertical: gridUnit * 1.5,
-            compactInsetHorizontal: gridUnit * 1.5,
-            compactInsetVertical: gridUnit * 1.5
+            insetHorizontal: gridUnit * 2,
+            insetVertical: gridUnit * 2,
+            compactInsetHorizontal: gridUnit * 2,
+            compactInsetVertical: gridUnit * 2
         )
         #else
         .init(
-            insetHorizontal: gridUnit * 3.5,
+            insetHorizontal: gridUnit * 3,
             insetVertical: gridUnit * 3,
-            compactInsetHorizontal: gridUnit * 2.5,
-            compactInsetVertical: gridUnit * 2.25
+            compactInsetHorizontal: gridUnit * 2,
+            compactInsetVertical: gridUnit * 2
         )
         #endif
     }
 
     static var platformMinimumControlTarget: CGFloat {
         #if os(macOS)
-        28
+        32
         #else
-        44
+        48
         #endif
     }
 }

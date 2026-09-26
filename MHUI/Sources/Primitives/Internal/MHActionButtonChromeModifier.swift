@@ -19,7 +19,7 @@ struct MHActionButtonChromeModifier: ViewModifier {
             .mhTextStyle(.bodyStrong, colorRole: style.foregroundRole)
             .padding(.horizontal, style.horizontalPadding)
             .padding(.vertical, style.verticalPadding)
-            .frame(minHeight: style.minimumHeight)
+            .frame(minWidth: style.minimumHeight, minHeight: style.minimumHeight)
 
         return actionSurface(label: label)
             .opacity(isEnabled ? 1 : style.disabledOpacity)
