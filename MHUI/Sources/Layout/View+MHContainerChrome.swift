@@ -5,7 +5,8 @@ public extension View {
     ///
     /// Content presentation uses a plain list. Wrap its content once in
     /// `MHContainerContent`, or apply `mhRow()` to individual complete rows.
-    /// Keep navigation sidebars native; style content columns individually.
+    /// Choose by content role, not column position. A primary content list can
+    /// retain content styling when a split view collapses to a single column.
     @ViewBuilder
     func mhListChrome(_ style: MHContainerStyle = .content) -> some View {
         switch style {

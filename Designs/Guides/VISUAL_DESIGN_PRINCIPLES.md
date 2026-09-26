@@ -14,9 +14,9 @@ proportion, and useful hierarchy. It avoids decorative borders and shadows,
 stacked frames, simulated materials or textures, and color that does not
 communicate meaning.
 
-The canvas is pure white in light appearance and near-black (`#080808`) in dark
+The canvas is pure white in light appearance and near-black (`#0E0E0E`) in dark
 appearance. White supports a clear relationship between text and empty space.
-Near-black keeps a neutral dark base while softening the transition to content. Primary text uses charcoal in light appearance
+Near-black keeps a neutral dark base while softening the transition to content. Primary text uses a softened gray (`#444444`) in light appearance
 and softened light gray in dark appearance. Increased Contrast strengthens
 foreground differentiation. These are screen design choices, not simulated
 paper or ink.
@@ -132,7 +132,7 @@ Metrics-only adopters also need to review layout when updating the package.
 | Section typography | System title3, medium | Give content sections an identifiable hierarchy above body copy |
 | Surface / control radius | 8 / 8 points | Quiet, nearly rectangular content planes and softly bounded fields; native controls keep their contextual shapes |
 | Minimum controls | 48 points; 32 on macOS | Preserve platform-appropriate interaction targets |
-| Surface tones | White / near-black canvas; dark muted `#121212`, standard `#1C1C1C`, elevated `#2A2A2A` | Reserve progressively stronger tonal separation for explicit supporting planes |
+| Surface tones | White / near-black canvas; dark muted `#181818`, standard `#242424`, elevated `#323232` | Reserve progressively stronger tonal separation for explicit supporting planes |
 | Motion | 0.18 / 0.30 seconds retained | Short state feedback; no decorative motion added |
 
 Watch layouts use 16-point screen and surface insets. Other platforms use
@@ -179,3 +179,9 @@ standard control sizing is not supplied by the custom style. Do not apply that
 minimum to system toggles, toolbar buttons, or native List/Form rows merely to
 force them onto the grid. The control-sizing Preview distinguishes layout bounds
 from hit regions; measured bounds alone do not prove hit-testing behavior.
+
+A split view column is a placement, not a styling role. A primary library can
+keep content presentation when shown next to its detail or as the initial
+compact screen. Preserve the native split container and selection behavior;
+do not require native row presentation solely because a column is leading.
+Navigation-only source lists and content-first lists are distinct use cases.

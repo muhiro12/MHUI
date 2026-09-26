@@ -134,7 +134,7 @@ not from a requirement to display custom package chrome.
 | --- | --- | --- |
 | Main collection or browsing screen | `List` with `.mhListChrome(.content)` and `MHContainerContent` | MHUI content rhythm with native selection and navigation |
 | Editor or product-specific form | `Form` with `.mhFormChrome(.content)` and `MHContainerContent` | MHUI hierarchy with native fields, focus, and validation behavior |
-| Settings, navigation sidebar, or familiar utility screen | `.mhListChrome(.native)` / `.mhFormChrome(.native)`, or theme only | Native structure and interaction with MHUI theme colors |
+| Settings or familiar utility screen | `.mhListChrome(.native)` / `.mhFormChrome(.native)`, or theme only | Native structure and interaction with MHUI theme colors |
 | Overview, report, or freely arranged detail | `mhScreen`, `mhSection`, `MHSummary`, `MHFeatureGrid`, `MHGroupedRows` | Deliberate stack-based content hierarchy |
 
 Choose appearance independently of the container's behavior. A main screen
@@ -377,8 +377,9 @@ app-owned values, tags, links, and control bindings stay with the supplied conte
 
 Do not add another `mhRow()` inside the adapter. A complete row should be one
 view; use a stack for several labels that belong to the same row. Both plain
-rows and ordinary sections are supported. Keep navigation sidebars outside the
-adapter. For explicitly collapsible sections or specialized section traits, keep
+rows and ordinary sections are supported. A primary content list may use this
+adapter in any split-view column. For explicitly collapsible sections or
+specialized section traits, keep
 the native section structure and apply `mhRow()` explicitly: recomposing an
 ordinary section does not forward every specialized section configuration.
 For intentionally mixed row surfaces, use that explicit route as well.
@@ -441,11 +442,20 @@ preview's navigation hierarchy, as shown in the adoption sample.
 
 Apply the root theme to `TabView` or `NavigationSplitView`, but apply content
 chrome only to the list, form, or scrolling content in each destination or
-column. A shared theme does not paint navigation backgrounds. Sidebars, tab
-bars, toolbars, sheets, and split-view dividers remain system-owned.
+column. A shared theme does not paint navigation backgrounds. Navigation
+containers, tab bars, toolbars, sheets, and split-view dividers
+remain system-owned.
 
-Use `.native` for a settings destination or sheet even when opened from a
-content-styled main screen. Do not paint one canvas across all split columns
+Choose `.native` when familiar native grouping serves a settings or utility
+destination. A primary content list can retain `.content` in both expanded and
+collapsed split views. Being passed to the `sidebar:` builder does not make
+that list a navigation-only sidebar. A source list of destinations may favor
+native presentation; a library or recipe list may favor content presentation.
+MHUI does not force a style switch based on the device or column position.
+Keep native selection and navigation behavior, and inspect both layouts.
+
+`MHContentSplitViewPreview` demonstrates a content-first leading column.
+Do not paint one canvas across all split columns
 or replace system dividers with decorative rules. The MHUI canvas extends
 vertically behind navigation chrome, stays within horizontal column bounds,
 and respects the keyboard safe area.
@@ -564,7 +574,9 @@ native List or Form to apply the theme's muted row surface. In native mode it
 preserves the original section structure, including editing and collapse traits.
 Without the adapter, chrome applies only the canvas and MHUI text environment;
 it cannot reach through an arbitrary container to set each row's background.
-Do not apply a full-screen chrome modifier to the navigation shell or sidebar.
+Do not apply full-screen chrome to the navigation shell across its columns.
+Apply content styling to an individual list, including a primary content list
+that occupies the leading column of a split view.
 
 Standard control labels, unstyled `Text`, and native selection/disabled states
 retain system semantics; this is not an app-wide foreground override. Use MHUI
