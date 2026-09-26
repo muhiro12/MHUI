@@ -60,18 +60,12 @@ private extension MHTheme {
         )
 
         return .init(
-            filledHorizontal: isCompactWidth
+            horizontal: isCompactWidth
                 ? presentation.compactActionHorizontalPadding
                 : spacing.content,
-            filledVertical: isCompactWidth
+            vertical: isCompactWidth
                 ? presentation.compactActionVerticalPadding
-                : spacing.control,
-            quietHorizontal: isCompactWidth
-                ? presentation.compactRowAccessorySpacing
-                : spacing.control,
-            quietVertical: isCompactWidth
-                ? presentation.compactKeyValueSpacing
-                : spacing.inline
+                : spacing.control
         )
     }
 
@@ -137,8 +131,8 @@ private extension MHTheme {
         .init(
             backgroundStyle: nil,
             foregroundRole: .accent,
-            horizontalPadding: padding.quietHorizontal,
-            verticalPadding: padding.quietVertical,
+            horizontalPadding: padding.horizontal,
+            verticalPadding: padding.vertical,
             minimumHeight: layout.control.minimumTouchTarget,
             pressedOpacity: MHActionButtonConstants.quietPressedOpacity,
             disabledOpacity: MHActionButtonConstants.quietDisabledOpacity
@@ -153,8 +147,8 @@ private extension MHTheme {
         .init(
             backgroundStyle: backgroundStyle,
             foregroundRole: foregroundRole,
-            horizontalPadding: padding.filledHorizontal,
-            verticalPadding: padding.filledVertical,
+            horizontalPadding: padding.horizontal,
+            verticalPadding: padding.vertical,
             minimumHeight: layout.control.minimumTouchTarget,
             pressedOpacity: MHActionButtonConstants.filledPressedOpacity,
             disabledOpacity: MHActionButtonConstants.filledDisabledOpacity

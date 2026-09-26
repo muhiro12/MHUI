@@ -110,9 +110,31 @@ struct MHStyleResolutionTests {
         #expect(fallbackSecondary.backgroundStyle?.borderOpacity == 0.24)
         #expect(primary.horizontalPadding == theme.spacing.content)
         #expect(primary.minimumHeight == theme.layout.control.minimumTouchTarget)
-        #expect(quiet.verticalPadding < primary.verticalPadding)
+        #expect(quiet.verticalPadding == primary.verticalPadding)
+        #expect(quiet.horizontalPadding == primary.horizontalPadding)
+        #expect(destructive.horizontalPadding == quiet.horizontalPadding)
         #expect(primary.pressedOpacity == 0.88)
         #expect(primary.disabledOpacity == 0.55)
+    }
+
+    @Test
+    func action_roles_share_padding_at_compact_and_regular_widths() {
+        let theme = MHTheme.standard
+        for width in [375.0, 900.0] {
+            let context = MHAdaptiveLayoutContext(availableWidth: width, horizontalSizeClass: nil)
+            let styles = [MHButtonRole.primary, .secondary, .quiet, .destructive].map { role in
+                theme.resolvedActionButtonStyle(
+                    for: role,
+                    context: context,
+                    glassPolicy: .disabled,
+                    reduceTransparency: false,
+                    supportsGlass: false
+                )
+            }
+            #expect(Set(styles.map(\.horizontalPadding)).count == 1)
+            #expect(Set(styles.map(\.verticalPadding)).count == 1)
+            #expect(Set(styles.map(\.minimumHeight)).count == 1)
+        }
     }
 
     @Test
