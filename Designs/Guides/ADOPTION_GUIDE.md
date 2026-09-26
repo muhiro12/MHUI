@@ -424,6 +424,14 @@ or default button foreground does not reliably separate it from control tint.
 MHUI retains that limitation rather than replacing navigation controls.
 `toolbarForegroundStyle` is not available on iOS in the current SDK.
 
+Keep brand tint at the root. A deliberate neutral exception should supply
+`primaryText`, not remove tint and fall back to system black. Local toolbar
+tint is a supported SwiftUI configuration; the limitation is automatic
+package-wide separation, not the ability to style a toolbar locally. For
+example, a host can apply `.mhTint(.primaryText)` to a toolbar's content group
+while other controls continue to inherit brand tint. This is optional local
+configuration, not a requirement on every control.
+
 ### Text Color Ownership
 
 `mhTheme` supplies theme values and native tint; it does not recolor
@@ -511,7 +519,7 @@ native controls and grouping on MHUI surfaces.
 | `mhRow` | Standalone or native-container row chrome | Apply only when neither `MHGroupedRows` nor `MHContainerContent` already styles the complete row |
 | `MHContainerContent` | Automatic content-row treatment or themed native-row surfaces | Wrap the container content once and choose its chrome style |
 | `configureNativeAppearance()` | Shared iOS title, text-input, and requested tab colors | Call once before creating UI, using the app theme |
-| `mhTextAppearance` | Theme-owned neutral text with selection adaptation | Choose `.native` only for a deliberate subtree exception; native chrome selects it automatically |
+| `mhTextAppearance` | Theme-owned neutral text with selection adaptation | Choose `.native` only for a deliberate text exception; container chrome does not select it automatically |
 
 ### Compact Metadata Badges
 
@@ -682,7 +690,8 @@ style. Review long titles and controls alongside them at large text sizes.
 
 The shared standard metrics are redesigned, including a
 640-point readable width, 24-point compact screen margins and top inset, and
-40-point section spacing. Explicit `standard(metrics:)` overrides still win.
+32-point section spacing in 2.0 (increased to 40 in 2.2). Explicit
+`standard(metrics:)` overrides still win.
 `MHDesignMetrics.standard` remains the single generic baseline. Metrics-only
 adopters also receive these changes when updating to 2.0 and should review
 their screen layouts.
@@ -997,3 +1006,20 @@ and explicit appearances can take precedence, and the new Liquid Glass tab
 renderer can keep system unselected colors. Do not reconfigure appearance from
 individual screens. Review `MHNativeControlColorsPreview` for enabled, disabled,
 destructive, prominent, toolbar, and tab treatments.
+
+### Migration to 2.2
+
+- Section spacing is now 40 points, with 8-point gaps between a composed
+  section's header, content, and footer. Compact screen content spacing is
+  also 40 points. Standard metrics remain owned by MHDesign.
+- The root theme now explicitly propagates brand tint to native controls.
+  Review toolbar items that previously used the system's neutral appearance.
+  For deliberate neutral exceptions, use the theme's primary text color.
+- Default content buttons use primary text; destructive actions use the
+  destructive color. Explicit action styles keep their semantic treatments.
+- Replace the startup navigation-title setup with `configureNativeAppearance()`
+  to include text inputs and supported unselected tab defaults. Existing
+  `configureNavigationTitleAppearance()` calls remain valid and title-only.
+- Unselected Liquid Glass tab colors remain system-controlled in the observed
+  iOS 27.1 Preview. The public UIKit color request remains installed for
+  renderers that honor it; other runtime versions still require visual review.

@@ -71,8 +71,8 @@ grouping and row geometry while retaining themed canvas and row surfaces. `MHCon
 applies complete-row treatment once for ordinary content lists and forms.
 
 On iOS, `configureNativeAppearance()` is a separate host-invoked
-startup API for the app-wide native title color. It changes only title
-attributes and remains independent of subtree `mhTheme` and `.native` choices.
+startup API for native title and text-input colors, plus supported unselected
+tab colors. It remains independent of subtree `mhTheme` and `.native` choices.
 
 The host app chooses by screen purpose, content hierarchy, and required
 behavior. Read-only detail screens can use native grouped lists; they do not
