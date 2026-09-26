@@ -196,10 +196,12 @@ and choose any surface or control treatment explicitly.
 
 ### Choose Container Presentation
 
-Native behavior and visual presentation are separate choices:
+MHUI has two visual choices with one shared color foundation. Stack-based
+content uses `mhScreen`; List and Form use the same content wrapper with either
+choice below. Native behavior and visual presentation are separate choices:
 
-- `.mhListChrome(.native)` and `.mhFormChrome(.native)` preserve system
-  backgrounds and styles. Pass `.native` explicitly; no-argument calls use
+- `.mhListChrome(.native)` and `.mhFormChrome(.native)` preserve platform grouping and row geometry with MHUI
+  canvas and row colors. Pass `.native` explicitly; no-argument calls use
   `.content`.
 - `.mhListChrome(.content)` uses a plain native list with the MHUI canvas.
   Wrap its content once in `MHContainerContent` to style complete rows.
@@ -231,8 +233,10 @@ NavigationStack {
 ```
 
 Here `name` and `keepsOffline` are app-owned bindings. Change `.content` to
-`.native` to keep the same content with system presentation. No per-row
-`mhRow()` or labeled-content style is needed. Use the same content wrapper
+`.native` to keep native grouping and row geometry with the same MHUI colors. No per-row
+`mhRow()` or labeled-content style is needed. Both choices use the MHUI canvas
+and themed row surfaces; `.native` retains platform row geometry and typography.
+Native control labels and unstyled text retain system semantics. Use the same content wrapper
 inside `List`. Standard `Section` headers are valid; `MHSectionHeader` adds the
 shared title/supporting hierarchy when useful. See the
 [container contract and limits](Designs/Guides/ADOPTION_GUIDE.md#automatic-container-content)
@@ -330,12 +334,12 @@ surface.
 Choose appearance by screen purpose and container behavior independently.
 All routes share the root theme, and an app can mix them across destinations.
 The no-argument chrome modifiers choose MHUI content. Pass `.native` explicitly
-for platform container presentation. MHUI text follows that choice; selected
+for themed native container presentation. Both choices retain MHUI text colors; selected
 rows adapt to prominent native backgrounds without per-row configuration.
 
 | Route | Use | Ownership |
 | --- | --- | --- |
-| Native | `mhListChrome(.native)` or `mhFormChrome(.native)`, or theme only | SwiftUI owns the container appearance |
+| Themed native | `mhListChrome(.native)` or `mhFormChrome(.native)` with `MHContainerContent` | SwiftUI owns grouping and row geometry; MHUI supplies canvas, row surfaces, and styled text colors |
 | MHUI content | `mhListChrome(.content)` or `mhFormChrome(.content)` with MHUI rows and headers | MHUI supplies hierarchy and rhythm while SwiftUI retains scrolling, selection, and controls |
 | Stack composition | `mhScreen`, `mhSection`, `MHSummary`, `MHGroupedRows` | MHUI supplies freely arranged content hierarchy around native controls |
 
@@ -350,9 +354,11 @@ plain styling; the app can explicitly select another list style afterward.
 
 ```swift
 Form {
-    Section("Preferences") {
-        Toggle("Use iCloud Sync", isOn: $isSyncEnabled)
-        LabeledContent("Theme", value: "System")
+    MHContainerContent {
+        Section("Preferences") {
+            Toggle("Use iCloud Sync", isOn: $isSyncEnabled)
+            LabeledContent("Theme", value: "System")
+        }
     }
 }
 .mhFormChrome(.native)

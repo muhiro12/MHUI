@@ -9,6 +9,11 @@ public struct MHContainerContent<Content: View>: View {
     @Environment(\.mhContainerStyle)
     private var containerStyle
 
+    @Environment(\.mhTheme)
+    private var theme
+    @Environment(\.colorScheme)
+    private var colorScheme
+
     private let content: Content
 
     public var body: some View {
@@ -28,6 +33,12 @@ public struct MHContainerContent<Content: View>: View {
             }
             .environment(\.mhRowChromeScope, .grouped)
             .labeledContentStyle(.mhKeyValue)
+        } else if containerStyle == .native {
+            content
+                .listRowBackground(
+                    theme.resolvedColor(for: theme.surfaces.muted.colorRole, in: colorScheme)
+                        .opacity(theme.surfaces.muted.opacity)
+                )
         } else {
             content
         }

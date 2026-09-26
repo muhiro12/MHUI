@@ -1,7 +1,7 @@
 import SwiftUI
 
 public extension View {
-    /// Chooses native presentation or MHUI content presentation for one list.
+    /// Chooses themed native presentation or MHUI content presentation for one list.
     ///
     /// Content presentation uses a plain list. Wrap its content once in
     /// `MHContainerContent`, or apply `mhRow()` to individual complete rows.
@@ -10,8 +10,8 @@ public extension View {
     func mhListChrome(_ style: MHContainerStyle = .content) -> some View {
         switch style {
         case .native:
-            environment(\.mhContainerStyle, .native)
-                .mhTextAppearance(.native)
+            modifier(MHContainerChromeModifier(style: .native))
+                .mhTextAppearance(.themed)
                 .environment(\.mhUsesFormSurface, false)
         case .content:
             listStyle(.plain)
@@ -21,7 +21,7 @@ public extension View {
         }
     }
 
-    /// Chooses native presentation or MHUI content presentation for one form.
+    /// Chooses themed native presentation or MHUI content presentation for one form.
     ///
     /// Content presentation supplies the canvas. Use `MHContainerContent` for
     /// automatic row surfaces, or apply `mhRow()` to individual complete rows.
@@ -30,8 +30,8 @@ public extension View {
     func mhFormChrome(_ style: MHContainerStyle = .content) -> some View {
         switch style {
         case .native:
-            environment(\.mhContainerStyle, .native)
-                .mhTextAppearance(.native)
+            modifier(MHContainerChromeModifier(style: .native))
+                .mhTextAppearance(.themed)
                 .environment(\.mhUsesFormSurface, false)
         case .content:
             modifier(MHContainerChromeModifier())

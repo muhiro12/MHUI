@@ -8,25 +8,26 @@ struct MHCollectionComparison: View {
 
     var body: some View {
         List(selection: $selection) {
-            Section {
-                overview
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(style == .content ? Color.clear : nil)
-            }
-            Section {
-                ForEach(["Field notes", "Reading list", "Project index"], id: \.self) { title in
-                    NavigationLink(value: title) {
-                        row(title)
-                    }
-                    .modifier(MHComparisonRowModifier(style: style))
+            MHContainerContent {
+                Section {
+                    overview
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(style == .content ? Color.clear : nil)
                 }
-            } header: {
-                if style == .content {
-                    MHSectionHeader("In use", supporting: "Keep what matters close.")
-                } else {
-                    VStack(alignment: .leading) {
-                        Text("In use")
-                        Text("Keep what matters close.")
+                Section {
+                    ForEach(["Field notes", "Reading list", "Project index"], id: \.self) { title in
+                        NavigationLink(value: title) {
+                            row(title)
+                        }
+                    }
+                } header: {
+                    if style == .content {
+                        MHSectionHeader("In use", supporting: "Keep what matters close.")
+                    } else {
+                        VStack(alignment: .leading) {
+                            Text("In use")
+                            Text("Keep what matters close.")
+                        }
                     }
                 }
             }
@@ -46,7 +47,6 @@ struct MHCollectionComparison: View {
                 metadata: "3 documents",
                 supporting: "Notes, reading, and projects worth returning to."
             )
-            .mhRow()
         } else {
             VStack(alignment: .leading, spacing: 8) {
                 Text("3 documents").font(.caption)
@@ -75,19 +75,6 @@ struct MHCollectionComparison: View {
     }
 }
 
-struct MHComparisonRowModifier: ViewModifier {
-    let style: MHContainerStyle
-
-    @ViewBuilder
-    func body(content: Content) -> some View {
-        if style == .content {
-            content.mhRow()
-        } else {
-            content
-        }
-    }
-}
-
 struct MHFormComparison: View {
     let style: MHContainerStyle
     @State private var name = "Field notes"
@@ -96,29 +83,30 @@ struct MHFormComparison: View {
 
     var body: some View {
         Form {
-            Section {
-                TextField("Name", text: $name)
-                    .modifier(MHComparisonRowModifier(style: style))
-                Toggle("Keep offline", isOn: $keepsOffline)
-                    .modifier(MHComparisonRowModifier(style: style))
-                if style == .content {
-                    LabeledContent("Documents", value: "3")
-                        .labeledContentStyle(.mhKeyValue)
-                        .mhRow()
-                } else {
-                    LabeledContent("Documents", value: "3")
-                }
-            } header: {
-                if style == .content {
-                    MHSectionHeader("Collection", supporting: "Your working copy")
-                } else {
-                    VStack(alignment: .leading) {
-                        Text("Collection")
-                        Text("Your working copy")
+            MHContainerContent {
+                Section {
+                    TextField("Name", text: $name)
+
+                    Toggle("Keep offline", isOn: $keepsOffline)
+
+                    if style == .content {
+                        LabeledContent("Documents", value: "3")
+                            .labeledContentStyle(.mhKeyValue)
+                    } else {
+                        LabeledContent("Documents", value: "3")
+                    }
+                } header: {
+                    if style == .content {
+                        MHSectionHeader("Collection", supporting: "Your working copy")
+                    } else {
+                        VStack(alignment: .leading) {
+                            Text("Collection")
+                            Text("Your working copy")
+                        }
                     }
                 }
+                MHComparisonNoteSection(style: style, note: $note)
             }
-            MHComparisonNoteSection(style: style, note: $note)
         }
         .formStyle(.grouped)
         .mhFormChrome(style)
@@ -133,7 +121,6 @@ private struct MHComparisonNoteSection: View {
     var body: some View {
         Section {
             TextField("Note", text: $note, axis: .vertical)
-                .modifier(MHComparisonRowModifier(style: style))
         } header: {
             if style == .content {
                 MHSectionHeader("Notes")

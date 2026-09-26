@@ -122,7 +122,9 @@ the Xcode-native integration is unavailable or does not cover a check.
 - `MHFeatureGrid` provides the optional leading-feature hierarchy for concise
   visual sets and owns compact-width and accessibility fallback behavior.
 - `MHContainerStyle` separates `.native` appearance from `.content` presentation
-  on native List and Form. The default is `.content`; `.native` is explicit.
+  on native List and Form. Both share the MHUI canvas and text colors;
+  `MHContainerContent` supplies native-mode row surfaces without changing
+  section structure. The default is `.content`; `.native` is explicit.
   Content lists use plain styling and `MHContainerContent` supplies automatic
   row treatment; controls and selection remain native.
 - iOS navigation titles share the app-wide primary text color when configured

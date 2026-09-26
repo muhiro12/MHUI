@@ -14,7 +14,7 @@ public struct MHUINativeContainerSample: View {
                     noteSection
                 }
             }
-            .mhFormChrome(.content)
+            .mhFormChrome(.native)
             .navigationTitle("Settings")
         }
     }
@@ -31,7 +31,7 @@ private extension MHUINativeContainerSample {
 
             Toggle("Daily reminder", isOn: $isEnabled)
         } header: {
-            MHSectionHeader("Overview")
+            Text("Overview")
         } footer: {
             Text("The app continues to own its data and interaction behavior.")
         }
@@ -49,7 +49,7 @@ private extension MHUINativeContainerSample {
                 // no-op
             }
         } header: {
-            MHSectionHeader("Note")
+            Text("Note")
         }
     }
 }

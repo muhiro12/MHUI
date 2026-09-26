@@ -67,7 +67,7 @@ presentation boundaries. Styled adoption supports three complementary routes:
    visible screen structure around arbitrary descendants.
 
 The chrome modifiers default to `.content`. `.native` preserves platform
-container presentation without discarding the app theme. `MHContainerContent`
+grouping and row geometry while retaining themed canvas and row surfaces. `MHContainerContent`
 applies complete-row treatment once for ordinary content lists and forms.
 
 On iOS, `configureNavigationTitleAppearance()` is a separate host-invoked
@@ -83,7 +83,8 @@ without requiring every screen to repeat its rules or surface frames.
 
 `mhScreen` owns screen scrolling, so it must not wrap a native `List` or `Form`.
 The native-container routes preserve their container behavior. Content lists
-choose plain styling explicitly; native routes preserve the system background.
+choose plain styling explicitly; native routes preserve system geometry with
+MHUI canvas and row colors.
 The theme uses `MHDesignMetrics.standard` as the shared layout baseline;
 explicit host metrics override it.
 

@@ -80,9 +80,10 @@ where meaning is known: `MHGroupedRows` styles its direct children and
 
 Do not turn off the root theme for an entire app because one screen needs
 native presentation. Use `.mhListChrome(.native)` or `.mhFormChrome(.native)`
-for native container backgrounds and text hierarchy. Omitting the modifier
-also leaves container presentation to SwiftUI, but does not switch MHUI text
-styles to the native hierarchy. Both retain the root theme and app tint.
+to keep native grouping and row geometry on the MHUI canvas. Wrap the content
+once in `MHContainerContent` for themed row surfaces. Both presentation styles
+retain MHUI text colors. Omitting chrome and the content adapter leaves pure
+system presentation; it is not a third MHUI design.
 The app-wide navigation title color remains shared in either case.
 
 If the subtree intentionally needs a different theme, apply
@@ -321,13 +322,13 @@ List(selection: $selection) {
 `MHContainerContent` applies row insets and backgrounds to complete rows,
 including navigation links. Per-row `mhRow()` is unnecessary inside it. The content route deliberately
 uses a plain list; apply another supported `.listStyle` afterward when a
-product needs its grouping. For an unchanged native appearance choose
+product needs its grouping. For themed native grouping and row geometry choose
 `.mhListChrome(.native)`. The no-argument call chooses MHUI content.
 
 MHUI text in content rows uses the theme's primary, secondary, and tertiary
 colors. On prominent selected backgrounds, it resolves to the native
-foreground hierarchy. Native chrome chooses that hierarchy for the entire
-container. These choices require no additional per-row modifiers.
+foreground hierarchy. Both chrome styles retain themed MHUI text elsewhere.
+These choices require no additional per-row modifiers.
 Explicit status and accent roles retain their semantic
 colors and require selection-aware presentation when used on a selected row.
 
@@ -368,7 +369,8 @@ in the app.
 
 `MHContainerContent` is a content adapter, not a replacement for `List` or `Form`.
 Choose presentation once with the enclosing container's `mhListChrome` or
-`mhFormChrome`. In `.native` mode the original content passes through unchanged.
+`mhFormChrome`. In `.native` mode the original content receives a themed row background
+without reconstructing its sections or changing their geometry and traits.
 In `.content` mode the adapter uses SwiftUI's public section/subview composition
 APIs to apply row chrome and the labeled-content style. Stable row identity,
 app-owned values, tags, links, and control bindings stay with the supplied content.
@@ -397,10 +399,10 @@ every descendant. In composed content, `mhTextStyle` uses the same primary color
 for screen titles, section titles, and body text unless another color role is
 specified. Supporting and caption colors preserve the hierarchy.
 
-MHUI components and text styles retain the theme colors in content List and
-Form rows. `mhListChrome(.native)` and `mhFormChrome(.native)` switch their
-neutral text to the platform hierarchy. For a composed screen,
-`mhTextAppearance(.native)` makes the same choice once for the subtree.
+MHUI components and text styles retain the theme colors in both List and
+Form presentations. For an intentional text-only exception,
+`mhTextAppearance(.native)` selects the system foreground hierarchy once for
+the subtree.
 Prominent native selection backgrounds also use the platform hierarchy.
 
 Unstyled `Text` and native control labels can still use system black or white.
@@ -466,7 +468,7 @@ native controls and grouping on MHUI surfaces.
 | `MHGroupedRows` | Direct-child row chrome and separators | Provide native controls or semantic row content |
 | `MHActionGroup` | Secondary style and adaptive layout | Mark primary, quiet, and destructive exceptions |
 | `mhRow` | Standalone or native-container row chrome | Apply only when neither `MHGroupedRows` nor `MHContainerContent` already styles the complete row |
-| `MHContainerContent` | Automatic row treatment for content List/Form; unchanged rows in native mode | Wrap the container content once and choose its chrome style |
+| `MHContainerContent` | Automatic content-row treatment or themed native-row surfaces | Wrap the container content once and choose its chrome style |
 | `configureNavigationTitleAppearance()` | Shared iOS navigation title color | Call once before creating UI, using the app theme |
 | `mhTextAppearance` | Theme-owned neutral text with selection adaptation | Choose `.native` only for a deliberate subtree exception; native chrome selects it automatically |
 
@@ -544,6 +546,34 @@ stack-based routes can both be finished implementations. Directional previews
 remain proposals until their appearance is reviewed; do not freeze them as
 golden baselines merely because they compile or render successfully.
 
+## Presentation Choices After 2.0
+
+MHUI offers two visual choices: content composition and themed native
+presentation. Both share the theme's canvas, surface, and MHUI text colors.
+Their technical entry points depend on who owns scrolling:
+
+| Composition | Entry point | Structure |
+| --- | --- | --- |
+| MHUI scrolling content | `mhScreen` on a stack | MHUI supplies scrolling, readable width, and spacing |
+| MHUI List or Form | `MHContainerContent` with `.content` chrome | MHUI supplies row rhythm; native controls and scrolling remain |
+| Themed native List or Form | `MHContainerContent` with `.native` chrome | Native grouping, typography, insets, and editing structure remain |
+
+In 2.0.0, `.native` left backgrounds and neutral text presentation to the OS.
+It now retains MHUI colors. Add `MHContainerContent` once inside an existing
+native List or Form to apply the theme's muted row surface. In native mode it
+preserves the original section structure, including editing and collapse traits.
+Without the adapter, chrome applies only the canvas and MHUI text environment;
+it cannot reach through an arbitrary container to set each row's background.
+Do not apply a full-screen chrome modifier to the navigation shell or sidebar.
+
+Standard control labels, unstyled `Text`, and native selection/disabled states
+retain system semantics; this is not an app-wide foreground override. Use MHUI
+text roles for composed prose. `mhTextAppearance(.native)` remains an explicit
+text-only escape hatch, independent of the two container presentations.
+
+Action styles share horizontal and vertical padding in every arrangement.
+Quiet and destructive actions differ in color and fill, not label indentation.
+
 ## Migration to 2.0
 
 MHUI 2.0 replaces the palette presets with one achromatic foundation and keeps
@@ -553,7 +583,8 @@ pair.
 ### Container Choice and Layout
 
 No-argument `mhListChrome()` and `mhFormChrome()` choose MHUI presentation.
-Pass `.native` explicitly to preserve the OS background and text hierarchy.
+Pass `.native` explicitly to preserve platform grouping and row geometry
+while retaining the MHUI canvas, row surfaces, and styled text hierarchy.
 A content list uses plain styling;
 MHUI rows and headers are explicit, supported choices in both List and Form.
 Wrap ordinary container content in `MHContainerContent` to style all rows, or

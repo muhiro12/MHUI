@@ -16,7 +16,7 @@ extension EnvironmentValues {
 public extension View {
     /// Chooses the foreground hierarchy used by MHUI text in this subtree.
     ///
-    /// Native container chrome applies `.native` automatically. This does not
+    /// Both container styles use themed MHUI text. This explicit escape hatch does not
     /// override arbitrary SwiftUI controls or platform navigation titles.
     func mhTextAppearance(_ appearance: MHTextAppearance) -> some View {
         environment(\.mhTextAppearance, appearance)
