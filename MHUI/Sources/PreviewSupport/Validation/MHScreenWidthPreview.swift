@@ -28,13 +28,12 @@ private struct MHScreenWidthPreview: View {
             Text(
                 """
                     Images and collections use the available column. \
-                    Only this reading section has a maximum line width, \
-                    so a wide window does not turn a paragraph into an excessively long line. \
+                    Text follows the same available width as the surrounding content, \
+                    without a separate limit that leaves unused space on the right. \
                     Resize the window to compare both behaviors.
                     """
             )
             .mhTextStyle(.body)
-            .mhReadableContent()
             .mhSection("Reading notes")
         }
         .mhScreen("Collection")

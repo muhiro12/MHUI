@@ -16,7 +16,6 @@ struct MHUIReadingSample: View {
             readingNotes
                 .mhSection("Notes")
         }
-        .mhReadableContent()
         .mhScreen("Reading")
         .toolbar {
             Button("Bookmark", systemImage: "bookmark") {

@@ -130,7 +130,7 @@ Metrics-only adopters also need to review layout when updating the package.
 | --- | --- | --- |
 | Spacing | 8 / 16 / 24 / 40 / 48 points | Separate inline, control, content, section, and screen relationships with generous space between groups instead of decorative boundaries |
 | Compact screen | 24-point horizontal and top inset; 40-point content spacing | Align content clearly and bring the first useful information closer to navigation |
-| Regular screen | 40-point insets and spacing; available column width | Apply `mhReadableContent()` to prose for a 640-point maximum, without constraining media |
+| Regular screen | 40-point insets and spacing; available column width | Let text and media share the available width without a separate prose limit |
 | Native content rows | Native horizontal margins on macOS; 16 / 40-point content inset elsewhere; 16-point vertical padding | Keep native row targets comfortably inset at compact / regular widths |
 | Grouped content | No implicit horizontal inset or section surface; 8-point section gaps plus row padding | Align headings, rows, and captions while leaving outer padding to the screen or an explicit surface |
 | Display hierarchy | Native navigation titles; bold standalone headings; regular-weight iOS summaries | Separate the leading thought from body copy through scale and weight without a badge or background |

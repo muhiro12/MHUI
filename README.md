@@ -530,14 +530,13 @@ styles remain platform-managed. See the
 [dimension contract](Designs/Guides/VISUAL_DESIGN_PRINCIPLES.md#dimension-ownership-and-grid)
 for responsive layout, accessibility, and host customization boundaries.
 
-### Wide Content and Reading Width
+### Available Content Width
 
 `mhScreen` uses its available column width with responsive theme margins.
 It does not impose a maximum width on a `NavigationSplitView` sidebar,
 content, or detail. SwiftUI owns the column allocation and collapsed navigation.
-Apply `.mhReadableContent()` to prose inside a screen when a maximum reading
-width is useful; leave images, grids, and action areas outside that modifier.
-The maximum comes from `MHDesign` through the theme, not a screen-local constant.
+Text, images, and grids share the available content width. MHUI does not
+apply a separate maximum to prose. Responsive margins remain owned by MHDesign.
 
 Default content buttons use the theme accent to distinguish actions from text.
 Use an explicit MHUI primary or secondary button style when an action needs

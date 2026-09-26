@@ -1031,8 +1031,7 @@ destructive, prominent, toolbar, and tab treatments.
 
 `mhScreen` now uses the available width of any navigation column. Its responsive
 margins remain; the previous 640-point maximum for the entire screen is removed.
-Use `.mhReadableContent()` on a prose subtree to retain the theme's reading
-limit. Media and grids can use the full column independently. `mhListChrome`
+Text, media, and grids use the available content width. `mhListChrome`
 and `mhFormChrome` do not impose a column maximum either. Native split-view
 allocation, collapse behavior, and host-defined column widths remain intact.
 
