@@ -8,7 +8,6 @@ struct MHChromeStyleResolutionTests {
         let screen = theme.resolvedScreenChromeStyle()
         let section = theme.resolvedSectionChromeStyle()
 
-        #expect(screen.readableContentWidth == Optional(theme.layout.readableContentWidth))
         #expect(screen.horizontalMargin == theme.layout.screen.contentInsetHorizontal)
         #expect(screen.verticalPadding == theme.layout.screen.contentInsetVertical)
         #expect(section.contentSpacing == theme.spacing.control)

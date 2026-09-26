@@ -162,7 +162,6 @@ struct MHStyleResolutionTests {
         let actionGroup = theme.resolvedActionGroupStyle(for: compactContext)
         let keyValue = theme.resolvedKeyValueStyle(for: compactContext)
 
-        #expect(screen.readableContentWidth == nil)
         #expect(screen.horizontalMargin == theme.layout.screen.compactContentInsetHorizontal)
         #expect(screen.verticalPadding == theme.layout.screen.compactContentInsetVertical)
         #expect(screen.contentSpacing == theme.layout.screen.compactContentSpacing)
@@ -192,7 +191,6 @@ struct MHStyleResolutionTests {
         let row = theme.resolvedRowChromeStyle(for: accessibilityContext)
         let keyValue = theme.resolvedKeyValueStyle(for: accessibilityContext)
 
-        #expect(screen.readableContentWidth == nil)
         #expect(screen.horizontalMargin == theme.layout.screen.compactContentInsetHorizontal)
         #expect(row.horizontalInset == theme.presentation.compactRowHorizontalInset)
         #expect(keyValue.minimumValueWidth == theme.presentation.compactKeyValueMinimumValueWidth)
@@ -207,7 +205,6 @@ struct MHStyleResolutionTests {
         )
         let screen = theme.resolvedScreenChromeStyle(for: compactContext)
 
-        #expect(screen.readableContentWidth == nil)
         #expect(screen.horizontalMargin == theme.layout.screen.compactContentInsetHorizontal)
         #expect(screen.verticalPadding == theme.layout.screen.compactContentInsetVertical)
     }

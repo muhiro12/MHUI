@@ -37,38 +37,22 @@ private extension MHScreenModifier {
     ) -> some View {
         let style = theme.resolvedScreenChromeStyle(for: context)
 
-        widthLimitedContent(style: style) {
-            VStack(alignment: .leading, spacing: style.contentSpacing) {
-                if showsTitleBlock {
-                    MHScreenTitleBlock(
-                        title: titlePlacement == .content ? title : nil,
-                        subtitle: subtitle
-                    )
-                }
-
-                if let header {
-                    header
-                }
-
-                content
+        VStack(alignment: .leading, spacing: style.contentSpacing) {
+            if showsTitleBlock {
+                MHScreenTitleBlock(
+                    title: titlePlacement == .content ? title : nil,
+                    subtitle: subtitle
+                )
             }
+
+            if let header {
+                header
+            }
+
+            content
         }
-        .frame(maxWidth: .infinity, alignment: .center)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, style.horizontalMargin)
         .padding(.vertical, style.verticalPadding)
-    }
-
-    @ViewBuilder
-    func widthLimitedContent<WrappedContent: View>(
-        style: MHResolvedScreenChromeStyle,
-        @ViewBuilder content: () -> WrappedContent
-    ) -> some View {
-        if let readableContentWidth = style.readableContentWidth {
-            content()
-                .frame(maxWidth: readableContentWidth, alignment: .leading)
-        } else {
-            content()
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
     }
 }

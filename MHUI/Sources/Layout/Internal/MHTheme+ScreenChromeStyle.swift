@@ -7,9 +7,6 @@ extension MHTheme {
         )
 
         return .init(
-            readableContentWidth: isCompactWidth
-                ? nil
-                : layout.readableContentWidth,
             horizontalMargin: isCompactWidth
                 ? layout.screen.compactContentInsetHorizontal
                 : layout.screen.contentInsetHorizontal,

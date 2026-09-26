@@ -19,7 +19,7 @@ public extension View {
         )
     }
 
-    /// Wraps content in the MHUI centered screen layout with a header block.
+    /// Wraps content in the MHUI responsive screen layout with a header block.
     func mhScreen<Header: View>(
         title: Text? = nil,
         subtitle: Text? = nil,
@@ -36,7 +36,7 @@ public extension View {
         )
     }
 
-    /// Wraps content in the MHUI centered screen layout using a localized title.
+    /// Wraps content in the MHUI responsive screen layout using a localized title.
     func mhScreen(
         _ title: LocalizedStringKey,
         subtitle: LocalizedStringKey? = nil,
@@ -51,7 +51,7 @@ public extension View {
         )
     }
 
-    /// Wraps content in the MHUI centered screen layout using a localized title and a header block.
+    /// Wraps content in the MHUI responsive screen layout using a localized title and a header block.
     func mhScreen<Header: View>(
         _ title: LocalizedStringKey,
         subtitle: LocalizedStringKey? = nil,
