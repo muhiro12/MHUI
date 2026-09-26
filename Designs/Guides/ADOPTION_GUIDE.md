@@ -399,7 +399,8 @@ interaction remain intact while supported colors follow MHUI:
 | List/Form canvas and row surfaces | MHUI theme, using `MHContainerContent` |
 | MHUI text and default toggle labels | Semantic theme text colors |
 | Default labeled content | Primary label and secondary value, with native layout |
-| Default buttons and toolbar buttons | Theme accent or destructive role; native disabled treatment |
+| Default content buttons | Primary text or destructive role; native disabled treatment |
+| System toolbar buttons | May prioritize inherited control tint over the default button style |
 | Switch ON and tint-responsive selected tabs | Theme accent, including the app's `AccentColor` by default |
 | iOS navigation titles and UIKit text inputs | Primary text through `configureNativeAppearance()` at startup |
 | Unselected UIKit tab items | Secondary text requested through native appearance; newer system tab renderers can retain their own color |
@@ -417,6 +418,11 @@ the existing navigation-title setup and requests UIKit text-input and unselected
 tab colors. It does not replace bar backgrounds or materials. The iOS 27.1
 Preview still renders unselected Liquid Glass tab items in the system color;
 MHUI does not inspect or replace the system tab implementation to force it.
+The preferred toolbar foreground is neutral primary text. On iOS 27.1,
+system toolbar rendering prioritizes root tint; setting UIKit bar/item tint
+or default button foreground does not reliably separate it from control tint.
+MHUI retains that limitation rather than replacing navigation controls.
+`toolbarForegroundStyle` is not available on iOS in the current SDK.
 
 ### Text Color Ownership
 

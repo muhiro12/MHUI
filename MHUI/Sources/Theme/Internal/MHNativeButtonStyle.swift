@@ -11,7 +11,9 @@ struct MHNativeButtonStyle: PrimitiveButtonStyle {
             .buttonStyle(.automatic)
             .foregroundStyle(
                 theme.resolvedColor(
-                    for: configuration.role == .destructive ? .destructive : .accent,
+                    for: configuration.role == .destructive
+                        ? .destructive
+                        : .primaryText,
                     in: colorScheme
                 )
             )
