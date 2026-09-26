@@ -45,7 +45,7 @@ allow every item the full width.
 `mhSection` groups a header, content, and footer without painting a background.
 Within a composed section, the header-to-content and content-to-footer gaps use
 `spacing.inline` (8 points by default). Adjacent sections should use
-`spacing.section` (32 points on iOS/macOS). The header contributes no hidden
+`spacing.section` (40 points by default). The header contributes no hidden
 bottom padding in a stack. Row and button padding remains inside the content,
 so visible text-to-text distances can exceed those structural gaps.
 Native List/Form header geometry remains a separate container concern.
@@ -128,10 +128,10 @@ Metrics-only adopters also need to review layout when updating the package.
 
 | Parameter | Standard choice | Reason |
 | --- | --- | --- |
-| Spacing | 8 / 16 / 24 / 32 / 48 points | Separate inline, control, content, section, and screen relationships without excessive blank space |
-| Compact screen | 24-point horizontal and top inset; 32-point content spacing | Align content clearly and bring the first useful information closer to navigation |
+| Spacing | 8 / 16 / 24 / 40 / 48 points | Separate inline, control, content, section, and screen relationships with generous space between groups instead of decorative boundaries |
+| Compact screen | 24-point horizontal and top inset; 40-point content spacing | Align content clearly and bring the first useful information closer to navigation |
 | Regular screen | 40-point insets and spacing; 640-point readable width | Keep prose and summaries coherent within wide content columns |
-| Native content rows | Native horizontal margins on macOS; 16 / 32-point content inset elsewhere; 16-point vertical padding | Keep native row targets comfortably inset at compact / regular widths |
+| Native content rows | Native horizontal margins on macOS; 16 / 40-point content inset elsewhere; 16-point vertical padding | Keep native row targets comfortably inset at compact / regular widths |
 | Grouped content | No implicit horizontal inset or section surface; 8-point section gaps plus row padding | Align headings, rows, and captions while leaving outer padding to the screen or an explicit surface |
 | Display hierarchy | Native navigation titles; bold standalone headings; regular-weight iOS summaries | Separate the leading thought from body copy through scale and weight without a badge or background |
 | Section typography | System title3, medium | Give content sections an identifiable hierarchy above body copy |

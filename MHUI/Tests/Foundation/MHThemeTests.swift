@@ -55,7 +55,7 @@ struct MHThemeTests {
         #expect(theme.layout.screen.contentSpacing == 40)
         #expect(theme.layout.screen.compactContentInsetHorizontal == 24)
         #expect(theme.layout.screen.compactContentInsetVertical == 24)
-        #expect(theme.layout.screen.compactContentSpacing == 32)
+        #expect(theme.layout.screen.compactContentSpacing == 40)
         #expect(theme.layout.surface.insetHorizontal == 24)
         #expect(theme.layout.surface.insetVertical == 24)
         #expect(theme.layout.surface.compactInsetHorizontal == 16)

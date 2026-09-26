@@ -28,7 +28,7 @@ private extension MHDesignMetrics {
         #if os(watchOS)
         .init(inline: 8, control: 16, content: 24, section: 40, screen: 56)
         #else
-        .init(inline: 8, control: 16, content: 24, section: 32, screen: 48)
+        .init(inline: 8, control: 16, content: 24, section: 40, screen: 48)
         #endif
     }
 
@@ -65,7 +65,7 @@ private extension MHDesignMetrics {
             contentSpacing: gridUnit * 5,
             compactContentInsetHorizontal: gridUnit * 3,
             compactContentInsetVertical: gridUnit * 3,
-            compactContentSpacing: gridUnit * 4
+            compactContentSpacing: gridUnit * 5
         )
         #endif
     }

@@ -652,7 +652,7 @@ style. Review long titles and controls alongside them at large text sizes.
 
 The shared standard metrics are redesigned, including a
 640-point readable width, 24-point compact screen margins and top inset, and
-32-point section spacing. Explicit `standard(metrics:)` overrides still win.
+40-point section spacing. Explicit `standard(metrics:)` overrides still win.
 `MHDesignMetrics.standard` remains the single generic baseline. Metrics-only
 adopters also receive these changes when updating to 2.0 and should review
 their screen layouts.

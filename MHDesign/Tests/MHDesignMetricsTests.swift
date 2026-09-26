@@ -8,6 +8,7 @@ struct MHDesignMetricsTests {
 
         #expect(metrics.spacing.inline == 8)
         #expect(metrics.spacing.control == 16)
+        #expect(metrics.spacing.section == 40)
         #expect(metrics.spacing.control < metrics.spacing.content)
         #expect(metrics.spacing.content < metrics.spacing.section)
         #expect(metrics.spacing.section < metrics.spacing.screen)
@@ -34,7 +35,7 @@ struct MHDesignMetricsTests {
         #expect(metrics.layout.screen.contentSpacing == 40)
         #expect(metrics.layout.screen.compactContentInsetHorizontal == 24)
         #expect(metrics.layout.screen.compactContentInsetVertical == 24)
-        #expect(metrics.layout.screen.compactContentSpacing == 32)
+        #expect(metrics.layout.screen.compactContentSpacing == 40)
         #expect(metrics.layout.surface.insetHorizontal == 24)
         #expect(metrics.layout.surface.insetVertical == 24)
         #expect(metrics.layout.surface.compactInsetHorizontal == 16)
