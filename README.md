@@ -432,8 +432,13 @@ for design direction and detailed tuning rules.
 ## Build and Test
 
 Use the Xcode-native integration available in the agent environment as the
-primary Apple build and test surface. Follow the selection and restoration
-contract in `AGENTS.md`.
+primary Apple build and test surface.
+
+Before changing Xcode selection, record the original scheme and destination,
+switch only to discovered values, and end sessions or runs started solely for
+verification. Restore the original scheme first, rediscover its destinations,
+restore the original destination, and confirm the selection. Report failed
+restoration.
 
 For MHUI package compile checks, use its build capability with:
 
@@ -443,6 +448,21 @@ For MHUI package compile checks, use its build capability with:
 
 For package tests, use its test capability with the same workspace, scheme,
 and destination family.
+
+Choose evidence by the changed boundary. Package source or product changes
+need package build/test evidence. Public boundary or resource changes also
+need retained repository rules, including the source-only adoption sample.
+SwiftUI primitives, visual treatment, and preview changes need targeted
+Xcode-native Preview rendering. Add runtime logs, live UI, or screenshots when
+a runnable consumer is available; package tests do not replace visual evidence.
+Follow the [responsibility boundaries](Designs/Architecture/ARCHITECTURE_GUIDE.md#responsibility-boundaries)
+and [package rules](Designs/Architecture/ARCHITECTURE_GUIDE.md#package-rules)
+before changing products, host responsibilities, assets, or native-control
+behavior. Keep SDK-sensitive behavior availability-checked with explicit
+older-runtime fallbacks within the supported deployment targets.
+
+Follow the repository SwiftLint configuration and existing Swift source style.
+Markdown follows the [markdownlint rules](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md).
 
 SwiftLint is resolved from the `SimplyDanny/SwiftLintPlugins` package declared
 in `Package.swift`; the scripts do not require a separately installed
