@@ -208,6 +208,14 @@ choice below. Native behavior and visual presentation are separate choices:
 - `.mhFormChrome(.content)` supplies the canvas while the app chooses the
   native form style and fields. `MHContainerContent` applies the row surfaces.
 
+Background ownership is independent of row presentation. The default
+`background: .themed` paints the MHUI canvas. Pass `background: .native` to
+`mhScreen`, `mhListChrome`, or `mhFormChrome` when the host must retain a native
+sidebar background or material. This is a per-container choice; it does not
+change the theme or the backgrounds of presented forms. On current iPadOS,
+painting an opaque canvas in the leading split column can hide the native
+sidebar plane even though the package does not draw a divider.
+
 A main collection and a settings screen can choose different presentation
 under one root theme. Apply content chrome inside each navigation destination
 or split-view column, preserving native sidebars, dividers, toolbars, and tabs.
@@ -234,7 +242,7 @@ NavigationStack {
 
 Here `name` and `keepsOffline` are app-owned bindings. Change `.content` to
 `.native` to keep native grouping and row geometry with the same MHUI colors. No per-row
-`mhRow()` or labeled-content style is needed. Both choices use the MHUI canvas
+`mhRow()` or labeled-content style is needed. By default, both choices use the MHUI canvas
 and themed row surfaces; `.native` retains platform row geometry and typography.
 Default toggle and labeled-content labels use MHUI colors, and native controls
 receive the app accent. Plain text retains its own foreground semantics. Use the same content wrapper

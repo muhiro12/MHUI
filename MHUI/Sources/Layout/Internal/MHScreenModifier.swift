@@ -7,6 +7,7 @@ struct MHScreenModifier<Header: View>: ViewModifier {
     let title: Text?
     let subtitle: Text?
     let titlePlacement: MHScreenTitlePlacement
+    let background: MHContainerBackground
     let header: Header?
 
     func body(content: Content) -> some View {
@@ -17,7 +18,11 @@ struct MHScreenModifier<Header: View>: ViewModifier {
                     context: context
                 )
             }
-            .background(MHCanvasBackground())
+            .background {
+                if background == .themed {
+                    MHCanvasBackground()
+                }
+            }
             .modifier(MHScreenNavigationTitleModifier(
                 title: titlePlacement == .navigation ? title : nil
             ))

@@ -7,22 +7,42 @@ import SwiftUI
 // Investigation: https://github.com/muhiro12/MHUI/issues/7
 private struct MHScreenSplitViewPreview: View {
     let usesScreen: Bool
+    let background: MHContainerBackground
+    let usesPlaceholders: Bool
 
     var body: some View {
         NavigationSplitView(columnVisibility: .constant(.all)) {
             column("Sidebar")
         } content: {
-            column("Content")
+            if usesPlaceholders {
+                ContentUnavailableView("No Content Selected", systemImage: "sidebar.left")
+            } else {
+                column("Content")
+            }
         } detail: {
-            column("Detail")
+            if usesPlaceholders {
+                ContentUnavailableView("No Detail Selected", systemImage: "sidebar.left")
+            } else {
+                column("Detail")
+            }
         }
+    }
+
+    init(
+        usesScreen: Bool,
+        background: MHContainerBackground = .themed,
+        usesPlaceholders: Bool = false
+    ) {
+        self.usesScreen = usesScreen
+        self.background = background
+        self.usesPlaceholders = usesPlaceholders
     }
 
     @ViewBuilder
     private func column(_ title: String) -> some View {
         if usesScreen {
             rows(title)
-                .mhScreen()
+                .mhScreen(background: background)
                 .navigationTitle(title)
         } else {
             ScrollView {
@@ -61,6 +81,20 @@ private struct MHScreenSplitViewPreview: View {
 #Preview("Three columns / MHUI screen in tabs", traits: .fixedLayout(width: 1_194, height: 834)) {
     TabView {
         MHScreenSplitViewPreview(usesScreen: true)
+            .tabItem {
+                Label("Collection", systemImage: "square.grid.2x2")
+            }
+    }
+    .mhTheme(.standard)
+}
+#Preview("Three columns / Native background", traits: .fixedLayout(width: 1_194, height: 834)) {
+    MHScreenSplitViewPreview(usesScreen: true, background: .native)
+        .mhTheme(.standard)
+}
+
+#Preview("Three columns / Native background / Empty", traits: .fixedLayout(width: 1_194, height: 834)) {
+    TabView {
+        MHScreenSplitViewPreview(usesScreen: true, background: .native, usesPlaceholders: true)
             .tabItem {
                 Label("Collection", systemImage: "square.grid.2x2")
             }

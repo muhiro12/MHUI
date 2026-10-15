@@ -4,16 +4,20 @@ public extension View {
     /// Wraps content in the MHUI responsive screen layout.
     /// Place the screen in a native navigation container for the default title.
     /// Use `.content` only for a heading that should scroll out of view.
+    /// Choose a `.native` background when the host supplies a sidebar or other
+    /// platform background that must remain visible.
     func mhScreen(
         title: Text? = nil,
         subtitle: Text? = nil,
-        titlePlacement: MHScreenTitlePlacement = .navigation
+        titlePlacement: MHScreenTitlePlacement = .navigation,
+        background: MHContainerBackground = .themed
     ) -> some View {
         modifier(
             MHScreenModifier<EmptyView>(
                 title: title,
                 subtitle: subtitle,
                 titlePlacement: titlePlacement,
+                background: background,
                 header: nil
             )
         )
@@ -24,6 +28,7 @@ public extension View {
         title: Text? = nil,
         subtitle: Text? = nil,
         titlePlacement: MHScreenTitlePlacement = .navigation,
+        background: MHContainerBackground = .themed,
         @ViewBuilder header: () -> Header
     ) -> some View {
         modifier(
@@ -31,6 +36,7 @@ public extension View {
                 title: title,
                 subtitle: subtitle,
                 titlePlacement: titlePlacement,
+                background: background,
                 header: header()
             )
         )
@@ -40,14 +46,16 @@ public extension View {
     func mhScreen(
         _ title: LocalizedStringKey,
         subtitle: LocalizedStringKey? = nil,
-        titlePlacement: MHScreenTitlePlacement = .navigation
+        titlePlacement: MHScreenTitlePlacement = .navigation,
+        background: MHContainerBackground = .themed
     ) -> some View {
         mhScreen(
             title: Text(title),
             subtitle: subtitle.map { subtitle in
                 Text(subtitle)
             },
-            titlePlacement: titlePlacement
+            titlePlacement: titlePlacement,
+            background: background
         )
     }
 
@@ -56,6 +64,7 @@ public extension View {
         _ title: LocalizedStringKey,
         subtitle: LocalizedStringKey? = nil,
         titlePlacement: MHScreenTitlePlacement = .navigation,
+        background: MHContainerBackground = .themed,
         @ViewBuilder header: () -> Header
     ) -> some View {
         mhScreen(
@@ -64,6 +73,7 @@ public extension View {
                 Text(subtitle)
             },
             titlePlacement: titlePlacement,
+            background: background,
             header: header
         )
     }

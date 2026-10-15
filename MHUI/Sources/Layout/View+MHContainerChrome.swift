@@ -7,17 +7,22 @@ public extension View {
     /// `MHContainerContent`, or apply `mhRow()` to individual complete rows.
     /// Choose by content role, not column position. A primary content list can
     /// retain content styling when a split view collapses to a single column.
+    /// Background ownership is separate: `.native` preserves a host-provided
+    /// sidebar or other platform background instead of painting the theme canvas.
     @ViewBuilder
-    func mhListChrome(_ style: MHContainerStyle = .content) -> some View {
+    func mhListChrome(
+        _ style: MHContainerStyle = .content,
+        background: MHContainerBackground = .themed
+    ) -> some View {
         switch style {
         case .native:
-            modifier(MHContainerChromeModifier(style: .native))
+            modifier(MHContainerChromeModifier(style: .native, background: background))
                 .mhTextAppearance(.themed)
                 .environment(\.mhUsesFormSurface, false)
         case .content:
             listStyle(.plain)
                 .mhTextAppearance(.themed)
-                .modifier(MHContainerChromeModifier())
+                .modifier(MHContainerChromeModifier(background: background))
                 .environment(\.mhUsesFormSurface, false)
         }
     }
@@ -28,14 +33,17 @@ public extension View {
     /// automatic row surfaces, or apply `mhRow()` to individual complete rows.
     /// The form style, grouping, and controls remain native.
     @ViewBuilder
-    func mhFormChrome(_ style: MHContainerStyle = .content) -> some View {
+    func mhFormChrome(
+        _ style: MHContainerStyle = .content,
+        background: MHContainerBackground = .themed
+    ) -> some View {
         switch style {
         case .native:
-            modifier(MHContainerChromeModifier(style: .native))
+            modifier(MHContainerChromeModifier(style: .native, background: background))
                 .mhTextAppearance(.themed)
                 .environment(\.mhUsesFormSurface, false)
         case .content:
-            modifier(MHContainerChromeModifier())
+            modifier(MHContainerChromeModifier(background: background))
                 .mhTextAppearance(.themed)
                 .environment(\.mhUsesFormSurface, true)
         }
