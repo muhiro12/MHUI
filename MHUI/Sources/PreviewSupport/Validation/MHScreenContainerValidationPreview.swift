@@ -60,6 +60,47 @@ private struct MHScreenValidationContent: View {
     }
 }
 
+private struct MHContentListValidationContent: View {
+    @State private var clearsRowBackground = false
+    @State private var selection: String?
+
+    let usesContainerContent: Bool
+
+    var body: some View {
+        List(selection: $selection) {
+            if usesContainerContent {
+                MHContainerContent {
+                    rows
+                }
+            } else {
+                ForEach(["Library item", "Another item"], id: \.self) { item in
+                    Text(item)
+                        .mhRow()
+                        .tag(item)
+                        .listRowBackground(clearsRowBackground ? Color.clear : nil)
+                }
+            }
+        }
+        .mhListChrome(.content)
+        .navigationTitle("Library")
+        .toolbar {
+            Toggle("Clear row background", isOn: $clearsRowBackground)
+        }
+        .safeAreaInset(edge: .bottom) {
+            Text("Selection: \(selection ?? "None")")
+                .padding()
+        }
+    }
+
+    private var rows: some View {
+        ForEach(["Library item", "Another item"], id: \.self) { item in
+            Text(item)
+                .tag(item)
+                .listRowBackground(clearsRowBackground ? Color.clear : nil)
+        }
+    }
+}
+
 private struct MHNativeListValidationContent: View {
     var body: some View {
         List {
@@ -194,5 +235,20 @@ private struct MHNativeContainerValidationContent: View {
     }
     .environment(\.horizontalSizeClass, .regular)
     .mhPreviewTint()
+}
+#Preview(
+    "Validation / Content Lists / Dark Row Backgrounds",
+    traits: .fixedLayout(width: 900, height: 844)
+) {
+    HStack {
+        NavigationStack {
+            MHContentListValidationContent(usesContainerContent: false)
+        }
+        NavigationStack {
+            MHContentListValidationContent(usesContainerContent: true)
+        }
+    }
+    .mhPreviewTint()
+    .preferredColorScheme(.dark)
 }
 // swiftlint:enable closure_body_length file_types_order no_magic_numbers one_declaration_per_file
