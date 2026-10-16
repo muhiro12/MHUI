@@ -1053,7 +1053,7 @@ Do not add detached-input decoration to native Form fields solely to change
 text color. SwiftUI may override the UIKit defaults requested at startup;
 arbitrary input and search fields still require runtime review.
 
-## Unreleased: Content List Background Ownership
+## Migration to 2.4
 
 `mhListChrome()` and `mhListChrome(.content)` now preserve the native list
 background. Native rows and the surrounding scroll surface share one plane;
@@ -1076,7 +1076,7 @@ Explicit background arguments keep their meaning. The `.native` chrome style,
 forms, and `mhScreen` retain their themed defaults. Theme tint, metrics, and
 semantic text styles remain available on a native content-list background.
 
-Review custom canvases and visual snapshots when adopting this change. Source
-compatibility does not establish behavioral compatibility; apply the
-[versioning contract](../Architecture/ARCHITECTURE_GUIDE.md#versioning-contract)
-before publication. No release version is selected by this migration note.
+Version 2.4.0 includes this background change as a visual-treatment update.
+Review custom canvases and visual snapshots when adopting it. Source
+compatibility does not mean that the implicit background is unchanged;
+explicit `.themed` retains the previous canvas ownership.
