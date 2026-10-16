@@ -80,10 +80,9 @@ private struct MHScreenSplitViewPreview: View {
 
 #Preview("Three columns / MHUI screen in tabs", traits: .fixedLayout(width: 1_194, height: 834)) {
     TabView {
-        MHScreenSplitViewPreview(usesScreen: true)
-            .tabItem {
-                Label("Collection", systemImage: "square.grid.2x2")
-            }
+        Tab("Collection", systemImage: "square.grid.2x2") {
+            MHScreenSplitViewPreview(usesScreen: true)
+        }
     }
     .mhTheme(.standard)
 }
@@ -94,10 +93,9 @@ private struct MHScreenSplitViewPreview: View {
 
 #Preview("Three columns / Native background / Empty", traits: .fixedLayout(width: 1_194, height: 834)) {
     TabView {
-        MHScreenSplitViewPreview(usesScreen: true, background: .native, usesPlaceholders: true)
-            .tabItem {
-                Label("Collection", systemImage: "square.grid.2x2")
-            }
+        Tab("Collection", systemImage: "square.grid.2x2") {
+            MHScreenSplitViewPreview(usesScreen: true, background: .native, usesPlaceholders: true)
+        }
     }
     .mhTheme(.standard)
 }

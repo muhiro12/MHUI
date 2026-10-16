@@ -1,6 +1,20 @@
 import SwiftUI
 
 public extension View {
+    /// Chooses list presentation with its default background ownership.
+    ///
+    /// Content lists use the platform background so native rows, selection, and
+    /// press feedback share one plane. Native chrome retains the theme canvas.
+    /// Pass `background: .themed` explicitly to retain a theme-owned list canvas.
+    func mhListChrome(_ style: MHContainerStyle = .content) -> some View {
+        mhListChrome(style, background: style == .content ? .native : .themed)
+    }
+
+    /// Chooses an explicit background for a content-style list.
+    func mhListChrome(background: MHContainerBackground) -> some View {
+        mhListChrome(.content, background: background)
+    }
+
     /// Chooses themed native presentation or MHUI content presentation for one list.
     ///
     /// Content presentation uses a plain list. Wrap its content once in
@@ -11,8 +25,8 @@ public extension View {
     /// sidebar or other platform background instead of painting the theme canvas.
     @ViewBuilder
     func mhListChrome(
-        _ style: MHContainerStyle = .content,
-        background: MHContainerBackground = .themed
+        _ style: MHContainerStyle,
+        background: MHContainerBackground
     ) -> some View {
         switch style {
         case .native:

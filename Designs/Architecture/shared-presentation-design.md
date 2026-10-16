@@ -105,6 +105,7 @@ The following types and helpers are the current shared entry points for package-
 - `mhDesignMetrics(_:)`
 - `MHTheme`
 - `MHContainerStyle`
+- `MHContainerBackground`
 - `MHTextAppearance`
 - `mhTextAppearance(_:)`
 - `MHTheme.configureNativeAppearance()` (iOS startup)

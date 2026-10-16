@@ -60,43 +60,74 @@ private struct MHScreenValidationContent: View {
     }
 }
 
+// A row fill can hide native selection and press feedback. Compare container
+// backgrounds while leaving complete rows on their native plane (Issue #5).
 private struct MHContentListValidationContent: View {
-    @State private var clearsRowBackground = false
-    @State private var selection: String?
+    @State private var selection: String? = "Library item"
 
     let usesContainerContent: Bool
+    let background: MHContainerBackground?
+
+    private let items = ["Library item", "Another item", "Open detail"]
 
     var body: some View {
-        List(selection: $selection) {
-            if usesContainerContent {
-                MHContainerContent {
-                    rows
-                }
-            } else {
-                ForEach(["Library item", "Another item"], id: \.self) { item in
-                    Text(item)
-                        .mhRow()
-                        .tag(item)
-                        .listRowBackground(clearsRowBackground ? Color.clear : nil)
-                }
+        styledList
+            .navigationTitle("Library")
+            .navigationDestination(for: String.self) { item in
+                Text(item)
             }
-        }
-        .mhListChrome(.content)
-        .navigationTitle("Library")
-        .toolbar {
-            Toggle("Clear row background", isOn: $clearsRowBackground)
-        }
-        .safeAreaInset(edge: .bottom) {
-            Text("Selection: \(selection ?? "None")")
+            .safeAreaInset(edge: .bottom) {
+                VStack {
+                    Text(usesContainerContent ? "Automatic rows" : "Explicit rows")
+                    Text("Selection: \(selection ?? "None")")
+                }
                 .padding()
+            }
+    }
+
+    @ViewBuilder private var styledList: some View {
+        if let background {
+            list.mhListChrome(background: background)
+        } else {
+            list.mhListChrome()
         }
     }
 
-    private var rows: some View {
-        ForEach(["Library item", "Another item"], id: \.self) { item in
-            Text(item)
-                .tag(item)
-                .listRowBackground(clearsRowBackground ? Color.clear : nil)
+    private var list: some View {
+        List(selection: $selection) {
+            if usesContainerContent {
+                MHContainerContent {
+                    ForEach(items, id: \.self) { item in
+                        row(item)
+                            .tag(item)
+                    }
+                }
+            } else {
+                ForEach(items, id: \.self) { item in
+                    row(item)
+                        .mhRow()
+                        .tag(item)
+                }
+            }
+        }
+    }
+
+    init(
+        usesContainerContent: Bool,
+        background: MHContainerBackground? = nil
+    ) {
+        self.usesContainerContent = usesContainerContent
+        self.background = background
+    }
+
+    @ViewBuilder
+    private func row(_ item: String) -> some View {
+        if item == "Open detail" {
+            NavigationLink(value: item) {
+                Label(item, systemImage: "doc.text")
+            }
+        } else {
+            Label(item, systemImage: "doc.text")
         }
     }
 }
@@ -237,7 +268,7 @@ private struct MHNativeContainerValidationContent: View {
     .mhPreviewTint()
 }
 #Preview(
-    "Validation / Content Lists / Dark Row Backgrounds",
+    "Validation / Content Lists / Native Background / Dark",
     traits: .fixedLayout(width: 900, height: 844)
 ) {
     HStack {
@@ -249,6 +280,56 @@ private struct MHNativeContainerValidationContent: View {
         }
     }
     .mhPreviewTint()
+    .preferredColorScheme(.dark)
+}
+#Preview(
+    "Validation / Content Lists / Native Background / Light",
+    traits: .fixedLayout(width: 900, height: 844)
+) {
+    HStack {
+        NavigationStack {
+            MHContentListValidationContent(usesContainerContent: false)
+        }
+        NavigationStack {
+            MHContentListValidationContent(usesContainerContent: true)
+        }
+    }
+    .mhPreviewTint()
+    .preferredColorScheme(.light)
+}
+
+#Preview(
+    "Validation / Content Lists / Themed Background Control",
+    traits: .fixedLayout(width: 900, height: 844)
+) {
+    HStack {
+        NavigationStack {
+            MHContentListValidationContent(usesContainerContent: false, background: .themed)
+        }
+        NavigationStack {
+            MHContentListValidationContent(usesContainerContent: true, background: .themed)
+        }
+    }
+    .mhPreviewTint()
+    .preferredColorScheme(.dark)
+}
+#Preview(
+    "Validation / Content Lists / Custom Canvas / Dark",
+    traits: .fixedLayout(width: 900, height: 844)
+) {
+    var theme = MHTheme.standard
+    theme.colors.background = .asset(MHPreviewColorAsset.purple)
+    theme.colors.accent = .asset(MHPreviewColorAsset.hostAccent)
+
+    return HStack {
+        NavigationStack {
+            MHContentListValidationContent(usesContainerContent: false)
+        }
+        NavigationStack {
+            MHContentListValidationContent(usesContainerContent: true)
+        }
+    }
+    .mhTheme(theme)
     .preferredColorScheme(.dark)
 }
 // swiftlint:enable closure_body_length file_types_order no_magic_numbers one_declaration_per_file

@@ -153,7 +153,7 @@ on replacing these platform conventions with flat, ruled surfaces.
 Its default title is a native navigation title, with large presentation on iOS. Do not place a `List`, `Form`, or another screen-level scrolling
 container inside it.
 
-`mhListChrome(.content)` uses a plain list and the shared canvas.
+`mhListChrome(.content)` uses a plain list and the platform background.
 `mhFormChrome(.content)` applies the canvas without forcing a form style.
 Its automatic or explicit MHUI rows use the theme's muted surface, so native grouped forms remain
 visible against a white or dark canvas. `MHSectionHeader` leaves outer form
@@ -321,6 +321,13 @@ uses a plain list; apply another supported `.listStyle` afterward when a
 product needs its grouping. For themed native grouping and row geometry choose
 `.mhListChrome(.native)`. The no-argument call chooses MHUI content.
 
+Content lists keep the native scroll background by default, matching the native
+plain rows without overriding their selection or press feedback. This applies
+to both `MHContainerContent` and explicit `mhRow()` adoption. Do not add clear or
+opaque row fills merely to match a canvas. Use
+`.mhListChrome(background: .themed)` when the surrounding canvas must follow the
+theme; that explicit choice can expose a different native row plane in Dark.
+
 MHUI text in content rows uses the theme's primary, secondary, and tertiary
 colors. On prominent selected backgrounds, it resolves to the native
 foreground hierarchy. Both chrome styles retain themed MHUI text elsewhere.
@@ -396,7 +403,8 @@ interaction remain intact while supported colors follow MHUI:
 
 | Element | Color source |
 | --- | --- |
-| List/Form canvas and row surfaces | MHUI theme, using `MHContainerContent` |
+| Content-list background | Native by default; explicit `.themed` selects the theme canvas |
+| Other container canvases and themed row surfaces | MHUI theme, using `MHContainerContent`; background ownership remains explicit |
 | MHUI text and default toggle labels | Semantic theme text colors |
 | Default labeled content | Primary label and secondary value, with native layout |
 | Default content buttons | Accent or destructive role; native disabled treatment |
@@ -1044,3 +1052,31 @@ scroll-content background, allowing a `TextEditor` to share the input surface.
 Do not add detached-input decoration to native Form fields solely to change
 text color. SwiftUI may override the UIKit defaults requested at startup;
 arbitrary input and search fields still require runtime review.
+
+## Unreleased: Content List Background Ownership
+
+`mhListChrome()` and `mhListChrome(.content)` now preserve the native list
+background. Native rows and the surrounding scroll surface share one plane;
+row selection, pressed states, swipe actions, and editing remain native.
+
+This changes the implicit canvas ownership described by earlier 2.x guides.
+Existing calls still compile, but a custom `theme.colors.background` no longer
+paints the surrounding content-list canvas unless explicitly requested:
+
+```swift
+List {
+    MHContainerContent {
+        // Complete native rows.
+    }
+}
+.mhListChrome(.content, background: .themed)
+```
+
+Explicit background arguments keep their meaning. The `.native` chrome style,
+forms, and `mhScreen` retain their themed defaults. Theme tint, metrics, and
+semantic text styles remain available on a native content-list background.
+
+Review custom canvases and visual snapshots when adopting this change. Source
+compatibility does not establish behavioral compatibility; apply the
+[versioning contract](../Architecture/ARCHITECTURE_GUIDE.md#versioning-contract)
+before publication. No release version is selected by this migration note.
