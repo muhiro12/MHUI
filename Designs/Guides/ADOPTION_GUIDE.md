@@ -518,6 +518,10 @@ native controls and grouping on MHUI surfaces.
 
 ### Resizing and Foldable Displays
 
+Adaptive layout applies across all supported platforms: iOS 18+, macOS 15+,
+and watchOS 11+. It does not require a foldable display or Liquid Glass.
+The existing glass policy and non-glass fallbacks remain independent of layout.
+
 `MHFeatureGrid` preserves its lead and supporting view state when available
 width, size class, or Dynamic Type changes its arrangement. Keep the grid in
 the same parent hierarchy during resizing. Hosts still own navigation state,
@@ -528,7 +532,8 @@ The grid can appear inside `mhScreen`, `ScrollView`, or native container rows.
 It therefore uses a stable `AnyLayout` composition rather than `ArrangementView`,
 which cannot be nested inside a `ScrollView` or `List`. Hosts that need a
 fold-aware primary/secondary screen arrangement should place that system
-container outside scrolling content and keep navigation outside it.
+container outside scrolling content and keep navigation outside it. Gate newer
+system APIs by OS availability and retain layouts for older supported versions.
 
 ## Component Defaults and Explicit Roles
 
