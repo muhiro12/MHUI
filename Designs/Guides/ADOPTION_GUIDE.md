@@ -516,6 +516,20 @@ styles, `MHNativeSplitViewPreview` for native and content columns, and
 sample demonstrates the content list/editor alongside a settings form with
 native controls and grouping on MHUI surfaces.
 
+### Resizing and Foldable Displays
+
+`MHFeatureGrid` preserves its lead and supporting view state when available
+width, size class, or Dynamic Type changes its arrangement. Keep the grid in
+the same parent hierarchy during resizing. Hosts still own navigation state,
+scene configuration, and the placement of important controls around reserved
+regions.
+
+The grid can appear inside `mhScreen`, `ScrollView`, or native container rows.
+It therefore uses a stable `AnyLayout` composition rather than `ArrangementView`,
+which cannot be nested inside a `ScrollView` or `List`. Hosts that need a
+fold-aware primary/secondary screen arrangement should place that system
+container outside scrolling content and keep navigation outside it.
+
 ## Component Defaults and Explicit Roles
 
 | API | Package-owned default | Adopter responsibility |
