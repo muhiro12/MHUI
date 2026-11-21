@@ -29,7 +29,7 @@ struct MHFeatureGridStyleResolutionTests {
     }
 
     @Test
-    func compact_width_stacks_a_two_column_supporting_grid() {
+    func compact_width_stacks_the_platform_supporting_columns() {
         let theme = MHTheme.standard
         let style = theme.resolvedFeatureGridStyle(
             for: .init(
@@ -42,7 +42,11 @@ struct MHFeatureGridStyleResolutionTests {
         #expect(style.arrangement == .stacked)
         #expect(style.primarySpacing == theme.spacing.content)
         #expect(style.supportingSpacing == theme.spacing.control)
+        #if os(watchOS)
+        #expect(style.supportingColumnCount == 1)
+        #else
         #expect(style.supportingColumnCount == 2)
+        #endif
     }
 
     @Test

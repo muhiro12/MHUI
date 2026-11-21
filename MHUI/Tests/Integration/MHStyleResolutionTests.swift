@@ -213,7 +213,7 @@ struct MHStyleResolutionTests {
     func narrow_regular_width_uses_compact_component_metrics() {
         let theme = MHTheme.standard
         let narrowRegularContext = MHAdaptiveLayoutContext(
-            availableWidth: 520,
+            availableWidth: theme.layout.compactWidthThreshold - 1,
             horizontalSizeClass: .regular
         )
 

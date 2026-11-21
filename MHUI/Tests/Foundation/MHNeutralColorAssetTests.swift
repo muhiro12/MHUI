@@ -1,7 +1,7 @@
 @testable import MHUI
 import Testing
 
-#if canImport(UIKit)
+#if os(iOS)
 import UIKit
 
 @MainActor
