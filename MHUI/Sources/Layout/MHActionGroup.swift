@@ -11,21 +11,12 @@ public struct MHActionGroup<Content: View>: View {
     private var theme
     @Environment(\.mhAdaptiveLayoutContext)
     private var adaptiveLayoutContext
-    @Environment(\.horizontalSizeClass)
-    private var horizontalSizeClass
-    @Environment(\.dynamicTypeSize)
-    private var dynamicTypeSize
 
     private let layout: MHActionGroupLayout
     private let content: Content
 
     public var body: some View {
-        let context = adaptiveLayoutContext.resolved(
-            with: horizontalSizeClass,
-            dynamicTypeSize: dynamicTypeSize,
-            threshold: theme.layout.compactWidthThreshold
-        )
-        let style = theme.resolvedActionGroupStyle(for: context)
+        let style = theme.resolvedActionGroupStyle(for: adaptiveLayoutContext)
 
         // Keep action glass effects independent. A shared glass container
         // previously reduced enabled-label contrast in this composition.

@@ -13,23 +13,14 @@ public struct MHGroupedRows<Content: View>: View {
     private var adaptiveLayoutContext
     @Environment(\.colorScheme)
     private var colorScheme
-    @Environment(\.horizontalSizeClass)
-    private var horizontalSizeClass
-    @Environment(\.dynamicTypeSize)
-    private var dynamicTypeSize
 
     private let showsDividers: Bool
     private let content: Content
 
     public var body: some View {
-        let context = adaptiveLayoutContext.resolved(
-            with: horizontalSizeClass,
-            dynamicTypeSize: dynamicTypeSize,
-            threshold: theme.layout.compactWidthThreshold
-        )
         let style = theme.resolvedGroupedRowsStyle(
             showsDividers: showsDividers,
-            for: context
+            for: adaptiveLayoutContext
         )
 
         return Group(subviews: content) { subviews in

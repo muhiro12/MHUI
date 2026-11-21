@@ -24,6 +24,12 @@ struct MHFeatureGridContinuityTests {
         var body: some View {
             MHFeatureGrid {
                 MHFeatureStateProbe(name: "Lead", recorder: recorder)
+                    .frame(maxWidth: .infinity)
+                    .onGeometryChange(for: CGFloat.self) { geometry in
+                        geometry.size.width
+                    } action: { width in
+                        recorder.leadWidth = width
+                    }
             } supporting: {
                 MHFeatureStateProbe(name: "First", recorder: recorder)
                 MHFeatureStateProbe(name: "Second", recorder: recorder)
@@ -31,6 +37,9 @@ struct MHFeatureGridContinuityTests {
             .environment(\.horizontalSizeClass, recorder.phase == Metrics.compactPhase ? .compact : .regular)
             .dynamicTypeSize(recorder.phase == Metrics.accessibilityPhase ? .accessibility3 : .large)
             .frame(width: recorder.phase == Metrics.compactPhase ? Metrics.compactWidth : Metrics.regularWidth)
+            .mhScreen()
+            .environment(\.horizontalSizeClass, .regular)
+            .dynamicTypeSize(.large)
         }
     }
 
@@ -47,8 +56,9 @@ struct MHFeatureGridContinuityTests {
                 }
         }
     }
+
     @Test
-    func resizing_preserves_lead_and_supporting_state() async throws {
+    func resizing_and_local_traits_adapt_the_grid_and_preserve_state() async throws {
         let recorder = MHFeatureStateRecorder()
         let root = MHFeatureContinuityContent(recorder: recorder)
         #if os(iOS)
@@ -77,14 +87,26 @@ struct MHFeatureGridContinuityTests {
                 #else
                 host.layoutSubtreeIfNeeded()
                 #endif
-                if recorder.identities[phase]?.count == 3 {
+                if recorder.identities[phase]?.count == 3, leadWidthMatchesPhase(recorder) {
                     break
                 }
                 try await Task.sleep(for: .milliseconds(25))
             }
+            #expect(leadWidthMatchesPhase(recorder))
             let identities = try #require(recorder.identities[phase])
             #expect(identities.count == 3)
             #expect(identities == recorder.identities[0])
+        }
+    }
+
+    private func leadWidthMatchesPhase(_ recorder: MHFeatureStateRecorder) -> Bool {
+        switch recorder.phase {
+        case Metrics.compactPhase:
+            recorder.leadWidth == Metrics.compactWidth
+        case Metrics.accessibilityPhase:
+            recorder.leadWidth == Metrics.regularWidth
+        default:
+            recorder.leadWidth > 0 && recorder.leadWidth < Metrics.regularWidth
         }
     }
 }

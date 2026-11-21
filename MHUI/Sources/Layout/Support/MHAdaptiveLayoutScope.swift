@@ -17,7 +17,7 @@ struct MHAdaptiveLayoutScope<Content: View>: View {
             )
 
             content(context)
-                .environment(\.mhAdaptiveLayoutContext, context)
+                .environment(\.mhAvailableWidth, geometry.size.width)
                 .frame(
                     maxWidth: .infinity,
                     maxHeight: .infinity,

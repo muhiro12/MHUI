@@ -6,8 +6,6 @@ public struct MHSectionHeader<Accessory: View>: View {
     private var theme
     @Environment(\.mhAdaptiveLayoutContext)
     private var adaptiveLayoutContext
-    @Environment(\.horizontalSizeClass)
-    private var horizontalSizeClass
     @Environment(\.dynamicTypeSize)
     private var dynamicTypeSize
 
@@ -32,11 +30,7 @@ public struct MHSectionHeader<Accessory: View>: View {
         VStack(
             alignment: .leading,
             spacing: theme.resolvedSectionChromeStyle(
-                for: adaptiveLayoutContext.resolved(
-                    with: horizontalSizeClass,
-                    dynamicTypeSize: dynamicTypeSize,
-                    threshold: theme.layout.compactWidthThreshold
-                )
+                for: adaptiveLayoutContext
             ).contentSpacing
         ) {
             titleLayout {

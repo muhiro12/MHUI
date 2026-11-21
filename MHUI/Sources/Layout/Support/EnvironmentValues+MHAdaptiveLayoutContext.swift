@@ -1,12 +1,13 @@
 import SwiftUI
 
 extension EnvironmentValues {
+    @Entry var mhAvailableWidth: CGFloat?
+
     var mhAdaptiveLayoutContext: MHAdaptiveLayoutContext {
-        get {
-            self[MHAdaptiveLayoutContextKey.self]
-        }
-        set {
-            self[MHAdaptiveLayoutContextKey.self] = newValue
-        }
+        .init(
+            availableWidth: mhAvailableWidth,
+            horizontalSizeClass: horizontalSizeClass,
+            dynamicTypeSize: dynamicTypeSize
+        )
     }
 }

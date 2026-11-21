@@ -34,30 +34,6 @@ struct MHAdaptiveLayoutContext: Sendable, Equatable {
         self.dynamicTypeSize = dynamicTypeSize
     }
 
-    func resolved(
-        with horizontalSizeClass: UserInterfaceSizeClass?,
-        dynamicTypeSize: DynamicTypeSize?,
-        threshold: CGFloat
-    ) -> Self {
-        var context = self
-
-        if context.horizontalSizeClass == nil {
-            context.horizontalSizeClass = horizontalSizeClass
-        }
-
-        if context.dynamicTypeSize == nil {
-            context.dynamicTypeSize = dynamicTypeSize
-        }
-
-        if context.availableWidth == nil,
-           let resolvedHorizontalSizeClass = context.horizontalSizeClass,
-           resolvedHorizontalSizeClass != .regular {
-            context.availableWidth = threshold - 1
-        }
-
-        return context
-    }
-
     func isCompactWidth(
         threshold: CGFloat
     ) -> Bool {

@@ -11,21 +11,12 @@ public struct MHFeatureGrid<Lead: View, Supporting: View>: View {
     private var theme
     @Environment(\.mhAdaptiveLayoutContext)
     private var adaptiveLayoutContext
-    @Environment(\.horizontalSizeClass)
-    private var horizontalSizeClass
-    @Environment(\.dynamicTypeSize)
-    private var dynamicTypeSize
 
     private let lead: Lead
     private let supporting: Supporting
 
     public var body: some View {
-        let context = adaptiveLayoutContext.resolved(
-            with: horizontalSizeClass,
-            dynamicTypeSize: dynamicTypeSize,
-            threshold: theme.layout.compactWidthThreshold
-        )
-        let style = theme.resolvedFeatureGridStyle(for: context)
+        let style = theme.resolvedFeatureGridStyle(for: adaptiveLayoutContext)
 
         let layout = style.arrangement == .split
             ? AnyLayout(HStackLayout(alignment: .top, spacing: style.primarySpacing))

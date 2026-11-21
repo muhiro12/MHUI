@@ -8,8 +8,6 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
     var rowChromeScope
     @Environment(\.mhAdaptiveLayoutContext)
     var adaptiveLayoutContext
-    @Environment(\.horizontalSizeClass)
-    var horizontalSizeClass
     @Environment(\.dynamicTypeSize)
     var dynamicTypeSize
     @Environment(\.mhKeyValueLayout)
@@ -20,12 +18,7 @@ public struct MHKeyValueLabeledContentStyle: LabeledContentStyle {
     }
 
     public func makeBody(configuration: Configuration) -> some View {
-        let context = adaptiveLayoutContext.resolved(
-            with: horizontalSizeClass,
-            dynamicTypeSize: dynamicTypeSize,
-            threshold: theme.layout.compactWidthThreshold
-        )
-        var style = theme.resolvedKeyValueStyle(for: context)
+        var style = theme.resolvedKeyValueStyle(for: adaptiveLayoutContext)
         style.rowChrome = style.rowChrome.resolved(for: rowChromeScope)
 
         return Group {
